@@ -1,12 +1,21 @@
 import { AppBar, Tabs, Tab, Box, Grid, Button, Toolbar, Typography, } from '@material-ui/core'
-import Image from "material-ui-image"
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import USER from '../Components/Utils/User'
+import Logo from '../netmaker.png'
+import Logo2 from '../NM.png'
 
 const GROUP_DETAIL_TAB_NAME = 'network details'
 const NODE_DETAIL_TAB_NAME = 'nodes'
 const OTK_DETAIL_TAB_NAME = 'access keys'
+
+function getWindowDimensions() {
+    const { innerWidth: width, innerHeight: height } = window;
+    return {
+      width,
+      height
+    };
+  }
 
 const useStyles = makeStyles(theme => ({ 
     topBarMain: {
@@ -22,7 +31,7 @@ const useStyles = makeStyles(theme => ({
     title: {
         textAlign: 'center',
         flexGrow: 1,
-        paddingLeft: '2em'
+        paddingLeft: '0em'
     }, 
     title2: {
         textAlign: 'center',
@@ -31,6 +40,16 @@ const useStyles = makeStyles(theme => ({
     subTitle: {
         marginRight: '2em',
         cursor: 'pointer'
+    },
+    logo: {
+        width: '60%',
+        height: '2em',
+        minWidth: '2em',
+    },
+    logo2: {
+        width: '60%',
+        height: '2em',
+        minWidth: '2em',
     }
 }))
 
@@ -51,8 +70,8 @@ export default function TopBar({setDataSelection, setCreatingGroup, currentUser,
             <AppBar position="static">
                 <Toolbar>
                     <Button color="inherit" onClick={() => setCreatingGroup(true)}>Create Network</Button>
-                    <Typography variant="h3" className={currentUser ? classes.title : classes.title2} onClick={() => window.location.reload()}>
-                    Netmaker
+                    <Typography variant="h3" className={classes.title} onClick={() => window.location.reload()}>
+                        <img className={classes.logo} src={getWindowDimensions().width < 800 ? Logo2 : Logo} alt='Netmaker makes networks.' />
                     </Typography>
                     {currentUser ? 
                         <>
@@ -60,7 +79,7 @@ export default function TopBar({setDataSelection, setCreatingGroup, currentUser,
                                 <strong>{currentUser.username}</strong>
                             </Typography>
                             <Button color="inherit" onClick={() => USER.logout(setUser, setIsLoggingIn)}>Logout</Button>
-                        </> : <Button color="inherit" onClick={() => setIsLoggingIn(true)}>Login</Button>
+                    </> : <Button color="inherit" onClick={() => setIsLoggingIn(true)}>Login</Button>
                     }
                 </Toolbar>
             </AppBar>
