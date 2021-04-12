@@ -138,9 +138,13 @@ export default function GroupDetails({ groupData, setSelectedGroup, back, setSuc
                 setError(`Could not remove group: ${groupName}, please remove all nodes and try again.`)
             }
         } catch (err) {
-            setError(`Could not remove group: ${groupName}, please remove all nodes and try again.`)
+            setError(`Server error occurred when removing: ${groupName}, please check connection and try again.`)
         }
     }
+    setTimeout(() => {
+        setSuccess('')
+        setError('')
+    }, 3000)
     setIsProcessing(false)
   }
 

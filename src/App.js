@@ -71,7 +71,6 @@ function App() {
             setIsProcessing(true)
             API.get("/groups")
             .then(groupsRes => {  
-                console.log(groupsRes) 
                 API.get("/nodes")     
                 .then(nodeRes => {
                     if (nodeRes.data && nodeRes.data.length > 0) setNodeData(nodeRes.data)
@@ -97,11 +96,12 @@ function App() {
             API.get("nodes").then(nodeRes => {
               if (nodeRes.data && nodeRes.data.length >= 0 && nodeRes.data !== nodeData) {
                 setNodeData(nodeRes.data)
-              } else if (nodeRes.status === 200) {
+              } else {
                 setNodeData([])
               }
             }).catch(err => {
               // node data could not be fetched..
+              setNodeData([])
             })
           }, 10000);
           return () => { clearInterval(interval); clearInterval(userInterval) };

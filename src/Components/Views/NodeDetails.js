@@ -50,8 +50,8 @@ const intFields = [
 ]
 
 const timeFields = [
-    Fields.NODE_FIELDS[10],
-    Fields.NODE_FIELDS[11]
+    Fields.NODE_FIELDS[11],
+    Fields.NODE_FIELDS[12],
 ]
 
 const parseUpdatedNode = (nodes, macaddress) => {
@@ -61,6 +61,11 @@ const parseUpdatedNode = (nodes, macaddress) => {
         }        
     }
     return null
+}
+
+const convertDateToUnix = (date) => {
+    const unixTime = new Date(date).getTime() / 1000
+    return unixTime
 }
 
 export default function NodeDetails({ setNodeData, node, setSelectedNode, setSuccess, groupName }) {
@@ -76,14 +81,14 @@ export default function NodeDetails({ setNodeData, node, setSelectedNode, setSuc
     setError('')
     setIsProcessing(true)
     try {
-        const response = await API.put(`/${node.group}/nodes/${node.macaddress}`, { ...settings })
+        const nodeData = { ...settings, expdatetime: convertDateToUnix(settings.expdatetime) }
+        const response = await API.put(`/${node.group}/nodes/${node.macaddress}`, nodeData)
         if (response.status === 200) {
             setCurrentSettings({...response.data}) // set what we've changed.
             setSuccess(`Successfully updated node ${node.name}`)
             API.get("/nodes")
             .then(nodeRes => {               
                 setNodeData(nodeRes.data)
-                // console.log(nodeRes.data)
                 const updatedNode = parseUpdatedNode(nodeRes.data, node.macaddress)
                 setTimeout(() => {
                     setSelectedNode(updatedNode)
@@ -119,7 +124,7 @@ export default function NodeDetails({ setNodeData, node, setSelectedNode, setSuc
                     setError(`Could not remove node: ${nodeName}, please try again later.`)
                 }
             } catch (err) {
-                setError(`Could not remove node: ${nodeName}, please try again later.`)
+                setError(`Server Error when removing: ${nodeName}, please check server connection.`)
             }
             setIsProcessing(false)
         }
@@ -139,10 +144,11 @@ export default function NodeDetails({ setNodeData, node, setSelectedNode, setSuc
 
     React.useEffect(() => {
         if (settings == null && node) {
+            console.log(node)
             setSettings(node)
             setCurrentSettings(node)
         }
-    }, [settings, node])
+    }, [settings,node])
 
   return (
       <div>
@@ -195,6 +201,7 @@ export default function NodeDetails({ setNodeData, node, setSelectedNode, setSuc
                                 placeholder={timeFields.indexOf(fieldName) >= 0 ? Fields.timeConverter(settings[fieldName]) : settings[fieldName]}
                                 value={timeFields.indexOf(fieldName) >= 0 ? Fields.timeConverter(settings[fieldName]) : settings[fieldName]}
                                 fullWidth
+                                type={fieldName === 'expdatetime' ? 'datetime-local' : ''}
                                 key={node[fieldName]}
                                 margin="normal"
                                 InputLabelProps={{
