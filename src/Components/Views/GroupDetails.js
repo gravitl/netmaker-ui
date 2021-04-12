@@ -29,7 +29,10 @@ const useStyles = makeStyles((theme) => ({
       textAlign: 'center'
   },
   main: {
-      marginBottom: '3em'
+      marginBottom: '3em',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center'
   },
   button: {
       marginLeft: '0.25em',
@@ -138,9 +141,13 @@ export default function GroupDetails({ groupData, setSelectedGroup, back, setSuc
                 setError(`Could not remove group: ${groupName}, please remove all nodes and try again.`)
             }
         } catch (err) {
-            setError(`Could not remove group: ${groupName}, please remove all nodes and try again.`)
+            setError(`Server error occurred when removing: ${groupName}, please check connection and try again.`)
         }
     }
+    setTimeout(() => {
+        setSuccess('')
+        setError('')
+    }, 3000)
     setIsProcessing(false)
   }
 
@@ -157,7 +164,7 @@ export default function GroupDetails({ groupData, setSelectedGroup, back, setSuc
   return (
       <div>
           <form >
-            <Grid xs={12} justify='center' container className={classes.main}>
+            <Grid justify='center' alignItems='center' container className={classes.main}>
                 {isProcessing && 
                     <Grid item xs={10}>
                         <div className={classes.center}>

@@ -18,9 +18,9 @@ import Util from '../Utils/Fields'
 
 const useStyles = makeStyles((theme) => ({
     container: {
-        // maxHeight: '40em',
-        // overflowY: 'scroll',
-        // overflow: 'hidden'
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems:'center'
     },
     row: {
         marginBottom: '0.5em',
@@ -208,7 +208,7 @@ export default function AllNodes({ setNodeData, nodes, groupName, setSuccess, is
                             {node.ispending ? 
                             <Grid item xs={12} md={1}>
                                 <Tooltip title='APPROVE' placement='top'>
-                                    <IconButton aria-label={`approve node ${node.name}`} onClick={() => handleNodeSelect(node)}>
+                                    <IconButton aria-label={`approve node ${node.name}`} onClick={() => approveNode(node.group, node.macaddress, node.name)}>
                                     <CheckBox />
                                     </IconButton>
                                 </Tooltip>

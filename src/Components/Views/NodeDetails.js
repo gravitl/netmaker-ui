@@ -2,6 +2,10 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid'
+import AdapterDateFns from '@material-ui/lab/AdapterDateFns';
+import LocalizationProvider from '@material-ui/lab/LocalizationProvider';
+import DateTimePicker from '@material-ui/lab/DateTimePicker';
+
 import Fields from '../Utils/Fields'
 import { Button, Typography, CircularProgress } from '@material-ui/core';
 import API from '../Utils/API'
@@ -35,6 +39,11 @@ const useStyles = makeStyles((theme) => ({
     '&:hover': {
         backgroundColor: '#e40000'
     }
+ },
+ main: {
+    // display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
  }
 }));
 
@@ -50,8 +59,8 @@ const intFields = [
 ]
 
 const timeFields = [
-    Fields.NODE_FIELDS[10],
-    Fields.NODE_FIELDS[11]
+    Fields.NODE_FIELDS[11],
+    Fields.NODE_FIELDS[12],
 ]
 
 const parseUpdatedNode = (nodes, macaddress) => {
@@ -62,6 +71,13 @@ const parseUpdatedNode = (nodes, macaddress) => {
     }
     return null
 }
+
+const convertDateToUnix = (date) => {
+    const unixTime = new Date(date).getTime() / 1000
+    return unixTime
+}
+
+const MAX_TIME = 33174902665
 
 export default function NodeDetails({ setNodeData, node, setSelectedNode, setSuccess, groupName }) {
   const classes = useStyles();
@@ -76,14 +92,14 @@ export default function NodeDetails({ setNodeData, node, setSelectedNode, setSuc
     setError('')
     setIsProcessing(true)
     try {
-        const response = await API.put(`/${node.group}/nodes/${node.macaddress}`, { ...settings })
+        const nodeData = { ...settings }
+        const response = await API.put(`/${node.group}/nodes/${node.macaddress}`, nodeData)
         if (response.status === 200) {
-            setCurrentSettings({...response.data}) // set what we've changed.
+            setCurrentSettings({...response.data})
             setSuccess(`Successfully updated node ${node.name}`)
             API.get("/nodes")
             .then(nodeRes => {               
                 setNodeData(nodeRes.data)
-                // console.log(nodeRes.data)
                 const updatedNode = parseUpdatedNode(nodeRes.data, node.macaddress)
                 setTimeout(() => {
                     setSelectedNode(updatedNode)
@@ -119,7 +135,7 @@ export default function NodeDetails({ setNodeData, node, setSelectedNode, setSuc
                     setError(`Could not remove node: ${nodeName}, please try again later.`)
                 }
             } catch (err) {
-                setError(`Could not remove node: ${nodeName}, please try again later.`)
+                setError(`Server Error when removing: ${nodeName}, please check server connection.`)
             }
             setIsProcessing(false)
         }
@@ -142,12 +158,12 @@ export default function NodeDetails({ setNodeData, node, setSelectedNode, setSuc
             setSettings(node)
             setCurrentSettings(node)
         }
-    }, [settings, node])
+    }, [settings,node])
 
   return (
       <div>
           <form onSubmit={handleSubmit}>
-            <Grid xs={12} justify='center' container>
+            <Grid className={classes.main} justify='center' container>
                 {isProcessing && 
                     <Grid item xs={10}>
                         <div className={classes.center}>
@@ -187,7 +203,39 @@ export default function NodeDetails({ setNodeData, node, setSelectedNode, setSuc
                     item
                 >
                     { Fields.NODE_FIELDS.map(fieldName => {
-                        if (Fields.NODE_FIELDS.indexOf(fieldName) < Fields.NODE_FIELDS.length / 2) {
+                        if (fieldName === 'expdatetime') {
+                            return <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                <DateTimePicker
+                                    value={new Date(Fields.datePickerConverter(settings[fieldName] > MAX_TIME ? MAX_TIME : settings[fieldName]))} //new Date(Fields.timeConverter(settings[fieldName] > MAX_TIME ? MAX_TIME : settings[fieldName])).toLocaleString()}
+                                    onChange={(newValue) => {
+                                        let newSettings = {...currentSettings}
+                                        newSettings['expdatetime'] = convertDateToUnix(newValue)
+                                        setSettings(newSettings)
+                                    }}
+                                    className={classes.textFieldLeft}
+                                    disabled={!isEditing}
+                                    onError={() => {
+                                        setError('Please select valid date. May need to refresh, if misbehaving.')
+                                        setTimeout(() => {
+                                            setError('')
+                                        }, 2000)
+                                    }}
+                                    label={fieldName.toUpperCase()}
+                                    maxDate={new Date('3032-01-01T00:00')}
+                                    minDate={new Date('2021-01-01T00:00')}
+                                    inputFormat="yyyy/MM/dd hh:mm a"
+                                    renderInput={params => <TextField 
+                                        {...params}
+                                        helperText='' 
+                                        margin="normal" 
+                                        className={classes.textFieldLeft}
+                                        fullWidth
+                                        margin="normal"
+                                        variant="outlined"
+                                        />}
+                                />
+                            </LocalizationProvider>
+                        } else if (Fields.NODE_FIELDS.indexOf(fieldName) < Fields.NODE_FIELDS.length / 2) {
                             return <TextField
                                 id={fieldName}
                                 label={fieldName.toUpperCase()}
@@ -195,7 +243,7 @@ export default function NodeDetails({ setNodeData, node, setSelectedNode, setSuc
                                 placeholder={timeFields.indexOf(fieldName) >= 0 ? Fields.timeConverter(settings[fieldName]) : settings[fieldName]}
                                 value={timeFields.indexOf(fieldName) >= 0 ? Fields.timeConverter(settings[fieldName]) : settings[fieldName]}
                                 fullWidth
-                                key={node[fieldName]}
+                                key={Fields.makeKey(6)}
                                 margin="normal"
                                 InputLabelProps={{
                                     shrink: true,
@@ -222,7 +270,7 @@ export default function NodeDetails({ setNodeData, node, setSelectedNode, setSuc
                                 placeholder={timeFields.indexOf(fieldName) >= 0 ? Fields.timeConverter(settings[fieldName]) : settings[fieldName]}
                                 value={timeFields.indexOf(fieldName) >= 0 ? Fields.timeConverter(settings[fieldName]) : settings[fieldName]}
                                 fullWidth
-                                key={node[fieldName]}
+                                key={Fields.makeKey(6)}
                                 disabled={!isEditing || readOnlyFields.indexOf(fieldName) >= 0}
                                 margin="normal"
                                 InputLabelProps={{

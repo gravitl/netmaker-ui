@@ -7,7 +7,10 @@ const styles = {
         position: 'relative',
     },
     mainContainer: {
-        marginTop: '2em'
+        marginTop: '2em',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     center: {
         textAlign: 'center'

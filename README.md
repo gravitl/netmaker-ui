@@ -2,6 +2,7 @@
 ## To run dev server:
 
 1. `npm i`
+2. `npm i react react-scripts`
 2. `npm start`
 
 Runs the app in the development mode.  

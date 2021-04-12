@@ -9,18 +9,24 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import GroupDetails from './GroupDetails'
 import Edit from '@material-ui/icons/Edit'
+import Sync from '@material-ui/icons/Sync'
+import AddCircleOutline from '@material-ui/icons/AddCircleOutline'
 import IconButton from '@material-ui/core/IconButton'
 import '../../App.css'
 import Avatar from '@material-ui/core/Avatar';
 import Tooltip from '@material-ui/core/Tooltip';
 import Util from '../Utils/Fields'
+import API from '../Utils/API'
 
 const useStyles = makeStyles((theme) => ({
     container: {
         maxHeight: '28em',
         overflowY: 'scroll',
         overflow: 'hidden',
-        borderRadius: '8px'
+        borderRadius: '8px',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     row: {
         marginBottom: '0.5em',
@@ -28,6 +34,14 @@ const useStyles = makeStyles((theme) => ({
     },
     cell: {
         padding: '0.5em',
+    },
+    buttonContainer: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    button: {
+        height: '60%'
     },
     nodeTitle: {
         textAlign: 'center'
@@ -43,6 +57,9 @@ const useStyles = makeStyles((theme) => ({
         boxShadow: theme.shadows[5],
         padding: theme.spacing(2, 4, 3),
     },
+    center: {
+        textAlign: 'center'
+    },
 }));
 
 const displayedGroupFields = [
@@ -55,15 +72,57 @@ export default function AllGroups({ groups, setSuccess, setGroupData}) {
 
     const classes = useStyles()
     const [selectedGroup, setSelectedGroup] = React.useState(null)
+    const [error, setError] = React.useState('')
+    const [refreshSuccess, setRefreshSuccess] = React.useState('')
 
     const handleGroupSelect = (group) => {
         setSelectedGroup(groups.indexOf(group))
     }
 
+    const handlePublicKeyRefresh = async (groupName, displayName) => {
+        try {
+            if (window.confirm(`Are you sure you want to refresh the node public keys on network: ${displayName}?`)) {
+                const response = await API.post(`/groups/${groupName}/keyupdate`)
+                if (response.status === 200) {
+                    setSuccess(`Refreshed Keys for ${groupName}.`)
+                } else {
+                    setError('Could not refresh keys for ', groupName, '.')
+                }
+            }
+        } catch (err) {
+            setError('Server error when refreshing keys for ', groupName, '.')
+        }
+        setTimeout(() => {
+            setError('')
+            setSuccess('')
+        }, 1700)
+    }
+
+    const handleAddServerAsNode = async (groupName, displayName) => {
+        try {
+            if (window.confirm(`Are you sure you want to add the server as a node on network: ${displayName}?`)) {
+                const response = await API.post(`/server/addnetwork/${groupName}`)
+                if (response.status === 200) {
+                    setSuccess(`Added server to network, ${groupName}!`)
+                } else {
+                    setError('Could not add server to network ', groupName, '.')
+                }
+            }
+        } catch (err) {
+            setError('Server error when transitioning to node in network ', groupName, '.')
+        }
+        setTimeout(() => {
+            setError('')
+            setSuccess('')
+        }, 2500)
+    }
+
     return (
         groups[selectedGroup] ? <GroupDetails setGroupData={setGroupData} groupData={groups[selectedGroup]} setSelectedGroup={setSelectedGroup} back setSuccess={setSuccess} /> :
         <Grid container justify='center' alignItems='center' className={classes.container}>
-            <Grid item xs={10}>
+            <Grid item xs={11}>
+            {refreshSuccess ? <div className={classes.center}><Typography variant='h6' color='primary'>{refreshSuccess}</Typography></div> : null}
+            {error ? <div className={classes.center}><Typography variant='h6' color='error'>{error}</Typography></div> : null}
             <div className={classes.nodeTitle2}><Typography variant='h5'>All networks</Typography></div>
             {groups && groups.length ? groups.map(group => 
                     <Card className={classes.row}>
@@ -76,7 +135,7 @@ export default function AllGroups({ groups, setSuccess, setGroupData}) {
                                 </Avatar>
                             }
                             action={
-                                <Tooltip title='EDIT' placement='top'>
+                                <Tooltip title={`EDIT ${group.displayname}`} placement='top'>
                                     <IconButton aria-label={`edit group ${group.displayname}`} onClick={() => handleGroupSelect(group)}>
                                     <Edit />
                                     </IconButton>
@@ -85,8 +144,22 @@ export default function AllGroups({ groups, setSuccess, setGroupData}) {
                         />
                         <CardContent>
                         <Grid container key={group.address} >
+                            <Grid item className={classes.buttonContainer} xs={2} md={1} >
+                                <Tooltip title={`Refresh Public Keys for ${group.displayname}`} placement='top'>
+                                    <IconButton aria-label={`refresh public keys ${group.displayname}`} onClick={() => handlePublicKeyRefresh(group.nameid, group.displayname)}>
+                                        <Sync />
+                                    </IconButton>
+                                </Tooltip>
+                            </Grid>
+                            <Grid item className={classes.buttonContainer} xs={2} md={1}>
+                                <Tooltip title={`Add server to network, ${group.displayname}, as node.`} placement='top'>
+                                    <IconButton aria-label={`add server to network: ${group.displayname}`} onClick={() => handleAddServerAsNode(group.nameid, group.displayname)}>
+                                        <AddCircleOutline />
+                                    </IconButton>
+                                </Tooltip>
+                            </Grid>
                         {displayedGroupFields.map(fieldName => (
-                            <Grid item className={classes.cell} key={group.address} xs={10} md={4}>
+                            <Grid item className={classes.cell} key={group.address} xs={fieldName === 'addressrange' ? 8 : 12} md={3}>
                                 <TextField
                                         id="filled-full-width"
                                         label={fieldName.toUpperCase()}

@@ -1,4 +1,4 @@
-import { Box, Grid, Button, Typography, CircularProgress, Card, CardContent, Modal, Backdrop, IconButton } from '@material-ui/core'
+import { Box, Grid, Button, Typography, CircularProgress, Card, CardContent, Modal, Backdrop, IconButton, Tooltip } from '@material-ui/core'
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import API from '../Utils/API';
@@ -44,6 +44,12 @@ const useStyles = makeStyles((theme) => ({
         '&:hover': {
             backgroundColor: '#e40000'
         }
+    },
+    main: {
+        marginTop: '2em',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
     }
   }));
 
@@ -84,6 +90,10 @@ export default function OtkDetails({ data }) {
                 setIsProcessing(false)
             }
         }
+    }
+
+    const getAgentInstallCommand = () => {
+        return `curl -sfL https://raw.githubusercontent.com/gravitl/netmaker/v0.2/netclient-install.sh | -t ${modalText} sh -`
     }
 
     const createNewKey = async (event, keyName, keyUses) => {
@@ -155,8 +165,8 @@ export default function OtkDetails({ data }) {
     return (
         <Box justifyContent='center' alignItems='center' className={classes.container}>
             <Modal
-                aria-labelledby="clustercat"
-                aria-describedby="Copy your Netmaker AccessKey Value"
+                aria-labelledby="gravitl"
+                aria-describedby="Copy your Netmaker Access Token Value"
                 className={classes.modal}
                 open={open}
                 onClose={handleClose}
@@ -168,13 +178,15 @@ export default function OtkDetails({ data }) {
             >
                 <Card className={classes.center}>
                     <CardContent>
-                        <h4>Your Access Key: </h4>
-                        <h5>{modalText} <IconButton variant="outlined" onClick={copyToClipboard}><FilterNone /></IconButton></h5>
+                        <h4>Your Access Token: </h4>
+                        <h5>{modalText}<Tooltip title={'COPY ACCESS TOKEN'} placement='top'><IconButton variant="outlined" onClick={copyToClipboard}><FilterNone /></IconButton></Tooltip></h5>
                         <p>Please save your key as you will be unable to access it again.</p>
+                        <h5>Your agent install command with access token:</h5>
+                        <h6>{getAgentInstallCommand()}<Tooltip title={'COPY AGENT INSTALL COMMAND'} placement='top'><IconButton variant="outlined" onClick={() => copy(getAgentInstallCommand())}><FilterNone /></IconButton></Tooltip></h6>
                     </CardContent>
                 </Card>
             </Modal>
-            <Grid container justify='center' >
+            <Grid className={classes.main} container justify='center' >
                 {isProcessing && 
                     <Grid item xs={10}>
                         <div className={classes.center}>
