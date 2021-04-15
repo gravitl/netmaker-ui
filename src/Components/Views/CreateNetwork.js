@@ -1,4 +1,4 @@
-import { TextField, Button, Grid, Typography, CircularProgress } from '@material-ui/core'
+import { TextField, Button, Grid, Typography, CircularProgress, FormControlLabel, Checkbox } from '@material-ui/core'
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import API from '../Utils/API'
@@ -8,7 +8,10 @@ const styles = {
         position: 'relative',
     },
     mainContainer: {
-        marginTop: '2em'
+        marginTop: '2em',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     center: {
         textAlign: 'center'
@@ -17,22 +20,26 @@ const styles = {
 
 const useStyles = makeStyles(styles)
 
-export default function CreateGroup({ setIsCreating, setSuccess, setShouldUpdate }) {
+export default function CreateNetwork({ setIsCreating, setSuccess, setShouldUpdate }) {
 
-    const [groupName, setGroupName] = React.useState('')
+    const [networkName, setNetworkName] = React.useState('')
     const [addressrange, setAddressrange] = React.useState('')
+    const [localaddressrange, setLocalAddressrange] = React.useState('')
     const [error, setError] = React.useState('')
     const [isProcessing, setIsProcessing] = React.useState(false)
+    const [isLocal, setIsLocal] = React.useState(false)
 
     const classes = useStyles()
     const correctSubnetRegex = new RegExp(/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?).(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?).(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?).(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\/\d{1,3}$/i)
-    const correctGroupNameRegex = new RegExp(/^[a-zA-Z0-9,\-,_,a-zA-Z0-9]{3,12}$/i)
+    const correctNetworkNameRegex = new RegExp(/^[a-zA-Z0-9,\-,_,a-zA-Z0-9]{3,12}$/i)
 
     const validate = () => {
         const isSubnet = correctSubnetRegex.test(addressrange) 
-        const isGroupName = correctGroupNameRegex.test(groupName)
+        const isNetworkName = correctNetworkNameRegex.test(networkName)
+        const isLocalAddress = correctSubnetRegex.test(localaddressrange)
         if (!isSubnet) return {status: false, cause: 'subnet'}
-        if (!isGroupName) return {status: false, cause: 'groupName'}
+        if (!isNetworkName) return {status: false, cause: 'networkName'}
+        if (isLocal && !isLocalAddress) return {status: false, cause: 'local'}
         return {status: true}
     }
 
@@ -41,16 +48,19 @@ export default function CreateGroup({ setIsCreating, setSuccess, setShouldUpdate
         if (status) { // check if validated
             // send request
             setIsProcessing(true)
-            const response = await API.post('/groups', {
+            const response = await API.post('/networks', {
                 addressrange,
-                nameid: groupName
+                netid: networkName,
+                localrange: localaddressrange,
+                islocal: isLocal
             })
 
             setIsProcessing(false)
-            setGroupName('')
+            setNetworkName('')
             setAddressrange('')
+            setLocalAddressrange('')
             if (response.status === 200) {
-                setSuccess(`Successfully created network ${groupName}`)
+                setSuccess(`Successfully created network ${networkName}`)
                 setIsCreating(false)
                 setShouldUpdate(true)
                 setTimeout(() => {
@@ -62,8 +72,10 @@ export default function CreateGroup({ setIsCreating, setSuccess, setShouldUpdate
         } else {
             if (cause === 'subnet')
                 setError('Invalid subnet provided. Please check formatting. ex: 192.168.1.10/23.')
+            else if (cause === 'local')
+                setError('Invalid local address provided. Please check formatting. ex: 192.168.1.10/23.')
             else 
-                setError('Invalid group name provided. Max 12 alphanumeric characters with underscores or hyphens.')
+                setError('Invalid network name provided. Max 12 alphanumeric characters with underscores or hyphens.')
         }
     }
 
@@ -72,9 +84,20 @@ export default function CreateGroup({ setIsCreating, setSuccess, setShouldUpdate
         setAddressrange(event.target.value)
     }
 
-    const handleUpdateGroupName = (event) => {
+    const handleUpdateLocalAddress = (event) => {
         event.preventDefault()
-        setGroupName(event.target.value)
+        setLocalAddressrange(event.target.value)
+    }
+
+    const handleUpdateNetworkName = (event) => {
+        event.preventDefault()
+        setNetworkName(event.target.value)
+    }
+
+    const toggleIsLocal = (event) => {
+        event.preventDefault()
+        setIsLocal(event.target.checked)
+        if (!event.target.checked) setLocalAddressrange('')
     }
 
     return (
@@ -101,14 +124,14 @@ export default function CreateGroup({ setIsCreating, setSuccess, setShouldUpdate
                         margin="normal"
                         required
                         fullWidth
-                        id="groupName"
+                        id="networkName"
                         label="Network Name"
-                        name="groupName"
+                        name="networkName"
                         placeholder='my-net'
                         autoComplete="false"
                         autoFocus
-                        value={groupName}
-                        onChange={handleUpdateGroupName}
+                        value={networkName}
+                        onChange={handleUpdateNetworkName}
                     />
                     <TextField
                         variant="outlined"
@@ -124,6 +147,31 @@ export default function CreateGroup({ setIsCreating, setSuccess, setShouldUpdate
                         value={addressrange}
                         autoComplete="false"
                     />
+                    <FormControlLabel
+                        control={
+                        <Checkbox
+                            checked={isLocal}
+                            onChange={toggleIsLocal}
+                            name="isLocal"
+                            color="primary"
+                        />
+                        }
+                        label="Is Local?"
+                    />
+                    {isLocal ? <TextField
+                        variant="outlined"
+                        margin="normal"
+                        required
+                        fullWidth
+                        name="localaddressrange"
+                        label="Local Address Range"
+                        placeholder='0.0.0.0/32'
+                        type="text"
+                        onChange={handleUpdateLocalAddress}
+                        id="localaddressrange"
+                        value={localaddressrange}
+                        autoComplete="false"
+                    /> : null}
                     <Button
                         type="submit"
                         fullWidth
