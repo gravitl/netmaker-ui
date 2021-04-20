@@ -4,7 +4,7 @@ import jwt from 'jwt-decode'
 import Common from '../../Common'
 
 const API = axios.create({
-	baseURL: `${Common.BACKEND_URL}/users`
+	baseURL: `${Common.BACKEND_URL}/api/users`
 })
 
 const USER_KEY = "netmaker-user"
@@ -29,7 +29,7 @@ export default {
     },
     authenticate: async (username, password) => {
         try {
-            const userdata = await API.post('/authenticate', { username, password },)
+            const userdata = await API.post('/adm/authenticate', { username, password },)
             if (userdata.status === 200) {
                 // console.log(userdata.data.Response.AuthToken)
                 const decoded = jwt(userdata.data.Response.AuthToken)
@@ -66,13 +66,13 @@ export default {
         setNeedsLogin(true)
     },
     createAdmin: async (username, password) => {
-        return (await API.post('/createadmin', {
+        return (await API.post('/adm/createadmin', {
             username,
             password
         }, {headers: {}}))
     },
     hasAdmin: callback => {
-        API.get('/hasadmin', { headers: {} })
+        API.get('/adm/hasadmin', { headers: {} })
             .then(response => {
                 if (response.status === 200) {
                     callback(response.data)

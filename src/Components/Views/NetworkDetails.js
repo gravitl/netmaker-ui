@@ -29,7 +29,10 @@ const useStyles = makeStyles((theme) => ({
       textAlign: 'center'
   },
   main: {
-      marginBottom: '3em'
+      marginBottom: '3em',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center'
   },
   button: {
       marginLeft: '0.25em',
@@ -49,20 +52,21 @@ const useStyles = makeStyles((theme) => ({
 
 const readOnlyFields = [
     'nodeslastmodified',
-    'grouplastmodified',
+    'networklastmodified',
 ]
 
 const intFields = [
     'defaultlistenport',
-    'defaultkeepalive'
+    'defaultkeepalive',
+    'defaultcheckininterval'
 ]
 
 const timeFields = [
     "nodeslastmodified",
-    "grouplastmodified"
+    "networklastmodified"
 ]
 
-export default function GroupDetails({ groupData, setSelectedGroup, back, setSuccess, setGroupData }) {
+export default function NetworkDetails({ networkData, setSelectedNetwork, back, setSuccess, setNetworkData }) {
   const classes = useStyles();
   const [isEditing, setIsEditing] = React.useState(false)
   const [settings, setSettings] = React.useState(null)
@@ -77,16 +81,16 @@ export default function GroupDetails({ groupData, setSelectedGroup, back, setSuc
     event.preventDefault()
     setIsProcessing(true)
     try {
-        const response = await API.put(`/groups/${groupData.nameid}`, { ...settings, allowmanualsignup: allowManual })
+        const response = await API.put(`/networks/${networkData.netid}`, { ...settings, allowmanualsignup: allowManual })
         if (response.status === 200) {
             setCurrentSettings(settings) // set what we've changed.
-            setSuccess(`Successfully updated group ${groupData.displayname}`)
+            setSuccess(`Successfully updated network ${networkData.displayname}`)
             setTimeout(() => {
                 setSuccess('')
-                API.get("/groups")
-                .then(groupsRes => {         
-                    setGroupData(groupsRes.data)
-                    setCurrentSettings(groupsRes.data)
+                API.get("/networks")
+                .then(networksRes => {         
+                    setNetworkData(networksRes.data)
+                    setCurrentSettings(networksRes.data)
                     setIsProcessing(false)
                     setSettings(null)
                 })
@@ -95,10 +99,10 @@ export default function GroupDetails({ groupData, setSelectedGroup, back, setSuc
                 })
             }, 1000)
         } else {
-            setError(`Could not update group: ${groupData.displayname}.`)
+            setError(`Could not update network: ${networkData.displayname}.`)
         }
     } catch (err) {
-        setError(`Could not update group: ${groupData.displayname}.`)
+        setError(`Could not update network: ${networkData.displayname}.`)
     }
     setIsProcessing(false)
   }
@@ -106,7 +110,7 @@ export default function GroupDetails({ groupData, setSelectedGroup, back, setSuc
   const handleChange = event => {
     event.preventDefault()
     const { id, value } = event.target
-    let newSettings = {...groupData}
+    let newSettings = {...networkData}
     if (intFields.indexOf(id) !== -1) {
         newSettings[id] = parseInt(value)
     } else {
@@ -121,43 +125,47 @@ export default function GroupDetails({ groupData, setSelectedGroup, back, setSuc
       setAllowManual(!allowManual)
   }
 
-  const removeGroup = async (groupName) => {
-    if (window.confirm(`Are you sure you want to remove group ${groupName}?`)) {
+  const removeNetwork = async networkName => {
+    if (window.confirm(`Are you sure you want to remove network ${networkName}?`)) {
         setIsProcessing(true)
         try {
-            const response = await API.delete(`/groups/${groupName}`) 
+            const response = await API.delete(`/networks/${networkName}`) 
             if (response.status === 200) {
-                setIsEditing(false); // return to group view
-                setSuccess(`Succesfully removed group: ${groupName}!`)
+                setIsEditing(false); // return to network view
+                setSuccess(`Succesfully removed network: ${networkName}!`)
                 setSettings(null)
                 setTimeout(() => {
                     setSuccess('')
                     window.location.reload()
                 }, 1000)
             } else {
-                setError(`Could not remove group: ${groupName}, please remove all nodes and try again.`)
+                setError(`Could not remove network: ${networkName}, please remove all nodes and try again.`)
             }
         } catch (err) {
-            setError(`Could not remove group: ${groupName}, please remove all nodes and try again.`)
+            setError(`Server error occurred when removing: ${networkName}, please check connection and try again.`)
         }
     }
+    setTimeout(() => {
+        setSuccess('')
+        setError('')
+    }, 3000)
     setIsProcessing(false)
   }
 
   React.useEffect(() => {
-        if (settings == null && groupData) {
-            setAllowManual(groupData.allowmanualsignup)
-            setSettings(groupData)
-            setCurrentSettings(groupData)
-        } else if (settings != null && groupData !== settings && !change) {
+        if (settings == null && networkData) {
+            setAllowManual(networkData.allowmanualsignup)
+            setSettings(networkData)
+            setCurrentSettings(networkData)
+        } else if (settings != null && networkData !== settings && !change) {
             setSettings(null)
         }
-  }, [settings, groupData])
+  }, [settings, networkData])
 
   return (
       <div>
           <form >
-            <Grid xs={12} justify='center' container className={classes.main}>
+            <Grid justify='center' alignItems='center' container className={classes.main}>
                 {isProcessing && 
                     <Grid item xs={10}>
                         <div className={classes.center}>
@@ -184,11 +192,11 @@ export default function GroupDetails({ groupData, setSelectedGroup, back, setSuc
                         <Button className={classes.button} variant='outlined' disabled={!isEditing} onClick={() => { setIsEditing(false); setSettings(currentSettings); }}>
                             Cancel
                         </Button>
-                        <Button className={classes.button2} variant='outlined' onClick={() => removeGroup(groupData.nameid)}>
+                        <Button className={classes.button2} variant='outlined' onClick={() => removeNetwork(networkData.netid)}>
                             Delete
                         </Button>
                         {back && 
-                            <Button className={classes.button} variant='outlined' onClick={() => setSelectedGroup(null)}>
+                            <Button className={classes.button} variant='outlined' onClick={() => setSelectedNetwork(null)}>
                                 Back
                             </Button>
                         }
@@ -207,8 +215,8 @@ export default function GroupDetails({ groupData, setSelectedGroup, back, setSuc
                     direction='column'
                     item
                 >
-                    { groupData && settings && Fields.GROUP_FIELDS.map(fieldName => {
-                       if (Fields.GROUP_FIELDS.indexOf(fieldName) < (Fields.GROUP_FIELDS.length / 2) - 1 ) {
+                    { networkData && settings && Fields.NETWORK_FIELDS.map(fieldName => {
+                       if (Fields.NETWORK_FIELDS.indexOf(fieldName) < (Fields.NETWORK_FIELDS.length / 2) - 1 ) {
                             return <TextField
                                 id={fieldName}
                                 label={fieldName.toUpperCase()}
@@ -232,8 +240,8 @@ export default function GroupDetails({ groupData, setSelectedGroup, back, setSuc
                     direction='column'
                     item
                 >
-                    { groupData && settings && Fields.GROUP_FIELDS.map(fieldName => {
-                        if (Fields.GROUP_FIELDS.indexOf(fieldName) >= (Fields.GROUP_FIELDS.length / 2) - 1 && fieldName !== 'accesskeys') {
+                    { networkData && settings && Fields.NETWORK_FIELDS.map(fieldName => {
+                        if (Fields.NETWORK_FIELDS.indexOf(fieldName) >= (Fields.NETWORK_FIELDS.length / 2) - 1 && fieldName !== 'accesskeys') {
                             return <TextField
                                 id={fieldName}
                                 label={fieldName.toUpperCase()}

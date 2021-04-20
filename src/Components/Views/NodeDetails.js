@@ -2,6 +2,10 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid'
+import AdapterDateFns from '@material-ui/lab/AdapterDateFns';
+import LocalizationProvider from '@material-ui/lab/LocalizationProvider';
+import DateTimePicker from '@material-ui/lab/DateTimePicker';
+
 import Fields from '../Utils/Fields'
 import { Button, Typography, CircularProgress } from '@material-ui/core';
 import API from '../Utils/API'
@@ -35,12 +39,18 @@ const useStyles = makeStyles((theme) => ({
     '&:hover': {
         backgroundColor: '#e40000'
     }
+ },
+ main: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: '3em'
  }
 }));
 
 const readOnlyFields = [
     'macaddress',
-    'group',
+    'network',
     'lastcheckin',
     'lastmodified',
 ]
@@ -50,8 +60,8 @@ const intFields = [
 ]
 
 const timeFields = [
-    Fields.NODE_FIELDS[10],
-    Fields.NODE_FIELDS[11]
+    Fields.NODE_FIELDS[11],
+    Fields.NODE_FIELDS[12],
 ]
 
 const parseUpdatedNode = (nodes, macaddress) => {
@@ -63,7 +73,14 @@ const parseUpdatedNode = (nodes, macaddress) => {
     return null
 }
 
-export default function NodeDetails({ setNodeData, node, setSelectedNode, setSuccess, groupName }) {
+const convertDateToUnix = (date) => {
+    const unixTime = new Date(date).getTime() / 1000
+    return unixTime
+}
+
+const MAX_TIME = 33174902665
+
+export default function NodeDetails({ setNodeData, node, setSelectedNode, setSuccess, networkName }) {
   const classes = useStyles();
   const [isEditing, setIsEditing] = React.useState(false)
   const [settings, setSettings] = React.useState(null)
@@ -76,18 +93,18 @@ export default function NodeDetails({ setNodeData, node, setSelectedNode, setSuc
     setError('')
     setIsProcessing(true)
     try {
-        const response = await API.put(`/${node.group}/nodes/${node.macaddress}`, { ...settings })
+        const nodeData = { ...settings }
+        const response = await API.put(`/nodes/${node.network}/${node.macaddress}`, nodeData)
         if (response.status === 200) {
-            setCurrentSettings({...response.data}) // set what we've changed.
+            setCurrentSettings({...response.data})
+            setSettings({...response.data})
             setSuccess(`Successfully updated node ${node.name}`)
             API.get("/nodes")
             .then(nodeRes => {               
                 setNodeData(nodeRes.data)
-                // console.log(nodeRes.data)
                 const updatedNode = parseUpdatedNode(nodeRes.data, node.macaddress)
+                setSelectedNode(updatedNode)
                 setTimeout(() => {
-                    setSelectedNode(updatedNode)
-                    setSettings(null)
                     setIsProcessing(false)
                     setSuccess('')
                 }, 1000)
@@ -105,13 +122,13 @@ export default function NodeDetails({ setNodeData, node, setSelectedNode, setSuc
     }
   }
 
-    const removeNode = async (nodeName, nodeMacAddress, group) => {
+    const removeNode = async (nodeName, nodeMacAddress, network) => {
         if (window.confirm(`Are you sure you want to remove node: ${nodeName}?`)) {
             setIsProcessing(true)
             try {
-                const response = await API.delete(`/${group}/nodes/${nodeMacAddress}`) 
+                const response = await API.delete(`/nodes/${network}/${nodeMacAddress}`) 
                 if (response.status === 200) {
-                    setIsEditing(false); // return to group view
+                    setIsEditing(false); // return to network view
                     setSuccess(`Succesfully removed node: ${nodeName}!`)
                     setSelectedNode(null)
                     setTimeout(() => setSuccess(''), 1000)
@@ -119,7 +136,7 @@ export default function NodeDetails({ setNodeData, node, setSelectedNode, setSuc
                     setError(`Could not remove node: ${nodeName}, please try again later.`)
                 }
             } catch (err) {
-                setError(`Could not remove node: ${nodeName}, please try again later.`)
+                setError(`Server Error when removing: ${nodeName}, please check server connection.`)
             }
             setIsProcessing(false)
         }
@@ -147,7 +164,7 @@ export default function NodeDetails({ setNodeData, node, setSelectedNode, setSuc
   return (
       <div>
           <form onSubmit={handleSubmit}>
-            <Grid xs={12} justify='center' container>
+            <Grid className={classes.main} justify='center' container>
                 {isProcessing && 
                     <Grid item xs={10}>
                         <div className={classes.center}>
@@ -174,7 +191,7 @@ export default function NodeDetails({ setNodeData, node, setSelectedNode, setSuc
                         <Button className={classes.button} variant='outlined' disabled={!isEditing} onClick={() => {setIsEditing(false); setSettings(currentSettings);}}>
                             Cancel
                         </Button>
-                        <Button className={classes.button2} variant='outlined' round onClick={() => removeNode(node.name, node.macaddress, groupName ? groupName : node.group)}>
+                        <Button className={classes.button2} variant='outlined' round onClick={() => removeNode(node.name, node.macaddress, networkName ? networkName : node.network)}>
                             Delete
                         </Button>
                         <Button className={classes.button} variant='outlined' round onClick={() => setSelectedNode(null)}>
@@ -182,60 +199,63 @@ export default function NodeDetails({ setNodeData, node, setSelectedNode, setSuc
                         </Button>
                     </div>
                 </Grid>
-                <Grid xs={12} md={5}
-                    direction='column'
-                    item
-                >
                     { Fields.NODE_FIELDS.map(fieldName => {
-                        if (Fields.NODE_FIELDS.indexOf(fieldName) < Fields.NODE_FIELDS.length / 2) {
-                            return <TextField
-                                id={fieldName}
-                                label={fieldName.toUpperCase()}
-                                className={classes.textFieldLeft}
-                                placeholder={timeFields.indexOf(fieldName) >= 0 ? Fields.timeConverter(settings[fieldName]) : settings[fieldName]}
-                                value={timeFields.indexOf(fieldName) >= 0 ? Fields.timeConverter(settings[fieldName]) : settings[fieldName]}
-                                fullWidth
-                                key={node[fieldName]}
-                                margin="normal"
-                                InputLabelProps={{
-                                    shrink: true,
-                                }}
-                                disabled={!isEditing || readOnlyFields.indexOf(fieldName) >= 0}
-                                variant="outlined"
-                                onChange={handleChange}
-                            />
+                        if (fieldName === 'expdatetime') {
+                            
+                            return <Grid xs={12} md={6}
+                                        item
+                                    >
+                                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                <DateTimePicker
+                                    value={new Date(Fields.datePickerConverter(settings[fieldName] > MAX_TIME ? MAX_TIME : settings[fieldName]))} //new Date(Fields.timeConverter(settings[fieldName] > MAX_TIME ? MAX_TIME : settings[fieldName])).toLocaleString()}
+                                    onChange={(newValue) => {
+                                        let newSettings = {...settings}
+                                        newSettings.expdatetime = convertDateToUnix(newValue)
+                                        setSettings(newSettings)
+                                    }}
+                                    className={classes.textFieldLeft}
+                                    disabled={!isEditing}
+                                    label={fieldName.toUpperCase()}
+                                    maxDate={new Date('3032-01-01T00:00')}
+                                    minDate={new Date('2021-01-01T00:00')}
+                                    inputFormat="yyyy/MM/dd hh:mm a"
+                                    renderInput={params => <TextField 
+                                        {...params}
+                                        helperText='' 
+                                        margin="normal" 
+                                        className={classes.textFieldLeft}
+                                        fullWidth
+                                        margin="normal"
+                                        variant="outlined"
+                                        />}
+                                />
+                            </LocalizationProvider>
+                            </Grid>
                         } else {
-                            return null
-                        }
-                        })}
-                </Grid>
-                <Grid xs={12} md={5}
-                    direction='column'
-                    item
-                >
-                    { Fields.NODE_FIELDS.map(fieldName => {
-                        if (Fields.NODE_FIELDS.indexOf(fieldName) >= Fields.NODE_FIELDS.length / 2) {
-                            return <TextField
-                                id={fieldName}
-                                label={fieldName.toUpperCase()}
-                                className={classes.textFieldRight}
-                                placeholder={timeFields.indexOf(fieldName) >= 0 ? Fields.timeConverter(settings[fieldName]) : settings[fieldName]}
-                                value={timeFields.indexOf(fieldName) >= 0 ? Fields.timeConverter(settings[fieldName]) : settings[fieldName]}
-                                fullWidth
-                                key={node[fieldName]}
-                                disabled={!isEditing || readOnlyFields.indexOf(fieldName) >= 0}
-                                margin="normal"
-                                InputLabelProps={{
-                                    shrink: true,
-                                }}
-                                variant="outlined"
-                                onChange={handleChange}
-                            />
-                        } else {
-                            return null
-                        }
-                    })}
-                </Grid></> : <div className={classes.center}><h4>No Nodes found.</h4></div> }
+                            return (
+                            <Grid xs={12} md={6}
+                                item
+                            >
+                                <TextField
+                                    id={fieldName}
+                                    label={fieldName.toUpperCase()}
+                                    className={classes.textFieldLeft}
+                                    placeholder={timeFields.indexOf(fieldName) >= 0 ? Fields.timeConverter(settings[fieldName]) : settings[fieldName]}
+                                    value={timeFields.indexOf(fieldName) >= 0 ? Fields.timeConverter(settings[fieldName]) : settings[fieldName]}
+                                    fullWidth
+                                    key={fieldName}
+                                    margin="normal"
+                                    InputLabelProps={{
+                                        shrink: true,
+                                    }}
+                                    disabled={!isEditing || readOnlyFields.indexOf(fieldName) >= 0}
+                                    variant="outlined"
+                                    onChange={handleChange}
+                                />
+                            </Grid>
+                            )
+                        }})}
+                </> : <div className={classes.center}><h4>No Nodes found.</h4></div> }
             </Grid>
         </form>
       </div>

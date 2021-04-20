@@ -1,4 +1,4 @@
-import { Box, Grid, Button, Typography, CircularProgress, Card, CardContent, Modal, Backdrop, IconButton } from '@material-ui/core'
+import { Box, Grid, Button, Typography, CircularProgress, Card, CardContent, Modal, IconButton, Tooltip } from '@material-ui/core'
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import API from '../Utils/API';
@@ -13,10 +13,12 @@ const useStyles = makeStyles((theme) => ({
       justifyContent: 'center',
     },
     paper: {
-      backgroundColor: theme.palette.background.paper,
-      border: '2px solid #000',
-      boxShadow: theme.shadows[5],
-      padding: theme.spacing(2, 4, 3),
+        position: 'absolute',
+        width: '60%',
+        backgroundColor: theme.palette.background.paper,
+        outline: 0, // Disable browser on-focus borders
+        boxShadow: theme.shadows[5],
+        padding: theme.spacing(2, 4, 3),
     },
     center: {
         textAlign: 'center'
@@ -44,7 +46,16 @@ const useStyles = makeStyles((theme) => ({
         '&:hover': {
             backgroundColor: '#e40000'
         }
-    }
+    },
+    main: {
+        marginTop: '2em',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    backDrop: {
+        background: 'rgba(255,0,0,1.0)',
+    },
   }));
 
 export default function OtkDetails({ data }) {
@@ -59,20 +70,22 @@ export default function OtkDetails({ data }) {
     const [ success, setSuccess ] = React.useState('')
     const [ open, setOpen ] = React.useState(false)
     const [ modalText, setModalText ] = React.useState('')
+    const [ keyText, setKeyText ] = React.useState('')
     const [ isCreating, setIsCreating ] = React.useState(false)
 
     const handleClose = () => {
         setOpen(false)
         setModalText('')
+        setKeyText('')
     }
 
     const fetchKeys = async () => {
         setHasChecked(true)
-        if (data && data.nameid) {
+        if (data && data.netid) {
             setIsProcessing(true)
             setError('')
             try {
-                const response = await API.get(`/groups/${data.nameid}/keys`)
+                const response = await API.get(`/networks/${data.netid}/keys`)
                 if (response.status === 200) {
                     setAccessKeys(response.data ? response.data : null)
                 } else {
@@ -86,19 +99,24 @@ export default function OtkDetails({ data }) {
         }
     }
 
+    const getAgentInstallCommand = () => {
+        return `sudo curl -sfL https://raw.githubusercontent.com/gravitl/netmaker/v0.2/netclient-install.sh | KEY=${modalText} sh -`
+    }
+
     const createNewKey = async (event, keyName, keyUses) => {
         event.preventDefault()
-        if (data && data.nameid) {
+        if (data && data.netid) {
             setIsCreating(false)
             setIsProcessing(true)
             setError('')
             try {
-                const response = await API.post(`/groups/${data.nameid}/keys`, {
+                const response = await API.post(`/networks/${data.netid}/keys`, {
                     name: keyName,
                     uses: keyUses
                 })
                 if (response.status === 200) {
-                    setModalText(response.data)
+                    setModalText(response.data.accessstring)
+                    setKeyText(response.data.value)
                     setOpen(true)
                     setCurrentData(null)
                 } else {
@@ -113,12 +131,12 @@ export default function OtkDetails({ data }) {
     }
 
     const deleteKey = async (keyName) => {
-        if (data && data.nameid && keyName) {
+        if (data && data.netid && keyName) {
             if (window.confirm(`Are you sure you want to remove key: ${keyName}?`)) {
                 setIsProcessing(true)
                 setError('')
                 try {
-                    const response = await API.delete(`/groups/${data.nameid}/keys/${keyName}`)
+                    const response = await API.delete(`/networks/${data.netid}/keys/${keyName}`)
                     if (response.status === 200) {
                         // set success or something
                         setSuccess(`Succesfully Removed Key: ${keyName}.`)
@@ -155,26 +173,30 @@ export default function OtkDetails({ data }) {
     return (
         <Box justifyContent='center' alignItems='center' className={classes.container}>
             <Modal
-                aria-labelledby="clustercat"
-                aria-describedby="Copy your Netmaker AccessKey Value"
+                aria-labelledby="gravitl"
+                aria-describedby="Copy your Netmaker Access Token Value"
                 className={classes.modal}
                 open={open}
                 onClose={handleClose}
-                closeAfterTransition
-                BackdropComponent={Backdrop}
-                BackdropProps={{
-                    timeout: 500,
-                }}
+                disablePortal
+                disableEnforceFocus
+                disableAutoFocus
             >
-                <Card className={classes.center}>
-                    <CardContent>
-                        <h4>Your Access Key: </h4>
-                        <h5>{modalText} <IconButton variant="outlined" onClick={copyToClipboard}><FilterNone /></IconButton></h5>
-                        <p>Please save your key as you will be unable to access it again.</p>
-                    </CardContent>
-                </Card>
+                <div className={classes.paper}>
+                    <Card className={classes.center}>
+                        <CardContent>
+                            <h4>Your Access Key:</h4>
+                            <h5>{keyText}<Tooltip title={'COPY ACCESS KEY'} placement='top'><IconButton variant="outlined" onClick={() => copy(keyText)}><FilterNone /></IconButton></Tooltip></h5>
+                            <h4>Your Access Token: </h4>
+                            <h5>{modalText}<Tooltip title={'COPY ACCESS TOKEN'} placement='top'><IconButton variant="outlined" onClick={copyToClipboard}><FilterNone /></IconButton></Tooltip></h5>
+                            <p>Please save your key as you will be unable to access it again.</p>
+                            <h5>Your agent install command with access token:</h5>
+                            <h6>{getAgentInstallCommand()}<Tooltip title={'COPY AGENT INSTALL COMMAND'} placement='top'><IconButton variant="outlined" onClick={() => copy(getAgentInstallCommand())}><FilterNone /></IconButton></Tooltip></h6>
+                        </CardContent>
+                    </Card>
+                </div>
             </Modal>
-            <Grid container justify='center' >
+            <Grid className={classes.main} container justify='center' >
                 {isProcessing && 
                     <Grid item xs={10}>
                         <div className={classes.center}>
@@ -210,7 +232,7 @@ export default function OtkDetails({ data }) {
                         {
                             accessKeys != null && accessKeys.length ?
                             accessKeys.map(accessKey => (
-                                <Card key={accessKey.nameid} className={classes.cardMain}>
+                                <Card key={accessKey.name} className={classes.cardMain}>
                                     <CardContent>
                                         <Grid container justify='center' alignItems='center' >
                                             <Grid item xs={4} className={classes.center}><h3>Name: {accessKey.name}</h3></Grid>
@@ -223,7 +245,7 @@ export default function OtkDetails({ data }) {
                         }
                         </Grid>
                     </>
-                    : <h3>Please select a specific group to view it's access keys.</h3> 
+                    : <h3>Please select a specific network to view it's access keys.</h3> 
                 }
             </Grid>
         </Box>

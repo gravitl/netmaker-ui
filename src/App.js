@@ -9,7 +9,7 @@ import TopBar from './Components/TopBar.js';
 import API from './Components/Utils/API'
 import USER from './Components/Utils/User'
 import { CircularProgress, Typography } from '@material-ui/core';
-import CreateGroup from './Components/Views/CreateGroup';
+import CreateNetwork from './Components/Views/CreateNetwork';
 
 import './App.css'
 import CreateUser from './Components/Views/CreateUser.js';
@@ -35,13 +35,13 @@ const useStyles = makeStyles(styles)
 function App() {
 
   const classes = useStyles()
-  const [groupData, setGroupData] = useState([]); //table data
+  const [networkData, setNetworkData] = useState([]); //table data
   const [nodeData, setNodeData] = useState([]); //table data
   const [dataSelection, setDataSelection] = useState(0)
-  const [groupSelection, setGroupSelection] = useState(-1) 
+  const [networkSelection, setNetworkSelection] = useState(-1) 
   const [isProcessing, setIsProcessing] = useState(false)
   const [shouldUpdate, setShouldUpdate] = useState(true)
-  const [creatingGroup, setCreatingGroup] = useState(false)
+  const [creatingNetwork, setCreatingNetwork] = useState(false)
   const [creatingUser, setCreatingUser] = useState(false)
   const [isLoggingIn, setIsLoggingIn] = useState(false)
   const [success, setSuccess] = useState('')
@@ -69,13 +69,12 @@ function App() {
           if (shouldUpdate) {
             setShouldUpdate(false)
             setIsProcessing(true)
-            API.get("/groups")
-            .then(groupsRes => {  
-                console.log(groupsRes) 
+            API.get("/networks")
+            .then(networkRes => {  
                 API.get("/nodes")     
                 .then(nodeRes => {
                     if (nodeRes.data && nodeRes.data.length > 0) setNodeData(nodeRes.data)
-                    if (groupsRes.data && groupsRes.data.length > 0) setGroupData(groupsRes.data)
+                    if (networkRes.data && networkRes.data.length > 0) setNetworkData(networkRes.data)
                     setIsProcessing(false)
                 })
                 .catch(error=>{
@@ -85,8 +84,8 @@ function App() {
             .catch(error => {
                 setIsProcessing(false)
             })
-          } else if (groupData.length === 0 && !shouldUpdate) {
-            setCreatingGroup(true)
+          } else if (networkData.length === 0 && !shouldUpdate) {
+            setCreatingNetwork(true)
           }
 
           const userInterval = setInterval(() => {
@@ -97,11 +96,12 @@ function App() {
             API.get("nodes").then(nodeRes => {
               if (nodeRes.data && nodeRes.data.length >= 0 && nodeRes.data !== nodeData) {
                 setNodeData(nodeRes.data)
-              } else if (nodeRes.status === 200) {
+              } else {
                 setNodeData([])
               }
             }).catch(err => {
               // node data could not be fetched..
+              setNodeData([])
             })
           }, 10000);
           return () => { clearInterval(interval); clearInterval(userInterval) };
@@ -110,21 +110,21 @@ function App() {
         }
       }
     }
-  }, [groupData, user, isBackend])
+  }, [networkData, user, isBackend])
 
   return (
     <Router>
       <div className="App">
-        <TopBar setDataSelection={setDataSelection} setCreatingGroup={setCreatingGroup} currentUser={user} setUser={setUser} setIsLoggingIn={setIsLoggingIn} setIsUpdatingUser={setIsUpdatingUser} />
+        <TopBar setDataSelection={setDataSelection} setCreatingNetwork={setCreatingNetwork} currentUser={user} setUser={setUser} setIsLoggingIn={setIsLoggingIn} setIsUpdatingUser={setIsUpdatingUser} />
         {success ? <div className={classes.center}><Typography variant='h6' color='primary'>{success}</Typography></div> : null}
         {error ? <div className={classes.center}><Typography variant='h6' color='error'>{error}</Typography></div> : null}
         { error ? null : needsAdmin && creatingUser ? <CreateUser setIsCreating={setCreatingUser} setSuccess={setSuccess} setShouldUpdate={setShouldUpdate} isAdmin={needsAdmin} hasBack={!needsAdmin}/> :
           isLoggingIn ? <Login setIsLoggingIn={setIsLoggingIn} setSuccess={setSuccess} setShouldUpdate={setShouldUpdate} /> :
           isUpdatingUser ? <UpdateUser setIsUpdating={setIsUpdatingUser} setSuccess={setSuccess} setShouldUpdate={setShouldUpdate} currentUser={user}/> :
           creatingUser ? <CreateUser setIsCreating={setCreatingUser} setSuccess={setSuccess} setShouldUpdate={setShouldUpdate} /> :
-          creatingGroup ? <CreateGroup setIsCreating={setCreatingGroup} setSuccess={setSuccess} setShouldUpdate={setShouldUpdate} /> : 
+          creatingNetwork ? <CreateNetwork setIsCreating={setCreatingNetwork} setSuccess={setSuccess} setShouldUpdate={setShouldUpdate} /> : 
           isProcessing ? <div className={classes.center}><CircularProgress /></div> : 
-          <MainTable setGroupData={setGroupData} setNodeData={setNodeData} setGroupSelection={setGroupSelection} groupData={groupData} nodeData={nodeData} groupSelection={groupSelection} dataSelection={dataSelection} setSuccess={setSuccess} />
+          <MainTable setNetworkData={setNetworkData} setNodeData={setNodeData} setNetworkSelection={setNetworkSelection} networkData={networkData} nodeData={nodeData} networkSelection={networkSelection} dataSelection={dataSelection} setSuccess={setSuccess} />
         }
       </div>
     </Router>
