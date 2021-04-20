@@ -48,27 +48,33 @@ export default function CreateNetwork({ setIsCreating, setSuccess, setShouldUpda
         if (status) { // check if validated
             // send request
             setIsProcessing(true)
-            const response = await API.post('/networks', {
-                addressrange,
-                netid: networkName,
-                localrange: localaddressrange,
-                islocal: isLocal
-            })
-
-            setIsProcessing(false)
-            setNetworkName('')
-            setAddressrange('')
-            setLocalAddressrange('')
-            if (response.status === 200) {
-                setSuccess(`Successfully created network ${networkName}`)
-                setIsCreating(false)
-                setShouldUpdate(true)
+            try {
+                const response = await API.post('/networks', {
+                    addressrange,
+                    netid: networkName,
+                    localrange: localaddressrange,
+                    islocal: isLocal
+                })
+                setNetworkName('')
+                setAddressrange('')
+                setLocalAddressrange('')
+                if (response.status === 200) {
+                    setSuccess(`Successfully created network ${networkName}`)
+                    setIsCreating(false)
+                    setShouldUpdate(true)
+                    setTimeout(() => {
+                        window.location.reload()
+                    }, 500)
+                } else {
+                    setError('Could not complete request, please try again later.')
+                }
+            } catch (err) {
+                setError(`Could not create network, ${networkName}, invalid request.`)
                 setTimeout(() => {
-                    window.location.reload()
-                }, 500)
-            } else {
-                setError('Could not complete request, please try again later.')
+                    setError('')
+                }, 1500)
             }
+            setIsProcessing(false)
         } else {
             if (cause === 'subnet')
                 setError('Invalid subnet provided. Please check formatting. ex: 192.168.1.10/23.')

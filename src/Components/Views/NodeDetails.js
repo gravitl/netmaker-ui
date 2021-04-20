@@ -41,9 +41,10 @@ const useStyles = makeStyles((theme) => ({
     }
  },
  main: {
-    // display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center'
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: '3em'
  }
 }));
 
@@ -96,14 +97,14 @@ export default function NodeDetails({ setNodeData, node, setSelectedNode, setSuc
         const response = await API.put(`/nodes/${node.network}/${node.macaddress}`, nodeData)
         if (response.status === 200) {
             setCurrentSettings({...response.data})
+            setSettings({...response.data})
             setSuccess(`Successfully updated node ${node.name}`)
             API.get("/nodes")
             .then(nodeRes => {               
                 setNodeData(nodeRes.data)
                 const updatedNode = parseUpdatedNode(nodeRes.data, node.macaddress)
+                setSelectedNode(updatedNode)
                 setTimeout(() => {
-                    setSelectedNode(updatedNode)
-                    setSettings(null)
                     setIsProcessing(false)
                     setSuccess('')
                 }, 1000)
@@ -158,7 +159,7 @@ export default function NodeDetails({ setNodeData, node, setSelectedNode, setSuc
             setSettings(node)
             setCurrentSettings(node)
         }
-    }, [settings,node])
+    }, [settings, node])
 
   return (
       <div>
@@ -198,28 +199,22 @@ export default function NodeDetails({ setNodeData, node, setSelectedNode, setSuc
                         </Button>
                     </div>
                 </Grid>
-                <Grid xs={12} md={5}
-                    direction='column'
-                    item
-                >
                     { Fields.NODE_FIELDS.map(fieldName => {
                         if (fieldName === 'expdatetime') {
-                            return <LocalizationProvider dateAdapter={AdapterDateFns}>
+                            
+                            return <Grid xs={12} md={6}
+                                        item
+                                    >
+                                <LocalizationProvider dateAdapter={AdapterDateFns}>
                                 <DateTimePicker
                                     value={new Date(Fields.datePickerConverter(settings[fieldName] > MAX_TIME ? MAX_TIME : settings[fieldName]))} //new Date(Fields.timeConverter(settings[fieldName] > MAX_TIME ? MAX_TIME : settings[fieldName])).toLocaleString()}
                                     onChange={(newValue) => {
-                                        let newSettings = {...currentSettings}
-                                        newSettings['expdatetime'] = convertDateToUnix(newValue)
+                                        let newSettings = {...settings}
+                                        newSettings.expdatetime = convertDateToUnix(newValue)
                                         setSettings(newSettings)
                                     }}
                                     className={classes.textFieldLeft}
                                     disabled={!isEditing}
-                                    onError={() => {
-                                        setError('Please select valid date. May need to refresh, if misbehaving.')
-                                        setTimeout(() => {
-                                            setError('')
-                                        }, 2000)
-                                    }}
                                     label={fieldName.toUpperCase()}
                                     maxDate={new Date('3032-01-01T00:00')}
                                     minDate={new Date('2021-01-01T00:00')}
@@ -235,55 +230,32 @@ export default function NodeDetails({ setNodeData, node, setSelectedNode, setSuc
                                         />}
                                 />
                             </LocalizationProvider>
-                        } else if (Fields.NODE_FIELDS.indexOf(fieldName) < Fields.NODE_FIELDS.length / 2) {
-                            return <TextField
-                                id={fieldName}
-                                label={fieldName.toUpperCase()}
-                                className={classes.textFieldLeft}
-                                placeholder={timeFields.indexOf(fieldName) >= 0 ? Fields.timeConverter(settings[fieldName]) : settings[fieldName]}
-                                value={timeFields.indexOf(fieldName) >= 0 ? Fields.timeConverter(settings[fieldName]) : settings[fieldName]}
-                                fullWidth
-                                key={Fields.makeKey(6)}
-                                margin="normal"
-                                InputLabelProps={{
-                                    shrink: true,
-                                }}
-                                disabled={!isEditing || readOnlyFields.indexOf(fieldName) >= 0}
-                                variant="outlined"
-                                onChange={handleChange}
-                            />
+                            </Grid>
                         } else {
-                            return null
-                        }
-                        })}
-                </Grid>
-                <Grid xs={12} md={5}
-                    direction='column'
-                    item
-                >
-                    { Fields.NODE_FIELDS.map(fieldName => {
-                        if (Fields.NODE_FIELDS.indexOf(fieldName) >= Fields.NODE_FIELDS.length / 2) {
-                            return <TextField
-                                id={fieldName}
-                                label={fieldName.toUpperCase()}
-                                className={classes.textFieldRight}
-                                placeholder={timeFields.indexOf(fieldName) >= 0 ? Fields.timeConverter(settings[fieldName]) : settings[fieldName]}
-                                value={timeFields.indexOf(fieldName) >= 0 ? Fields.timeConverter(settings[fieldName]) : settings[fieldName]}
-                                fullWidth
-                                key={Fields.makeKey(6)}
-                                disabled={!isEditing || readOnlyFields.indexOf(fieldName) >= 0}
-                                margin="normal"
-                                InputLabelProps={{
-                                    shrink: true,
-                                }}
-                                variant="outlined"
-                                onChange={handleChange}
-                            />
-                        } else {
-                            return null
-                        }
-                    })}
-                </Grid></> : <div className={classes.center}><h4>No Nodes found.</h4></div> }
+                            return (
+                            <Grid xs={12} md={6}
+                                item
+                            >
+                                <TextField
+                                    id={fieldName}
+                                    label={fieldName.toUpperCase()}
+                                    className={classes.textFieldLeft}
+                                    placeholder={timeFields.indexOf(fieldName) >= 0 ? Fields.timeConverter(settings[fieldName]) : settings[fieldName]}
+                                    value={timeFields.indexOf(fieldName) >= 0 ? Fields.timeConverter(settings[fieldName]) : settings[fieldName]}
+                                    fullWidth
+                                    key={fieldName}
+                                    margin="normal"
+                                    InputLabelProps={{
+                                        shrink: true,
+                                    }}
+                                    disabled={!isEditing || readOnlyFields.indexOf(fieldName) >= 0}
+                                    variant="outlined"
+                                    onChange={handleChange}
+                                />
+                            </Grid>
+                            )
+                        }})}
+                </> : <div className={classes.center}><h4>No Nodes found.</h4></div> }
             </Grid>
         </form>
       </div>

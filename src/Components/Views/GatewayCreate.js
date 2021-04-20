@@ -76,7 +76,8 @@ export default function CreateGateway({ setOpen, gatewayNode, networks }) {
                 setSuccess(`Successfully created gateway with node ${gatewayNode.name} for address range: ${addressrange}`)
                 setTimeout(() => {
                     setSuccess('')
-                }, 2000)
+                    setOpen(false)
+                }, 1000)
             } else {
                 setError('Could not complete request, please try again later.')
             }
