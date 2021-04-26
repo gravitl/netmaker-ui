@@ -2,9 +2,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid'
-import AdapterDateFns from '@material-ui/lab/AdapterDateFns';
-import LocalizationProvider from '@material-ui/lab/LocalizationProvider';
-import DateTimePicker from '@material-ui/lab/DateTimePicker';
+import { DateTimePicker } from '@material-ui/pickers'
 
 import Fields from '../Utils/Fields'
 import { Button, Typography, CircularProgress } from '@material-ui/core';
@@ -201,35 +199,27 @@ export default function NodeDetails({ setNodeData, node, setSelectedNode, setSuc
                 </Grid>
                     { Fields.NODE_FIELDS.map(fieldName => {
                         if (fieldName === 'expdatetime') {
-                            
                             return <Grid xs={12} md={6}
                                         item
                                     >
-                                <LocalizationProvider dateAdapter={AdapterDateFns}>
-                                <DateTimePicker
-                                    value={new Date(Fields.datePickerConverter(settings[fieldName] > MAX_TIME ? MAX_TIME : settings[fieldName]))} //new Date(Fields.timeConverter(settings[fieldName] > MAX_TIME ? MAX_TIME : settings[fieldName])).toLocaleString()}
-                                    onChange={(newValue) => {
-                                        let newSettings = {...settings}
-                                        newSettings.expdatetime = convertDateToUnix(newValue)
-                                        setSettings(newSettings)
-                                    }}
-                                    className={classes.textFieldLeft}
-                                    disabled={!isEditing}
-                                    label={fieldName.toUpperCase()}
-                                    maxDate={new Date('3032-01-01T00:00')}
-                                    minDate={new Date('2021-01-01T00:00')}
-                                    inputFormat="yyyy/MM/dd hh:mm a"
-                                    renderInput={params => <TextField 
-                                        {...params}
-                                        helperText='' 
-                                        margin="normal" 
-                                        className={classes.textFieldLeft}
-                                        fullWidth
-                                        margin="normal"
-                                        variant="outlined"
-                                        />}
-                                />
-                            </LocalizationProvider>
+                                        <DateTimePicker 
+                                            value={new Date(Fields.datePickerConverter(settings[fieldName] > MAX_TIME ? MAX_TIME : settings[fieldName]))} 
+                                            onChange={(newValue) => {
+                                                let newSettings = {...settings}
+                                                newSettings.expdatetime = convertDateToUnix(newValue)
+                                                setSettings(newSettings)
+                                            }}
+                                            onError={err => console.log(err)}
+                                            disabled={!isEditing}
+                                            inputVariant='outlined'
+                                            label={fieldName.toUpperCase()}
+                                            fullWidth
+                                            format="yyyy/MM/dd hh:mm a"
+                                            maxDate={new Date('3032-01-01')}
+                                            minDate={new Date('2020-01-01')}
+                                            loadingIndicator={<CircularProgress />}
+                                            margin='normal'
+                                        />
                             </Grid>
                         } else {
                             return (

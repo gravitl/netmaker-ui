@@ -10,12 +10,14 @@ import API from './Components/Utils/API'
 import USER from './Components/Utils/User'
 import { CircularProgress, Typography } from '@material-ui/core';
 import CreateNetwork from './Components/Views/CreateNetwork';
+import DateFnsUtils from '@date-io/date-fns';
 
 import './App.css'
 import CreateUser from './Components/Views/CreateUser.js';
 import UpdateUser from './Components/Views/UpdateUser';
 import Login from './Components/Views/Login.js';
 import Common from './Common'
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 
 const styles = {
   center: {
@@ -114,19 +116,21 @@ function App() {
 
   return (
     <Router>
-      <div className="App">
-        <TopBar setDataSelection={setDataSelection} setCreatingNetwork={setCreatingNetwork} currentUser={user} setUser={setUser} setIsLoggingIn={setIsLoggingIn} setIsUpdatingUser={setIsUpdatingUser} />
-        {success ? <div className={classes.center}><Typography variant='h6' color='primary'>{success}</Typography></div> : null}
-        {error ? <div className={classes.center}><Typography variant='h6' color='error'>{error}</Typography></div> : null}
-        { error ? null : needsAdmin && creatingUser ? <CreateUser setIsCreating={setCreatingUser} setSuccess={setSuccess} setShouldUpdate={setShouldUpdate} isAdmin={needsAdmin} hasBack={!needsAdmin}/> :
-          isLoggingIn ? <Login setIsLoggingIn={setIsLoggingIn} setSuccess={setSuccess} setShouldUpdate={setShouldUpdate} /> :
-          isUpdatingUser ? <UpdateUser setIsUpdating={setIsUpdatingUser} setSuccess={setSuccess} setShouldUpdate={setShouldUpdate} currentUser={user}/> :
-          creatingUser ? <CreateUser setIsCreating={setCreatingUser} setSuccess={setSuccess} setShouldUpdate={setShouldUpdate} /> :
-          creatingNetwork ? <CreateNetwork setIsCreating={setCreatingNetwork} setSuccess={setSuccess} setShouldUpdate={setShouldUpdate} /> : 
-          isProcessing ? <div className={classes.center}><CircularProgress /></div> : 
-          <MainTable setNetworkData={setNetworkData} setNodeData={setNodeData} setNetworkSelection={setNetworkSelection} networkData={networkData} nodeData={nodeData} networkSelection={networkSelection} dataSelection={dataSelection} setSuccess={setSuccess} />
-        }
-      </div>
+      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+        <div className="App">
+          <TopBar setDataSelection={setDataSelection} setCreatingNetwork={setCreatingNetwork} currentUser={user} setUser={setUser} setIsLoggingIn={setIsLoggingIn} setIsUpdatingUser={setIsUpdatingUser} />
+          {success ? <div className={classes.center}><Typography variant='h6' color='primary'>{success}</Typography></div> : null}
+          {error ? <div className={classes.center}><Typography variant='h6' color='error'>{error}</Typography></div> : null}
+          { error ? null : needsAdmin && creatingUser ? <CreateUser setIsCreating={setCreatingUser} setSuccess={setSuccess} setShouldUpdate={setShouldUpdate} isAdmin={needsAdmin} hasBack={!needsAdmin}/> :
+            isLoggingIn ? <Login setIsLoggingIn={setIsLoggingIn} setSuccess={setSuccess} setShouldUpdate={setShouldUpdate} /> :
+            isUpdatingUser ? <UpdateUser setIsUpdating={setIsUpdatingUser} setSuccess={setSuccess} setShouldUpdate={setShouldUpdate} currentUser={user}/> :
+            creatingUser ? <CreateUser setIsCreating={setCreatingUser} setSuccess={setSuccess} setShouldUpdate={setShouldUpdate} /> :
+            creatingNetwork ? <CreateNetwork setIsCreating={setCreatingNetwork} setSuccess={setSuccess} setShouldUpdate={setShouldUpdate} /> : 
+            isProcessing ? <div className={classes.center}><CircularProgress /></div> : 
+            <MainTable setNetworkData={setNetworkData} setNodeData={setNodeData} setNetworkSelection={setNetworkSelection} networkData={networkData} nodeData={nodeData} networkSelection={networkSelection} dataSelection={dataSelection} setSuccess={setSuccess} />
+          }
+        </div>
+      </MuiPickersUtilsProvider>
     </Router>
   )
 }
