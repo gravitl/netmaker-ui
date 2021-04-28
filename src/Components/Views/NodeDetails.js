@@ -76,7 +76,7 @@ const convertDateToUnix = (date) => {
     return unixTime
 }
 
-const MAX_TIME = 33174902665
+const MAX_TIME = 1956502800
 
 export default function NodeDetails({ setNodeData, node, setSelectedNode, setSuccess, networkName }) {
   const classes = useStyles();
@@ -207,9 +207,9 @@ export default function NodeDetails({ setNodeData, node, setSelectedNode, setSuc
                                             onChange={(newValue) => {
                                                 let newSettings = {...settings}
                                                 newSettings.expdatetime = convertDateToUnix(newValue)
+                                                console.log(newSettings.expdatetime)
                                                 setSettings(newSettings)
                                             }}
-                                            onError={err => console.log(err)}
                                             disabled={!isEditing}
                                             inputVariant='outlined'
                                             label={fieldName.toUpperCase()}
