@@ -3,6 +3,7 @@ import { Grid, Container, Tabs, Tab } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import NetworkDetails from './NetworkDetails'
 import AccessKeys from './AccessKeys'
+import DNS from './DNS'
 import AllNodes from './AllNodes'
 import AllNetworks from './AllNetworks'
 
@@ -88,7 +89,9 @@ export default function MainTable ({ setNetworkData, setNodeData, setNetworkSele
                         networkSelection >= 0 && dataSelection === 0 ? <NetworkDetails networkData={networkData[networkSelection]} back={false} setShouldUpdate={setShouldUpdate} setSuccess={setSuccess} setNetworkData={setNetworkData}/> : 
                         networkSelection >= 0 && dataSelection === 1 ? <AllNodes networks={networkData} setNodeData={setNodeData} nodes={nodeData} networkName={networkData[networkSelection].netid} setSuccess={setSuccess}/> : 
                         networkSelection >= 0 && dataSelection === 2 ? <AccessKeys data={networkData[networkSelection]} /> :
+                        networkSelection >= 0 && dataSelection === 3 ? <DNS data={networkData[networkSelection]} nodes={nodeData} /> :
                         networkSelection < 0 && dataSelection === 2 ? <AccessKeys data={null} /> :
+                        networkSelection < 0 && dataSelection === 3 ? <DNS data={null} /> :
                         dataSelection === 1 ? <AllNodes networks={networkData} setNodeData={setNodeData} nodes={nodeData} networkName={networkData[networkSelection] ? networkData[networkSelection].netid : ''} isAllNetworks setSuccess={setSuccess} /> :
                         <AllNetworks networks={networkData} setSuccess={setSuccess} setNetworkData={setNetworkData}/>
                     }

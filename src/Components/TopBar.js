@@ -7,6 +7,7 @@ import Logo from '../netmaker.png'
 const NETWORK_DETAIL_TAB_NAME = 'network details'
 const NODE_DETAIL_TAB_NAME = 'nodes'
 const OTK_DETAIL_TAB_NAME = 'access keys'
+const DNS_DETAIL_TAB_NAME = 'dns'
 
 // function getWindowDimensions() {
 //     const { innerWidth: width, innerHeight: height } = window;
@@ -88,6 +89,7 @@ export default function TopBar({setDataSelection, setCreatingNetwork, currentUse
                         <Tab label={NETWORK_DETAIL_TAB_NAME} tabIndex={0} />
                         <Tab label={NODE_DETAIL_TAB_NAME} tabIndex={1} />
                         <Tab label={OTK_DETAIL_TAB_NAME} tabIndex={2} />
+                        <Tab label={DNS_DETAIL_TAB_NAME} tabIndex={3} />
                     </Tabs>
                 </AppBar>
             </Grid>

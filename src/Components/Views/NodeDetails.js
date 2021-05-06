@@ -76,9 +76,9 @@ const convertDateToUnix = (date) => {
     return unixTime
 }
 
-const MAX_TIME = 33174902665
+const MAX_TIME = 1956502800
 
-export default function NodeDetails({ setNodeData, node, setSelectedNode, setSuccess, networkName }) {
+export default function NodeDetails({ setNodeData, node, setSelectedNode, setSuccess, networkName, networkData }) {
   const classes = useStyles();
   const [isEditing, setIsEditing] = React.useState(false)
   const [settings, setSettings] = React.useState(null)
@@ -207,9 +207,9 @@ export default function NodeDetails({ setNodeData, node, setSelectedNode, setSuc
                                             onChange={(newValue) => {
                                                 let newSettings = {...settings}
                                                 newSettings.expdatetime = convertDateToUnix(newValue)
+                                                console.log(newSettings.expdatetime)
                                                 setSettings(newSettings)
                                             }}
-                                            onError={err => console.log(err)}
                                             disabled={!isEditing}
                                             inputVariant='outlined'
                                             label={fieldName.toUpperCase()}
@@ -228,7 +228,7 @@ export default function NodeDetails({ setNodeData, node, setSelectedNode, setSuc
                             >
                                 <TextField
                                     id={fieldName}
-                                    label={fieldName.toUpperCase()}
+                                    label={fieldName === 'address6' ? fieldName.toUpperCase() + ' (IPv6)' : fieldName.toUpperCase()}
                                     className={classes.textFieldLeft}
                                     placeholder={timeFields.indexOf(fieldName) >= 0 ? Fields.timeConverter(settings[fieldName]) : settings[fieldName]}
                                     value={timeFields.indexOf(fieldName) >= 0 ? Fields.timeConverter(settings[fieldName]) : settings[fieldName]}
@@ -238,7 +238,7 @@ export default function NodeDetails({ setNodeData, node, setSelectedNode, setSuc
                                     InputLabelProps={{
                                         shrink: true,
                                     }}
-                                    disabled={!isEditing || readOnlyFields.indexOf(fieldName) >= 0}
+                                    disabled={!isEditing || readOnlyFields.indexOf(fieldName) >= 0 }
                                     variant="outlined"
                                     onChange={handleChange}
                                 />
