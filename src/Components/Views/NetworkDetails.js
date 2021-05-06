@@ -2,6 +2,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
 import TextField from '@material-ui/core/TextField';
+import Checkbox from '@material-ui/core/Checkbox';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -54,6 +55,16 @@ const readOnlyFields = [
     'nodeslastmodified',
     'networklastmodified',
 ]
+
+const boolFields = [
+    'defaultsaveconfig',
+    'isdualstack',
+]
+
+const boolFieldValues = {
+    defaultsaveconfig : 'Default SaveConfig',
+    isdualstack: 'Dual Stack'
+}
 
 const intFields = [
     'defaultlistenport',
@@ -110,11 +121,22 @@ export default function NetworkDetails({ networkData, setSelectedNetwork, back, 
   const handleChange = event => {
     event.preventDefault()
     const { id, value } = event.target
-    let newSettings = {...networkData}
+    let newSettings = {...settings}
     if (intFields.indexOf(id) !== -1) {
         newSettings[id] = parseInt(value)
     } else {
         newSettings[id] = value
+    }
+    setSettings(newSettings)
+    setChange(true)
+  }
+
+  const handleBoolChange = (event, fieldName) => {
+    event.preventDefault()
+    let newSettings = {...settings}
+    newSettings[fieldName] = event.target.checked
+    if (!event.target.checked && fieldName === 'isdualstack') {
+        newSettings.addressrange6 = ''
     }
     setSettings(newSettings)
     setChange(true)
@@ -211,58 +233,42 @@ export default function NetworkDetails({ networkData, setSelectedNetwork, back, 
                         />
                     </div>
                 </Grid>
-                <Grid item xs={12} md={5}
-                    direction='column'
-                    item
-                >
-                    { networkData && settings && Fields.NETWORK_FIELDS.map(fieldName => {
-                       if (Fields.NETWORK_FIELDS.indexOf(fieldName) < (Fields.NETWORK_FIELDS.length / 2) - 1 ) {
-                            return <TextField
-                                id={fieldName}
-                                label={fieldName.toUpperCase()}
-                                className={classes.textFieldLeft}
-                                placeholder={timeFields.indexOf(fieldName) >= 0 ? Fields.timeConverter(settings[fieldName]) : settings[fieldName]}
-                                value={timeFields.indexOf(fieldName) >= 0 ? Fields.timeConverter(settings[fieldName]) : settings[fieldName]}
-                                key={fieldName}
-                                fullWidth
-                                disabled={!isEditing || readOnlyFields.indexOf(fieldName) >= 0}
-                                margin="normal"
-                                InputLabelProps={{
-                                    shrink: true,
-                                }}
-                                variant="outlined"
-                                onChange={handleChange}
-                            />
-                         } else return null
-                        })}
-                </Grid>
-                <Grid xs={12} md={5}
-                    direction='column'
-                    item
-                >
-                    { networkData && settings && Fields.NETWORK_FIELDS.map(fieldName => {
-                        if (Fields.NETWORK_FIELDS.indexOf(fieldName) >= (Fields.NETWORK_FIELDS.length / 2) - 1 && fieldName !== 'accesskeys') {
-                            return <TextField
-                                id={fieldName}
-                                label={fieldName.toUpperCase()}
-                                className={classes.textFieldRight}
-                                placeholder={timeFields.indexOf(fieldName) >= 0 ? Fields.timeConverter(settings[fieldName]) : settings[fieldName]}
-                                value={timeFields.indexOf(fieldName) >= 0 ? Fields.timeConverter(settings[fieldName]) : settings[fieldName]}
-                                fullWidth
-                                key={fieldName}
-                                disabled={!isEditing || readOnlyFields.indexOf(fieldName) >= 0}
-                                margin="normal"
-                                InputLabelProps={{
-                                    shrink: true,
-                                }}
-                                variant="outlined"
-                                onChange={handleChange}
-                            />
-                        } else {
-                            return null
-                        }
+                { networkData && settings && Fields.NETWORK_FIELDS.map(fieldName => {
+                    return fieldName !== 'accesskeys' ? 
+                            <Grid item xs={12} md={5}>
+                                {boolFields.indexOf(fieldName) >= 0 ? 
+                                <div className={classes.center}>
+                                <FormControlLabel
+                                    control={
+                                    <Switch
+                                        checked={settings[fieldName]}
+                                        onChange={(event) => handleBoolChange(event, fieldName)}
+                                        name={fieldName}
+                                        color="primary"
+                                        disabled={!isEditing || readOnlyFields.indexOf(fieldName) >= 0}
+                                        id={fieldName}
+                                    />
+                                    }
+                                    label={boolFieldValues[fieldName]}
+                                /></div> :
+                                <TextField
+                                    id={fieldName}
+                                    label={fieldName === 'addressrange6' ? fieldName.toUpperCase() + ' (IPv6)' : fieldName.toUpperCase()}
+                                    className={classes.textFieldLeft}
+                                    placeholder={timeFields.indexOf(fieldName) >= 0 ? Fields.timeConverter(settings[fieldName]) : settings[fieldName]}
+                                    value={timeFields.indexOf(fieldName) >= 0 ? Fields.timeConverter(settings[fieldName]) : settings[fieldName]}
+                                    key={fieldName}
+                                    fullWidth
+                                    disabled={!isEditing || readOnlyFields.indexOf(fieldName) >= 0 || (!settings.isdualstack && fieldName === 'addressrange6')}
+                                    margin="normal"
+                                    InputLabelProps={{
+                                        shrink: true,
+                                    }}
+                                    variant="outlined"
+                                    onChange={handleChange}
+                                />}
+                            </Grid> : null
                     })}
-                </Grid>
             </Grid>
         </form>
       </div>

@@ -2,6 +2,7 @@
 export default {
     NETWORK_FIELDS: [
         "addressrange",
+        "addressrange6",
         "localrange",
         "displayname",
         "nodeslastmodified",
@@ -12,11 +13,13 @@ export default {
         "defaultpostdown",
         "defaultkeepalive",
         "defaultcheckininterval",
+        "isdualstack",
         "defaultsaveconfig",
         "accesskeys",
     ],
     NODE_FIELDS: [
         "address",
+        "address6",
         "name",
         "listenport",
         "publickey",

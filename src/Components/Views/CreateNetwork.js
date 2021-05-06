@@ -28,6 +28,9 @@ export default function CreateNetwork({ setIsCreating, setSuccess, setShouldUpda
     const [error, setError] = React.useState('')
     const [isProcessing, setIsProcessing] = React.useState(false)
     const [isLocal, setIsLocal] = React.useState(false)
+    const [isAddress6, setIsAddress6] = React.useState(false)
+
+    const DEFAULT_ADDRESS_6 = 'fd39:75a7:808f:649d::/64'
 
     const classes = useStyles()
     const correctSubnetRegex = new RegExp(/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?).(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?).(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?).(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\/\d{1,3}$/i)
@@ -53,7 +56,9 @@ export default function CreateNetwork({ setIsCreating, setSuccess, setShouldUpda
                     addressrange,
                     netid: networkName,
                     localrange: localaddressrange,
-                    islocal: isLocal
+                    islocal: isLocal,
+                    isdualstack: isAddress6,
+                    addressrange6: DEFAULT_ADDRESS_6
                 })
                 setNetworkName('')
                 setAddressrange('')
@@ -106,6 +111,11 @@ export default function CreateNetwork({ setIsCreating, setSuccess, setShouldUpda
         if (!event.target.checked) setLocalAddressrange('')
     }
 
+    const toggleIsAddress6 = (event) => {
+        event.preventDefault()
+        setIsAddress6(event.target.checked)
+    }
+
     return (
         <Grid container xs={12} justify='center' className={classes.mainContainer}>
             <Grid item xs={8} >
@@ -153,31 +163,65 @@ export default function CreateNetwork({ setIsCreating, setSuccess, setShouldUpda
                         value={addressrange}
                         autoComplete="false"
                     />
-                    <FormControlLabel
-                        control={
-                        <Checkbox
-                            checked={isLocal}
-                            onChange={toggleIsLocal}
-                            name="isLocal"
-                            color="primary"
-                        />
-                        }
-                        label="Is Local?"
-                    />
-                    {isLocal ? <TextField
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        name="localaddressrange"
-                        label="Local Address Range"
-                        placeholder='0.0.0.0/32'
-                        type="text"
-                        onChange={handleUpdateLocalAddress}
-                        id="localaddressrange"
-                        value={localaddressrange}
-                        autoComplete="false"
-                    /> : null}
+                    <Grid container justifyContent='center' alignItems='center'>
+                        <Grid item xs={isAddress6 ? 4 : 12}>
+                            <FormControlLabel
+                                control={
+                                <Checkbox
+                                    checked={isAddress6}
+                                    onChange={toggleIsAddress6}
+                                    name="isAddress6"
+                                    color="primary"
+                                />
+                                }
+                                label="Use Dual Stack (IPv6)?"
+                            />
+                        </Grid>
+                        {isAddress6 ? <Grid item xs={8}>
+                            <TextField
+                                variant="outlined"
+                                margin="normal"
+                                required
+                                fullWidth
+                                name="address6"
+                                label="Default IPv6 Address"
+                                placeholder={DEFAULT_ADDRESS_6}
+                                type="text"
+                                disabled
+                                id="address6"
+                                value={DEFAULT_ADDRESS_6}
+                                autoComplete="false"
+                            /></Grid> : null}
+                    </Grid>
+                    <Grid container justifyContent='center' alignItems='center'>
+                        <Grid item xs={isLocal ? 4 : 12}>
+                            <FormControlLabel
+                                control={
+                                <Checkbox
+                                    checked={isLocal}
+                                    onChange={toggleIsLocal}
+                                    name="isLocal"
+                                    color="primary"
+                                />
+                                }
+                                label="Is Local?"
+                            />
+                        </Grid>
+                        {isLocal ? <Grid item xs={8}> <TextField
+                            variant="outlined"
+                            margin="normal"
+                            required
+                            fullWidth
+                            name="localaddressrange"
+                            label="Local Address Range"
+                            placeholder='0.0.0.0/32'
+                            type="text"
+                            onChange={handleUpdateLocalAddress}
+                            id="localaddressrange"
+                            value={localaddressrange}
+                            autoComplete="false"
+                        /></Grid> : null}
+                    </Grid>
                     <Button
                         type="submit"
                         fullWidth

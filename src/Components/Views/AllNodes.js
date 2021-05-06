@@ -175,7 +175,7 @@ export default function AllNodes({ setNodeData, nodes, networkName, setSuccess, 
             {error ? <div className={classes.center}><Typography variant='h6' color='error'>{error}</Typography></div> : null}
             {!selectedNode ? <div className={classes.nodeTitle2}><Typography variant='h5'>{isAllNetworks ? 'All' : networkName} nodes</Typography></div> : null }
             {isAllNetworks || doesNetworkHaveNodes() ? null : <div className={classes.nodeTitle}><h3>No nodes present in network: {networkName}...</h3></div>}
-            {selectedNode ? <NodeDetails setNodeData={setNodeData} node={getSelectedNode()} setSelectedNode={setSelectedNode} setSuccess={setSuccess} networkName={networkName}/> :
+            {selectedNode ? <NodeDetails setNodeData={setNodeData} node={getSelectedNode()} setSelectedNode={setSelectedNode} setSuccess={setSuccess} networkName={networkName} networkData={networks} /> :
             nodes && nodes.length ? nodes.map(node => 
                 networkName && node.network === networkName ? 
                 <Card className={classes.row}>
