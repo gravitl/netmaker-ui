@@ -100,7 +100,7 @@ export default function OtkDetails({ data }) {
     }
 
     const getAgentInstallCommand = () => {
-        return `curl -sfL https://raw.githubusercontent.com/gravitl/netmaker/v0.2/netclient-install.sh | -t ${modalText} sh -`
+        return `curl -sfL https://raw.githubusercontent.com/gravitl/netmaker/v0.3/scripts/netclient-install.sh | KEY=${modalText} sh -`
     }
 
     const createNewKey = async (event, keyName, keyUses) => {
