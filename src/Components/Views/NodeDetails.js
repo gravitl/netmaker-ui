@@ -58,8 +58,8 @@ const intFields = [
 ]
 
 const timeFields = [
-    Fields.NODE_FIELDS[11],
-    Fields.NODE_FIELDS[12],
+    'lastcheckin',
+    'lastmodified',
 ]
 
 const parseUpdatedNode = (nodes, macaddress) => {
@@ -207,7 +207,6 @@ export default function NodeDetails({ setNodeData, node, setSelectedNode, setSuc
                                             onChange={(newValue) => {
                                                 let newSettings = {...settings}
                                                 newSettings.expdatetime = convertDateToUnix(newValue)
-                                                console.log(newSettings.expdatetime)
                                                 setSettings(newSettings)
                                             }}
                                             disabled={!isEditing}

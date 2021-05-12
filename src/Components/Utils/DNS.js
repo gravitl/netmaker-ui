@@ -18,7 +18,7 @@ export default {
             }
             if (dnsData) setDnsData(dnsData)
         } catch (err) {
-            console.log(err)
+            // console.log(err)
         }
     },
     createEntry: async (network, name, address) => {

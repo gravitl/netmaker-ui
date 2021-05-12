@@ -31,6 +31,7 @@ const useStyles = makeStyles(theme => ({
     title: {
         textAlign: 'center',
         flexGrow: 1,
+        paddingLeft: '3em'
     }, 
     title2: {
         textAlign: 'center',
@@ -63,7 +64,7 @@ export default function TopBar({setDataSelection, setCreatingNetwork, currentUse
             <Grid container className={classes.topBarMain}>
             <AppBar position="static">
                 <Toolbar>
-                    <Button color="inherit" onClick={() => setCreatingNetwork(true)}>Create Network</Button>
+                    {/* <Button color="inherit" onClick={() => setCreatingNetwork(true)}>Create Network</Button> */}
                     <Typography variant="h3" className={classes.title} onClick={() => window.location.reload()}>
                         <img className={classes.logo} src={Logo} alt='Netmaker makes networks.' />
                     </Typography>

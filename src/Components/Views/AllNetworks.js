@@ -15,6 +15,7 @@ import IconButton from '@material-ui/core/IconButton'
 import '../../App.css'
 import Avatar from '@material-ui/core/Avatar';
 import Tooltip from '@material-ui/core/Tooltip';
+import Button from '@material-ui/core/Button';
 import Util from '../Utils/Fields'
 import API from '../Utils/API'
 
@@ -47,7 +48,9 @@ const useStyles = makeStyles((theme) => ({
         textAlign: 'center'
     },
     nodeTitle2: {
-        textAlign: 'center',
+        display: 'flex',
+        justifyContent: 'space-around',
+        alignItems: 'center',
         marginTop: '1em',
         marginBottom: '1em'
     },
@@ -68,7 +71,7 @@ const displayedNetworkFields = [
     'networklastmodified',
 ]
 
-export default function AllNetworks({ networks, setSuccess, setNetworkData}) {
+export default function AllNetworks({ networks, setSuccess, setNetworkData }) {
 
     const classes = useStyles()
     const [selectedNetwork, setSelectedNetwork] = React.useState(null)

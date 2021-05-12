@@ -127,7 +127,7 @@ function App() {
             creatingUser ? <CreateUser setIsCreating={setCreatingUser} setSuccess={setSuccess} setShouldUpdate={setShouldUpdate} /> :
             creatingNetwork ? <CreateNetwork setIsCreating={setCreatingNetwork} setSuccess={setSuccess} setShouldUpdate={setShouldUpdate} /> : 
             isProcessing ? <div className={classes.center}><CircularProgress /></div> : 
-            <MainTable setNetworkData={setNetworkData} setNodeData={setNodeData} setNetworkSelection={setNetworkSelection} networkData={networkData} nodeData={nodeData} networkSelection={networkSelection} dataSelection={dataSelection} setSuccess={setSuccess} />
+            <MainTable setCreatingNetwork={setCreatingNetwork} setNetworkData={setNetworkData} setNodeData={setNodeData} setNetworkSelection={setNetworkSelection} networkData={networkData} nodeData={nodeData} networkSelection={networkSelection} dataSelection={dataSelection} setSuccess={setSuccess} />
           }
         </div>
       </MuiPickersUtilsProvider>

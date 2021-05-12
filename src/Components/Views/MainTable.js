@@ -1,5 +1,5 @@
 import React from 'react'
-import { Grid, Container, Tabs, Tab } from '@material-ui/core'
+import { Grid, Container, Tabs, Tab, Button } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import NetworkDetails from './NetworkDetails'
 import AccessKeys from './AccessKeys'
@@ -23,7 +23,7 @@ const styles = {
 
 const useStyles = makeStyles(styles)
 
-export default function MainTable ({ setNetworkData, setNodeData, setNetworkSelection, networkData, nodeData, dataSelection, networkSelection, setSuccess }) {
+export default function MainTable ({ setNetworkData, setNodeData, setNetworkSelection, networkData, nodeData, dataSelection, networkSelection, setSuccess, setCreatingNetwork }) {
 
     const [value, setValue] = React.useState(0)
     const [currentNetworkTabs, setCurrentNetworkTabs] = React.useState([])
@@ -67,6 +67,7 @@ export default function MainTable ({ setNetworkData, setNodeData, setNetworkSele
                     direction='column'
                     className={classes.vertTabs}
                 > 
+                    <Button fullWidth style={{marginTop: '4px'}} onClick={() => setCreatingNetwork(true)} variant="contained">Create Network</Button>   
                     <Tabs
                         orientation="vertical"
                         value={value}
@@ -77,7 +78,7 @@ export default function MainTable ({ setNetworkData, setNodeData, setNetworkSele
                         <Tab className={classes.customTab} label='ALL NETWORKS' tabIndex={0}/>
                         {
                             currentNetworkTabs.map(networkTab => networkTab)
-                        }   
+                        }
                     </Tabs>
                 </Grid>
                 <Grid item xs={10} 
