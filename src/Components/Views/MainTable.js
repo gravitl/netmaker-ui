@@ -2,6 +2,7 @@ import React from 'react'
 import { Grid, Container, Tabs, Tab, Button } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import NetworkDetails from './NetworkDetails'
+import ExternalClients from './ExternalClients'
 import AccessKeys from './AccessKeys'
 import DNS from './DNS'
 import AllNodes from './AllNodes'
@@ -34,7 +35,7 @@ export default function MainTable ({ setNetworkData, setNodeData, setNetworkSele
         let tempNetworkTabs = []
         for(let i = 0; i < networkData.length; i++) {
             tempNetworkTabs.push(
-                <Tab className={classes.customTab} disabled={(i+1 === value)} label={networkData[i].displayname} key={networkData[i].displayname} tabIndex={i+1}/>
+                <Tab className={classes.customTab} disabled={(i+1 === value)} label={networkData[i].displayname} key={networkData[i].displayname + i} tabIndex={i+1}/>
             )
         }
         setCurrentNetworkTabs(tempNetworkTabs)
@@ -91,8 +92,10 @@ export default function MainTable ({ setNetworkData, setNodeData, setNetworkSele
                         networkSelection >= 0 && dataSelection === 1 ? <AllNodes networks={networkData} setNodeData={setNodeData} nodes={nodeData} networkName={networkData[networkSelection].netid} setSuccess={setSuccess}/> : 
                         networkSelection >= 0 && dataSelection === 2 ? <AccessKeys data={networkData[networkSelection]} /> :
                         networkSelection >= 0 && dataSelection === 3 ? <DNS data={networkData[networkSelection]} nodes={nodeData} /> :
+                        networkSelection >= 0 && dataSelection === 4 ? <ExternalClients data={networkData[networkSelection]} nodes={nodeData} /> :
                         networkSelection < 0 && dataSelection === 2 ? <AccessKeys data={null} /> :
                         networkSelection < 0 && dataSelection === 3 ? <DNS data={null} /> :
+                        networkSelection < 0 && dataSelection === 4 ? <ExternalClients data={networkData} isAllNetworks nodes={nodeData} /> :
                         dataSelection === 1 ? <AllNodes networks={networkData} setNodeData={setNodeData} nodes={nodeData} networkName={networkData[networkSelection] ? networkData[networkSelection].netid : ''} isAllNetworks setSuccess={setSuccess} /> :
                         <AllNetworks networks={networkData} setSuccess={setSuccess} setNetworkData={setNetworkData}/>
                     }

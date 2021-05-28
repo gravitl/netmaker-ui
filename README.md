@@ -10,8 +10,6 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 The page will reload if you make edits.  
 You will also see any lint errors in the console.  
 
-MASTER_KEY sets backend master key
-BACKEND_URL sets backend url and should be in format http(s)://address:port
 
 #### LICENSE
 

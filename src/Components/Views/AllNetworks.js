@@ -11,11 +11,11 @@ import NetworkDetails from './NetworkDetails'
 import Edit from '@material-ui/icons/Edit'
 import Sync from '@material-ui/icons/Sync'
 import AddCircleOutline from '@material-ui/icons/AddCircleOutline'
+import Highlight from '@material-ui/icons/Highlight'
 import IconButton from '@material-ui/core/IconButton'
 import '../../App.css'
 import Avatar from '@material-ui/core/Avatar';
 import Tooltip from '@material-ui/core/Tooltip';
-import Button from '@material-ui/core/Button';
 import Util from '../Utils/Fields'
 import API from '../Utils/API'
 
@@ -127,8 +127,8 @@ export default function AllNetworks({ networks, setSuccess, setNetworkData }) {
             {refreshSuccess ? <div className={classes.center}><Typography variant='h6' color='primary'>{refreshSuccess}</Typography></div> : null}
             {error ? <div className={classes.center}><Typography variant='h6' color='error'>{error}</Typography></div> : null}
             <div className={classes.nodeTitle2}><Typography variant='h5'>All networks</Typography></div>
-            {networks && networks.length ? networks.map(network => 
-                    <Card className={classes.row}>
+                {networks && networks.length ? networks.map((network, i) => 
+                    <Card key={i} className={classes.row}>
                         <CardHeader 
                             title={network.displayname}
                             subheader={network.netid}
@@ -146,7 +146,7 @@ export default function AllNetworks({ networks, setSuccess, setNetworkData }) {
                             }
                         />
                         <CardContent>
-                        <Grid container key={network.address} >
+                        <Grid container>
                             <Grid item className={classes.buttonContainer} xs={2} md={1} >
                                 <Tooltip title={`Refresh Public Keys for ${network.displayname}`} placement='top'>
                                     <IconButton aria-label={`refresh public keys ${network.displayname}`} onClick={() => handlePublicKeyRefresh(network.netid, network.displayname)}>
@@ -162,7 +162,7 @@ export default function AllNetworks({ networks, setSuccess, setNetworkData }) {
                                 </Tooltip>
                             </Grid>
                         {displayedNetworkFields.map(fieldName => (
-                            <Grid item className={classes.cell} key={network.address} xs={fieldName === 'addressrange' ? 8 : 12} md={3}>
+                            <Grid key={Math.floor(Math.random() * 10000)} item className={classes.cell} key={network.address} xs={fieldName === 'addressrange' ? 8 : 12} md={3}>
                                 <TextField
                                         id="filled-full-width"
                                         label={fieldName.toUpperCase()}

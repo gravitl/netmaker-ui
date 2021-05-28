@@ -8,6 +8,7 @@ const NETWORK_DETAIL_TAB_NAME = 'network details'
 const NODE_DETAIL_TAB_NAME = 'nodes'
 const OTK_DETAIL_TAB_NAME = 'access keys'
 const DNS_DETAIL_TAB_NAME = 'dns'
+const EXTERNAL_CLIENTS_TAB_NAME = 'external clients'
 
 // function getWindowDimensions() {
 //     const { innerWidth: width, innerHeight: height } = window;
@@ -48,7 +49,7 @@ const useStyles = makeStyles(theme => ({
     }
 }))
 
-export default function TopBar({setDataSelection, setCreatingNetwork, currentUser, setUser, setIsLoggingIn, setIsUpdatingUser}) {
+export default function TopBar({setDataSelection, currentUser, setUser, setIsLoggingIn, setIsUpdatingUser}) {
 
     const classes = useStyles()
 
@@ -64,7 +65,7 @@ export default function TopBar({setDataSelection, setCreatingNetwork, currentUse
             <Grid container className={classes.topBarMain}>
             <AppBar position="static">
                 <Toolbar>
-                    {/* <Button color="inherit" onClick={() => setCreatingNetwork(true)}>Create Network</Button> */}
+                    <Button color="inherit" href={'https://docs.netmaker.org'} target='_blank'>Docs</Button>
                     <Typography variant="h3" className={classes.title} onClick={() => window.location.reload()}>
                         <img className={classes.logo} src={Logo} alt='Netmaker makes networks.' />
                     </Typography>
@@ -91,6 +92,7 @@ export default function TopBar({setDataSelection, setCreatingNetwork, currentUse
                         <Tab label={NODE_DETAIL_TAB_NAME} tabIndex={1} />
                         <Tab label={OTK_DETAIL_TAB_NAME} tabIndex={2} />
                         <Tab label={DNS_DETAIL_TAB_NAME} tabIndex={3} />
+                        <Tab label={EXTERNAL_CLIENTS_TAB_NAME} tabIndex={4} />
                     </Tabs>
                 </AppBar>
             </Grid>

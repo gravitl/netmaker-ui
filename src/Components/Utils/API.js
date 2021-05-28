@@ -3,7 +3,7 @@ import Common from '../../Common'
 
 const API = axios.create({
 	baseURL: `${Common.BACKEND_URL}/api`,
-        headers: {'authorization': `Bearer ${Common.MASTER_KEY}`}
+        headers: {'authorization': 'Bearer secretkey'}
 })
 
 export default API

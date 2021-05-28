@@ -2,7 +2,7 @@ import { Box, Grid, Typography, CircularProgress, Card, CardContent, Modal, Icon
 import React from 'react'
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import DNS_API from '../Utils/DNS';
-import { Backspace, Add, Sync } from '@material-ui/icons';
+import { Backspace, Add } from '@material-ui/icons';
 
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
