@@ -76,7 +76,7 @@ const timeFields = [
     "networklastmodified"
 ]
 
-export default function NetworkDetails({ networkData, setSelectedNetwork, back, setSuccess, setNetworkData }) {
+export default function NetworkDetails({ networkData, setSelectedNetwork, back, setSuccess, setNetworkData, user }) {
   const classes = useStyles();
   const [isEditing, setIsEditing] = React.useState(false)
   const [settings, setSettings] = React.useState(null)
@@ -91,13 +91,13 @@ export default function NetworkDetails({ networkData, setSelectedNetwork, back, 
     event.preventDefault()
     setIsProcessing(true)
     try {
-        const response = await API.put(`/networks/${networkData.netid}`, { ...settings, allowmanualsignup: allowManual })
+        const response = await API(user.token).put(`/networks/${networkData.netid}`, { ...settings, allowmanualsignup: allowManual })
         if (response.status === 200) {
             setCurrentSettings(settings) // set what we've changed.
             setSuccess(`Successfully updated network ${networkData.displayname}`)
             setTimeout(() => {
                 setSuccess('')
-                API.get("/networks")
+                API(user.token).get("/networks")
                 .then(networksRes => {         
                     setNetworkData(networksRes.data)
                     setCurrentSettings(networksRes.data)
@@ -115,6 +115,10 @@ export default function NetworkDetails({ networkData, setSelectedNetwork, back, 
         setError(`Could not update network: ${networkData.displayname}.`)
     }
     setIsProcessing(false)
+    setTimeout(() => {
+        setSuccess('')
+        setError('')
+    }, 3000)
   }
 
   const handleChange = event => {
@@ -150,7 +154,7 @@ export default function NetworkDetails({ networkData, setSelectedNetwork, back, 
     if (window.confirm(`Are you sure you want to remove network ${networkName}?`)) {
         setIsProcessing(true)
         try {
-            const response = await API.delete(`/networks/${networkName}`) 
+            const response = await API(user.token).delete(`/networks/${networkName}`) 
             if (response.status === 200) {
                 setIsEditing(false); // return to network view
                 setSuccess(`Succesfully removed network: ${networkName}!`)

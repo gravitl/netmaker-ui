@@ -46,8 +46,7 @@ const useStyles = makeStyles((theme) => ({
         marginTop: '1em',
     },
     container: {
-        maxHeight: '32em',
-        overflowY: 'scroll',
+        maxHeight: '38em',
         overflow: 'hidden',
         marginTop: '-1em'
     },
@@ -67,7 +66,8 @@ const useStyles = makeStyles((theme) => ({
     },
     cardContainer: {
         overflowY: 'scroll',
-        height: '24em',
+        minHeight: '32em',
+        maxHeight: '38em',
         margin: '4px'
     },
     cardBasic: {
@@ -98,7 +98,7 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-export default function ExternalClients({ data, isAllNetworks, nodes }) {
+export default function ExternalClients({ data, isAllNetworks, nodes, user }) {
 
     const classes = useStyles()
 
@@ -131,7 +131,7 @@ export default function ExternalClients({ data, isAllNetworks, nodes }) {
         setIsProcessing(true)
         setError('')
         try {
-            const response = await API.put(`/extclients/${client.network}/${client.clientid}`, {clientid})
+            const response = await API(user.token).put(`/extclients/${client.network}/${client.clientid}`, {clientid})
             if (response.status === 200) {
                 fetchExternals()
                 setSuccess(`Successfully updated client, ${client.clientid}, to ${clientid} on network, ${client.network}.`)
@@ -155,9 +155,9 @@ export default function ExternalClients({ data, isAllNetworks, nodes }) {
         setIsProcessing(true)
         setError('')
         try {
-            const response = await API.get(`/extclients`)
+            const response = await API(user.token).get(`/extclients`)
             if (response.status === 200) {
-                setExternals(response.data)
+                setExternals(response.data || [])
                 getQrCodes(response.data)
             } else {
                 setError('Unable to fetch Keys!')
@@ -173,7 +173,7 @@ export default function ExternalClients({ data, isAllNetworks, nodes }) {
         try {
             let newQrSources = []
             clients.map(async client => {
-                    const response = await API.get(`/extclients/${client.network}/${client.clientid}/qr`, { responseType: 'arraybuffer' })
+                    const response = await API(user.token).get(`/extclients/${client.network}/${client.clientid}/qr`, { responseType: 'arraybuffer' })
                     if (response.status === 200) {
                         const base64 = btoa(
                             new Uint8Array(response.data).reduce(
@@ -184,15 +184,19 @@ export default function ExternalClients({ data, isAllNetworks, nodes }) {
                         newQrSources.push("data:;base64," + base64)
                     } else {
                         setQrCodes([])
-                        setError('Failed to fetch QR codes!')
+                        if (externals.length) setError('Failed to fetch QR codes!')
                         return
                     }
                 }
             )
             setQrCodes(newQrSources)
         } catch (err) {
-            setError('Server error occurred when fetching QR Codes!')
+            if (externals.length) setError('Server error occurred when fetching QR Codes!')
         }
+        setTimeout(() => {
+            setError('')
+            setSuccess('')
+        }, 1500)
     }
 
     const createNewClient = async (network, macaddress) => {
@@ -200,7 +204,7 @@ export default function ExternalClients({ data, isAllNetworks, nodes }) {
             setIsProcessing(true)
             setError('')
             try {
-                const response = await API.post(`/extclients/${network}/${macaddress}`)
+                const response = await API(user.token).post(`/extclients/${network}/${macaddress}`)
                 if (response.status === 200) {
                     setSuccess(`Successfully created new client in network, ${network}.`)
                     fetchExternals()
@@ -222,7 +226,7 @@ export default function ExternalClients({ data, isAllNetworks, nodes }) {
     const getConfigFile = async client => {
         setIsProcessing(true)
         try {
-            const response = await API.get(`/extclients/${client.network}/${client.clientid}/file`, { responseType: 'blob' })
+            const response = await API(user.token).get(`/extclients/${client.network}/${client.clientid}/file`, { responseType: 'blob' })
             if (response.status === 200) {
                 FileDownload(response.data, `${client.clientid}.conf`)
             } else {
@@ -244,7 +248,7 @@ export default function ExternalClients({ data, isAllNetworks, nodes }) {
         if (window.confirm(`Are you sure you want to remove client: ${client.clientid} from network ${client.network}?`)) {
             setIsProcessing(true)
             try {
-                const response = await API.delete(`/extclients/${client.network}/${client.clientid}`)
+                const response = await API(user.token).delete(`/extclients/${client.network}/${client.clientid}`)
                 if (response.status === 200) {
                     setSuccess(`Succesfully Removed Client: ${client.clientid} from network ${client.network}.`)
                     fetchExternals()
@@ -355,7 +359,7 @@ export default function ExternalClients({ data, isAllNetworks, nodes }) {
                                 <div className={classes.center}><h4>External Clients</h4></div>
                                 <div className={classes.cardContainer}>
                                 {
-                                    externals.length &&
+                                    externals.length ?
                                     externals.map((external, i) =>
                                     data && (isAllNetworks || external.network === data.netid) ?
                                     <Accordion square={false} key={i} expanded={currentClient === external.clientid} onChange={handleAccordianChange(external.clientid)}>
@@ -408,7 +412,7 @@ export default function ExternalClients({ data, isAllNetworks, nodes }) {
                                             </Card> 
                                         </AccordionDetails>
                                     </Accordion>
-                                    : null) 
+                                    : null) : null
                                 }
                                 {
                                     externals.filter(client => (isAllNetworks || client.network === data.netid)).length === 0 ? <div className={classes.center}><h5>No External clients present.</h5></div> : null

@@ -28,7 +28,8 @@ const useStyles = makeStyles((theme) => ({
     container: {
         display: 'flex',
         justifyContent: 'center',
-        alignItems:'center'
+        alignItems:'center',
+        maxHeight: '38em'
     },
     row: {
         marginBottom: '0.5em',
@@ -87,7 +88,7 @@ const WARNING = '#ffcc00'
 const ERROR = '#ED4337'
 const HEALTHY = '#11772d'
 
-export default function AllNodes({ setNodeData, nodes, networkName, setSuccess, isAllNetworks, networks }) {
+export default function AllNodes({ setNodeData, nodes, networkName, setSuccess, isAllNetworks, networks, user }) {
 
     const classes = useStyles()
     const [selectedNode, setSelectedNode] = React.useState(null)
@@ -112,7 +113,7 @@ export default function AllNodes({ setNodeData, nodes, networkName, setSuccess, 
     const handleRemoveGateway = async node => {
         if (window.confirm(`Are you certain you want to remove the egress gateway on node: ${node.name}?`)) {
             try {
-                const response = await API.delete(`/nodes/${node.network}/${node.macaddress}/deletegateway`)
+                const response = await API(user.token).delete(`/nodes/${node.network}/${node.macaddress}/deletegateway`)
                 if (response.status === 200) {
                     setApprovalSuccess(`Successfully removed egress gateway from, ${node.name}!`)
                 } else {
@@ -131,7 +132,7 @@ export default function AllNodes({ setNodeData, nodes, networkName, setSuccess, 
     const handleRemoveIngress = async node => {
         if (window.confirm(`Are you certain you want to remove the ingress gateway on node: ${node.name}? (External Clients may be affected.)`)) {
             try {
-                const response = await API.delete(`/nodes/${node.network}/${node.macaddress}/deleteingress`)
+                const response = await API(user.token).delete(`/nodes/${node.network}/${node.macaddress}/deleteingress`)
                 if (response.status === 200) {
                     setApprovalSuccess(`Successfully removed ingress gateway from, ${node.name}!`)
                 } else {
@@ -148,11 +149,9 @@ export default function AllNodes({ setNodeData, nodes, networkName, setSuccess, 
     }
 
     const handleCreateIngress = async node => {
-        console.log(node)
-        console.log('API CALL: ', `/nodes/${node.network}/${node.macaddress}/createingress`)
         if (window.confirm(`Are you certain you want to allow external client traffic and make an ingress gateway on node: ${node.name} and network: ${node.network}?`)) {
             try {
-                const response = await API.post(`/nodes/${node.network}/${node.macaddress}/createingress`)
+                const response = await API(user.token).post(`/nodes/${node.network}/${node.macaddress}/createingress`)
                 if (response.status === 200) {
                     setApprovalSuccess(`Successfully created ingress gateway on node, ${node.name}!`)
                 } else {
@@ -171,7 +170,7 @@ export default function AllNodes({ setNodeData, nodes, networkName, setSuccess, 
     const approveNode = async (network, macaddress, name) => {
         if (window.confirm(`Are you certain you want to approve node ${name} with MAC ${macaddress}?`)) {
             try {
-                const response = await API.post(`/nodes/${network}/${macaddress}/approve`)
+                const response = await API(user.token).post(`/nodes/${network}/${macaddress}/approve`)
                 if (response.status === 200) {
                     setApprovalSuccess(`Approved node, ${name}!`)
                 } else {
@@ -210,7 +209,7 @@ export default function AllNodes({ setNodeData, nodes, networkName, setSuccess, 
                 disableAutoFocus
             >
                 <div className={classes.paperModal}>
-                    <GatewayCreate setSuccess={setApprovalSuccess} setOpen={setOpen} gatewayNode={gatewayNode} networks={networks} />
+                    <GatewayCreate user={user} setSuccess={setApprovalSuccess} setOpen={setOpen} gatewayNode={gatewayNode} networks={networks} />
                 </div>
             </Modal>
             <Grid item xs={10}>
@@ -218,7 +217,7 @@ export default function AllNodes({ setNodeData, nodes, networkName, setSuccess, 
             {error ? <div className={classes.center}><Typography variant='h6' color='error'>{error}</Typography></div> : null}
             {!selectedNode ? <div className={classes.nodeTitle2}><Typography variant='h5'>{isAllNetworks ? 'All' : networkName} nodes</Typography></div> : null }
             {isAllNetworks || doesNetworkHaveNodes() ? null : <div className={classes.nodeTitle}><h3>No nodes present in network: {networkName}...</h3></div>}
-            {selectedNode ? <NodeDetails setNodeData={setNodeData} node={getSelectedNode()} setSelectedNode={setSelectedNode} setSuccess={setSuccess} networkName={networkName} networkData={networks} /> :
+            {selectedNode ? <NodeDetails user={user} setNodeData={setNodeData} node={getSelectedNode()} setSelectedNode={setSelectedNode} setSuccess={setSuccess} networkName={networkName} networkData={networks} /> :
             nodes && nodes.length ? (nodes.filter(node => isAllNetworks ? node : networkName && node.network === networkName)).map((node, i) => 
                 <Card key={i} className={classes.row}>
                     <CardHeader
@@ -257,9 +256,9 @@ export default function AllNodes({ setNodeData, nodes, networkName, setSuccess, 
                                 }
                                 { node.isingressgateway ? 
                                     <Tooltip title={`REMOVE INGRESS GATEWAY for ${node.name}?`} placement='top'>
-                                    <IconButton aria-label={`remove ingress gateway access for node, ${node.name}.`} onClick={() => handleRemoveIngress(node)}>
-                                        <RemoveFromQueue />
-                                    </IconButton>
+                                        <IconButton aria-label={`remove ingress gateway access for node, ${node.name}.`} onClick={() => handleRemoveIngress(node)}>
+                                            <RemoveFromQueue />
+                                        </IconButton>
                                     </Tooltip> : 
                                     <Tooltip title={`MAKE ${node.name} AN INGRESS GATEWAY NODE?`} placement='top'>
                                         <IconButton aria-label={`make node, ${node.name}, an ingress gateway`} onClick={() => handleCreateIngress({...node})} disabled={node.ispending}>
@@ -288,7 +287,7 @@ export default function AllNodes({ setNodeData, nodes, networkName, setSuccess, 
                             <Grid item xs={12} md={1}>
                                 <Tooltip title='APPROVE' placement='top'>
                                     <IconButton aria-label={`approve node ${node.name}`} onClick={() => approveNode(node.network, node.macaddress, node.name)}>
-                                    <CheckBox />
+                                        <CheckBox />
                                     </IconButton>
                                 </Tooltip>
                             </Grid>

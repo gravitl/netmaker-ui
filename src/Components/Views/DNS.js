@@ -33,28 +33,29 @@ const useStyles = makeStyles((theme) => ({
     titleWithButton: {
         display: 'flex',
         justifyContent: 'space-around',
-        alignItems: 'center'
+        alignItems: 'center',
+        marginBottom: '6px'
     },
     btnTableCenter: {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'flex-start',
-        alignItems: 'center',
-        margin: '1em',
+        alignItems: 'stretch',
+        marginRight: '1em',
+        marginLeft: '0.5em'
     },
     table2All: {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'flex-start',
-        alignItems: 'flex-start',
-        margin: '1em',
+        alignItems: 'stretch',
     },
     cardMain: {
         width: '100%',
         marginTop: '1em',
     },
     container: {
-        maxHeight: '28em',
+        maxHeight: '38em',
     },
     button: {
         marginLeft: '0.25em',
@@ -80,17 +81,20 @@ const useStyles = makeStyles((theme) => ({
         background: 'rgba(255,0,0,1.0)',
     },
     table: {
-        maxHeight: '20em',
-        color: 'white',
-        backgroundColor: 'black',
-    },
-    table2: {
-        maxHeight: '20em',
+        maxHeight: '30em',
         color: 'white',
         backgroundColor: 'black',
         display: 'flex',
         justifyContent: 'flex-start',
-        alignItems: 'center'
+        alignItems: 'stretch'
+    },
+    table2: {
+        maxHeight: '30em',
+        color: 'white',
+        backgroundColor: 'black',
+        display: 'flex',
+        justifyContent: 'flex-start',
+        alignItems: 'stretch'
     },
   }));
 
@@ -112,7 +116,7 @@ const useStyles = makeStyles((theme) => ({
     },
   }))(TableRow);
 
-export default function DNS({ data, nodes }) {
+export default function DNS({ data, nodes, user }) {
 
     const classes = useStyles()
     const [ isProcessing, setIsProcessing ] = React.useState(false)
@@ -136,7 +140,7 @@ export default function DNS({ data, nodes }) {
 
     const removeEntry = async name => {
         if (data && window.confirm(`Are you sure you want to remove entry for ${name}.${data.netid}?`)) {
-            const dnsResponse = await DNS_API.removeEntry(data.netid, name)
+            const dnsResponse = await DNS_API.removeEntry(data.netid, name, user.token)
             if (dnsResponse) {
                 setSuccess(`Removed entry ${name}.`)
                 setShouldFetch(true)
@@ -157,7 +161,8 @@ export default function DNS({ data, nodes }) {
 
     React.useEffect(() => {
         if (data && shouldFetch) {
-            DNS_API.getDNS(data.netid, setDnsData)
+            DNS_API.getDNS(data.netid, setDnsData, user.token)
+            DNS_API.pushDNS(user.token)
             setShouldFetch(false)
             setCurrentNetworkName(data.netid)
         } else if (data != null && data.netid !== currentNetworkName) {
@@ -182,7 +187,14 @@ export default function DNS({ data, nodes }) {
                 <div className={classes.paper}>
                     <Card className={classes.center}>
                         <CardContent>
-                            <AddDnsEntry setOpen={setOpen} nodes={nodes} networkName={data.displayname} netid={data.netid} setShouldUpdate={setShouldFetch} />
+                            <AddDnsEntry 
+                                user={user} 
+                                setOpen={setOpen} 
+                                nodes={nodes} 
+                                networkName={data.displayname} 
+                                netid={data.netid} 
+                                setShouldUpdate={setShouldFetch}
+                            />
                         </CardContent>
                     </Card>
                 </div>
@@ -225,7 +237,7 @@ export default function DNS({ data, nodes }) {
                         </Grid>
                         <Grid item xs={12} md={6}>
                             <div className={classes.btnTableCenter}>
-                            <TableContainer className={classes.table} component={Paper}>
+                            <TableContainer className={classes.table2} component={Paper}>
                                 <Table aria-label="customized table">
                                     <TableHead>
                                     <TableRow>
@@ -246,23 +258,22 @@ export default function DNS({ data, nodes }) {
                                             </StyledTableCell>
                                         </StyledTableRow>
                                     ))}
-                                    {  dnsData.length < 4 ? 
-                                    <>
-                                        <StyledTableRow><StyledTableCell component="th" scope="row">{' '}</StyledTableCell><StyledTableCell component="th" scope="row">{' '}</StyledTableCell><StyledTableCell component="th" scope="row">{' '}</StyledTableCell></StyledTableRow>
-                                        <StyledTableRow><StyledTableCell component="th" scope="row">{' '}</StyledTableCell><StyledTableCell component="th" scope="row">{' '}</StyledTableCell><StyledTableCell component="th" scope="row">{' '}</StyledTableCell></StyledTableRow>
-                                        <StyledTableRow><StyledTableCell component="th" scope="row">{' '}</StyledTableCell><StyledTableCell component="th" scope="row">{' '}</StyledTableCell><StyledTableCell component="th" scope="row">{' '}</StyledTableCell></StyledTableRow>
-                                        <StyledTableRow><StyledTableCell component="th" scope="row">{' '}</StyledTableCell><StyledTableCell component="th" scope="row">{' '}</StyledTableCell><StyledTableCell component="th" scope="row">{' '}</StyledTableCell></StyledTableRow>
-                                        <StyledTableRow><StyledTableCell component="th" scope="row">{' '}</StyledTableCell><StyledTableCell component="th" scope="row">{' '}</StyledTableCell><StyledTableCell component="th" scope="row">{' '}</StyledTableCell></StyledTableRow>
-                                        <StyledTableRow><StyledTableCell component="th" scope="row">{' '}</StyledTableCell><StyledTableCell component="th" scope="row">{' '}</StyledTableCell><StyledTableCell component="th" scope="row">{' '}</StyledTableCell></StyledTableRow>
-                                        <StyledTableRow><StyledTableCell component="th" scope="row">{' '}</StyledTableCell><StyledTableCell component="th" scope="row">{' '}</StyledTableCell><StyledTableCell component="th" scope="row">{' '}</StyledTableCell></StyledTableRow>
-                                    </> : null }
-
+                                    {  
+                                        dnsData.length === 0 ? 
+                                        <StyledTableRow>
+                                            <StyledTableCell component="th" scope="row">
+                                            No entries present.
+                                            </StyledTableCell>
+                                            <StyledTableCell align="right"></StyledTableCell>
+                                            <StyledTableCell align="center"></StyledTableCell>
+                                        </StyledTableRow> : null 
+                                    }
                                     </TableBody>
                                 </Table>
                                 </TableContainer>
                                 </div>
                         </Grid>
-                        <Grid item xs={12} md={5}>
+                        <Grid item xs={12} md={6}>
                             <div className={classes.table2All} >
                                 <TableContainer className={classes.table2} component={Paper}>
                                     <Table aria-label="customized table">
@@ -280,18 +291,13 @@ export default function DNS({ data, nodes }) {
                                                 </StyledTableCell>
                                                 <StyledTableCell align="right">{node.address}</StyledTableCell>
                                             </StyledTableRow>
-                                        ) : null )}
-                                        {(nodes.filter(node => node.network === data.netid)).length < 6 ?
-                                        <>
-                                            <StyledTableRow><StyledTableCell component="th" scope="row">{' '}</StyledTableCell><StyledTableCell component="th" scope="row">{' '}</StyledTableCell></StyledTableRow>
-                                            <StyledTableRow><StyledTableCell component="th" scope="row">{' '}</StyledTableCell><StyledTableCell component="th" scope="row">{' '}</StyledTableCell></StyledTableRow>
-                                            <StyledTableRow><StyledTableCell component="th" scope="row">{' '}</StyledTableCell><StyledTableCell component="th" scope="row">{' '}</StyledTableCell></StyledTableRow>
-                                            <StyledTableRow><StyledTableCell component="th" scope="row">{' '}</StyledTableCell><StyledTableCell component="th" scope="row">{' '}</StyledTableCell></StyledTableRow>
-                                            <StyledTableRow><StyledTableCell component="th" scope="row">{' '}</StyledTableCell><StyledTableCell component="th" scope="row">{' '}</StyledTableCell></StyledTableRow>
-                                            <StyledTableRow><StyledTableCell component="th" scope="row">{' '}</StyledTableCell><StyledTableCell component="th" scope="row">{' '}</StyledTableCell></StyledTableRow>
-                                            <StyledTableRow><StyledTableCell component="th" scope="row">{' '}</StyledTableCell><StyledTableCell component="th" scope="row">{' '}</StyledTableCell></StyledTableRow>
-                                        </>
-                                        : null}
+                                        ) : <StyledTableRow>
+                                                <StyledTableCell component="th" scope="row">
+                                                No entries present.
+                                                </StyledTableCell>
+                                                <StyledTableCell align="right"></StyledTableCell>
+                                            </StyledTableRow>
+                                        )}
                                         </TableBody>
                                     </Table>
                                 </TableContainer>

@@ -31,7 +31,7 @@ const styles = {
 
 const useStyles = makeStyles(styles)
 
-export default function AddDnsEntry({ setOpen, networkName, nodes, netid, setShouldUpdate }) {
+export default function AddDnsEntry({ setOpen, networkName, nodes, netid, setShouldUpdate, user }) {
 
     const [dnsName, setDnsName] = React.useState('')
     const [address, setAddress] = React.useState('')
@@ -64,7 +64,7 @@ export default function AddDnsEntry({ setOpen, networkName, nodes, netid, setSho
         const { status, cause } = validate()
         if (status) { // check if validated
             setIsProcessing(true)
-            const response = await DNS_API.createEntry(networkName, dnsName, address)
+            const response = await DNS_API.createEntry(networkName, dnsName, address, user.token)
             if (response) {
                 setSuccess(`Successfully added DNS entry with name ${dnsName} for address: ${address}`)
                 setDnsName('')

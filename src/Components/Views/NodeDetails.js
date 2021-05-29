@@ -78,7 +78,7 @@ const convertDateToUnix = (date) => {
 
 const MAX_TIME = 1956502800
 
-export default function NodeDetails({ setNodeData, node, setSelectedNode, setSuccess, networkName, networkData }) {
+export default function NodeDetails({ setNodeData, node, setSelectedNode, setSuccess, networkName, user }) {
   const classes = useStyles();
   const [isEditing, setIsEditing] = React.useState(false)
   const [settings, setSettings] = React.useState(null)
@@ -92,12 +92,12 @@ export default function NodeDetails({ setNodeData, node, setSelectedNode, setSuc
     setIsProcessing(true)
     try {
         const nodeData = { ...settings }
-        const response = await API.put(`/nodes/${node.network}/${node.macaddress}`, nodeData)
+        const response = await API(user.token).put(`/nodes/${node.network}/${node.macaddress}`, nodeData)
         if (response.status === 200) {
             setCurrentSettings({...response.data})
             setSettings({...response.data})
             setSuccess(`Successfully updated node ${node.name}`)
-            API.get("/nodes")
+            API(user.token).get("/nodes")
             .then(nodeRes => {               
                 setNodeData(nodeRes.data)
                 const updatedNode = parseUpdatedNode(nodeRes.data, node.macaddress)
@@ -124,7 +124,7 @@ export default function NodeDetails({ setNodeData, node, setSelectedNode, setSuc
         if (window.confirm(`Are you sure you want to remove node: ${nodeName}?`)) {
             setIsProcessing(true)
             try {
-                const response = await API.delete(`/nodes/${network}/${nodeMacAddress}`) 
+                const response = await API(user.token).delete(`/nodes/${network}/${nodeMacAddress}`) 
                 if (response.status === 200) {
                     setIsEditing(false); // return to network view
                     setSuccess(`Succesfully removed node: ${nodeName}!`)

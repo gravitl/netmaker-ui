@@ -20,7 +20,7 @@ const styles = {
 
 const useStyles = makeStyles(styles)
 
-export default function CreateNetwork({ setIsCreating, setSuccess, setShouldUpdate }) {
+export default function CreateNetwork({ setIsCreating, setSuccess, setShouldUpdate, user }) {
 
     const [networkName, setNetworkName] = React.useState('')
     const [addressrange, setAddressrange] = React.useState('')
@@ -52,7 +52,7 @@ export default function CreateNetwork({ setIsCreating, setSuccess, setShouldUpda
             // send request
             setIsProcessing(true)
             try {
-                const response = await API.post('/networks', {
+                const response = await API(user.token).post('/networks', {
                     addressrange,
                     netid: networkName,
                     localrange: localaddressrange,
