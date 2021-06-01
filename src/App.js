@@ -56,7 +56,7 @@ function App() {
         if (!hasAdmin) setCreatingUser(true)} 
     })
     if (!isBackend) {
-      setError(`Incorrect backend detected. Please specify correct URL and refresh.\nGiven: ${Common.BACKEND_URL}`)
+      setError(`Error connecting to backend. Given: ${Common.BACKEND_URL} \n Server may be down, address may be incorrect, or port may not be open. \n Please investigate.`)
       USER.logout(setUser, (needsLogin) => {})
     } else {
       if (!needsAdmin) {
