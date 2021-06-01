@@ -31,7 +31,7 @@ const styles = {
 
 const useStyles = makeStyles(styles)
 
-export default function CreateGateway({ setOpen, gatewayNode, networks }) {
+export default function CreateGateway({ setOpen, gatewayNode, networks, user }) {
 
     const [defaultInterface, setInterface] = React.useState('')
     const [addressrange, setAddressrange] = React.useState('')
@@ -65,7 +65,7 @@ export default function CreateGateway({ setOpen, gatewayNode, networks }) {
         if (status) { // check if validated
             // send request
             setIsProcessing(true)
-            const response = await API.post(`/nodes/${gatewayNode.network}/${gatewayNode.macaddress}/creategateway`, {
+            const response = await API(user.token).post(`/nodes/${gatewayNode.network}/${gatewayNode.macaddress}/creategateway`, {
                 rangestring: addressrange,
                 interface: defaultInterface
             })

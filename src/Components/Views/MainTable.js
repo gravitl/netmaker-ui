@@ -24,7 +24,7 @@ const styles = {
 
 const useStyles = makeStyles(styles)
 
-export default function MainTable ({ setNetworkData, setNodeData, setNetworkSelection, networkData, nodeData, dataSelection, networkSelection, setSuccess, setCreatingNetwork }) {
+export default function MainTable ({ setNetworkData, setNodeData, setNetworkSelection, networkData, nodeData, dataSelection, networkSelection, setSuccess, setCreatingNetwork, user }) {
 
     const [value, setValue] = React.useState(0)
     const [currentNetworkTabs, setCurrentNetworkTabs] = React.useState([])
@@ -42,7 +42,6 @@ export default function MainTable ({ setNetworkData, setNodeData, setNetworkSele
     }
 
     const handleTabChange = (event, newValue) => {
-        // based on selection set the network to parse data for
         setNetworkSelection(newValue - 1)
         setValue(newValue)
     }
@@ -65,7 +64,6 @@ export default function MainTable ({ setNetworkData, setNodeData, setNetworkSele
                 <Grid item xs={2}
                     justify='flex-start'
                     alignItems='center'
-                    direction='column'
                     className={classes.vertTabs}
                 > 
                     <Button fullWidth style={{marginTop: '4px'}} onClick={() => setCreatingNetwork(true)} variant="contained">Create Network</Button>   
@@ -85,19 +83,18 @@ export default function MainTable ({ setNetworkData, setNodeData, setNetworkSele
                 <Grid item xs={10} 
                     justify='flex-start'
                     alignItems='center'
-                    direction='column'
                     className={classes.dataColumn} >
                     { 
-                        networkSelection >= 0 && dataSelection === 0 ? <NetworkDetails networkData={networkData[networkSelection]} back={false} setShouldUpdate={setShouldUpdate} setSuccess={setSuccess} setNetworkData={setNetworkData}/> : 
-                        networkSelection >= 0 && dataSelection === 1 ? <AllNodes networks={networkData} setNodeData={setNodeData} nodes={nodeData} networkName={networkData[networkSelection].netid} setSuccess={setSuccess}/> : 
-                        networkSelection >= 0 && dataSelection === 2 ? <AccessKeys data={networkData[networkSelection]} /> :
-                        networkSelection >= 0 && dataSelection === 3 ? <DNS data={networkData[networkSelection]} nodes={nodeData} /> :
-                        networkSelection >= 0 && dataSelection === 4 ? <ExternalClients data={networkData[networkSelection]} nodes={nodeData} /> :
-                        networkSelection < 0 && dataSelection === 2 ? <AccessKeys data={null} /> :
-                        networkSelection < 0 && dataSelection === 3 ? <DNS data={null} /> :
-                        networkSelection < 0 && dataSelection === 4 ? <ExternalClients data={networkData} isAllNetworks nodes={nodeData} /> :
-                        dataSelection === 1 ? <AllNodes networks={networkData} setNodeData={setNodeData} nodes={nodeData} networkName={networkData[networkSelection] ? networkData[networkSelection].netid : ''} isAllNetworks setSuccess={setSuccess} /> :
-                        <AllNetworks networks={networkData} setSuccess={setSuccess} setNetworkData={setNetworkData}/>
+                        networkSelection >= 0 && dataSelection === 0 ? <NetworkDetails user={user} networkData={networkData[networkSelection]} back={false} setShouldUpdate={setShouldUpdate} setSuccess={setSuccess} setNetworkData={setNetworkData}/> : 
+                        networkSelection >= 0 && dataSelection === 1 ? <AllNodes user={user} networks={networkData} setNodeData={setNodeData} nodes={nodeData} networkName={networkData[networkSelection].netid} setSuccess={setSuccess}/> : 
+                        networkSelection >= 0 && dataSelection === 2 ? <AccessKeys user={user} data={networkData[networkSelection]} /> :
+                        networkSelection >= 0 && dataSelection === 3 ? <DNS user={user} data={networkData[networkSelection]} nodes={nodeData} /> :
+                        networkSelection >= 0 && dataSelection === 4 ? <ExternalClients user={user} data={networkData[networkSelection]} nodes={nodeData} /> :
+                        networkSelection < 0 && dataSelection === 2 ? <AccessKeys user={user} data={null} /> :
+                        networkSelection < 0 && dataSelection === 3 ? <DNS user={user} data={null} /> :
+                        networkSelection < 0 && dataSelection === 4 ? <ExternalClients user={user} data={networkData} isAllNetworks nodes={nodeData} /> :
+                        dataSelection === 1 ? <AllNodes user={user} networks={networkData} setNodeData={setNodeData} nodes={nodeData} networkName={networkData[networkSelection] ? networkData[networkSelection].netid : ''} isAllNetworks setSuccess={setSuccess} /> :
+                        <AllNetworks user={user} networks={networkData} setSuccess={setSuccess} setNetworkData={setNetworkData}/>
                     }
                 </Grid>
             </Grid>

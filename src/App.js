@@ -26,13 +26,6 @@ const styles = {
   }
 }
 
-/*
-function validateEmail(email){
-  const re = /^((?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\]))$/;
-  return re.test(String(email).toLowerCase());
-}
-*/
-
 const useStyles = makeStyles(styles)
 function App() {
 
@@ -63,7 +56,7 @@ function App() {
         if (!hasAdmin) setCreatingUser(true)} 
     })
     if (!isBackend) {
-      setError(`Incorrect backend detected. Please specify correct URL and refresh.\nGiven: ${Common.BACKEND_URL}`)
+      setError(`Error connecting to backend. Given: ${Common.BACKEND_URL} \n Server may be down, address may be incorrect, or port may not be open. \n Please investigate.`)
       USER.logout(setUser, (needsLogin) => {})
     } else {
       if (!needsAdmin) {
@@ -71,9 +64,9 @@ function App() {
           if (shouldUpdate) {
             setShouldUpdate(false)
             setIsProcessing(true)
-            API.get("/networks")
+            API(user.token).get("/networks")
             .then(networkRes => {  
-                API.get("/nodes")     
+                API(user.token).get("/nodes")     
                 .then(nodeRes => {
                     if (nodeRes.data && nodeRes.data.length > 0) setNodeData(nodeRes.data)
                     if (networkRes.data && networkRes.data.length > 0) setNetworkData(networkRes.data)
@@ -95,7 +88,7 @@ function App() {
           }, 1000 * 60 * 5);
 
           const interval = setInterval(() => {
-            API.get("nodes").then(nodeRes => {
+            API(user.token).get("/nodes").then(nodeRes => {
               if (nodeRes.data && nodeRes.data.length >= 0 && nodeRes.data !== nodeData) {
                 setNodeData(nodeRes.data)
               } else {
@@ -121,13 +114,24 @@ function App() {
           <TopBar setDataSelection={setDataSelection} setCreatingNetwork={setCreatingNetwork} currentUser={user} setUser={setUser} setIsLoggingIn={setIsLoggingIn} setIsUpdatingUser={setIsUpdatingUser} />
           {success ? <div className={classes.center}><Typography variant='h6' color='primary'>{success}</Typography></div> : null}
           {error ? <div className={classes.center}><Typography variant='h6' color='error'>{error}</Typography></div> : null}
-          { error ? null : needsAdmin && creatingUser ? <CreateUser setIsCreating={setCreatingUser} setSuccess={setSuccess} setShouldUpdate={setShouldUpdate} isAdmin={needsAdmin} hasBack={!needsAdmin}/> :
+          { error ? null : needsAdmin && creatingUser ? <CreateUser setIsCreating={setCreatingUser} setSuccess={setSuccess} setShouldUpdate={setShouldUpdate} isAdmin={needsAdmin} hasBack={!needsAdmin} user={user} /> :
             isLoggingIn ? <Login setIsLoggingIn={setIsLoggingIn} setSuccess={setSuccess} setShouldUpdate={setShouldUpdate} /> :
             isUpdatingUser ? <UpdateUser setIsUpdating={setIsUpdatingUser} setSuccess={setSuccess} setShouldUpdate={setShouldUpdate} currentUser={user}/> :
             creatingUser ? <CreateUser setIsCreating={setCreatingUser} setSuccess={setSuccess} setShouldUpdate={setShouldUpdate} /> :
-            creatingNetwork ? <CreateNetwork setIsCreating={setCreatingNetwork} setSuccess={setSuccess} setShouldUpdate={setShouldUpdate} /> : 
+            creatingNetwork ? <CreateNetwork setIsCreating={setCreatingNetwork} setSuccess={setSuccess} setShouldUpdate={setShouldUpdate} user={user} /> : 
             isProcessing ? <div className={classes.center}><CircularProgress /></div> : 
-            <MainTable setCreatingNetwork={setCreatingNetwork} setNetworkData={setNetworkData} setNodeData={setNodeData} setNetworkSelection={setNetworkSelection} networkData={networkData} nodeData={nodeData} networkSelection={networkSelection} dataSelection={dataSelection} setSuccess={setSuccess} />
+            <MainTable 
+              setCreatingNetwork={setCreatingNetwork} 
+              setNetworkData={setNetworkData} 
+              setNodeData={setNodeData} 
+              setNetworkSelection={setNetworkSelection} 
+              networkData={networkData} 
+              nodeData={nodeData} 
+              networkSelection={networkSelection} 
+              dataSelection={dataSelection} 
+              setSuccess={setSuccess}
+              user={user}
+            />
           }
         </div>
       </MuiPickersUtilsProvider>

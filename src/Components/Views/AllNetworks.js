@@ -11,7 +11,6 @@ import NetworkDetails from './NetworkDetails'
 import Edit from '@material-ui/icons/Edit'
 import Sync from '@material-ui/icons/Sync'
 import AddCircleOutline from '@material-ui/icons/AddCircleOutline'
-import Highlight from '@material-ui/icons/Highlight'
 import IconButton from '@material-ui/core/IconButton'
 import '../../App.css'
 import Avatar from '@material-ui/core/Avatar';
@@ -21,7 +20,7 @@ import API from '../Utils/API'
 
 const useStyles = makeStyles((theme) => ({
     container: {
-        maxHeight: '28em',
+        maxHeight: '38em',
         overflowY: 'scroll',
         overflow: 'hidden',
         borderRadius: '8px',
@@ -71,7 +70,7 @@ const displayedNetworkFields = [
     'networklastmodified',
 ]
 
-export default function AllNetworks({ networks, setSuccess, setNetworkData }) {
+export default function AllNetworks({ networks, setSuccess, setNetworkData, user }) {
 
     const classes = useStyles()
     const [selectedNetwork, setSelectedNetwork] = React.useState(null)
@@ -85,7 +84,7 @@ export default function AllNetworks({ networks, setSuccess, setNetworkData }) {
     const handlePublicKeyRefresh = async (networkName, displayName) => {
         try {
             if (window.confirm(`Are you sure you want to refresh the node public keys on network: ${displayName}?`)) {
-                const response = await API.post(`/networks/${networkName}/keyupdate`)
+                const response = await API(user.token).post(`/networks/${networkName}/keyupdate`)
                 if (response.status === 200) {
                     setSuccess(`Refreshed Keys for ${networkName}.`)
                 } else {
@@ -104,7 +103,7 @@ export default function AllNetworks({ networks, setSuccess, setNetworkData }) {
     const handleAddServerAsNode = async (networkName, displayName) => {
         try {
             if (window.confirm(`Are you sure you want to add the server as a node on network: ${displayName}?`)) {
-                const response = await API.post(`/server/addnetwork/${networkName}`)
+                const response = await API(user.token).post(`/server/addnetwork/${networkName}`)
                 if (response.status === 200) {
                     setSuccess(`Added server to network, ${networkName}!`)
                 } else {
@@ -121,7 +120,7 @@ export default function AllNetworks({ networks, setSuccess, setNetworkData }) {
     }
 
     return (
-        networks[selectedNetwork] ? <NetworkDetails setNetworkData={setNetworkData} networkData={networks[selectedNetwork]} setSelectedNetwork={setSelectedNetwork} back setSuccess={setSuccess} /> :
+        networks[selectedNetwork] ? <NetworkDetails user={user} setNetworkData={setNetworkData} networkData={networks[selectedNetwork]} setSelectedNetwork={setSelectedNetwork} back setSuccess={setSuccess} /> :
         <Grid container justify='center' alignItems='center' className={classes.container}>
             <Grid item xs={11}>
             {refreshSuccess ? <div className={classes.center}><Typography variant='h6' color='primary'>{refreshSuccess}</Typography></div> : null}
@@ -161,8 +160,8 @@ export default function AllNetworks({ networks, setSuccess, setNetworkData }) {
                                     </IconButton>
                                 </Tooltip>
                             </Grid>
-                        {displayedNetworkFields.map(fieldName => (
-                            <Grid key={Math.floor(Math.random() * 10000)} item className={classes.cell} key={network.address} xs={fieldName === 'addressrange' ? 8 : 12} md={3}>
+                        {displayedNetworkFields.map((fieldName, j) => (
+                            <Grid item className={classes.cell} key={j} xs={fieldName === 'addressrange' ? 8 : 12} md={3}>
                                 <TextField
                                         id="filled-full-width"
                                         label={fieldName.toUpperCase()}
