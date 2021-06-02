@@ -24,7 +24,7 @@ const styles = {
 
 const useStyles = makeStyles(styles)
 
-export default function MainTable ({ setNetworkData, setNodeData, setNetworkSelection, networkData, nodeData, dataSelection, networkSelection, setSuccess, setCreatingNetwork, user }) {
+export default function MainTable ({ setNetworkData, setNodeData, setNetworkSelection, networkData, nodeData, dataSelection, networkSelection, setSuccess, setCreatingNetwork, user, configDetails }) {
 
     const [value, setValue] = React.useState(0)
     const [currentNetworkTabs, setCurrentNetworkTabs] = React.useState([])
@@ -94,7 +94,7 @@ export default function MainTable ({ setNetworkData, setNodeData, setNetworkSele
                         networkSelection < 0 && dataSelection === 3 ? <DNS user={user} data={null} /> :
                         networkSelection < 0 && dataSelection === 4 ? <ExternalClients user={user} data={networkData} isAllNetworks nodes={nodeData} /> :
                         dataSelection === 1 ? <AllNodes user={user} networks={networkData} setNodeData={setNodeData} nodes={nodeData} networkName={networkData[networkSelection] ? networkData[networkSelection].netid : ''} isAllNetworks setSuccess={setSuccess} /> :
-                        <AllNetworks user={user} networks={networkData} setSuccess={setSuccess} setNetworkData={setNetworkData}/>
+                        <AllNetworks clientMode={configDetails.ClientMode === 'on'} user={user} networks={networkData} setSuccess={setSuccess} setNetworkData={setNetworkData}/>
                     }
                 </Grid>
             </Grid>

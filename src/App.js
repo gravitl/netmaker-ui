@@ -45,6 +45,7 @@ function App() {
   const [isUpdatingUser, setIsUpdatingUser] = useState(false)
   const [isBackend, setIsBackend] = useState(true)
   const [error, setError] = useState('')
+  const [configDetails, setConfigDetails] = useState({})
 
   React.useEffect(() => { 
     USER.hasAdmin((hasAdmin, err) => { 
@@ -64,13 +65,21 @@ function App() {
           if (shouldUpdate) {
             setShouldUpdate(false)
             setIsProcessing(true)
-            API(user.token).get("/networks")
+            API(user.token).get("/networks") // get network data
             .then(networkRes => {  
-                API(user.token).get("/nodes")     
+                API(user.token).get("/nodes") // get node data
                 .then(nodeRes => {
                     if (nodeRes.data && nodeRes.data.length > 0) setNodeData(nodeRes.data)
                     if (networkRes.data && networkRes.data.length > 0) setNetworkData(networkRes.data)
-                    setIsProcessing(false)
+                      // get server config
+                    API(user.token).get('/server/getconfig')
+                    .then(configRes => {
+                      setConfigDetails({...configRes.data})
+                      setIsProcessing(false)
+                    })
+                    .catch(error => {
+                      setIsProcessing(false)
+                    })
                 })
                 .catch(error=>{
                     setIsProcessing(false)
@@ -111,7 +120,7 @@ function App() {
     <Router>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <div className="App">
-          <TopBar setDataSelection={setDataSelection} setCreatingNetwork={setCreatingNetwork} currentUser={user} setUser={setUser} setIsLoggingIn={setIsLoggingIn} setIsUpdatingUser={setIsUpdatingUser} />
+          <TopBar configDetails={configDetails} setDataSelection={setDataSelection} setCreatingNetwork={setCreatingNetwork} currentUser={user} setUser={setUser} setIsLoggingIn={setIsLoggingIn} setIsUpdatingUser={setIsUpdatingUser} />
           {success ? <div className={classes.center}><Typography variant='h6' color='primary'>{success}</Typography></div> : null}
           {error ? <div className={classes.center}><Typography variant='h6' color='error'>{error}</Typography></div> : null}
           { error ? null : needsAdmin && creatingUser ? <CreateUser setIsCreating={setCreatingUser} setSuccess={setSuccess} setShouldUpdate={setShouldUpdate} isAdmin={needsAdmin} hasBack={!needsAdmin} user={user} /> :
@@ -131,6 +140,7 @@ function App() {
               dataSelection={dataSelection} 
               setSuccess={setSuccess}
               user={user}
+              configDetails={configDetails}
             />
           }
         </div>

@@ -49,7 +49,7 @@ const useStyles = makeStyles(theme => ({
     }
 }))
 
-export default function TopBar({setDataSelection, currentUser, setUser, setIsLoggingIn, setIsUpdatingUser}) {
+export default function TopBar({setDataSelection, currentUser, setUser, setIsLoggingIn, setIsUpdatingUser, configDetails}) {
 
     const classes = useStyles()
 
@@ -59,6 +59,8 @@ export default function TopBar({setDataSelection, currentUser, setUser, setIsLog
       setValue(newValue);
       setDataSelection(newValue);
     };
+
+    const IS_DNS_DISABLED = configDetails.DNSMode === 'off'
 
     return (
         <Box display='flex' alignItems='center' justifyContent='center'>
@@ -91,7 +93,7 @@ export default function TopBar({setDataSelection, currentUser, setUser, setIsLog
                         <Tab label={NETWORK_DETAIL_TAB_NAME} tabIndex={0} />
                         <Tab label={NODE_DETAIL_TAB_NAME} tabIndex={1} />
                         <Tab label={OTK_DETAIL_TAB_NAME} tabIndex={2} />
-                        <Tab label={DNS_DETAIL_TAB_NAME} tabIndex={3} />
+                        <Tab label={IS_DNS_DISABLED ? `${DNS_DETAIL_TAB_NAME} (DISABLED)` : DNS_DETAIL_TAB_NAME} tabIndex={3} disabled={IS_DNS_DISABLED}/>
                         <Tab label={EXTERNAL_CLIENTS_TAB_NAME} tabIndex={4} />
                     </Tabs>
                 </AppBar>

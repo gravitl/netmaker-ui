@@ -70,7 +70,7 @@ const displayedNetworkFields = [
     'networklastmodified',
 ]
 
-export default function AllNetworks({ networks, setSuccess, setNetworkData, user }) {
+export default function AllNetworks({ networks, setSuccess, setNetworkData, user, clientMode }) {
 
     const classes = useStyles()
     const [selectedNetwork, setSelectedNetwork] = React.useState(null)
@@ -154,10 +154,12 @@ export default function AllNetworks({ networks, setSuccess, setNetworkData, user
                                 </Tooltip>
                             </Grid>
                             <Grid item className={classes.buttonContainer} xs={2} md={1}>
-                                <Tooltip title={`Add server to network, ${network.displayname}, as node.`} placement='top'>
-                                    <IconButton aria-label={`add server to network: ${network.displayname}`} onClick={() => handleAddServerAsNode(network.netid, network.displayname)}>
-                                        <AddCircleOutline />
-                                    </IconButton>
+                                <Tooltip title={clientMode ? `Add server to network, ${network.displayname}, as node.` : 'Netmaker server has CLIENT MODE disabled.'} placement='top'>
+                                    <span>
+                                        <IconButton disabled={!clientMode} aria-label={`add server to network: ${network.displayname}`} onClick={() => handleAddServerAsNode(network.netid, network.displayname)}>
+                                            <AddCircleOutline />
+                                        </IconButton>
+                                    </span>
                                 </Tooltip>
                             </Grid>
                         {displayedNetworkFields.map((fieldName, j) => (
