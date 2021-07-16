@@ -29,13 +29,25 @@ export default {
     },
     authenticate: async (username, password) => {
         try {
-            const userdata = await API.post('/adm/authenticate', { username, password },)
+            const userdata = await API.post('/adm/authenticate', { username, password })
             if (userdata.status === 200) {
                 // console.log(userdata.data.Response.AuthToken)
                 const decoded = jwt(userdata.data.Response.AuthToken)
                 ls.set(USER_KEY, JSON.stringify({username: userdata.data.Response.UserName, expiration: decoded.exp, token: userdata.data.Response.AuthToken}))
             }
             return userdata.data.Response
+        } catch (err) {
+            return false
+        }
+    },
+    decode: (username, token) => {
+        if (!username || !token) {
+            return false
+        }
+        try {
+            const decoded = jwt(token)
+            ls.set(USER_KEY, JSON.stringify({username, expiration: decoded.exp, token}))
+            return true
         } catch (err) {
             return false
         }
@@ -82,5 +94,13 @@ export default {
             }).catch(err => {
                 callback(false, err)
             })
-    }
+    },
+    getParameterByName: (name, url = window.location.href) => {
+        name = name.replace(/\[\]]/g, '\\$&');
+        var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, ' '));
+      }
 }

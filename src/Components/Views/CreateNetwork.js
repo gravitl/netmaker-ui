@@ -34,7 +34,7 @@ export default function CreateNetwork({ setIsCreating, setSuccess, setShouldUpda
 
     const classes = useStyles()
     const correctSubnetRegex = new RegExp(/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?).(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?).(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?).(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\/\d{1,3}$/i)
-    const correctNetworkNameRegex = new RegExp(/^[a-zA-Z0-9,\-,_,a-zA-Z0-9]{3,12}$/i)
+    const correctNetworkNameRegex = new RegExp(/^[a-z0-9,\-,_,a-z0-9]{1,12}[\.,a-z0-9]*$/i)
 
     const validate = () => {
         const isSubnet = correctSubnetRegex.test(addressrange) 

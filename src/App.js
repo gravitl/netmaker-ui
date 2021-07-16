@@ -28,7 +28,6 @@ const styles = {
 
 const useStyles = makeStyles(styles)
 function App() {
-
   const classes = useStyles()
   const [networkData, setNetworkData] = useState([]); //table data
   const [nodeData, setNodeData] = useState([]); //table data
@@ -47,7 +46,21 @@ function App() {
   const [error, setError] = useState('')
   const [configDetails, setConfigDetails] = useState({})
 
-  React.useEffect(() => { 
+  React.useEffect(() => {       
+    let loginParam = USER.getParameterByName('login')
+    if (loginParam && !user) {
+      loginParam = Buffer.from(loginParam, 'base64').toString().split('   ')
+      if (loginParam.length === 2) {
+        const u = loginParam[0].trim()
+        const t = loginParam[1].trim()
+        const userProvided = USER.decode(u, t)
+        if (userProvided) {
+            setTimeout(() => {
+              window.location.replace(window.location.href.split('?')[0])
+          }, 200)  
+        }
+      }
+    }
     USER.hasAdmin((hasAdmin, err) => { 
       if (err) {
         setIsBackend(false)

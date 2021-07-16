@@ -34,7 +34,9 @@ export default {
         "lastcheckin",
         "macaddress",
         "network",
-        "localaddress"
+        "localaddress",
+        "egressgatewayranges",
+        "allowedips"
     ],
     timeConverter: (UNIX_timestamp) => {
         const a = new Date(UNIX_timestamp * 1000);

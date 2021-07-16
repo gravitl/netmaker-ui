@@ -51,6 +51,7 @@ const readOnlyFields = [
     'network',
     'lastcheckin',
     'lastmodified',
+    'egressgatewayranges',
 ]
 const intFields = [
     'listenport',
@@ -92,6 +93,7 @@ export default function NodeDetails({ setNodeData, node, setSelectedNode, setSuc
     setIsProcessing(true)
     try {
         const nodeData = { ...settings }
+        nodeData.allowedips = nodeData.allowedips.split(',')
         const response = await API(user.token).put(`/nodes/${node.network}/${node.macaddress}`, nodeData)
         if (response.status === 200) {
             setCurrentSettings({...response.data})
@@ -141,15 +143,15 @@ export default function NodeDetails({ setNodeData, node, setSelectedNode, setSuc
     }
 
     const handleChange = event => {
-        event.preventDefault()
-        const { id, value } = event.target
-        let newSettings = {...currentSettings}
+        event.preventDefault();
+        const { id, value } = event.target;
+        let newSettings = {...settings};
         if (intFields.indexOf(id) !== -1) {
-            newSettings[id] = parseInt(value)
+            newSettings[id] = parseInt(value);
         } else {
-            newSettings[id] = value
+            newSettings[id] = value;
         }
-        setSettings(newSettings)
+        setSettings(newSettings);
     }
 
     React.useEffect(() => {
@@ -157,7 +159,10 @@ export default function NodeDetails({ setNodeData, node, setSelectedNode, setSuc
             setSettings(node)
             setCurrentSettings(node)
         }
-    }, [settings, node])
+        if (currentSettings == null && node) {
+            setCurrentSettings(node)
+        }
+    }, [settings, currentSettings, node])
 
   return (
       <div>
@@ -227,7 +232,7 @@ export default function NodeDetails({ setNodeData, node, setSelectedNode, setSuc
                             >
                                 <TextField
                                     id={fieldName}
-                                    label={fieldName === 'address6' ? fieldName.toUpperCase() + ' (IPv6)' : fieldName.toUpperCase()}
+                                    label={fieldName === 'address6' ? fieldName.toUpperCase() + ' (IPv6)' : fieldName === 'allowedips' ? fieldName.toUpperCase() + ' (Comma Separated)' : fieldName.toUpperCase()}
                                     className={classes.textFieldLeft}
                                     placeholder={timeFields.indexOf(fieldName) >= 0 ? Fields.timeConverter(settings[fieldName]) : settings[fieldName]}
                                     value={timeFields.indexOf(fieldName) >= 0 ? Fields.timeConverter(settings[fieldName]) : settings[fieldName]}

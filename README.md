@@ -2,6 +2,8 @@
   <img src="netmaker.png"><break/>
 </p>
 
+## v0.6
+
 ## For more information, visit one of the official documentation sites:
 1. [docs.netmaker.org](https://docs.netmaker.org)
 2. [netmaker.readthedocs.io](https://netmaker.readthedocs.io)
