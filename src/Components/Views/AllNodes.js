@@ -221,7 +221,7 @@ export default function AllNodes({ setNodeData, nodes, networkName, setSuccess, 
             nodes && nodes.length ? (nodes.filter(node => isAllNetworks ? node : networkName && node.network === networkName)).map((node, i) => 
                 <Card key={i} className={classes.row}>
                     <CardHeader
-                        title={node.name  + (node.ispending ? ' (Approval Required)' : '')}
+                        title={node.name  + (node.ispending === "yes" ? ' (Approval Required)' : '')}
                         subheader={`public ip: ${node.endpoint} | subnet ip: ${node.address} | status: ${(Date.now()/1000) - node.lastcheckin >= 1800 ? 'ERROR' : 
                             (Date.now()/1000) - node.lastcheckin >= 300 ? 'WARNING' : 'HEALTHY'}`}
                         avatar={
@@ -242,33 +242,33 @@ export default function AllNodes({ setNodeData, nodes, networkName, setSuccess, 
                     <CardContent>
                         <Grid container justify='center' alignItems='center'>
                             <Grid item xs={2} md={1}>
-                                { node.isegressgateway ?
+                                { node.isegressgateway === "yes" ?
                                 <Tooltip title={`REMOVE EGRESS GATEWAY for ${node.name}?`} placement='top'>
                                     <IconButton aria-label={`remove gateway access for node, ${node.name}.`} onClick={() => handleRemoveGateway(node)}>
                                         <Cancel />
                                     </IconButton>
                                 </Tooltip> : 
                                 <Tooltip title={`MAKE ${node.name} AN EGRESS GATEWAY NODE?`} placement='top'>
-                                    <IconButton aria-label={`make node, ${node.name}, a gateway`} onClick={() => handleOpening(node)} disabled={node.ispending}>
+                                    <IconButton aria-label={`make node, ${node.name}, a gateway`} onClick={() => handleOpening(node)} disabled={node.ispending === "no"}>
                                         <AccountTree />
                                     </IconButton>
                                 </Tooltip> 
                                 }
-                                { node.isingressgateway ? 
+                                { node.isingressgateway === "yes" ? 
                                     <Tooltip title={`REMOVE INGRESS GATEWAY for ${node.name}?`} placement='top'>
                                         <IconButton aria-label={`remove ingress gateway access for node, ${node.name}.`} onClick={() => handleRemoveIngress(node)}>
                                             <RemoveFromQueue />
                                         </IconButton>
                                     </Tooltip> : 
                                     <Tooltip title={`MAKE ${node.name} AN INGRESS GATEWAY NODE?`} placement='top'>
-                                        <IconButton aria-label={`make node, ${node.name}, an ingress gateway`} onClick={() => handleCreateIngress({...node})} disabled={node.ispending}>
+                                        <IconButton aria-label={`make node, ${node.name}, an ingress gateway`} onClick={() => handleCreateIngress({...node})} disabled={node.ispending === "no"}>
                                             <AddToQueue />
                                         </IconButton>
                                     </Tooltip> 
                                 }
                             </Grid>
                             {displayedNodeFields.map((fieldName) => (
-                                <Grid key={fieldName + ':' + i} item className={classes.cell} xs={fieldName === displayedNodeFields[0] || (node.isegressgateway && fieldName === displayedNodeFields[2])? 12 : 10} md={3}>
+                                <Grid key={fieldName + ':' + i} item className={classes.cell} xs={fieldName === displayedNodeFields[0] || (node.isegressgateway === "yes" && fieldName === displayedNodeFields[2])? 12 : 10} md={3}>
                                     <TextField
                                             id="filled-full-width"
                                             label={fieldName.toUpperCase()}
@@ -283,7 +283,7 @@ export default function AllNodes({ setNodeData, nodes, networkName, setSuccess, 
                                         />
                                 </Grid>
                             ))}
-                            {node.ispending ? 
+                            {node.ispending === "yes" ? 
                             <Grid item xs={12} md={1}>
                                 <Tooltip title='APPROVE' placement='top'>
                                     <IconButton aria-label={`approve node ${node.name}`} onClick={() => approveNode(node.network, node.macaddress, node.name)}>
@@ -292,14 +292,14 @@ export default function AllNodes({ setNodeData, nodes, networkName, setSuccess, 
                                 </Tooltip>
                             </Grid>
                             : null}
-                            {node.isegressgateway ? 
+                            {node.isegressgateway === "yes" ? 
                             <Grid item xs={1} md={1}>
                                 <Tooltip title={`${node.name} IS AN EGRESS GATEWAY`} placement='top'>
                                     <LowPriority className={classes.gateway} />
                                 </Tooltip>
                             </Grid>
                             : null}
-                            {node.isingressgateway ? 
+                            {node.isingressgateway === "yes" ? 
                             <Grid item xs={1} md={1}>
                                 <Tooltip title={`${node.name} IS AN INGRESS GATEWAY`} placement='top'>
                                     <SettingsInputAntenna className={classes.gateway} />

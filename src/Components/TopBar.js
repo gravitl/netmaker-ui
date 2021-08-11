@@ -32,7 +32,7 @@ const useStyles = makeStyles(theme => ({
     title: {
         textAlign: 'center',
         flexGrow: 1,
-        paddingLeft: '3em'
+        paddingLeft: '1.5em'
     }, 
     title2: {
         textAlign: 'center',
@@ -45,11 +45,11 @@ const useStyles = makeStyles(theme => ({
     logo: {
         objectFit: "cover",
         width: "50%",
-        height: "80%",
+        height: "100%",
     }
 }))
 
-export default function TopBar({setDataSelection, currentUser, setUser, setIsLoggingIn, setIsUpdatingUser, configDetails}) {
+export default function TopBar({setDataSelection, currentUser, setUser, setIsLoggingIn, setIsUpdatingUser, configDetails, setCreatingUser, setError}) {
 
     const classes = useStyles()
 
@@ -61,6 +61,7 @@ export default function TopBar({setDataSelection, currentUser, setUser, setIsLog
     };
 
     const IS_DNS_DISABLED = configDetails.DNSMode === 'off'
+    // const IS_EXT_DISABLED = configDetails.EXTClients === 'off'
 
     return (
         <Box display='flex' alignItems='center' justifyContent='center'>
@@ -68,6 +69,9 @@ export default function TopBar({setDataSelection, currentUser, setUser, setIsLog
             <AppBar position="static">
                 <Toolbar>
                     <Button color="inherit" href={'https://docs.netmaker.org'} target='_blank'>Docs</Button>
+                    {currentUser && currentUser.isadmin ? 
+                        <Button style={{marginLeft: '1em'}} color="inherit" onClick={() => setCreatingUser(true)}>Users</Button> : null
+                    }
                     <Typography variant="h3" className={classes.title} onClick={() => window.location.reload()}>
                         <img className={classes.logo} src={Logo} alt='Netmaker makes networks.' />
                     </Typography>
@@ -77,26 +81,27 @@ export default function TopBar({setDataSelection, currentUser, setUser, setIsLog
                                 <strong>{currentUser.username}</strong>
                             </Typography>
                             <Button color="inherit" onClick={() => USER.logout(setUser, setIsLoggingIn)}>Logout</Button>
-                    </> : <Button color="inherit" onClick={() => setIsLoggingIn(true)}>Login</Button>
+                    </> : <Button color="inherit" onClick={() => {setError(''); setIsLoggingIn(true);}}>Login</Button>
                     }
                 </Toolbar>
             </AppBar>
-                <AppBar position='relative' color='default'>
-                    <Tabs 
-                        value={value}
-                        centered
-                        aria-label="main table"
-                        textColor='primary'
-                        indicatorColor='primary'
-                        onChange={handleChange}
-                    >
-                        <Tab label={NETWORK_DETAIL_TAB_NAME} tabIndex={0} />
-                        <Tab label={NODE_DETAIL_TAB_NAME} tabIndex={1} />
-                        <Tab label={OTK_DETAIL_TAB_NAME} tabIndex={2} />
-                        <Tab label={IS_DNS_DISABLED ? `${DNS_DETAIL_TAB_NAME} (DISABLED)` : DNS_DETAIL_TAB_NAME} tabIndex={3} disabled={IS_DNS_DISABLED}/>
-                        <Tab label={EXTERNAL_CLIENTS_TAB_NAME} tabIndex={4} />
-                    </Tabs>
-                </AppBar>
+            {currentUser ? 
+            <AppBar position='relative' color='default'>
+                <Tabs 
+                    value={value}
+                    centered
+                    aria-label="main table"
+                    textColor='primary'
+                    indicatorColor='primary'
+                    onChange={handleChange}
+                >
+                    <Tab label={NETWORK_DETAIL_TAB_NAME} tabIndex={0} />
+                    <Tab label={NODE_DETAIL_TAB_NAME} tabIndex={1} />
+                    <Tab label={OTK_DETAIL_TAB_NAME} tabIndex={2} />
+                    <Tab label={IS_DNS_DISABLED ? `${DNS_DETAIL_TAB_NAME} (DISABLED)` : DNS_DETAIL_TAB_NAME} tabIndex={3} disabled={IS_DNS_DISABLED}/>
+                    <Tab label={EXTERNAL_CLIENTS_TAB_NAME} tabIndex={4} />
+                </Tabs>
+            </AppBar> : null}
             </Grid>
         </Box>
     )

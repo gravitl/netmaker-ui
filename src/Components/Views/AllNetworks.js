@@ -10,7 +10,6 @@ import TextField from '@material-ui/core/TextField';
 import NetworkDetails from './NetworkDetails'
 import Edit from '@material-ui/icons/Edit'
 import Sync from '@material-ui/icons/Sync'
-import AddCircleOutline from '@material-ui/icons/AddCircleOutline'
 import IconButton from '@material-ui/core/IconButton'
 import '../../App.css'
 import Avatar from '@material-ui/core/Avatar';
@@ -100,25 +99,6 @@ export default function AllNetworks({ networks, setSuccess, setNetworkData, user
         }, 1700)
     }
 
-    const handleAddServerAsNode = async (networkName, displayName) => {
-        try {
-            if (window.confirm(`Are you sure you want to add the server as a node on network: ${displayName}?`)) {
-                const response = await API(user.token).post(`/server/addnetwork/${networkName}`)
-                if (response.status === 200) {
-                    setSuccess(`Added server to network, ${networkName}!`)
-                } else {
-                    setError('Could not add server to network ', networkName, '.')
-                }
-            }
-        } catch (err) {
-            setError('Server error when transitioning to node in network ', networkName, '.')
-        }
-        setTimeout(() => {
-            setError('')
-            setSuccess('')
-        }, 2500)
-    }
-
     return (
         networks[selectedNetwork] ? <NetworkDetails user={user} setNetworkData={setNetworkData} networkData={networks[selectedNetwork]} setSelectedNetwork={setSelectedNetwork} back setSuccess={setSuccess} /> :
         <Grid container justify='center' alignItems='center' className={classes.container}>
@@ -129,11 +109,11 @@ export default function AllNetworks({ networks, setSuccess, setNetworkData, user
                 {networks && networks.length ? networks.map((network, i) => 
                     <Card key={i} className={classes.row}>
                         <CardHeader 
-                            title={network.displayname}
+                            title={network.displayname ? network.displayname : 'Not found'}
                             subheader={network.netid}
                             avatar={
                                 <Avatar aria-label={network.displayname} style={{ backgroundColor: randomColor() }}>
-                                  {network.displayname.toUpperCase().substring(0,1)}
+                                  {network.displayname ? network.displayname.toUpperCase().substring(0,1) : 'N'}
                                 </Avatar>
                             }
                             action={
@@ -146,20 +126,11 @@ export default function AllNetworks({ networks, setSuccess, setNetworkData, user
                         />
                         <CardContent>
                         <Grid container>
-                            <Grid item className={classes.buttonContainer} xs={2} md={1} >
+                            <Grid item className={classes.buttonContainer} xs={4} md={2} >
                                 <Tooltip title={`Refresh Public Keys for ${network.displayname}`} placement='top'>
                                     <IconButton aria-label={`refresh public keys ${network.displayname}`} onClick={() => handlePublicKeyRefresh(network.netid, network.displayname)}>
                                         <Sync />
                                     </IconButton>
-                                </Tooltip>
-                            </Grid>
-                            <Grid item className={classes.buttonContainer} xs={2} md={1}>
-                                <Tooltip title={clientMode ? `Add server to network, ${network.displayname}, as node.` : 'Netmaker server has CLIENT MODE disabled.'} placement='top'>
-                                    <span>
-                                        <IconButton disabled={!clientMode} aria-label={`add server to network: ${network.displayname}`} onClick={() => handleAddServerAsNode(network.netid, network.displayname)}>
-                                            <AddCircleOutline />
-                                        </IconButton>
-                                    </span>
                                 </Tooltip>
                             </Grid>
                         {displayedNetworkFields.map((fieldName, j) => (

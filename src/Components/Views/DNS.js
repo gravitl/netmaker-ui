@@ -74,8 +74,8 @@ const useStyles = makeStyles((theme) => ({
     main: {
         marginTop: '2em',
         display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center'
+        justifyContent: 'flex-start',
+        alignItems: 'stretch'
     },
     backDrop: {
         background: 'rgba(255,0,0,1.0)',
@@ -92,9 +92,6 @@ const useStyles = makeStyles((theme) => ({
         maxHeight: '30em',
         color: 'white',
         backgroundColor: 'black',
-        display: 'flex',
-        justifyContent: 'flex-start',
-        alignItems: 'stretch'
     },
   }));
 
@@ -162,7 +159,6 @@ export default function DNS({ data, nodes, user }) {
     React.useEffect(() => {
         if (data && shouldFetch) {
             DNS_API.getDNS(data.netid, setDnsData, user.token)
-            DNS_API.pushDNS(user.token)
             setShouldFetch(false)
             setCurrentNetworkName(data.netid)
         } else if (data != null && data.netid !== currentNetworkName) {
@@ -172,7 +168,7 @@ export default function DNS({ data, nodes, user }) {
     },)
 
     return (
-        <Box justifyContent='center' alignItems='flex-start' className={classes.container}>
+        <Box justifyContent='flex-start' alignItems='stretch'>
             {data ? 
             <Modal
                 aria-labelledby="gravitl"
@@ -229,14 +225,13 @@ export default function DNS({ data, nodes, user }) {
                         <Grid item xs={12}>
                             <div className={classes.titleWithButton}>
                                 <Tooltip title={`Add DNS entry for network, ${data.netid}?`}>
-                                    <Button style={{width: '33%'}} variant='outlined' onClick={handleOpen}>
+                                    <Button style={{width: '33%', marginBottom: '0.5em'}} variant='outlined' onClick={handleOpen}>
                                         Add Entry{'  '}<Add />
                                     </Button>
                                 </Tooltip>
                             </div>
                         </Grid>
                         <Grid item xs={12} md={6}>
-                            <div className={classes.btnTableCenter}>
                             <TableContainer className={classes.table2} component={Paper}>
                                 <Table aria-label="customized table">
                                     <TableHead>
@@ -271,10 +266,8 @@ export default function DNS({ data, nodes, user }) {
                                     </TableBody>
                                 </Table>
                                 </TableContainer>
-                                </div>
                         </Grid>
                         <Grid item xs={12} md={6}>
-                            <div className={classes.table2All} >
                                 <TableContainer className={classes.table2} component={Paper}>
                                     <Table aria-label="customized table">
                                         <TableHead>
@@ -291,17 +284,11 @@ export default function DNS({ data, nodes, user }) {
                                                 </StyledTableCell>
                                                 <StyledTableCell align="right">{node.address}</StyledTableCell>
                                             </StyledTableRow>
-                                        ) : <StyledTableRow>
-                                                <StyledTableCell component="th" scope="row">
-                                                No entries present.
-                                                </StyledTableCell>
-                                                <StyledTableCell align="right"></StyledTableCell>
-                                            </StyledTableRow>
+                                        ) : null
                                         )}
                                         </TableBody>
                                     </Table>
                                 </TableContainer>
-                            </div>
                         </Grid>
                     </>
                     : <h3>Please select a specific network to view it's DNS.</h3> 

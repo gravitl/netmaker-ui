@@ -56,8 +56,8 @@ export default function CreateNetwork({ setIsCreating, setSuccess, setShouldUpda
                     addressrange,
                     netid: networkName,
                     localrange: localaddressrange,
-                    islocal: isLocal,
-                    isdualstack: isAddress6,
+                    islocal: isLocal ? "yes" : "no",
+                    isdualstack: isAddress6 ? "yes" : "no",
                     addressrange6: DEFAULT_ADDRESS_6
                 })
                 setNetworkName('')

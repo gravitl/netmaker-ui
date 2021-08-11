@@ -52,6 +52,7 @@ const readOnlyFields = [
     'lastcheckin',
     'lastmodified',
     'egressgatewayranges',
+    'publickey',
 ]
 const intFields = [
     'listenport',
@@ -61,6 +62,12 @@ const intFields = [
 const timeFields = [
     'lastcheckin',
     'lastmodified',
+]
+
+const YES_OR_NO_FIELDS = [
+    "udpholepunch",
+    "saveconfig",
+    "isstatic"
 ]
 
 const parseUpdatedNode = (nodes, macaddress) => {
@@ -77,7 +84,7 @@ const convertDateToUnix = (date) => {
     return unixTime
 }
 
-const MAX_TIME = 1956502800
+const MAX_TIME = 2566502800
 
 export default function NodeDetails({ setNodeData, node, setSelectedNode, setSuccess, networkName, user }) {
   const classes = useStyles();
@@ -93,15 +100,18 @@ export default function NodeDetails({ setNodeData, node, setSelectedNode, setSuc
     setIsProcessing(true)
     try {
         const nodeData = { ...settings }
-        nodeData.allowedips = nodeData.allowedips.split(',')
+        if (nodeData.allowedips && nodeData.allowedips.length) {
+            nodeData.allowedips = nodeData.allowedips.split(',')
+        }
         const response = await API(user.token).put(`/nodes/${node.network}/${node.macaddress}`, nodeData)
+        console.log(response)
         if (response.status === 200) {
             setCurrentSettings({...response.data})
             setSettings({...response.data})
             setSuccess(`Successfully updated node ${node.name}`)
             API(user.token).get("/nodes")
             .then(nodeRes => {               
-                setNodeData(nodeRes.data)
+                setNodeData(nodeRes.data.sort(Fields.sortNodes))
                 const updatedNode = parseUpdatedNode(nodeRes.data, node.macaddress)
                 setSelectedNode(updatedNode)
                 setTimeout(() => {
@@ -120,6 +130,9 @@ export default function NodeDetails({ setNodeData, node, setSelectedNode, setSuc
         setError(`Could not update node: ${node.name}.`)
         setIsProcessing(false)
     }
+    setTimeout(() => {
+        setError('')
+    }, 800)
   }
 
     const removeNode = async (nodeName, nodeMacAddress, network) => {
@@ -220,7 +233,7 @@ export default function NodeDetails({ setNodeData, node, setSelectedNode, setSuc
                                             fullWidth
                                             format="yyyy/MM/dd hh:mm a"
                                             maxDate={new Date('3032-01-01')}
-                                            minDate={new Date('2020-01-01')}
+                                            minDate={new Date('2021-01-01')}
                                             loadingIndicator={<CircularProgress />}
                                             margin='normal'
                                         />
@@ -232,7 +245,10 @@ export default function NodeDetails({ setNodeData, node, setSelectedNode, setSuc
                             >
                                 <TextField
                                     id={fieldName}
-                                    label={fieldName === 'address6' ? fieldName.toUpperCase() + ' (IPv6)' : fieldName === 'allowedips' ? fieldName.toUpperCase() + ' (Comma Separated)' : fieldName.toUpperCase()}
+                                    label={fieldName === 'address6' ? fieldName.toUpperCase() + ' (IPv6)' : 
+                                        fieldName === 'allowedips' ? fieldName.toUpperCase() + ' (Comma Separated)' : 
+                                        YES_OR_NO_FIELDS.indexOf(fieldName) >= 0 ? fieldName.toUpperCase() + ' (yes or no)' :
+                                        fieldName.toUpperCase()}
                                     className={classes.textFieldLeft}
                                     placeholder={timeFields.indexOf(fieldName) >= 0 ? Fields.timeConverter(settings[fieldName]) : settings[fieldName]}
                                     value={timeFields.indexOf(fieldName) >= 0 ? Fields.timeConverter(settings[fieldName]) : settings[fieldName]}

@@ -28,7 +28,7 @@ export default function Login({ setIsLoggingIn, setSuccess, setShouldUpdate }) {
     const [password, setPassword] = React.useState('')
 
     const classes = useStyles()
-    const correctUserNameRegex = new RegExp(/^(([a-zA-Z,\-,\.]*)|([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4})){3,40}$/i)
+    const correctUserNameRegex = new RegExp(/^(([a-zA-Z0-9,\-,\.]*)|([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4})){3,40}$/i)
     const correctPasswordRegex = new RegExp(/^.{5,64}$/i)
 
     const validate = () => {

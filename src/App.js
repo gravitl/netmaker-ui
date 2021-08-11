@@ -16,6 +16,7 @@ import './App.css'
 import CreateUser from './Components/Views/CreateUser.js';
 import UpdateUser from './Components/Views/UpdateUser';
 import Login from './Components/Views/Login.js';
+import Fields from './Components/Utils/Fields';
 import Common from './Common'
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 
@@ -45,6 +46,7 @@ function App() {
   const [isBackend, setIsBackend] = useState(true)
   const [error, setError] = useState('')
   const [configDetails, setConfigDetails] = useState({})
+  const [networkNames, setNetworkNames] = useState([])
 
   React.useEffect(() => {       
     let loginParam = USER.getParameterByName('login')
@@ -82,19 +84,39 @@ function App() {
             .then(networkRes => {  
                 API(user.token).get("/nodes") // get node data
                 .then(nodeRes => {
-                    if (nodeRes.data && nodeRes.data.length > 0) setNodeData(nodeRes.data)
-                    if (networkRes.data && networkRes.data.length > 0) setNetworkData(networkRes.data)
-                      // get server config
+                    if (nodeRes.data && nodeRes.data.length > 0) setNodeData(nodeRes.data.sort(Fields.sortNodes) || [])
+                    if (networkRes.data && networkRes.data.length > 0) {
+                      setNetworkData(networkRes.data)
+                      const currentNetworkNames = []
+                      networkRes.data.map(network => {
+                        currentNetworkNames.push(network.netid)
+                      })
+                      setNetworkNames(currentNetworkNames)
+                    }
+                    // get server config
                     API(user.token).get('/server/getconfig')
                     .then(configRes => {
                       setConfigDetails({...configRes.data})
                       setIsProcessing(false)
                     })
                     .catch(error => {
+                      setConfigDetails({
+                        DNSMode: "off",
+                        EXTClients: "off"
+                      })
                       setIsProcessing(false)
                     })
                 })
                 .catch(error=>{
+                    if (networkRes.data && networkRes.data.length > 0) {
+                      setNetworkData(networkRes.data)
+                      const currentNetworkNames = []
+                      networkRes.data.map(network => {
+                        currentNetworkNames.push(network.netid)
+                      })
+                      setNetworkNames(currentNetworkNames)
+                    }
+                    setNodeData([])
                     setIsProcessing(false)
                 }) 
             })
@@ -105,23 +127,23 @@ function App() {
             setCreatingNetwork(true)
           }
 
-          const userInterval = setInterval(() => {
-            USER.getUser(setUser, setIsLoggingIn)
-          }, 1000 * 60 * 5);
-
           const interval = setInterval(() => {
-            API(user.token).get("/nodes").then(nodeRes => {
-              if (nodeRes.data && nodeRes.data.length >= 0 && nodeRes.data !== nodeData) {
-                setNodeData(nodeRes.data)
-              } else {
+            if (parseInt(Date.now()/1000) >= user.expiration) {
+              USER.logout(setUser, setIsLoggingIn);
+            } else {
+              API(user.token).get("/nodes").then(nodeRes => {
+                if (nodeRes.data && nodeRes.data.length >= 0 && nodeRes.data !== nodeData) {
+                  setNodeData(nodeRes.data.sort(Fields.sortNodes))
+                } else {
+                  setNodeData([])
+                }
+              }).catch(err => {
+                // node data could not be fetched..
                 setNodeData([])
-              }
-            }).catch(err => {
-              // node data could not be fetched..
-              setNodeData([])
-            })
+              })
+            }
           }, 10000);
-          return () => { clearInterval(interval); clearInterval(userInterval) };
+          return () => { clearInterval(interval);};
         } else {
           USER.getUser(setUser, setIsLoggingIn)
         }
@@ -133,13 +155,13 @@ function App() {
     <Router>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <div className="App">
-          <TopBar configDetails={configDetails} setDataSelection={setDataSelection} setCreatingNetwork={setCreatingNetwork} currentUser={user} setUser={setUser} setIsLoggingIn={setIsLoggingIn} setIsUpdatingUser={setIsUpdatingUser} />
+          <TopBar configDetails={configDetails} setDataSelection={setDataSelection} setCreatingNetwork={setCreatingNetwork} currentUser={user} setUser={setUser} setIsLoggingIn={setIsLoggingIn} setIsUpdatingUser={setIsUpdatingUser} setCreatingUser={setCreatingUser} setError={setError} />
           {success ? <div className={classes.center}><Typography variant='h6' color='primary'>{success}</Typography></div> : null}
           {error ? <div className={classes.center}><Typography variant='h6' color='error'>{error}</Typography></div> : null}
           { error ? null : needsAdmin && creatingUser ? <CreateUser setIsCreating={setCreatingUser} setSuccess={setSuccess} setShouldUpdate={setShouldUpdate} isAdmin={needsAdmin} hasBack={!needsAdmin} user={user} /> :
             isLoggingIn ? <Login setIsLoggingIn={setIsLoggingIn} setSuccess={setSuccess} setShouldUpdate={setShouldUpdate} /> :
             isUpdatingUser ? <UpdateUser setIsUpdating={setIsUpdatingUser} setSuccess={setSuccess} setShouldUpdate={setShouldUpdate} currentUser={user}/> :
-            creatingUser ? <CreateUser setIsCreating={setCreatingUser} setSuccess={setSuccess} setShouldUpdate={setShouldUpdate} /> :
+            creatingUser ? <CreateUser setIsCreating={setCreatingUser} setSuccess={setSuccess} setShouldUpdate={setShouldUpdate} networks={networkNames}/> :
             creatingNetwork ? <CreateNetwork setIsCreating={setCreatingNetwork} setSuccess={setSuccess} setShouldUpdate={setShouldUpdate} user={user} /> : 
             isProcessing ? <div className={classes.center}><CircularProgress /></div> : 
             <MainTable 

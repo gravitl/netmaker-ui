@@ -193,7 +193,7 @@ export default function CreateGateway({ setOpen, gatewayNode, networks, user }) 
                                 required
                                 fullWidth
                                 name="addressrange"
-                                label="Address Ranges"
+                                label="Address Ranges (comma separated)"
                                 placeholder='192.168.1.1/24'
                                 type="text"
                                 onChange={handleUpdateAddress}

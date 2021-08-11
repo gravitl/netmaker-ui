@@ -58,11 +58,13 @@ const readOnlyFields = [
 const boolFields = [
     'defaultsaveconfig',
     'isdualstack',
+    'defaultudpholepunch'
 ]
 
 const boolFieldValues = {
     defaultsaveconfig : 'Default SaveConfig',
-    isdualstack: 'Dual Stack'
+    isdualstack: 'Dual Stack',
+    defaultudpholepunch: 'UDP Hole Punching'
 }
 
 const intFields = [
@@ -91,7 +93,7 @@ export default function NetworkDetails({ networkData, setSelectedNetwork, back, 
     event.preventDefault()
     setIsProcessing(true)
     try {
-        const response = await API(user.token).put(`/networks/${networkData.netid}`, { ...settings, allowmanualsignup: allowManual })
+        const response = await API(user.token).put(`/networks/${networkData.netid}`, { ...settings, allowmanualsignup: allowManual ? "yes" : "no" })
         if (response.status === 200) {
             setCurrentSettings(settings) // set what we've changed.
             setSuccess(`Successfully updated network ${networkData.displayname}`)
@@ -137,7 +139,7 @@ export default function NetworkDetails({ networkData, setSelectedNetwork, back, 
   const handleBoolChange = (event, fieldName) => {
     event.preventDefault()
     let newSettings = {...settings}
-    newSettings[fieldName] = event.target.checked
+    newSettings[fieldName] = event.target.checked ? "yes" : "no"
     if (!event.target.checked && fieldName === 'isdualstack') {
         newSettings.addressrange6 = ''
     }
@@ -179,7 +181,7 @@ export default function NetworkDetails({ networkData, setSelectedNetwork, back, 
 
   React.useEffect(() => {
         if (settings == null && networkData) {
-            setAllowManual(networkData.allowmanualsignup)
+            setAllowManual(networkData.allowmanualsignup === "yes")
             setSettings(networkData)
             setCurrentSettings(networkData)
         } else if (settings != null && networkData !== settings && !change) {
@@ -244,7 +246,7 @@ export default function NetworkDetails({ networkData, setSelectedNetwork, back, 
                                 <FormControlLabel
                                     control={
                                     <Switch
-                                        checked={settings[fieldName]}
+                                        checked={settings[fieldName] === "yes"}
                                         onChange={(event) => handleBoolChange(event, fieldName)}
                                         name={fieldName}
                                         color="primary"
@@ -262,7 +264,7 @@ export default function NetworkDetails({ networkData, setSelectedNetwork, back, 
                                     value={timeFields.indexOf(fieldName) >= 0 ? Fields.timeConverter(settings[fieldName]) : settings[fieldName]}
                                     key={fieldName}
                                     fullWidth
-                                    disabled={!isEditing || readOnlyFields.indexOf(fieldName) >= 0 || (!settings.isdualstack && fieldName === 'addressrange6')}
+                                    disabled={!isEditing || readOnlyFields.indexOf(fieldName) >= 0 || (settings.isdualstack === "no" && fieldName === 'addressrange6')}
                                     margin="normal"
                                     InputLabelProps={{
                                         shrink: true,

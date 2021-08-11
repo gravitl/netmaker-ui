@@ -66,7 +66,7 @@ export default function MainTable ({ setNetworkData, setNodeData, setNetworkSele
                     alignItems='center'
                     className={classes.vertTabs}
                 > 
-                    <Button fullWidth style={{marginTop: '4px'}} onClick={() => setCreatingNetwork(true)} variant="contained">Create Network</Button>   
+                    <Button fullWidth style={{marginTop: '4px'}} onClick={() => setCreatingNetwork(true)} variant="contained" disabled={user ? !user.isadmin : false}>Create Network</Button>   
                     <Tabs
                         orientation="vertical"
                         value={value}

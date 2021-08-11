@@ -164,7 +164,6 @@ export default function ExternalClients({ data, isAllNetworks, nodes, user }) {
             }
             setIsProcessing(false)
         } catch (err) {
-            setError('Unable to fetch Keys!')
             setIsProcessing(false)
         }
     }
@@ -172,6 +171,10 @@ export default function ExternalClients({ data, isAllNetworks, nodes, user }) {
     const getQrCodes = clients => {
         try {
             let newQrSources = []
+            if (!clients) {
+                setQrCodes([])
+                return
+            }
             clients.map(async client => {
                     const response = await API(user.token).get(`/extclients/${client.network}/${client.clientid}/qr`, { responseType: 'arraybuffer' })
                     if (response.status === 200) {
@@ -191,6 +194,7 @@ export default function ExternalClients({ data, isAllNetworks, nodes, user }) {
             )
             setQrCodes(newQrSources)
         } catch (err) {
+            console.log(err)
             if (externals.length) setError('Server error occurred when fetching QR Codes!')
         }
         setTimeout(() => {
@@ -331,7 +335,7 @@ export default function ExternalClients({ data, isAllNetworks, nodes, user }) {
                                 <div className={classes.center}><h4>Available Ingress Gateways</h4></div>
                                 <div className={classes.cardContainer}>
                                 { nodes.map(node => 
-                                node.isingressgateway && (isAllNetworks || node.network === data.netid)  ?
+                                node.isingressgateway === 'yes' && (isAllNetworks || node.network === data.netid)  ?
                                 <Card key={node.name+':'+node.macaddress} className={classes.cardBasic}>
                                     <CardHeader
                                         title={node.name}
@@ -351,7 +355,7 @@ export default function ExternalClients({ data, isAllNetworks, nodes, user }) {
                                  : null 
                                 )}
                                 {
-                                    nodes.filter(node => node.isingressgateway && (isAllNetworks || node.network === data.netid)).length === 0 ? <div className={classes.center}><h5>No ingress gateways present.</h5></div> : null
+                                    nodes.filter(node => node.isingressgateway === 'yes' && (isAllNetworks || node.network === data.netid)).length === 0 ? <div className={classes.center}><h5>No ingress gateways present.</h5></div> : null
                                 }
                                 </div>
                             </Grid>
