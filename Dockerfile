@@ -1,7 +1,7 @@
 FROM node:12.20.1 as builder
 
 LABEL \
-  org.opencontainers.image.authors="Alex Feiszli, Falconcat, inc." \
+  org.opencontainers.image.authors="Dillon Carns & Alex Feiszli, Gravitl, inc." \
   org.opencontainers.image.vendor="ReactJS" \
   org.opencontainers.image.url="local" \
   org.opencontainers.image.source="https://dockerhub.com/" \
@@ -10,8 +10,8 @@ LABEL \
   vendor="ReactJS" \
   name="Netmaker" \
   version="$VERSION-$REVISION" \
-  summary="The frontend of Netmaker." \
-  description="This image contains the Netmaker frontend running with the ReactJS runtime. 2021 - Falconcat, inc."
+  summary="The frontend of Netmaker. Netmaker builds fast, secure networks." \
+  description="This image contains the Netmaker frontend running with the ReactJS runtime. 2021 - Gravitl, inc."
 
 RUN mkdir /usr/src/app
 WORKDIR /usr/src/app

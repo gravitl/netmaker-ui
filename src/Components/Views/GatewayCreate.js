@@ -31,10 +31,10 @@ const styles = {
 
 const useStyles = makeStyles(styles)
 
-export default function CreateGateway({ setOpen, gatewayNode, networks }) {
+export default function CreateGateway({ setOpen, gatewayNode, networks, user }) {
 
     const [defaultInterface, setInterface] = React.useState('')
-    const [addressrange, setAddressrange] = React.useState('')
+    const [addressranges, setAddressranges] = React.useState('')
     const [error, setError] = React.useState('')
     const [isProcessing, setIsProcessing] = React.useState(false)
     const [openMenu, setOpenMenu] = React.useState(false)
@@ -43,12 +43,36 @@ export default function CreateGateway({ setOpen, gatewayNode, networks }) {
     const classes = useStyles()
     const correctSubnetRegex = new RegExp(/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?).(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?).(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?).(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\/\d{1,3}$/i)
     const correctInterfaceNameRegex = new RegExp(/^[a-zA-Z0-9,\-,_,a-zA-Z0-9]{3,15}$/i)
+    const correctDnsRegex = new RegExp(/^([0-9a-z]+[0-9a-z\.]*){1,260}$/i)
 
     const validate = () => {
-        const isSubnet = correctSubnetRegex.test(addressrange) 
+        let isSubnet = true
+        let isDns = true
+        let entry = -1
+        const addressRanges = addressranges.split(',')
+        for (let i = 0; i < addressRanges.length; i++) {
+            const correctSub = correctSubnetRegex.test(addressRanges[i])
+            const correctDNS = correctDnsRegex.test(addressRanges[i]) 
+            // if you pass both do nothing
+            // if you pass one of either do nothing
+            if (correctSub || correctDNS) {
+                continue
+            }
+            // if you didnt pass sub
+            if (!correctSub) {
+                isSubnet = false
+            }
+            // if you didn't pass dns
+            if (!correctDNS) {
+                isDns = false
+            }
+            entry = i + 1
+            break
+        }
         const isInterface = correctInterfaceNameRegex.test(defaultInterface)
-        if (!isSubnet) return {status: false, cause: 'subnet'}
-        if (!isInterface) return {status: false, cause: 'interface'}
+        if (!isSubnet) return {status: false, cause: 'subnet', entry}
+        if (!isDns) return {status: false, cause: 'dns', entry}
+        if (!isInterface) return {status: false, cause: 'interface', entry}
         return {status: true}
     }
 
@@ -61,19 +85,20 @@ export default function CreateGateway({ setOpen, gatewayNode, networks }) {
     }
 
     const handleSubmit = async () => {
-        const { status, cause } = validate()
+        setError('')
+        const { status, cause, entry } = validate()
         if (status) { // check if validated
             // send request
             setIsProcessing(true)
-            const response = await API.post(`/nodes/${gatewayNode.network}/${gatewayNode.macaddress}/creategateway`, {
-                rangestring: addressrange,
+            const response = await API(user.token).post(`/nodes/${gatewayNode.network}/${gatewayNode.macaddress}/creategateway`, {
+                ranges: addressranges.split(','),
                 interface: defaultInterface
             })
             setIsProcessing(false)
             setInterface('')
-            setAddressrange('')
+            setAddressranges('')
             if (response.status === 200) {
-                setSuccess(`Successfully created gateway with node ${gatewayNode.name} for address range: ${addressrange}`)
+                setSuccess(`Successfully created gateway with node ${gatewayNode.name} for address range: ${addressranges}`)
                 setTimeout(() => {
                     setSuccess('')
                     setOpen(false)
@@ -83,15 +108,17 @@ export default function CreateGateway({ setOpen, gatewayNode, networks }) {
             }
         } else {
             if (cause === 'subnet')
-                setError('Invalid address range provided. Please check formatting. ex: 192.168.1.1/24.')
-            else 
+                setError(`Invalid address range provided. Please check formatting of entry #${entry}. ex: 192.168.1.1/24. Or use dns name, ex: mynet.com`)
+            else if (cause === 'dns') {
+                setError(`Invalid DNS name given for entry #${entry}. (ex: hello.net)`)
+            } else 
                 setError('Invalid network interface provided. Max 15 alphanumeric characters with underscores [_] or hyphens [-].')
         }
     }
 
     const handleUpdateAddress = (event) => {
         event.preventDefault()
-        setAddressrange(event.target.value)
+        setAddressranges(event.target.value)
     }
 
     const handleUpdateNetworkName = (event) => {
@@ -101,7 +128,7 @@ export default function CreateGateway({ setOpen, gatewayNode, networks }) {
 
     const handleNetworkSelect = (event, network) => {
         event.preventDefault()
-        setAddressrange(network.addressrange)
+        setAddressranges(network.addressrange)
         setInterface(network.defaultinterface)
         handleMenuClose()
     }
@@ -166,12 +193,12 @@ export default function CreateGateway({ setOpen, gatewayNode, networks }) {
                                 required
                                 fullWidth
                                 name="addressrange"
-                                label="Address Range"
+                                label="Address Ranges (comma separated)"
                                 placeholder='192.168.1.1/24'
                                 type="text"
                                 onChange={handleUpdateAddress}
                                 id="addressrange"
-                                value={addressrange}
+                                value={addressranges}
                                 autoFocus
                                 autoComplete="false"
                             />

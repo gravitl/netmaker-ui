@@ -20,7 +20,7 @@ const styles = {
 
 const useStyles = makeStyles(styles)
 
-export default function CreateNetwork({ setIsCreating, setSuccess, setShouldUpdate }) {
+export default function CreateNetwork({ setIsCreating, setSuccess, setShouldUpdate, user }) {
 
     const [networkName, setNetworkName] = React.useState('')
     const [addressrange, setAddressrange] = React.useState('')
@@ -34,7 +34,7 @@ export default function CreateNetwork({ setIsCreating, setSuccess, setShouldUpda
 
     const classes = useStyles()
     const correctSubnetRegex = new RegExp(/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?).(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?).(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?).(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\/\d{1,3}$/i)
-    const correctNetworkNameRegex = new RegExp(/^[a-zA-Z0-9,\-,_,a-zA-Z0-9]{3,12}$/i)
+    const correctNetworkNameRegex = new RegExp(/^[a-z0-9,\-,_,a-z0-9]{1,12}[\.,a-z0-9]*$/i)
 
     const validate = () => {
         const isSubnet = correctSubnetRegex.test(addressrange) 
@@ -52,12 +52,12 @@ export default function CreateNetwork({ setIsCreating, setSuccess, setShouldUpda
             // send request
             setIsProcessing(true)
             try {
-                const response = await API.post('/networks', {
+                const response = await API(user.token).post('/networks', {
                     addressrange,
                     netid: networkName,
                     localrange: localaddressrange,
-                    islocal: isLocal,
-                    isdualstack: isAddress6,
+                    islocal: isLocal ? "yes" : "no",
+                    isdualstack: isAddress6 ? "yes" : "no",
                     addressrange6: DEFAULT_ADDRESS_6
                 })
                 setNetworkName('')

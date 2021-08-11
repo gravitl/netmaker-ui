@@ -31,7 +31,7 @@ const styles = {
 
 const useStyles = makeStyles(styles)
 
-export default function AddDnsEntry({ setOpen, networkName, nodes, netid, setShouldUpdate }) {
+export default function AddDnsEntry({ setOpen, networkName, nodes, netid, setShouldUpdate, user }) {
 
     const [dnsName, setDnsName] = React.useState('')
     const [address, setAddress] = React.useState('')
@@ -42,11 +42,11 @@ export default function AddDnsEntry({ setOpen, networkName, nodes, netid, setSho
 
     const classes = useStyles()
     const correctSubnetRegex =  new RegExp(/^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/i) // new RegExp(/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?).(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?).(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?).(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)/i)
-    const correctInterfaceNameRegex = new RegExp(/^[a-zA-Z0-9][a-zA-Z0-9-]{1,128}$/i)
+    // const correctInterfaceNameRegex = new RegExp(/^([.]*[^\.]){1,192}$/i)
 
     const validate = () => {
-        const isSubnet = correctSubnetRegex.test(address) 
-        const isInterface = correctInterfaceNameRegex.test(dnsName)
+        const isSubnet = correctSubnetRegex.test(address)
+        const isInterface = true
         if (!isSubnet) return {status: false, cause: 'subnet'}
         if (!isInterface) return {status: false, cause: 'interface'}
         return {status: true}
@@ -64,7 +64,7 @@ export default function AddDnsEntry({ setOpen, networkName, nodes, netid, setSho
         const { status, cause } = validate()
         if (status) { // check if validated
             setIsProcessing(true)
-            const response = await DNS_API.createEntry(networkName, dnsName, address)
+            const response = await DNS_API.createEntry(networkName, dnsName, address, user.token)
             if (response) {
                 setSuccess(`Successfully added DNS entry with name ${dnsName} for address: ${address}`)
                 setDnsName('')
@@ -77,9 +77,9 @@ export default function AddDnsEntry({ setOpen, networkName, nodes, netid, setSho
             setIsProcessing(false)
         } else {
             if (cause === 'subnet')
-                setError('Invalid address range provided. Please check formatting. ex: "192.168.1.69"')
+                setError('Invalid address provided. Please check formatting. ex: "192.168.1.69"')
             else 
-                setError('Invalid DNS entry name provided. Max 128 alphanumeric characters with hyphens [-] and an extension [.com, .net, ...].')
+                setError('Invalid DNS entry name provided. Max 192 characters.')
         }
         setTimeout(() => setError(''), 1500)
     }
@@ -146,7 +146,7 @@ export default function AddDnsEntry({ setOpen, networkName, nodes, netid, setSho
                 <form className={classes.form} onSubmit={e => { e.preventDefault(); handleSubmit(); }}>
                     <Grid container className={classes.container}>
                         <Grid item xs={1}>
-                            <Tooltip title='This is the IP Address of the machine in the network.' placement='top'>
+                            <Tooltip title='This is the address of the machine, may be an ip or domain like gravitl.com.' placement='top'>
                                 <IconButton aria-label={`Set IP address for dns entry.`}>
                                     <Info />
                                 </IconButton>

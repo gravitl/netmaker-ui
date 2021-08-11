@@ -29,8 +29,8 @@ export default function UpdateUser({ setIsUpdating, setSuccess, setShouldUpdate,
     const [confirmPassword, setConfirmPassword] = React.useState('')
 
     const classes = useStyles()
-    const correctUserNameRegex = new RegExp(/^[a-zA-Z0-9,\-,a-zA-Z0-9]{4,16}$/i)
-    const correctPasswordRegex = new RegExp(/^[a-zA-Z0-9,\-,_,!,#,a-zA-Z0-9]{5,64}$/i)
+    const correctUserNameRegex = new RegExp(/^(([a-zA-Z0-9,\-,\.]*)|([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4})){3,40}$/i)
+    const correctPasswordRegex = new RegExp(/^.{5,64}$/i)
 
     const validate = () => {
         const isUserName = correctUserNameRegex.test(userName)
@@ -64,9 +64,9 @@ export default function UpdateUser({ setIsUpdating, setSuccess, setShouldUpdate,
             }
         } else {
             if (cause === 'user')
-                setError('Invalid user name provided. Must be between 4 to 16 alphanumeric characters with hyphens.')
+                setError('Invalid user name provided. Must be between 3 to 40 alphanumeric characters with "-" or "." or an email address.')
             else if (cause === 'password')
-                setError('Invalid password provided. Must be between 5 to 64 alphanumeric characters or special characters: "!-_#".')
+                setError('Invalid password provided. Must be between 5 to 64 characters with no white space.')
             else 
                 setError('Passwords do not match.')
         }
@@ -74,17 +74,17 @@ export default function UpdateUser({ setIsUpdating, setSuccess, setShouldUpdate,
 
     const handleUpdatePassword = (event) => {
         event.preventDefault()
-        setPassword(event.target.value)
+        setPassword(event.target.value.trim())
     }
 
     const handleUpdateConfirmPassword = (event) => {
         event.preventDefault()
-        setConfirmPassword(event.target.value)
+        setConfirmPassword(event.target.value.trim())
     }
 
     const handleUpdateUserName = (event) => {
         event.preventDefault()
-        setUserName(event.target.value)
+        setUserName(event.target.value.trim())
     }
 
     return (

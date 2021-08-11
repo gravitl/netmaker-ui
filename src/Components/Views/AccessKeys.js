@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
         marginTop: '1em',
     },
     container: {
-        maxHeight: '28em',
+        maxHeight: '38em',
         overflowY: 'scroll',
         overflow: 'hidden',
         borderRadius: '8px'
@@ -58,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-export default function OtkDetails({ data }) {
+export default function OtkDetails({ data, user }) {
 
     const classes = useStyles()
 
@@ -85,7 +85,7 @@ export default function OtkDetails({ data }) {
             setIsProcessing(true)
             setError('')
             try {
-                const response = await API.get(`/networks/${data.netid}/keys`)
+                const response = await API(user.token).get(`/networks/${data.netid}/keys`)
                 if (response.status === 200) {
                     setAccessKeys(response.data ? response.data : null)
                 } else {
@@ -100,7 +100,7 @@ export default function OtkDetails({ data }) {
     }
 
     const getAgentInstallCommand = () => {
-        return `curl -sfL https://raw.githubusercontent.com/gravitl/netmaker/v0.2/netclient-install.sh | -t ${modalText} sh -`
+        return `curl -sfL https://raw.githubusercontent.com/gravitl/netmaker/develop/scripts/netclient-install.sh | KEY=${modalText} sh -`
     }
 
     const createNewKey = async (event, keyName, keyUses) => {
@@ -110,7 +110,7 @@ export default function OtkDetails({ data }) {
             setIsProcessing(true)
             setError('')
             try {
-                const response = await API.post(`/networks/${data.netid}/keys`, {
+                const response = await API(user.token).post(`/networks/${data.netid}/keys`, {
                     name: keyName,
                     uses: keyUses
                 })
@@ -136,7 +136,7 @@ export default function OtkDetails({ data }) {
                 setIsProcessing(true)
                 setError('')
                 try {
-                    const response = await API.delete(`/networks/${data.netid}/keys/${keyName}`)
+                    const response = await API(user.token).delete(`/networks/${data.netid}/keys/${keyName}`)
                     if (response.status === 200) {
                         // set success or something
                         setSuccess(`Succesfully Removed Key: ${keyName}.`)
@@ -157,7 +157,6 @@ export default function OtkDetails({ data }) {
     }
 
     const copyToClipboard = (e) => {
-        // textArea.select();
         copy(modalText)
     };
 

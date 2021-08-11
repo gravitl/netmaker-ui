@@ -1,46 +1,33 @@
-import axios from 'axios'
-import Common from '../../Common'
-
-const API = axios.create({
-    baseURL: `${Common.BACKEND_URL}/api/dns`,
-    headers: {'authorization': `Bearer ${Common.MASTER_KEY}`}
-})
+import API from './API'
 
 export default {
 
-    getDNS: async (network, setDnsData) => {
+    getDNS: async (network, setDnsData, token) => {
         let dnsData = []
         try {
             if (!network) {
-                dnsData = (await API.get('/')).data
+                dnsData = (await API(token).get('/dns')).data
             } else {
-                dnsData = (await API.get(`/adm/${network}/custom`)).data
+                dnsData = (await API(token).get(`/dns/adm/${network}/custom`)).data
             }
             if (dnsData) setDnsData(dnsData)
         } catch (err) {
-            console.log(err)
+            // console.log(err)
         }
     },
-    createEntry: async (network, name, address) => {
+    createEntry: async (network, name, address, token) => {
         try {
-            return (await API.post(`/${network}`, {
+            return (await API(token).post(`/dns/${network}`, {
                 address,
                 name
-            })).status === 200 && (await API.post('/adm/pushdns')).status === 200
+            })).status === 200
         } catch (err) {
             return false
         }
     },
-    pushDNS: async () => {
+    removeEntry: async (network, name, token) => {
         try {
-            return (await API.post('/adm/pushdns')).status === 200
-        } catch (err) {
-            return false
-        }
-    },
-    removeEntry: async (network, name) => {
-        try {
-            return (await API.delete(`/${network}/${name}`)).status === 200 && (await API.post('/adm/pushdns')).status === 200
+            return (await API(token).delete(`/dns/${network}/${name}`)).status === 200
         } catch (err) {
             return false
         }

@@ -10,7 +10,6 @@ import TextField from '@material-ui/core/TextField';
 import NetworkDetails from './NetworkDetails'
 import Edit from '@material-ui/icons/Edit'
 import Sync from '@material-ui/icons/Sync'
-import AddCircleOutline from '@material-ui/icons/AddCircleOutline'
 import IconButton from '@material-ui/core/IconButton'
 import '../../App.css'
 import Avatar from '@material-ui/core/Avatar';
@@ -20,7 +19,7 @@ import API from '../Utils/API'
 
 const useStyles = makeStyles((theme) => ({
     container: {
-        maxHeight: '28em',
+        maxHeight: '38em',
         overflowY: 'scroll',
         overflow: 'hidden',
         borderRadius: '8px',
@@ -47,7 +46,9 @@ const useStyles = makeStyles((theme) => ({
         textAlign: 'center'
     },
     nodeTitle2: {
-        textAlign: 'center',
+        display: 'flex',
+        justifyContent: 'space-around',
+        alignItems: 'center',
         marginTop: '1em',
         marginBottom: '1em'
     },
@@ -68,7 +69,7 @@ const displayedNetworkFields = [
     'networklastmodified',
 ]
 
-export default function AllNetworks({ networks, setSuccess, setNetworkData}) {
+export default function AllNetworks({ networks, setSuccess, setNetworkData, user, clientMode }) {
 
     const classes = useStyles()
     const [selectedNetwork, setSelectedNetwork] = React.useState(null)
@@ -82,7 +83,7 @@ export default function AllNetworks({ networks, setSuccess, setNetworkData}) {
     const handlePublicKeyRefresh = async (networkName, displayName) => {
         try {
             if (window.confirm(`Are you sure you want to refresh the node public keys on network: ${displayName}?`)) {
-                const response = await API.post(`/networks/${networkName}/keyupdate`)
+                const response = await API(user.token).post(`/networks/${networkName}/keyupdate`)
                 if (response.status === 200) {
                     setSuccess(`Refreshed Keys for ${networkName}.`)
                 } else {
@@ -98,40 +99,21 @@ export default function AllNetworks({ networks, setSuccess, setNetworkData}) {
         }, 1700)
     }
 
-    const handleAddServerAsNode = async (networkName, displayName) => {
-        try {
-            if (window.confirm(`Are you sure you want to add the server as a node on network: ${displayName}?`)) {
-                const response = await API.post(`/server/addnetwork/${networkName}`)
-                if (response.status === 200) {
-                    setSuccess(`Added server to network, ${networkName}!`)
-                } else {
-                    setError('Could not add server to network ', networkName, '.')
-                }
-            }
-        } catch (err) {
-            setError('Server error when transitioning to node in network ', networkName, '.')
-        }
-        setTimeout(() => {
-            setError('')
-            setSuccess('')
-        }, 2500)
-    }
-
     return (
-        networks[selectedNetwork] ? <NetworkDetails setNetworkData={setNetworkData} networkData={networks[selectedNetwork]} setSelectedNetwork={setSelectedNetwork} back setSuccess={setSuccess} /> :
+        networks[selectedNetwork] ? <NetworkDetails user={user} setNetworkData={setNetworkData} networkData={networks[selectedNetwork]} setSelectedNetwork={setSelectedNetwork} back setSuccess={setSuccess} /> :
         <Grid container justify='center' alignItems='center' className={classes.container}>
             <Grid item xs={11}>
             {refreshSuccess ? <div className={classes.center}><Typography variant='h6' color='primary'>{refreshSuccess}</Typography></div> : null}
             {error ? <div className={classes.center}><Typography variant='h6' color='error'>{error}</Typography></div> : null}
             <div className={classes.nodeTitle2}><Typography variant='h5'>All networks</Typography></div>
-            {networks && networks.length ? networks.map(network => 
-                    <Card className={classes.row}>
+                {networks && networks.length ? networks.map((network, i) => 
+                    <Card key={i} className={classes.row}>
                         <CardHeader 
-                            title={network.displayname}
+                            title={network.displayname ? network.displayname : 'Not found'}
                             subheader={network.netid}
                             avatar={
                                 <Avatar aria-label={network.displayname} style={{ backgroundColor: randomColor() }}>
-                                  {network.displayname.toUpperCase().substring(0,1)}
+                                  {network.displayname ? network.displayname.toUpperCase().substring(0,1) : 'N'}
                                 </Avatar>
                             }
                             action={
@@ -143,23 +125,16 @@ export default function AllNetworks({ networks, setSuccess, setNetworkData}) {
                             }
                         />
                         <CardContent>
-                        <Grid container key={network.address} >
-                            <Grid item className={classes.buttonContainer} xs={2} md={1} >
+                        <Grid container>
+                            <Grid item className={classes.buttonContainer} xs={4} md={2} >
                                 <Tooltip title={`Refresh Public Keys for ${network.displayname}`} placement='top'>
                                     <IconButton aria-label={`refresh public keys ${network.displayname}`} onClick={() => handlePublicKeyRefresh(network.netid, network.displayname)}>
                                         <Sync />
                                     </IconButton>
                                 </Tooltip>
                             </Grid>
-                            <Grid item className={classes.buttonContainer} xs={2} md={1}>
-                                <Tooltip title={`Add server to network, ${network.displayname}, as node.`} placement='top'>
-                                    <IconButton aria-label={`add server to network: ${network.displayname}`} onClick={() => handleAddServerAsNode(network.netid, network.displayname)}>
-                                        <AddCircleOutline />
-                                    </IconButton>
-                                </Tooltip>
-                            </Grid>
-                        {displayedNetworkFields.map(fieldName => (
-                            <Grid item className={classes.cell} key={network.address} xs={fieldName === 'addressrange' ? 8 : 12} md={3}>
+                        {displayedNetworkFields.map((fieldName, j) => (
+                            <Grid item className={classes.cell} key={j} xs={fieldName === 'addressrange' ? 8 : 12} md={3}>
                                 <TextField
                                         id="filled-full-width"
                                         label={fieldName.toUpperCase()}
