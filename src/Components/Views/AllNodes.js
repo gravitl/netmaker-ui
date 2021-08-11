@@ -249,7 +249,7 @@ export default function AllNodes({ setNodeData, nodes, networkName, setSuccess, 
                                     </IconButton>
                                 </Tooltip> : 
                                 <Tooltip title={`MAKE ${node.name} AN EGRESS GATEWAY NODE?`} placement='top'>
-                                    <IconButton aria-label={`make node, ${node.name}, a gateway`} onClick={() => handleOpening(node)} disabled={node.ispending === "no"}>
+                                    <IconButton aria-label={`make node, ${node.name}, a gateway`} onClick={() => handleOpening(node)} disabled={node.ispending === "yes"}>
                                         <AccountTree />
                                     </IconButton>
                                 </Tooltip> 
@@ -261,7 +261,7 @@ export default function AllNodes({ setNodeData, nodes, networkName, setSuccess, 
                                         </IconButton>
                                     </Tooltip> : 
                                     <Tooltip title={`MAKE ${node.name} AN INGRESS GATEWAY NODE?`} placement='top'>
-                                        <IconButton aria-label={`make node, ${node.name}, an ingress gateway`} onClick={() => handleCreateIngress({...node})} disabled={node.ispending === "no"}>
+                                        <IconButton aria-label={`make node, ${node.name}, an ingress gateway`} onClick={() => handleCreateIngress({...node})} disabled={node.ispending === "yes"}>
                                             <AddToQueue />
                                         </IconButton>
                                     </Tooltip> 
