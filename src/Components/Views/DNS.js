@@ -157,7 +157,7 @@ export default function DNS({ data, nodes, user }) {
     }
 
     React.useEffect(() => {
-        if (data && shouldFetch) {
+        if (data && shouldFetch && user) {
             DNS_API.getDNS(data.netid, setDnsData, user.token)
             setShouldFetch(false)
             setCurrentNetworkName(data.netid)
