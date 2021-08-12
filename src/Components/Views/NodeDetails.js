@@ -104,7 +104,6 @@ export default function NodeDetails({ setNodeData, node, setSelectedNode, setSuc
             nodeData.allowedips = nodeData.allowedips.split(',')
         }
         const response = await API(user.token).put(`/nodes/${node.network}/${node.macaddress}`, nodeData)
-        console.log(response)
         if (response.status === 200) {
             setCurrentSettings({...response.data})
             setSettings({...response.data})

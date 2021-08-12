@@ -50,7 +50,9 @@ export default function CreateGateway({ setOpen, gatewayNode, networks, user }) 
         let isDns = true
         let entry = -1
         const addressRanges = addressranges.split(',')
+
         for (let i = 0; i < addressRanges.length; i++) {
+            addressRanges[i] = addressRanges[i].trim()
             const correctSub = correctSubnetRegex.test(addressRanges[i])
             const correctDNS = correctDnsRegex.test(addressRanges[i]) 
             // if you pass both do nothing
@@ -89,9 +91,13 @@ export default function CreateGateway({ setOpen, gatewayNode, networks, user }) 
         const { status, cause, entry } = validate()
         if (status) { // check if validated
             // send request
+            const newRanges = addressranges.split(',')
+            for (let i = 0; i < newRanges.length; i++) {
+                newRanges[i] = newRanges[i].trim()
+            }
             setIsProcessing(true)
             const response = await API(user.token).post(`/nodes/${gatewayNode.network}/${gatewayNode.macaddress}/creategateway`, {
-                ranges: addressranges.split(','),
+                ranges: newRanges,
                 interface: defaultInterface
             })
             setIsProcessing(false)
@@ -108,7 +114,7 @@ export default function CreateGateway({ setOpen, gatewayNode, networks, user }) 
             }
         } else {
             if (cause === 'subnet')
-                setError(`Invalid address range provided. Please check formatting of entry #${entry}. ex: 192.168.1.1/24. Or use dns name, ex: mynet.com`)
+                setError(`Invalid address range(s) provided. Please check formatting of entry #${entry}. ex: 192.168.1.0/24.`)
             else if (cause === 'dns') {
                 setError(`Invalid DNS name given for entry #${entry}. (ex: hello.net)`)
             } else 
