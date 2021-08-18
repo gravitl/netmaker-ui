@@ -102,7 +102,8 @@ function App() {
                     .catch(error => {
                       setConfigDetails({
                         DNSMode: "off",
-                        EXTClients: "off"
+                        EXTClients: "off",
+                        Version: "0.7.X"
                       })
                       setIsProcessing(false)
                     })
