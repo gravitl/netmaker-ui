@@ -194,7 +194,6 @@ export default function ExternalClients({ data, isAllNetworks, nodes, user }) {
             )
             setQrCodes(newQrSources)
         } catch (err) {
-            console.log(err)
             if (externals.length) setError('Server error occurred when fetching QR Codes!')
         }
         setTimeout(() => {

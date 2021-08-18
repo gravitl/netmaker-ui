@@ -88,7 +88,7 @@ const WARNING = '#ffcc00'
 const ERROR = '#ED4337'
 const HEALTHY = '#11772d'
 
-export default function AllNodes({ setNodeData, nodes, networkName, setSuccess, isAllNetworks, networks, user }) {
+export default function AllNodes({ setNodeData, nodes, networkName, setSuccess, isAllNetworks, networks, user, config }) {
 
     const classes = useStyles()
     const [selectedNode, setSelectedNode] = React.useState(null)
@@ -217,7 +217,7 @@ export default function AllNodes({ setNodeData, nodes, networkName, setSuccess, 
             {error ? <div className={classes.center}><Typography variant='h6' color='error'>{error}</Typography></div> : null}
             {!selectedNode ? <div className={classes.nodeTitle2}><Typography variant='h5'>{isAllNetworks ? 'All' : networkName} nodes</Typography></div> : null }
             {isAllNetworks || doesNetworkHaveNodes() ? null : <div className={classes.nodeTitle}><h3>No nodes present in network: {networkName}...</h3></div>}
-            {selectedNode ? <NodeDetails user={user} setNodeData={setNodeData} node={getSelectedNode()} setSelectedNode={setSelectedNode} setSuccess={setSuccess} networkName={networkName} networkData={networks} /> :
+            {selectedNode ? <NodeDetails config={config} user={user} setNodeData={setNodeData} node={getSelectedNode()} setSelectedNode={setSelectedNode} setSuccess={setSuccess} networkName={networkName} networkData={networks} /> :
             nodes && nodes.length ? (nodes.filter(node => isAllNetworks ? node : networkName && node.network === networkName)).map((node, i) => 
                 <Card key={i} className={classes.row}>
                     <CardHeader

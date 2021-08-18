@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid'
 import { DateTimePicker } from '@material-ui/pickers'
+import Tooltip from '@material-ui/core/Tooltip';
 
 import Fields from '../Utils/Fields'
 import { Button, Typography, CircularProgress } from '@material-ui/core';
@@ -86,7 +87,7 @@ const convertDateToUnix = (date) => {
 
 const MAX_TIME = 2566502800
 
-export default function NodeDetails({ setNodeData, node, setSelectedNode, setSuccess, networkName, user }) {
+export default function NodeDetails({ setNodeData, node, setSelectedNode, setSuccess, networkName, user, config }) {
   const classes = useStyles();
   const [isEditing, setIsEditing] = React.useState(false)
   const [settings, setSettings] = React.useState(null)
@@ -176,6 +177,8 @@ export default function NodeDetails({ setNodeData, node, setSelectedNode, setSuc
         }
     }, [settings, currentSettings, node])
 
+    const IS_UDP_ENABLED = (field) => config && config.ClientMode === "off" && field === "udpholepunch"
+
   return (
       <div>
           <form onSubmit={handleSubmit}>
@@ -242,6 +245,8 @@ export default function NodeDetails({ setNodeData, node, setSelectedNode, setSuc
                             <Grid xs={12} md={6}
                                 item
                             >
+                                <Tooltip title={IS_UDP_ENABLED(fieldName) ? 
+                                        'UDP Hole Punching disabled when client mode is off.' : ''} placement='top'>
                                 <TextField
                                     id={fieldName}
                                     label={fieldName === 'address6' ? fieldName.toUpperCase() + ' (IPv6)' : 
@@ -257,10 +262,11 @@ export default function NodeDetails({ setNodeData, node, setSelectedNode, setSuc
                                     InputLabelProps={{
                                         shrink: true,
                                     }}
-                                    disabled={!isEditing || readOnlyFields.indexOf(fieldName) >= 0 }
+                                    disabled={!isEditing || readOnlyFields.indexOf(fieldName) >= 0 || IS_UDP_ENABLED(fieldName)}
                                     variant="outlined"
                                     onChange={handleChange}
                                 />
+                                </Tooltip>
                             </Grid>
                             )
                         }})}
