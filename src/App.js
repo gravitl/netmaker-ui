@@ -80,6 +80,19 @@ function App() {
           if (shouldUpdate) {
             setShouldUpdate(false)
             setIsProcessing(true)
+            // get server config
+            API(user.token).get('/server/getconfig')
+            .then(configRes => {
+              setConfigDetails({...configRes.data})
+            })
+            .catch(error => {
+              setConfigDetails({
+                DNSMode: "off",
+                EXTClients: "off",
+                Version: "0.7.2"
+              })
+            })
+
             API(user.token).get("/networks") // get network data
             .then(networkRes => {  
                 API(user.token).get("/nodes") // get node data
@@ -93,28 +106,12 @@ function App() {
                       })
                       setNetworkNames(currentNetworkNames)
                     }
-                    // get server config
-                    API(user.token).get('/server/getconfig')
-                    .then(configRes => {
-                      setConfigDetails({...configRes.data})
-                      setIsProcessing(false)
-                    })
-                    .catch(error => {
-                      setConfigDetails({
-                        DNSMode: "off",
-                        EXTClients: "off",
-                        Version: "0.7.X"
-                      })
-                      setIsProcessing(false)
-                    })
                 })
                 .catch(error=>{
                     if (networkRes.data && networkRes.data.length > 0) {
                       setNetworkData(networkRes.data)
                       const currentNetworkNames = []
-                      networkRes.data.map(network => {
-                        currentNetworkNames.push(network.netid)
-                      })
+                      networkRes.data.map(network => currentNetworkNames.push(network.netid))
                       setNetworkNames(currentNetworkNames)
                     }
                     setNodeData([])
@@ -124,6 +121,7 @@ function App() {
             .catch(error => {
                 setIsProcessing(false)
             })
+            setIsProcessing(false)
           } else if (networkData.length === 0 && !shouldUpdate) {
             setCreatingNetwork(true)
           }
@@ -163,7 +161,7 @@ function App() {
             isLoggingIn ? <Login setIsLoggingIn={setIsLoggingIn} setSuccess={setSuccess} setShouldUpdate={setShouldUpdate} /> :
             isUpdatingUser ? <UpdateUser setIsUpdating={setIsUpdatingUser} setSuccess={setSuccess} setShouldUpdate={setShouldUpdate} currentUser={user}/> :
             creatingUser ? <CreateUser setIsCreating={setCreatingUser} setSuccess={setSuccess} setShouldUpdate={setShouldUpdate} networks={networkNames}/> :
-            creatingNetwork ? <CreateNetwork setIsCreating={setCreatingNetwork} setSuccess={setSuccess} setShouldUpdate={setShouldUpdate} user={user} /> : 
+            creatingNetwork ? <CreateNetwork setIsCreating={setCreatingNetwork} setSuccess={setSuccess} setShouldUpdate={setShouldUpdate} user={user} config={configDetails} /> : 
             isProcessing ? <div className={classes.center}><CircularProgress /></div> : 
             <MainTable 
               setCreatingNetwork={setCreatingNetwork} 

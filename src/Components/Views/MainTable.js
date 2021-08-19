@@ -35,7 +35,7 @@ export default function MainTable ({ setNetworkData, setNodeData, setNetworkSele
         let tempNetworkTabs = []
         for(let i = 0; i < networkData.length; i++) {
             tempNetworkTabs.push(
-                <Tab className={classes.customTab} disabled={(i+1 === value)} label={networkData[i].displayname} key={networkData[i].displayname + i} tabIndex={i+1}/>
+                <Tab className={classes.customTab} label={networkData[i].displayname} key={networkData[i].displayname + i} tabIndex={i+1}/>
             )
         }
         setCurrentNetworkTabs(tempNetworkTabs)
@@ -47,11 +47,11 @@ export default function MainTable ({ setNetworkData, setNodeData, setNetworkSele
     }
 
     React.useEffect(() => {
-        if (currentNetworkTabs.length === 0 && shouldUpdate) {
-            generateNetworks()
+        if (!currentNetworkTabs.length && shouldUpdate) {
             setShouldUpdate(false)
         }
-    }, [currentNetworkTabs.length, shouldUpdate, generateNetworks])
+        generateNetworks()
+    }, [currentNetworkTabs.length, shouldUpdate, networkData])
 
     return (
         <Container justify='center'>
@@ -85,16 +85,16 @@ export default function MainTable ({ setNetworkData, setNodeData, setNetworkSele
                     alignItems='center'
                     className={classes.dataColumn} >
                     { 
-                        networkSelection >= 0 && dataSelection === 0 ? <NetworkDetails user={user} networkData={networkData[networkSelection]} back={false} setShouldUpdate={setShouldUpdate} setSuccess={setSuccess} setNetworkData={setNetworkData}/> : 
-                        networkSelection >= 0 && dataSelection === 1 ? <AllNodes user={user} networks={networkData} setNodeData={setNodeData} nodes={nodeData} networkName={networkData[networkSelection].netid} setSuccess={setSuccess}/> : 
+                        networkSelection >= 0 && dataSelection === 0 ? <NetworkDetails config={configDetails} user={user} networkData={networkData[networkSelection]} back={false} setShouldUpdate={setShouldUpdate} setSuccess={setSuccess} setNetworkData={setNetworkData}/> : 
+                        networkSelection >= 0 && dataSelection === 1 ? <AllNodes config={configDetails} user={user} networks={networkData} setNodeData={setNodeData} nodes={nodeData} networkName={networkData[networkSelection].netid} setSuccess={setSuccess}/> : 
                         networkSelection >= 0 && dataSelection === 2 ? <AccessKeys user={user} data={networkData[networkSelection]} /> :
                         networkSelection >= 0 && dataSelection === 3 ? <DNS user={user} data={networkData[networkSelection]} nodes={nodeData} /> :
                         networkSelection >= 0 && dataSelection === 4 ? <ExternalClients user={user} data={networkData[networkSelection]} nodes={nodeData} /> :
                         networkSelection < 0 && dataSelection === 2 ? <AccessKeys user={user} data={null} /> :
                         networkSelection < 0 && dataSelection === 3 ? <DNS user={user} data={null} /> :
                         networkSelection < 0 && dataSelection === 4 ? <ExternalClients user={user} data={networkData} isAllNetworks nodes={nodeData} /> :
-                        dataSelection === 1 ? <AllNodes user={user} networks={networkData} setNodeData={setNodeData} nodes={nodeData} networkName={networkData[networkSelection] ? networkData[networkSelection].netid : ''} isAllNetworks setSuccess={setSuccess} /> :
-                        <AllNetworks clientMode={configDetails.ClientMode === 'on'} user={user} networks={networkData} setSuccess={setSuccess} setNetworkData={setNetworkData}/>
+                        dataSelection === 1 ? <AllNodes config={configDetails} user={user} networks={networkData} setNodeData={setNodeData} nodes={nodeData} networkName={networkData[networkSelection] ? networkData[networkSelection].netid : ''} isAllNetworks setSuccess={setSuccess} /> :
+                        <AllNetworks config={configDetails} clientMode={configDetails.ClientMode === 'on'} user={user} networks={networkData} setSuccess={setSuccess} setNetworkData={setNetworkData}/>
                     }
                 </Grid>
             </Grid>

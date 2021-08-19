@@ -1,4 +1,4 @@
-import { TextField, Button, Grid, Typography, CircularProgress, FormControlLabel, Checkbox } from '@material-ui/core'
+import { TextField, Button, Grid, Typography, CircularProgress, FormControlLabel, Checkbox, Tooltip } from '@material-ui/core'
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import API from '../Utils/API'
@@ -20,7 +20,7 @@ const styles = {
 
 const useStyles = makeStyles(styles)
 
-export default function CreateNetwork({ setIsCreating, setSuccess, setShouldUpdate, user }) {
+export default function CreateNetwork({ setIsCreating, setSuccess, setShouldUpdate, user, config }) {
 
     const [networkName, setNetworkName] = React.useState('')
     const [addressrange, setAddressrange] = React.useState('')
@@ -29,6 +29,7 @@ export default function CreateNetwork({ setIsCreating, setSuccess, setShouldUpda
     const [isProcessing, setIsProcessing] = React.useState(false)
     const [isLocal, setIsLocal] = React.useState(false)
     const [isAddress6, setIsAddress6] = React.useState(false)
+    const [useUDPHolePunch, setUseUDPHolePunch] = React.useState(false)
 
     const DEFAULT_ADDRESS_6 = 'fd39:75a7:808f:649d::/64'
 
@@ -58,7 +59,8 @@ export default function CreateNetwork({ setIsCreating, setSuccess, setShouldUpda
                     localrange: localaddressrange,
                     islocal: isLocal ? "yes" : "no",
                     isdualstack: isAddress6 ? "yes" : "no",
-                    addressrange6: DEFAULT_ADDRESS_6
+                    addressrange6: DEFAULT_ADDRESS_6,
+                    defaultudpholepunch: useUDPHolePunch ? "yes" : "no",
                 })
                 setNetworkName('')
                 setAddressrange('')
@@ -109,6 +111,11 @@ export default function CreateNetwork({ setIsCreating, setSuccess, setShouldUpda
         event.preventDefault()
         setIsLocal(event.target.checked)
         if (!event.target.checked) setLocalAddressrange('')
+    }
+
+    const toggleUDPHolePunch = (event) => {
+        event.preventDefault()
+        setUseUDPHolePunch(!useUDPHolePunch)
     }
 
     const toggleIsAddress6 = (event) => {
@@ -221,6 +228,26 @@ export default function CreateNetwork({ setIsCreating, setSuccess, setShouldUpda
                             value={localaddressrange}
                             autoComplete="false"
                         /></Grid> : null}
+                    </Grid>
+                    <Grid container justifyContent='flex-start' alignItems='center'>
+                        <Grid item xs={4}>
+                            <Tooltip title={config && config.ClientMode == "off" ? 
+                            'UDP Hole Punching disabled when client mode is off.' : ''} placement='right'>
+                            <FormControlLabel
+                                control={
+                                    <Checkbox
+                                        checked={useUDPHolePunch} 
+                                        disabled={config && config.ClientMode == "off"} 
+                                        onClick={toggleUDPHolePunch} 
+                                        color='primary' 
+                                        name="useUDPHolePunching" 
+                                        value={useUDPHolePunch}
+                                    />
+                                }
+                                label="Use UDP Hole Punching?"
+                            />
+                            </Tooltip>
+                        </Grid>
                     </Grid>
                     <Button
                         type="submit"

@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Switch from '@material-ui/core/Switch';
+import Tooltip from '@material-ui/core/Tooltip';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid'
@@ -78,7 +79,7 @@ const timeFields = [
     "networklastmodified"
 ]
 
-export default function NetworkDetails({ networkData, setSelectedNetwork, back, setSuccess, setNetworkData, user }) {
+export default function NetworkDetails({ networkData, setSelectedNetwork, back, setSuccess, setNetworkData, user, config }) {
   const classes = useStyles();
   const [isEditing, setIsEditing] = React.useState(false)
   const [settings, setSettings] = React.useState(null)
@@ -189,6 +190,8 @@ export default function NetworkDetails({ networkData, setSelectedNetwork, back, 
         }
   }, [settings, networkData])
 
+  const IS_UDP_ENABLED = (field) => config && config.ClientMode == "off" && field === "defaultudpholepunch"
+
   return (
       <div>
           <form >
@@ -243,19 +246,21 @@ export default function NetworkDetails({ networkData, setSelectedNetwork, back, 
                             <Grid item xs={12} md={5}>
                                 {boolFields.indexOf(fieldName) >= 0 ? 
                                 <div className={classes.center}>
-                                <FormControlLabel
-                                    control={
-                                    <Switch
-                                        checked={settings[fieldName] === "yes"}
-                                        onChange={(event) => handleBoolChange(event, fieldName)}
-                                        name={fieldName}
-                                        color="primary"
-                                        disabled={!isEditing || readOnlyFields.indexOf(fieldName) >= 0}
-                                        id={fieldName}
-                                    />
-                                    }
-                                    label={boolFieldValues[fieldName]}
-                                /></div> :
+                                    <Tooltip title={IS_UDP_ENABLED(fieldName) ? 
+                                        'UDP Hole Punching disabled when client mode is off.' : ''} placement='top'>
+                                    <FormControlLabel
+                                        control={
+                                        <Switch
+                                            checked={settings[fieldName] === "yes"}
+                                            onChange={(event) => handleBoolChange(event, fieldName)}
+                                            name={fieldName}
+                                            color="primary"
+                                            disabled={!isEditing || readOnlyFields.indexOf(fieldName) >= 0 || IS_UDP_ENABLED(fieldName)}
+                                            id={fieldName}
+                                        />
+                                        }
+                                        label={boolFieldValues[fieldName]}
+                                    /></Tooltip></div> :
                                 <TextField
                                     id={fieldName}
                                     label={fieldName === 'addressrange6' ? fieldName.toUpperCase() + ' (IPv6)' : fieldName.toUpperCase()}

@@ -69,7 +69,7 @@ const displayedNetworkFields = [
     'networklastmodified',
 ]
 
-export default function AllNetworks({ networks, setSuccess, setNetworkData, user, clientMode }) {
+export default function AllNetworks({ networks, setSuccess, setNetworkData, user, clientMode, config }) {
 
     const classes = useStyles()
     const [selectedNetwork, setSelectedNetwork] = React.useState(null)
@@ -100,7 +100,7 @@ export default function AllNetworks({ networks, setSuccess, setNetworkData, user
     }
 
     return (
-        networks[selectedNetwork] ? <NetworkDetails user={user} setNetworkData={setNetworkData} networkData={networks[selectedNetwork]} setSelectedNetwork={setSelectedNetwork} back setSuccess={setSuccess} /> :
+        networks[selectedNetwork] ? <NetworkDetails config={config} user={user} setNetworkData={setNetworkData} networkData={networks[selectedNetwork]} setSelectedNetwork={setSelectedNetwork} back setSuccess={setSuccess} /> :
         <Grid container justify='center' alignItems='center' className={classes.container}>
             <Grid item xs={11}>
             {refreshSuccess ? <div className={classes.center}><Typography variant='h6' color='primary'>{refreshSuccess}</Typography></div> : null}
