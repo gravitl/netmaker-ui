@@ -108,13 +108,23 @@ export default function ExternalClients({ data, isAllNetworks, nodes, user }) {
     const [ hasChecked, setHasChecked ] = React.useState(false)
     const [ open, setOpen ] = React.useState(false)
     const [ externals, setExternals ] = React.useState([])
-    const [ qrCodes, setQrCodes ] = React.useState([]) 
+    const [ qrCodes, setQrCodes ] = React.useState({}) 
     const [ modalDisplay, setModalDisplay ] = React.useState(null)
     const [ currentClient, setCurrentClient ] = React.useState('')
 
     const handleClose = () => {
         setOpen(false)
         setModalDisplay(null)
+    }
+
+    function compareExtClients( a, b ) {
+        if ( a.clientid < b.clientid ){
+          return -1;
+        }
+        if ( a.clientid > b.clientid ){
+          return 1;
+        }
+        return 0;
     }
 
     const openModal = (isImg, imgSrc, client) => {
@@ -157,7 +167,7 @@ export default function ExternalClients({ data, isAllNetworks, nodes, user }) {
         try {
             const response = await API(user.token).get(`/extclients`)
             if (response.status === 200) {
-                setExternals(response.data || [])
+                setExternals(response.data.sort(compareExtClients) || [])
                 getQrCodes(response.data)
             } else {
                 setError('Unable to fetch Keys!')
@@ -170,26 +180,21 @@ export default function ExternalClients({ data, isAllNetworks, nodes, user }) {
 
     const getQrCodes = clients => {
         try {
-            let newQrSources = []
+            let newQrSources = {}
             if (!clients) {
-                setQrCodes([])
+                setQrCodes({})
                 return
             }
             clients.map(async client => {
                     const response = await API(user.token).get(`/extclients/${client.network}/${client.clientid}/qr`, { responseType: 'arraybuffer' })
                     if (response.status === 200) {
-                        const base64 = btoa(
-                            new Uint8Array(response.data).reduce(
-                              (data, byte) => data + String.fromCharCode(byte),
-                              '',
-                            ),
-                        );
-                        newQrSources.push("data:;base64," + base64)
+                        const base64 = Buffer.from(response.data).toString('base64');
+                        newQrSources[client.clientid] = "data:;base64," + base64
                     } else {
-                        setQrCodes([])
+                        setQrCodes({})
                         if (externals.length) setError('Failed to fetch QR codes!')
-                        return
                     }
+                    return
                 }
             )
             setQrCodes(newQrSources)
@@ -365,7 +370,7 @@ export default function ExternalClients({ data, isAllNetworks, nodes, user }) {
                                     externals.length ?
                                     externals.map((external, i) =>
                                     data && (isAllNetworks || external.network === data.netid) ?
-                                    <Accordion square={false} key={i} expanded={currentClient === external.clientid} onChange={handleAccordianChange(external.clientid)}>
+                                    <Accordion square={false} key={i} expanded={currentClient === external.clientid} onChange={handleAccordianChange(external.clientid)} style={i === (externals.length - 1) ? {marginBottom: '6em'} : {}}>
                                         <AccordionSummary
                                             expandIcon={<ExpandMoreIcon />}
                                             aria-controls={`accordian-contents-${i}`}
@@ -405,8 +410,8 @@ export default function ExternalClients({ data, isAllNetworks, nodes, user }) {
                                                         </Grid>
                                                         <Grid item xs={7}>
                                                             <div className={classes.center}>
-                                                            {   qrCodes.length ? 
-                                                                <img className={classes.qrImage} src={qrCodes[i]} alt={`Small QR code for client, ${external.clientid}.`} onClick={() => openModal(true, qrCodes[i], external)}/>
+                                                            {   qrCodes && qrCodes != {} ? 
+                                                                <img className={classes.qrImage} src={qrCodes[external.clientid]} alt={`Small QR code for client, ${external.clientid}.`} onClick={() => openModal(true, qrCodes[external.clientid], external)}/>
                                                                 : <CircularProgress />}
                                                             </div>
                                                         </Grid>
