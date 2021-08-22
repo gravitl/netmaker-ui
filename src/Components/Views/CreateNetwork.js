@@ -29,7 +29,7 @@ export default function CreateNetwork({ setIsCreating, setSuccess, setShouldUpda
     const [isProcessing, setIsProcessing] = React.useState(false)
     const [isLocal, setIsLocal] = React.useState(false)
     const [isAddress6, setIsAddress6] = React.useState(false)
-    const [useUDPHolePunch, setUseUDPHolePunch] = React.useState(false)
+    const [useUDPHolePunch, setUseUDPHolePunch] = React.useState(!(config && config.ClientMode === "off"))
 
     const DEFAULT_ADDRESS_6 = 'fd39:75a7:808f:649d::/64'
 
@@ -231,13 +231,13 @@ export default function CreateNetwork({ setIsCreating, setSuccess, setShouldUpda
                     </Grid>
                     <Grid container justifyContent='flex-start' alignItems='center'>
                         <Grid item xs={4}>
-                            <Tooltip title={config && config.ClientMode == "off" ? 
+                            <Tooltip title={config && config.ClientMode === "off" ? 
                             'UDP Hole Punching disabled when client mode is off.' : ''} placement='right'>
                             <FormControlLabel
                                 control={
                                     <Checkbox
                                         checked={useUDPHolePunch} 
-                                        disabled={config && config.ClientMode == "off"} 
+                                        disabled={config && config.ClientMode === "off"} 
                                         onClick={toggleUDPHolePunch} 
                                         color='primary' 
                                         name="useUDPHolePunching" 
