@@ -79,6 +79,8 @@ const timeFields = [
     "networklastmodified"
 ]
 
+const correctIPRegex = new RegExp(/^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/i)
+
 export default function NetworkDetails({ networkData, setSelectedNetwork, back, setSuccess, setNetworkData, user, config }) {
   const classes = useStyles();
   const [isEditing, setIsEditing] = React.useState(false)
@@ -94,6 +96,15 @@ export default function NetworkDetails({ networkData, setSelectedNetwork, back, 
     event.preventDefault()
     setIsProcessing(true)
     try {
+        settings.defaultextclientdns = settings.defaultextclientdns.trim()
+        if (!(settings.defaultextclientdns === "" || correctIPRegex.test(settings.defaultextclientdns))) {
+            setError("incorrect ip value given for ext client default DNS")
+            setIsProcessing(false)
+            setTimeout(() => {
+                setError('')
+            }, 1000)
+            return
+        }
         const response = await API(user.token).put(`/networks/${networkData.netid}`, { ...settings, allowmanualsignup: allowManual ? "yes" : "no" })
         if (response.status === 200) {
             setCurrentSettings(settings) // set what we've changed.
@@ -263,7 +274,8 @@ export default function NetworkDetails({ networkData, setSelectedNetwork, back, 
                                     /></Tooltip></div> :
                                 <TextField
                                     id={fieldName}
-                                    label={fieldName === 'addressrange6' ? fieldName.toUpperCase() + ' (IPv6)' : fieldName.toUpperCase()}
+                                    label={fieldName === 'addressrange6' ? fieldName.toUpperCase() + ' (IPv6)' : 
+                                        fieldName === "defaultextclientdns" ? "DEFAULT EXT CLIENT DNS" : fieldName.toUpperCase()}
                                     className={classes.textFieldLeft}
                                     placeholder={timeFields.indexOf(fieldName) >= 0 ? Fields.timeConverter(settings[fieldName]) : settings[fieldName]}
                                     value={timeFields.indexOf(fieldName) >= 0 ? Fields.timeConverter(settings[fieldName]) : settings[fieldName]}

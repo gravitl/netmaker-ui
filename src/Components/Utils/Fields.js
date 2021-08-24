@@ -13,6 +13,7 @@ export default {
         "defaultpostdown",
         "defaultkeepalive",
         "defaultcheckininterval",
+        "defaultextclientdns",
         "isdualstack",
         "defaultsaveconfig",
         "accesskeys",
