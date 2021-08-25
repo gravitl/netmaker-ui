@@ -9,6 +9,8 @@ import Fields from '../Utils/Fields'
 import { Button, Typography, CircularProgress } from '@material-ui/core';
 import API from '../Utils/API'
 
+const correctSubnetRegex = new RegExp(/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?).(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?).(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?).(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\/\d{1,3}$/i)
+
 const useStyles = makeStyles((theme) => ({
   buttons: {
     display: 'flex',
@@ -52,7 +54,6 @@ const readOnlyFields = [
     'network',
     'lastcheckin',
     'lastmodified',
-    'egressgatewayranges',
     'publickey',
 ]
 const intFields = [
@@ -71,6 +72,11 @@ const YES_OR_NO_FIELDS = [
     "isstatic"
 ]
 
+const COMMA_FIELDS = [
+    "allowedips",
+    "egressgatewayranges"
+]
+
 const parseUpdatedNode = (nodes, macaddress) => {
     for (let i = 0; i < nodes.length; i++) {
         if (nodes[i].macaddress === macaddress) {
@@ -87,6 +93,7 @@ const convertDateToUnix = (date) => {
 
 const MAX_TIME = 2566502800
 
+
 export default function NodeDetails({ setNodeData, node, setSelectedNode, setSuccess, networkName, user, config }) {
   const classes = useStyles();
   const [isEditing, setIsEditing] = React.useState(false)
@@ -94,6 +101,21 @@ export default function NodeDetails({ setNodeData, node, setSelectedNode, setSuc
   const [currentSettings, setCurrentSettings] = React.useState(null)
   const [isProcessing, setIsProcessing] = React.useState(false)
   const [error, setError] = React.useState('')
+
+  const validateEgressRanges = addressranges => {
+    const addressRanges = addressranges.split(',')
+    const trimmedRanges = []
+    for (let i = 0; i < addressRanges.length; i++) {
+        const trimmedRange = addressRanges[i].trim()
+        const correctSub = correctSubnetRegex.test(trimmedRange)
+        if (correctSub) {
+            trimmedRanges.push(trimmedRange)
+            continue
+        }
+        return false
+    }
+    return trimmedRanges
+  }
 
   const handleSubmit = async event => {
     event.preventDefault()
@@ -104,13 +126,24 @@ export default function NodeDetails({ setNodeData, node, setSelectedNode, setSuc
         if (nodeData.allowedips && nodeData.allowedips.length) {
             nodeData.allowedips = nodeData.allowedips.split(',')
         }
+        const validEgressRanges = validateEgressRanges(nodeData.egressgatewayranges)
+        if (!validEgressRanges) {
+            setError("invalid egress gateway range provided.")
+            setIsProcessing(false)
+            setTimeout(() => {
+                setError("")
+            }, 1000)
+            return
+        }
+        nodeData.egressgatewayranges = validEgressRanges
+
         const response = await API(user.token).put(`/nodes/${node.network}/${node.macaddress}`, nodeData)
         if (response.status === 200) {
             setCurrentSettings({...response.data})
             setSettings({...response.data})
             setSuccess(`Successfully updated node ${node.name}`)
             API(user.token).get("/nodes")
-            .then(nodeRes => {               
+            .then(nodeRes => {      
                 setNodeData(nodeRes.data.sort(Fields.sortNodes))
                 const updatedNode = parseUpdatedNode(nodeRes.data, node.macaddress)
                 setSelectedNode(updatedNode)
@@ -250,7 +283,7 @@ export default function NodeDetails({ setNodeData, node, setSelectedNode, setSuc
                                 <TextField
                                     id={fieldName}
                                     label={fieldName === 'address6' ? fieldName.toUpperCase() + ' (IPv6)' : 
-                                        fieldName === 'allowedips' ? fieldName.toUpperCase() + ' (Comma Separated)' : 
+                                        COMMA_FIELDS.indexOf(fieldName) >= 0 ? fieldName.toUpperCase() + ' (Comma Separated)' : 
                                         YES_OR_NO_FIELDS.indexOf(fieldName) >= 0 ? fieldName.toUpperCase() + ' (yes or no)' :
                                         fieldName.toUpperCase()}
                                     className={classes.textFieldLeft}
@@ -262,7 +295,11 @@ export default function NodeDetails({ setNodeData, node, setSelectedNode, setSuc
                                     InputLabelProps={{
                                         shrink: true,
                                     }}
-                                    disabled={!isEditing || readOnlyFields.indexOf(fieldName) >= 0 || IS_UDP_ENABLED(fieldName)}
+                                    disabled={!isEditing 
+                                        || readOnlyFields.indexOf(fieldName) >= 0 
+                                        || IS_UDP_ENABLED(fieldName)
+                                        || fieldName === 'egressgatewayranges' && settings.isegressgateway !== "yes"
+                                    }
                                     variant="outlined"
                                     onChange={handleChange}
                                 />

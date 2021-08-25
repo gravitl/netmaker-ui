@@ -13,7 +13,7 @@ const DNS_DETAIL_TAB_NAME = 'dns'
 const EXTERNAL_CLIENTS_TAB_NAME = 'external clients'
 const VERSION_TAB_NAME = "version"
 // == set UI version here ==
-const UI_VERSION = "0.7.2"
+const UI_VERSION = "0.7.3"
 
 // function getWindowDimensions() {
 //     const { innerWidth: width, innerHeight: height } = window;
