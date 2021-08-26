@@ -103,8 +103,11 @@ export default function NodeDetails({ setNodeData, node, setSelectedNode, setSuc
   const [error, setError] = React.useState('')
 
   const validateEgressRanges = addressranges => {
-    const addressRanges = addressranges.split(',')
     const trimmedRanges = []
+    if (!addressranges || addressranges.length === 0) {
+        return trimmedRanges
+    }
+    const addressRanges = addressranges.split(',')
     for (let i = 0; i < addressRanges.length; i++) {
         const trimmedRange = addressRanges[i].trim()
         const correctSub = correctSubnetRegex.test(trimmedRange)
@@ -126,17 +129,18 @@ export default function NodeDetails({ setNodeData, node, setSelectedNode, setSuc
         if (nodeData.allowedips && nodeData.allowedips.length) {
             nodeData.allowedips = nodeData.allowedips.split(',')
         }
-        const validEgressRanges = validateEgressRanges(nodeData.egressgatewayranges)
-        if (!validEgressRanges) {
-            setError("invalid egress gateway range provided.")
-            setIsProcessing(false)
-            setTimeout(() => {
-                setError("")
-            }, 1000)
-            return
+        if (nodeData.egressgatewayranges && nodeData.egressgatewayranges.length > 0) {
+            const validEgressRanges = validateEgressRanges(nodeData.egressgatewayranges)
+            if (!validEgressRanges) {
+                setError("invalid egress gateway range provided.")
+                setIsProcessing(false)
+                setTimeout(() => {
+                    setError("")
+                }, 1000)
+                return
+            }
+            nodeData.egressgatewayranges = validEgressRanges
         }
-        nodeData.egressgatewayranges = validEgressRanges
-
         const response = await API(user.token).put(`/nodes/${node.network}/${node.macaddress}`, nodeData)
         if (response.status === 200) {
             setCurrentSettings({...response.data})
