@@ -107,9 +107,12 @@ export default function NodeDetails({ setNodeData, node, setSelectedNode, setSuc
     if (!addressranges || addressranges.length === 0) {
         return trimmedRanges
     }
-    const addressRanges = addressranges.split(',')
-    for (let i = 0; i < addressRanges.length; i++) {
-        const trimmedRange = addressRanges[i].trim()
+    // const addressRanges = addressranges.split(',')
+    if (typeof addressranges === "string") {
+        addressranges = addressranges.split(",")
+    }
+    for (let i = 0; i < addressranges.length; i++) {
+        const trimmedRange = addressranges[i].trim()
         const correctSub = correctSubnetRegex.test(trimmedRange)
         if (correctSub) {
             trimmedRanges.push(trimmedRange)
