@@ -102,12 +102,11 @@ export default function NodeDetails({ setNodeData, node, setSelectedNode, setSuc
   const [isProcessing, setIsProcessing] = React.useState(false)
   const [error, setError] = React.useState('')
 
-  const validateEgressRanges = addressranges => {
+  const validateAddresses = addressranges => {
     const trimmedRanges = []
     if (!addressranges || addressranges.length === 0) {
         return trimmedRanges
     }
-    // const addressRanges = addressranges.split(',')
     if (typeof addressranges === "string") {
         addressranges = addressranges.split(",")
     }
@@ -129,21 +128,27 @@ export default function NodeDetails({ setNodeData, node, setSelectedNode, setSuc
     setIsProcessing(true)
     try {
         const nodeData = { ...settings }
-        if (nodeData.allowedips && nodeData.allowedips.length) {
-            nodeData.allowedips = nodeData.allowedips.split(',')
+        const validRanges = validateAddresses(nodeData.allowedips)
+        if (!validRanges) {
+            setError("invalid allowed ip provided.")
+            setIsProcessing(false)
+            setTimeout(() => {
+                setError("")
+            }, 1000)
+            return
         }
-        if (nodeData.egressgatewayranges && nodeData.egressgatewayranges.length > 0) {
-            const validEgressRanges = validateEgressRanges(nodeData.egressgatewayranges)
-            if (!validEgressRanges) {
-                setError("invalid egress gateway range provided.")
-                setIsProcessing(false)
-                setTimeout(() => {
-                    setError("")
-                }, 1000)
-                return
-            }
-            nodeData.egressgatewayranges = validEgressRanges
+        nodeData.allowedips = validRanges        
+
+        const validEgressRanges = validateAddresses(nodeData.egressgatewayranges)
+        if (!validEgressRanges) {
+            setError("invalid egress gateway range provided.")
+            setIsProcessing(false)
+            setTimeout(() => {
+                setError("")
+            }, 1000)
+            return
         }
+        nodeData.egressgatewayranges = validEgressRanges
         const response = await API(user.token).put(`/nodes/${node.network}/${node.macaddress}`, nodeData)
         if (response.status === 200) {
             setCurrentSettings({...response.data})
