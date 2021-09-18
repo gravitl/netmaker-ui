@@ -137,7 +137,7 @@ export default function AllNetworks({ networks, setSuccess, setNetworkData, user
                             <Grid item className={classes.cell} key={j} xs={fieldName === 'addressrange' ? 8 : 12} md={3}>
                                 <TextField
                                         id="filled-full-width"
-                                        label={fieldName.toUpperCase()}
+                                        label={Util.NETWORK_DISPLAY_NAME[fieldName]}
                                         placeholder={fieldName === 'addressrange' ? network[fieldName].toString() : Util.timeConverter(network[fieldName].toString())}
                                         key={fieldName}
                                         fullWidth

@@ -5,11 +5,15 @@ import Grid from '@material-ui/core/Grid'
 import { DateTimePicker } from '@material-ui/pickers'
 import Tooltip from '@material-ui/core/Tooltip';
 
+import Switch from '@material-ui/core/Switch';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+
 import Fields from '../Utils/Fields'
 import { Button, Typography, CircularProgress } from '@material-ui/core';
 import API from '../Utils/API'
 
 const correctSubnetRegex = new RegExp(/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?).(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?).(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?).(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\/\d{1,3}$/i)
+const correctIpRegex = new RegExp(/^(\b((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.|$)){4}\b)$/i)
 
 const useStyles = makeStyles((theme) => ({
   buttons: {
@@ -55,10 +59,12 @@ const readOnlyFields = [
     'lastcheckin',
     'lastmodified',
     'publickey',
+    'os',
 ]
 const intFields = [
     'listenport',
-    'persistentkeepalive'
+    'persistentkeepalive',
+    'mtu',
 ]
 
 const timeFields = [
@@ -70,11 +76,6 @@ const YES_OR_NO_FIELDS = [
     "udpholepunch",
     "saveconfig",
     "isstatic"
-]
-
-const COMMA_FIELDS = [
-    "allowedips",
-    "egressgatewayranges"
 ]
 
 const parseUpdatedNode = (nodes, macaddress) => {
@@ -93,7 +94,6 @@ const convertDateToUnix = (date) => {
 
 const MAX_TIME = 2566502800
 
-
 export default function NodeDetails({ setNodeData, node, setSelectedNode, setSuccess, networkName, user, config }) {
   const classes = useStyles();
   const [isEditing, setIsEditing] = React.useState(false)
@@ -102,7 +102,27 @@ export default function NodeDetails({ setNodeData, node, setSelectedNode, setSuc
   const [isProcessing, setIsProcessing] = React.useState(false)
   const [error, setError] = React.useState('')
 
-  const validateAddresses = addressranges => {
+  const validateAddresses = addresses => {
+      const trimmedAddresses = []
+      if (!addresses || addresses.length <= 0) {
+          return trimmedAddresses
+      }
+      if (typeof addresses === "string") {
+          addresses = addresses.split(',')
+      }
+      for (let i = 0; i < addresses.length; i++) {
+          const trimmedAddress = addresses[i].trim()
+          const isValidAddress = correctIpRegex.test(trimmedAddress)
+          if (isValidAddress) {
+            trimmedAddresses.push(trimmedAddress)
+            continue
+          }
+        return false
+      }
+      return trimmedAddresses
+  }
+
+  const validateAddressRanges = addressranges => {
     const trimmedRanges = []
     if (!addressranges || addressranges.length === 0) {
         return trimmedRanges
@@ -128,7 +148,7 @@ export default function NodeDetails({ setNodeData, node, setSelectedNode, setSuc
     setIsProcessing(true)
     try {
         const nodeData = { ...settings }
-        const validRanges = validateAddresses(nodeData.allowedips)
+        const validRanges = validateAddressRanges(nodeData.allowedips)
         if (!validRanges) {
             setError("invalid allowed ip provided.")
             setIsProcessing(false)
@@ -139,7 +159,7 @@ export default function NodeDetails({ setNodeData, node, setSelectedNode, setSuc
         }
         nodeData.allowedips = validRanges        
 
-        const validEgressRanges = validateAddresses(nodeData.egressgatewayranges)
+        const validEgressRanges = validateAddressRanges(nodeData.egressgatewayranges)
         if (!validEgressRanges) {
             setError("invalid egress gateway range provided.")
             setIsProcessing(false)
@@ -149,6 +169,18 @@ export default function NodeDetails({ setNodeData, node, setSelectedNode, setSuc
             return
         }
         nodeData.egressgatewayranges = validEgressRanges
+
+        const validRelayAddresses = validateAddresses(nodeData.relayaddrs)
+        if (!validRelayAddresses) {
+            setError("malformatted relay address provided.")
+            setIsProcessing(false)
+            setTimeout(() => {
+                setError("")
+            }, 1000)
+            return
+        }
+        nodeData.relayaddrs = validRelayAddresses
+
         const response = await API(user.token).put(`/nodes/${node.network}/${node.macaddress}`, nodeData)
         if (response.status === 200) {
             setCurrentSettings({...response.data})
@@ -198,6 +230,13 @@ export default function NodeDetails({ setNodeData, node, setSelectedNode, setSuc
             }
             setIsProcessing(false)
         }
+    }
+
+    const handleBoolChange = (event, fieldName) => {
+        event.preventDefault()
+        let newSettings = {...settings}
+        newSettings[fieldName] = event.target.checked ? "yes" : "no"
+        setSettings(newSettings)
     }
 
     const handleChange = event => {
@@ -276,7 +315,7 @@ export default function NodeDetails({ setNodeData, node, setSelectedNode, setSuc
                                             }}
                                             disabled={!isEditing}
                                             inputVariant='outlined'
-                                            label={fieldName.toUpperCase()}
+                                            label={Fields.NODE_DISPLAY_NAMES[fieldName]}
                                             fullWidth
                                             format="yyyy/MM/dd hh:mm a"
                                             maxDate={new Date('3032-01-01')}
@@ -287,17 +326,30 @@ export default function NodeDetails({ setNodeData, node, setSelectedNode, setSuc
                             </Grid>
                         } else {
                             return (
-                            <Grid xs={12} md={6}
-                                item
-                            >
-                                <Tooltip title={IS_UDP_ENABLED(fieldName) ? 
+                                <Grid xs={12} md={6}item>
+                                {YES_OR_NO_FIELDS.indexOf(fieldName) >= 0 ? 
+                                    <div className={classes.center}>
+                                        <Tooltip title={IS_UDP_ENABLED(fieldName) ? 
                                         'UDP Hole Punching disabled when client mode is off.' : ''} placement='top'>
+                                            <FormControlLabel
+                                                control={
+                                                <Switch
+                                                    checked={settings[fieldName] === "yes"}
+                                                    onChange={(event) => handleBoolChange(event, fieldName)}
+                                                    name={fieldName}
+                                                    color="primary"
+                                                    disabled={!isEditing || readOnlyFields.indexOf(fieldName) >= 0 || IS_UDP_ENABLED(fieldName)                                                    }
+                                                    id={fieldName}
+                                                />
+                                                }
+                                                label={Fields.NODE_DISPLAY_NAMES[fieldName]}
+                                            />
+                                        </Tooltip>
+                                    </div> :
+           
                                 <TextField
                                     id={fieldName}
-                                    label={fieldName === 'address6' ? fieldName.toUpperCase() + ' (IPv6)' : 
-                                        COMMA_FIELDS.indexOf(fieldName) >= 0 ? fieldName.toUpperCase() + ' (Comma Separated)' : 
-                                        YES_OR_NO_FIELDS.indexOf(fieldName) >= 0 ? fieldName.toUpperCase() + ' (yes or no)' :
-                                        fieldName.toUpperCase()}
+                                    label={Fields.NODE_DISPLAY_NAMES[fieldName]}
                                     className={classes.textFieldLeft}
                                     placeholder={timeFields.indexOf(fieldName) >= 0 ? Fields.timeConverter(settings[fieldName]) : settings[fieldName]}
                                     value={timeFields.indexOf(fieldName) >= 0 ? Fields.timeConverter(settings[fieldName]) : settings[fieldName]}
@@ -309,13 +361,12 @@ export default function NodeDetails({ setNodeData, node, setSelectedNode, setSuc
                                     }}
                                     disabled={!isEditing 
                                         || readOnlyFields.indexOf(fieldName) >= 0 
-                                        || IS_UDP_ENABLED(fieldName)
                                         || fieldName === 'egressgatewayranges' && settings.isegressgateway !== "yes"
+                                        || fieldName === 'relayaddrs' && settings.isrelay !== "yes"
                                     }
                                     variant="outlined"
                                     onChange={handleChange}
-                                />
-                                </Tooltip>
+                                />}
                             </Grid>
                             )
                         }})}

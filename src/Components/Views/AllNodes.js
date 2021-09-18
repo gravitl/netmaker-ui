@@ -13,13 +13,16 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Edit from '@material-ui/icons/Edit'
 import AccountTree from '@material-ui/icons/AccountTree'
 import CheckBox from '@material-ui/icons/CheckBox'
+import LeakRemove from '@material-ui/icons/LeakRemove'
 import Cancel from '@material-ui/icons/Cancel'
 import LowPriority from '@material-ui/icons/LowPriority'
 import AddToQueue from '@material-ui/icons/AddToQueue'
 import RemoveFromQueue from '@material-ui/icons/RemoveFromQueue'
 import IconButton from '@material-ui/core/IconButton'
+import MultilineChart from '@material-ui/icons/MultilineChart'
 import GatewayCreate from './GatewayCreate'
 import SettingsInputAntenna from '@material-ui/icons/SettingsInputAntenna'
+import RelayDetails from './Modals/RelayDetails';
 
 import API from '../Utils/API'
 import Util from '../Utils/Fields'
@@ -96,6 +99,7 @@ export default function AllNodes({ setNodeData, nodes, networkName, setSuccess, 
     const [success, setApprovalSuccess] = React.useState('')
     const [open, setOpen] = React.useState(false)
     const [gatewayNode, setGatewayNode] = React.useState(null)
+    const [relayOpen, setRelayOpen] = React.useState(false)
 
     const handleNodeSelect = node => {
         setSelectedNode(node)
@@ -148,6 +152,50 @@ export default function AllNodes({ setNodeData, nodes, networkName, setSuccess, 
         }
     }
 
+    const handleRemoveRelay = async (node) => {
+        if (window.confirm(`Are you certain you want to stop node, ${node.name}, from relaying?`)) {
+            try {
+                const response = await API(user.token).delete(`/nodes/${node.network}/${node.macaddress}/deleterelay`)
+                if (response.status === 200) {
+                    setApprovalSuccess(`Successfully removed relay from, ${node.name}!`)
+                } else {
+                    setError(`Unable to remove relay from node, ${node.name}.`)
+                }
+            } catch (err) {
+                setError(`Server error occurred, unable to remove relay from node, ${node.name}.`)
+            }
+            setTimeout(() => {
+                setApprovalSuccess('')
+                setError('')
+            }, 2000)
+        }
+    }
+
+    const handleCreateRelay = async (node, relayAddresses) => {
+        if (window.confirm(`Are you certain you want to make a relay on node: ${node.name} in network: ${node.network}?`)) {
+            try {
+                if (node && relayAddresses && relayAddresses.length) {
+                    console.log(relayAddresses)
+                    const response = await API(user.token).post(`/nodes/${node.network}/${node.macaddress}/createrelay`, {
+                        relayaddrs: relayAddresses
+                    })
+                    if (response.status === 200) {
+                        setApprovalSuccess(`Successfully created relay on node, ${node.name}!`)
+                        handleClose()
+                    } else {
+                        setError(`Unable to relay to node, ${node.name}.`)
+                    }
+                }
+            } catch (err) {
+                setError(`Server error occurred, unable to add relay on node, ${node.name}.`)
+            }
+            setTimeout(() => {
+                setApprovalSuccess('')
+                setError('')
+            }, 2000)
+        }
+    }
+
     const handleCreateIngress = async node => {
         if (window.confirm(`Are you certain you want to allow external client traffic and make an ingress gateway on node: ${node.name} and network: ${node.network}?`)) {
             try {
@@ -189,6 +237,8 @@ export default function AllNodes({ setNodeData, nodes, networkName, setSuccess, 
 
     const handleClose = () => {
         setOpen(false)
+        setRelayOpen(false)
+        setGatewayNode(null)
     }
 
     const handleOpening = node => {
@@ -196,20 +246,27 @@ export default function AllNodes({ setNodeData, nodes, networkName, setSuccess, 
         setOpen(true)
     } 
 
+    const handleOpenRelay = node => {
+        setGatewayNode(node)
+        setRelayOpen(true)
+    }
+
     return (
         <Grid container justify='center' alignItems='center' className={classes.container}>
             <Modal
                 aria-labelledby="gravitl"
                 aria-describedby="Copy your Netmaker Access Token Value"
                 className={classes.modal}
-                open={open}
+                open={open || relayOpen}
                 onClose={handleClose}
                 disablePortal
                 disableEnforceFocus
                 disableAutoFocus
             >
                 <div className={classes.paperModal}>
-                    <GatewayCreate user={user} setSuccess={setApprovalSuccess} setOpen={setOpen} gatewayNode={gatewayNode} networks={networks} />
+                    {relayOpen ? <RelayDetails nodeData={nodes && nodes.length ? nodes.filter(node => node.name !== gatewayNode.name) : []} addRelay={handleCreateRelay} setError={setError} setSuccess={setSuccess} handleClose={handleClose} relayNode={gatewayNode} /> :
+                        <GatewayCreate user={user} setSuccess={setApprovalSuccess} setOpen={setOpen} gatewayNode={gatewayNode} networks={networks} />
+                    }
                 </div>
             </Modal>
             <Grid item xs={10}>
@@ -266,12 +323,25 @@ export default function AllNodes({ setNodeData, nodes, networkName, setSuccess, 
                                         </IconButton>
                                     </Tooltip> 
                                 }
+                                {
+                                    node.isrelay === "yes" ?
+                                    <Tooltip title={`REMOVE RELAY SERVER on ${node.name}?`} placement='top'>
+                                        <IconButton aria-label={`remove relay server status for node, ${node.name}.`} onClick={() => handleRemoveRelay(node)}>
+                                            <LeakRemove />
+                                        </IconButton>
+                                    </Tooltip> : 
+                                    <Tooltip title={`MAKE ${node.name} A RELAY SERVER?`} placement='top'>
+                                        <IconButton aria-label={`make node, ${node.name}, a relay server?`} onClick={() => handleOpenRelay({...node})} disabled={node.ispending === "yes"}>
+                                            <MultilineChart />
+                                        </IconButton>
+                                    </Tooltip> 
+                                }
                             </Grid>
                             {displayedNodeFields.map((fieldName) => (
-                                <Grid key={fieldName + ':' + i} item className={classes.cell} xs={fieldName === displayedNodeFields[0] || (node.isegressgateway === "yes" && fieldName === displayedNodeFields[2])? 12 : 10} md={3}>
+                                <Grid key={fieldName + ':' + i} item className={classes.cell} xs={fieldName === displayedNodeFields[0] || (node.isegressgateway === "yes" && fieldName === displayedNodeFields[2])? 10 : 10} md={3}>
                                     <TextField
                                             id="filled-full-width"
-                                            label={fieldName.toUpperCase()}
+                                            label={Util.NODE_DISPLAY_NAMES[fieldName]}
                                             placeholder={fieldName === displayedNodeFields[2] ? Util.timeConverter(node[fieldName]) : node[fieldName]}
                                             fullWidth
                                             disabled
@@ -303,6 +373,13 @@ export default function AllNodes({ setNodeData, nodes, networkName, setSuccess, 
                             <Grid item xs={1} md={1}>
                                 <Tooltip title={`${node.name} IS AN INGRESS GATEWAY`} placement='top'>
                                     <SettingsInputAntenna className={classes.gateway} />
+                                </Tooltip>
+                            </Grid>
+                            : null}
+                            {node.isrelay === "yes" ? 
+                            <Grid item xs={1} md={1}>
+                                <Tooltip title={`${node.name} IS RELAYING`} placement='top'>
+                                    <MultilineChart className={classes.gateway} />
                                 </Tooltip>
                             </Grid>
                             : null}
