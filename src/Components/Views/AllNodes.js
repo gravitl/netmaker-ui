@@ -172,7 +172,7 @@ export default function AllNodes({ setNodeData, nodes, networkName, setSuccess, 
     }
 
     const handleCreateRelay = async (node, relayAddresses) => {
-        if (window.confirm(`Are you certain you want to make a relay on node: ${node.name} in network: ${node.network}?`)) {
+        if (window.confirm(`Are you certain you want to make a relay from: ${node.name} in network: ${node.network}?`)) {
             try {
                 if (node && relayAddresses && relayAddresses.length) {
                     console.log(relayAddresses)
@@ -235,6 +235,10 @@ export default function AllNodes({ setNodeData, nodes, networkName, setSuccess, 
         }
     }
 
+    const isLinux = (osName) => {
+        return osName === 'linux'
+    }
+
     const handleClose = () => {
         setOpen(false)
         setRelayOpen(false)
@@ -264,7 +268,7 @@ export default function AllNodes({ setNodeData, nodes, networkName, setSuccess, 
                 disableAutoFocus
             >
                 <div className={classes.paperModal}>
-                    {relayOpen ? <RelayDetails nodeData={nodes && nodes.length ? nodes.filter(node => node.name !== gatewayNode.name) : []} addRelay={handleCreateRelay} setError={setError} setSuccess={setSuccess} handleClose={handleClose} relayNode={gatewayNode} /> :
+                    {relayOpen ? <RelayDetails nodeData={nodes && nodes.length ? nodes.filter(node => node.name !== gatewayNode.name && node.network === gatewayNode.network) : []} addRelay={handleCreateRelay} setError={setError} setSuccess={setSuccess} handleClose={handleClose} relayNode={gatewayNode} /> :
                         <GatewayCreate user={user} setSuccess={setApprovalSuccess} setOpen={setOpen} gatewayNode={gatewayNode} networks={networks} />
                     }
                 </div>
@@ -304,34 +308,34 @@ export default function AllNodes({ setNodeData, nodes, networkName, setSuccess, 
                                     <IconButton aria-label={`remove gateway access for node, ${node.name}.`} onClick={() => handleRemoveGateway(node)}>
                                         <Cancel />
                                     </IconButton>
-                                </Tooltip> : 
-                                <Tooltip title={`MAKE ${node.name} AN EGRESS GATEWAY NODE?`} placement='top'>
-                                    <IconButton aria-label={`make node, ${node.name}, a gateway`} onClick={() => handleOpening(node)} disabled={node.ispending === "yes"}>
+                                </Tooltip> :
+                                <Tooltip title={!isLinux(node.os) ? `THIS FEATURE IS ONLY SUPPORTED ON LINUX NODES` : `MAKE ${node.name} AN EGRESS GATEWAY NODE?`} placement='top'>
+                                    <span><IconButton aria-label={`make node, ${node.name}, a gateway`} onClick={() => handleOpening(node)} disabled={node.ispending === "yes" || !isLinux(node.os)}>
                                         <AccountTree />
-                                    </IconButton>
-                                </Tooltip> 
+                                    </IconButton></span>
+                                </Tooltip>
                                 }
                                 { node.isingressgateway === "yes" ? 
                                     <Tooltip title={`REMOVE INGRESS GATEWAY for ${node.name}?`} placement='top'>
-                                        <IconButton aria-label={`remove ingress gateway access for node, ${node.name}.`} onClick={() => handleRemoveIngress(node)}>
+                                        <span><IconButton aria-label={`remove ingress gateway access for node, ${node.name}.`} onClick={() => handleRemoveIngress(node)}>
                                             <RemoveFromQueue />
-                                        </IconButton>
-                                    </Tooltip> : 
-                                    <Tooltip title={`MAKE ${node.name} AN INGRESS GATEWAY NODE?`} placement='top'>
-                                        <IconButton aria-label={`make node, ${node.name}, an ingress gateway`} onClick={() => handleCreateIngress({...node})} disabled={node.ispending === "yes"}>
+                                        </IconButton></span>
+                                    </Tooltip> :
+                                    <Tooltip title={!isLinux(node.os) ? `THIS FEATURE IS ONLY SUPPORTED ON LINUX NODES` : `MAKE ${node.name} AN INGRESS GATEWAY NODE?`} placement='top'>
+                                        <span><IconButton aria-label={`make node, ${node.name}, an ingress gateway`} onClick={() => handleCreateIngress({...node})} disabled={node.ispending === "yes" || !isLinux(node.os)}>
                                             <AddToQueue />
-                                        </IconButton>
-                                    </Tooltip> 
+                                        </IconButton></span>
+                                    </Tooltip>
                                 }
                                 {
                                     node.isrelay === "yes" ?
-                                    <Tooltip title={`REMOVE RELAY SERVER on ${node.name}?`} placement='top'>
+                                    <Tooltip title={`REMOVE RELAY from ${node.name}?`} placement='top'>
                                         <IconButton aria-label={`remove relay server status for node, ${node.name}.`} onClick={() => handleRemoveRelay(node)}>
                                             <LeakRemove />
                                         </IconButton>
                                     </Tooltip> : 
-                                    <Tooltip title={`MAKE ${node.name} A RELAY SERVER?`} placement='top'>
-                                        <IconButton aria-label={`make node, ${node.name}, a relay server?`} onClick={() => handleOpenRelay({...node})} disabled={node.ispending === "yes"}>
+                                    <Tooltip title={`MAKE RELAY from ${node.name}?`} placement='top'>
+                                        <IconButton aria-label={`make relay from ${node.name}?`} onClick={() => handleOpenRelay({...node})} disabled={node.ispending === "yes"}>
                                             <MultilineChart />
                                         </IconButton>
                                     </Tooltip> 

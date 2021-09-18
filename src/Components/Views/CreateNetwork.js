@@ -29,7 +29,7 @@ export default function CreateNetwork({ setIsCreating, setSuccess, setShouldUpda
     const [isProcessing, setIsProcessing] = React.useState(false)
     const [isLocal, setIsLocal] = React.useState(false)
     const [isAddress6, setIsAddress6] = React.useState(false)
-    const [useUDPHolePunch, setUseUDPHolePunch] = React.useState(!(config && config.ClientMode === "off"))
+    const [useUDPHolePunch, setUseUDPHolePunch] = React.useState(false)
 
     const DEFAULT_ADDRESS_6 = 'fd39:75a7:808f:649d::/64'
 

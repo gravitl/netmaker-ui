@@ -9,6 +9,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
+import { SelectAll } from '@material-ui/icons';
 
 const styles = {
     vertTabs: {
@@ -63,6 +64,18 @@ export default function RelayDetails({ handleClose, setSuccess, addRelay, relayN
         setRelayedNodes(event.target.value.join(','))
     }
 
+    const handleSelectAll = () => {
+        let selected = []
+        if (!nodeData || !nodeData.length) {
+            return setSelectedNodes(selected)
+        }
+        for (let i = 0; i < nodeData.length; i++) {
+            selected.push(nodeData[i].address)
+        }
+        setSelectedNodes(selected)
+        setRelayedNodes(selected.join(','))
+    }
+
     return (
         <Grid container xs={12} justify='center' className={classes.mainContainer}>
             <Grid item xs={10} >
@@ -81,10 +94,10 @@ export default function RelayDetails({ handleClose, setSuccess, addRelay, relayN
                 </Button>
             </Grid>
             <Grid item xs={12}>
-                <h3 style={{textAlign: 'center'}}>Relaying on Node, {relayNode.name}</h3>
+                <h3 style={{textAlign: 'center'}}>Creating Relay from {relayNode.name}</h3>
                 <form className={classes.form} onSubmit={e => { e.preventDefault(); addRelay(relayNode, selectedNodes); }}>
-                    <Grid container justifyContent='space-between' alignItems='center'>
-                        <Grid item xs={10} md={5}>
+                    <Grid container justifyContent='center' alignItems='center'>
+                        <Grid item xs={8} md={4}>
                             <FormControl className={classes.formControl} fullWidth>
                                 <InputLabel id="nodes-checkbox-label">Select Node Addresses</InputLabel>
                                 <Select
@@ -107,7 +120,12 @@ export default function RelayDetails({ handleClose, setSuccess, addRelay, relayN
                                 </Select>
                             </FormControl>
                         </Grid>
-                        <Grid item xs={10} md={5}>
+                        <Grid item xs={4} md={3}>
+                            <Button color="primary" variant='outlined' onClick={handleSelectAll} disabled={isProcessing} >
+                                Select All
+                            </Button>
+                        </Grid>
+                        <Grid item xs={10} md={4}>
                             <TextField
                                 variant="outlined"
                                 margin="normal"
@@ -120,18 +138,20 @@ export default function RelayDetails({ handleClose, setSuccess, addRelay, relayN
                                 value={relayedNodes}
                             />
                         </Grid>
+                        <Grid item xs={8} md={6}>
+                            <Button
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                color="primary"
+                                className={classes.submit}
+                                disabled={isProcessing}
+                                style={{marginTop: '1em'}}
+                            >
+                                Create Relay Node
+                            </Button>
+                        </Grid>
                     </Grid>
-                    <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        color="primary"
-                        className={classes.submit}
-                        disabled={isProcessing}
-                        style={{marginTop: '1em'}}
-                    >
-                        Create Relay Node
-                    </Button>
                 </form>
             </Grid>
         </Grid>
