@@ -2,7 +2,7 @@
   <img src="netmaker.png"><break/>
 </p>
 
-## v0.7.3
+## v0.8.0
 
 ## For more information, visit one of the official documentation sites:
 1. [docs.netmaker.org](https://docs.netmaker.org)
@@ -18,6 +18,11 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 The page will reload if you make edits.  
 You will also see any lint errors in the console.  
+
+## To build static files:
+
+1. `npm i`
+2. `npm run build`
 
 
 #### LICENSE

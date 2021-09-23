@@ -71,7 +71,8 @@ const boolFieldValues = {
 const intFields = [
     'defaultlistenport',
     'defaultkeepalive',
-    'defaultcheckininterval'
+    'defaultcheckininterval',
+    'defaultmtu',
 ]
 
 const timeFields = [
@@ -270,12 +271,11 @@ export default function NetworkDetails({ networkData, setSelectedNetwork, back, 
                                             id={fieldName}
                                         />
                                         }
-                                        label={boolFieldValues[fieldName]}
+                                        label={Fields.NETWORK_DISPLAY_NAME[fieldName]}
                                     /></Tooltip></div> :
                                 <TextField
                                     id={fieldName}
-                                    label={fieldName === 'addressrange6' ? fieldName.toUpperCase() + ' (IPv6)' : 
-                                        fieldName === "defaultextclientdns" ? "DEFAULT EXT CLIENT DNS" : fieldName.toUpperCase()}
+                                    label={Fields.NETWORK_DISPLAY_NAME[fieldName]}
                                     className={classes.textFieldLeft}
                                     placeholder={timeFields.indexOf(fieldName) >= 0 ? Fields.timeConverter(settings[fieldName]) : settings[fieldName]}
                                     value={timeFields.indexOf(fieldName) >= 0 ? Fields.timeConverter(settings[fieldName]) : settings[fieldName]}
