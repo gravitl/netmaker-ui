@@ -9,10 +9,9 @@ import {
   Toolbar,
   Tooltip,
   Typography,
-} from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+} from "@mui/material";
 import Logo from "../netmaker.png";
-import Info from "@material-ui/icons/Info";
+import Info from "@mui/icons-material/Info";
 import {
   NETWORK_DETAIL_TAB_NAME,
   NODE_DETAIL_TAB_NAME,
@@ -21,12 +20,14 @@ import {
   EXTERNAL_CLIENTS_TAB_NAME,
   UI_VERSION,
 } from "../config";
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useLocation, useRouteMatch } from "react-router-dom";
+import { useLocation, useRouteMatch } from "react-router-dom";
 import { authSelectors, serverSelectors } from "../store/selectors";
 import { logout } from "../store/modules/auth/actions";
+import { NmLink } from "../components"
 
-const useStyles = makeStyles((theme) => ({
+const styles = {
   topBarMain: {
     marginLeft: "1em",
     marginRight: "1em",
@@ -35,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   menuButton: {
-    marginRight: theme.spacing(2),
+    marginRight: "2em",
   },
   title: {
     textAlign: "center",
@@ -65,15 +66,14 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "space-evenly",
     alignItems: "center",
   },
-}));
+} as any;
 
 export const LoginLink: React.FC = ({ children }) => {
   let location = useLocation();
 
   return (
-    <Button color="inherit">
-      <Link
-        style={{ color: "inherit" }}
+      <NmLink
+        color="inherit"
         to={{
           pathname: "/login",
           // This is the trick! This link sets
@@ -82,13 +82,12 @@ export const LoginLink: React.FC = ({ children }) => {
         }}
       >
         {children}
-      </Link>
-    </Button>
+      </NmLink>
   );
 };
 
 export function Header() {
-  const classes = useStyles();
+  const { t } = useTranslation();
 
   const match = useRouteMatch("/login");
   const showAuthButton = !match;
@@ -100,7 +99,7 @@ export function Header() {
 
   return (
     <Box display="flex" alignItems="center" justifyContent="center">
-      <Grid container className={classes.topBarMain}>
+      <Grid container style={styles.topBarMain}>
         <AppBar position="static">
           <Toolbar>
             <Button
@@ -116,17 +115,17 @@ export function Header() {
                 color="inherit"
                 // onClick={() => setCreatingUser(true)}
               >
-                Users
+                {t("header.users")}
               </Button>
             ) : null}
-            <div className={classes.central}>
+            <div style={styles.central}>
               <Typography
                 variant="h3"
-                className={classes.title}
+                style={styles.title}
                 onClick={() => window.location.reload()}
               >
                 <img
-                  className={classes.logo}
+                  style={styles.logo}
                   src={Logo}
                   alt="Netmaker makes networks."
                 />
@@ -137,17 +136,17 @@ export function Header() {
                 <>
                   <Typography
                     component="p"
-                    className={classes.subTitle}
+                    style={styles.subTitle}
                     // onClick={() => setIsUpdatingUser(true)}
                   >
                     <strong>{user!.name}</strong>
                   </Typography>
                   <Button color="inherit" onClick={() => dispatch(logout())}>
-                    Logout
+                  {t("header.logout")}
                   </Button>
                 </>
               ) : (
-                <LoginLink>Login</LoginLink>
+                <LoginLink>{t("header.login")}</LoginLink>
               ))}
           </Toolbar>
         </AppBar>
@@ -161,28 +160,25 @@ export function Header() {
               indicatorColor="primary"
               // onChange={handleChange}
             >
-              <Tab label={NETWORK_DETAIL_TAB_NAME} tabIndex={0} />
-              <Tab label={NODE_DETAIL_TAB_NAME} tabIndex={1} />
-              <Tab label={OTK_DETAIL_TAB_NAME} tabIndex={2} />
+              <Tab label={t("header.networks")} tabIndex={0} />
+              <Tab label={t("header.nodes")} tabIndex={1} />
+              <Tab label={t("header.accessKeys")} tabIndex={2} />
               <Tab
                 label={
                   "DNS" + serverConfig.DNSMode
-                    ? `${DNS_DETAIL_TAB_NAME} (DISABLED)`
-                    : DNS_DETAIL_TAB_NAME
+                    ? `${t("header.dns")} (${t("common.disabled")})`
+                    : t("header.dns")
                 }
                 tabIndex={3}
                 disabled={serverConfig.DNSMode}
               />
-              <Tab label={EXTERNAL_CLIENTS_TAB_NAME} tabIndex={4} />
-              <div className={classes.central2}>
+              <Tab label={t("header.externalClients")} tabIndex={4} />
+              <div style={styles.central2}>
                 <Tooltip
                   title={
                     serverConfig.Version
-                      ? "VERSIONS\nServer: " +
-                        serverConfig.Version +
-                        ", UI: " +
-                        UI_VERSION
-                      : "VERSIONS\nServer: not found, UI:" + UI_VERSION
+                      ? `${t("common.version")} ${t("common.server")}: ${serverConfig.Version}, UI: ${UI_VERSION}`
+                      : `${t("common.version")} ${t("common.server")}: ${t("common.notFound")}, UI: ${UI_VERSION}`
                   }
                   placement="bottom"
                 >

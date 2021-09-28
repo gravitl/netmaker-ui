@@ -1,11 +1,10 @@
 import { select, put, takeEvery, all } from "redux-saga/effects"
 import { getType } from "typesafe-actions"
-import { get, getAllUsers, getUser, login, getServerConfig, getNetworks, getNodes, hasAdmin, createAdmin, createUser, deleteUser, updateUser } from "./actions"
+import { get, getAllUsers, getUser, login, getServerConfig, getNodes, hasAdmin, createAdmin, createUser, deleteUser, updateUser } from "./actions"
 import { getToken } from "../auth/selectors"
 import { getApi } from "./selectors"
 import { AxiosResponse } from "axios"
 import jwtDecode from "jwt-decode"
-import { Network } from "../network/types"
 import { Node } from "../node/types"
 
 function* handleGetRequest(action: ReturnType<typeof get["request"]>) {
@@ -92,22 +91,6 @@ function* handleGetServerConfigRequest(action: ReturnType<typeof getServerConfig
     yield put(getServerConfig["success"](response.data))
   } catch (e: unknown) {
     yield put(getServerConfig["failure"](e as Error))
-  }
-}
-
-function* handleGetNetworksRequest(action: ReturnType<typeof getNetworks["request"]>) {
-  const api: ReturnType<typeof getApi> = yield select(getApi)
-
-  try {
-    const response: AxiosResponse<Array<Network>> = yield api.get("/networks", {
-      headers: {
-        authorization: `Bearer ${action.payload.token}`
-      }
-    })
-    console.log(response.data)
-    yield put(getNetworks["success"](response.data))
-  } catch (e: unknown) {
-    yield put(getNetworks["failure"](e as Error))
   }
 }
 
@@ -218,7 +201,6 @@ export function* saga() {
     takeEvery(getType(getUser["request"]), handleGetUserRequest),
     takeEvery(getType(login["request"]), handleLoginRequest),
     takeEvery(getType(getServerConfig["request"]), handleGetServerConfigRequest),
-    takeEvery(getType(getNetworks["request"]), handleGetNetworksRequest),
     takeEvery(getType(getNodes["request"]), handleGetNodesRequest),
     takeEvery(getType(hasAdmin["request"]), handleHasAdminRequest),
     takeEvery(getType(createAdmin["request"]), handleCreateAdminRequest),

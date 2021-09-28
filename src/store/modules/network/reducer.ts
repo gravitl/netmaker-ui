@@ -1,7 +1,8 @@
 import { produce } from "immer";
 import { createReducer } from "typesafe-actions";
-import { getNetworks } from "../api/actions";
+import { getNetworks } from "./actions";
 import { Network } from "./types";
+import { networkPayloadToNetwork } from "./utils";
 
 export const reducer = createReducer({
   networks: [] as Array<Network>,
@@ -14,7 +15,7 @@ export const reducer = createReducer({
   )
   .handleAction(getNetworks["success"], (state, action) =>
     produce(state, (draftState) => {
-      draftState.networks = action.payload;
+      draftState.networks = action.payload.map(networkPayloadToNetwork);
       draftState.isFetching = false;
     })
   )

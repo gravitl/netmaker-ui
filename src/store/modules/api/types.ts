@@ -1,6 +1,5 @@
 import { AxiosResponse } from "axios";
 import { User } from "../auth/types";
-import { Network } from "../network/types";
 import { Node } from "../node/types";
 
 export interface GetPayload {
@@ -61,13 +60,6 @@ export interface GetServerConfig {
     Verbosity: number
     Version: string
   }
-}
-
-export interface GetNetworks {
-  Request: {
-    token: string
-  },
-  Response: Array<Network>
 }
 
 export interface GetNodes {

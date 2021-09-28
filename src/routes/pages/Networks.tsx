@@ -4,7 +4,9 @@ import {
   CardContent,
   Container,
   Typography,
-} from "@material-ui/core";
+  Button,
+  FormControlLabel,
+} from "@mui/material";
 import React from "react";
 import { useSelector } from "react-redux";
 import {
@@ -13,7 +15,11 @@ import {
   Switch,
   Route,
   useParams,
+  useHistory,
 } from "react-router-dom";
+import { NmForm } from "../../components/form/Form";
+import { NmFormInputSwitch } from "../../components/form/FormSwitchInput";
+import { NmFormInputText } from "../../components/form/FormTextInput";
 import { Network } from "../../store/modules/network/types";
 import { networkSelectors } from "../../store/selectors";
 
@@ -22,27 +28,124 @@ const networkByNetIdPredicate = (netid: string) => (network: Network) =>
 
 const NetworkDetails: React.FC = () => {
   const { path, url } = useRouteMatch();
+  const history = useHistory();
 
   const { networkId } = useParams<{ networkId: string }>();
   const network = useSelector(networkSelectors.getNetworks).find(
     networkByNetIdPredicate(networkId)
   );
 
+  const isEditing = !!useRouteMatch(`${path}/edit`);
+
   if (!network) {
     return <div>Not Found</div>;
   }
 
   return (
-    <Switch>
-      <Route exact path={path}>
-        <Link to={`${url}/edit`}>Edit</Link>
-        <pre>{JSON.stringify(network, null, 2)}</pre>
-      </Route>
-
-      <Route path={`${path}/edit`}>
-        Editing network {network.netid}
-      </Route>
-    </Switch>
+    <>
+      <Switch>
+        <Route path={`${path}/edit`}>
+          Editing network {network.netid}
+          <Button variant="outlined" onClick={() => console.log("submit")}>
+            Save
+          </Button>
+          <Button
+            variant="outlined"
+            onClick={() => {
+              history.push(path);
+            }}
+          >
+            Cancel
+          </Button>
+          <Button
+            variant="outlined"
+            onClick={() => console.log("removeNetwork(networkData.netid)")}
+          >
+            Delete
+          </Button>
+        </Route>
+        <Route exact path={path}>
+          <Link to={`${url}/edit`}>Edit</Link>
+        </Route>
+      </Switch>
+      <NmForm
+        initialState={network}
+        disabled={!isEditing}
+        onSubmit={(data) => console.log(JSON.stringify(data))}
+      >
+        <Grid item xs={12}>
+          <div>
+            <NmFormInputSwitch
+              name={"allowmanualsignup"}
+              label={"Allow Node Signup Without Keys"}
+            />
+          </div>
+        </Grid>
+        <NmFormInputText
+          disabled={!isEditing}
+          name={"name"}
+          label={"Label for my input"}
+        />
+      </NmForm>
+      {/* <form >
+            <Grid justify='center' alignItems='center' container>
+                {error && 
+                    <Grid item xs={10}>
+                        <div className={classes.center}>
+                            <Typography variant='body1' color='error'>{error}...</Typography>
+                        </div>
+                    </Grid>
+                }
+                <Grid item xs={12}>
+                    <div >
+                        <FormControlLabel
+                            disabled={!isEditing}
+                            control={<Switch checked={allowManual} disabled={!isEditing} onChange={toggleManual} color='primary' name="allowManual" />}
+                            label={"Allow Node Signup Without Keys"}
+                        />
+                    </div>
+                </Grid>
+                { networkData && settings && Fields.NETWORK_FIELDS.map(fieldName => {
+                    return fieldName !== 'accesskeys' ? 
+                            <Grid item xs={12} md={5}>
+                                {boolFields.indexOf(fieldName) >= 0 ? 
+                                <div className={classes.center}>
+                                    <Tooltip title={IS_UDP_ENABLED(fieldName) ? 
+                                        'UDP Hole Punching disabled when client mode is off.' : ''} placement='top'>
+                                    <FormControlLabel
+                                        control={
+                                        <Switch
+                                            checked={settings[fieldName] === "yes"}
+                                            onChange={(event) => handleBoolChange(event, fieldName)}
+                                            name={fieldName}
+                                            color="primary"
+                                            disabled={!isEditing || readOnlyFields.indexOf(fieldName) >= 0 || IS_UDP_ENABLED(fieldName)}
+                                            id={fieldName}
+                                        />
+                                        }
+                                        label={Fields.NETWORK_DISPLAY_NAME[fieldName]}
+                                    /></Tooltip></div> :
+                                <TextField
+                                    id={fieldName}
+                                    label={Fields.NETWORK_DISPLAY_NAME[fieldName]}
+                                    className={classes.textFieldLeft}
+                                    placeholder={timeFields.indexOf(fieldName) >= 0 ? Fields.timeConverter(settings[fieldName]) : settings[fieldName]}
+                                    value={timeFields.indexOf(fieldName) >= 0 ? Fields.timeConverter(settings[fieldName]) : settings[fieldName]}
+                                    key={fieldName}
+                                    fullWidth
+                                    disabled={!isEditing || readOnlyFields.indexOf(fieldName) >= 0 || (settings.isdualstack === "no" && fieldName === 'addressrange6')}
+                                    margin="normal"
+                                    InputLabelProps={{
+                                        shrink: true,
+                                    }}
+                                    variant="outlined"
+                                    onChange={handleChange}
+                                />}
+                            </Grid> : null
+                    })}
+            </Grid>
+        </form> */}
+    </>
   );
 };
 

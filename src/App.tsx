@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 // //import Avatar from 'react-avatar';
 // import { makeStyles } from '@material-ui/core/styles'
 // import { BrowserRouter as Router } from 'react-router-dom'
@@ -12,7 +12,11 @@ import React from 'react';
 // import CreateNetwork from './Components/Views/CreateNetwork';
 // import DateFnsUtils from '@date-io/date-fns';
 
-import './App.css'
+import "./App.css";
+
+import { ToastContainer } from 'react-toastify';
+import { ThemeProvider } from "@mui/material/styles";
+import { useCurrentTheme } from "./components/theme";
 // import CreateUser from './Components/Views/CreateUser.js';
 // import UpdateUser from './Components/Views/UpdateUser';
 // import Login from './Components/Views/Login.js';
@@ -20,7 +24,7 @@ import './App.css'
 // import {BACKEND_URL} from './config'
 // import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 
-import Routes from "./routes/routes"
+import Routes from "./routes/routes";
 
 // const useStyles = makeStyles((_) => ({
 //   center: {
@@ -33,7 +37,7 @@ function App() {
   // const [networkData, setNetworkData] = useState([]); //table data
   // const [nodeData, setNodeData] = useState([]); //table data
   // const [dataSelection, setDataSelection] = useState(0)
-  // const [networkSelection, setNetworkSelection] = useState(-1) 
+  // const [networkSelection, setNetworkSelection] = useState(-1)
   // const [isProcessing, setIsProcessing] = useState(false)
   // const [shouldUpdate, setShouldUpdate] = useState(true)
   // const [creatingNetwork, setCreatingNetwork] = useState(false)
@@ -48,7 +52,7 @@ function App() {
   // const [configDetails, setConfigDetails] = useState({})
   // const [networkNames, setNetworkNames] = useState([])
 
-  // React.useEffect(() => {       
+  // React.useEffect(() => {
   //   let loginParam = USER.getParameterByName('login')
   //   if (loginParam && !user) {
   //     loginParam = Buffer.from(loginParam, 'base64').toString().split('   ')
@@ -59,17 +63,17 @@ function App() {
   //       if (userProvided) {
   //           setTimeout(() => {
   //             window.location.replace(window.location.href.split('?')[0])
-  //         }, 200)  
+  //         }, 200)
   //       }
   //     }
   //   }
-  //   USER.hasAdmin((hasAdmin, err) => { 
+  //   USER.hasAdmin((hasAdmin, err) => {
   //     if (err) {
   //       setIsBackend(false)
   //     } else {
-  //       setIsBackend(true); 
-  //       setNeedsAdmin(!hasAdmin); 
-  //       if (!hasAdmin) setCreatingUser(true)} 
+  //       setIsBackend(true);
+  //       setNeedsAdmin(!hasAdmin);
+  //       if (!hasAdmin) setCreatingUser(true)}
   //   })
   //   if (!isBackend) {
   //     setError(`Error connecting to backend. Given: ${Common.BACKEND_URL} \n Server may be down, address may be incorrect, or port may not be open. \n Please investigate.`)
@@ -94,7 +98,7 @@ function App() {
   //           })
 
   //           API(user.token).get("/networks") // get network data
-  //           .then(networkRes => {  
+  //           .then(networkRes => {
   //               API(user.token).get("/nodes") // get node data
   //               .then(nodeRes => {
   //                   if (nodeRes.data && nodeRes.data.length > 0) setNodeData(nodeRes.data.sort(Fields.sortNodes) || [])
@@ -116,7 +120,7 @@ function App() {
   //                   }
   //                   setNodeData([])
   //                   setIsProcessing(false)
-  //               }) 
+  //               })
   //           })
   //           .catch(error => {
   //               setIsProcessing(false)
@@ -150,37 +154,42 @@ function App() {
   //   }
   // }, [networkData, user, isBackend])
 
-  return (<Routes />
-    // <Router>
-    //   <MuiPickersUtilsProvider utils={DateFnsUtils}>
-    //     <div className="App">
-    //       <TopBar configDetails={configDetails} setDataSelection={setDataSelection} setCreatingNetwork={setCreatingNetwork} currentUser={user} setUser={setUser} setIsLoggingIn={setIsLoggingIn} setIsUpdatingUser={setIsUpdatingUser} setCreatingUser={setCreatingUser} setError={setError} />
-    //       {success ? <div className={classes.center}><Typography variant='h6' color='primary'>{success}</Typography></div> : null}
-    //       {error ? <div className={classes.center}><Typography variant='h6' color='error'>{error}</Typography></div> : null}
-    //       { error ? null : needsAdmin && creatingUser ? <CreateUser setIsCreating={setCreatingUser} setSuccess={setSuccess} setShouldUpdate={setShouldUpdate} isAdmin={needsAdmin} hasBack={!needsAdmin} user={user} /> :
-    //         isLoggingIn ? <Login setIsLoggingIn={setIsLoggingIn} setSuccess={setSuccess} setShouldUpdate={setShouldUpdate} /> :
-    //         isUpdatingUser ? <UpdateUser setIsUpdating={setIsUpdatingUser} setSuccess={setSuccess} setShouldUpdate={setShouldUpdate} currentUser={user}/> :
-    //         creatingUser ? <CreateUser setIsCreating={setCreatingUser} setSuccess={setSuccess} setShouldUpdate={setShouldUpdate} networks={networkNames}/> :
-    //         creatingNetwork ? <CreateNetwork setIsCreating={setCreatingNetwork} setSuccess={setSuccess} setShouldUpdate={setShouldUpdate} user={user} config={configDetails} /> : 
-    //         isProcessing ? <div className={classes.center}><CircularProgress /></div> : 
-    //         <MainTable 
-    //           setCreatingNetwork={setCreatingNetwork} 
-    //           setNetworkData={setNetworkData} 
-    //           setNodeData={setNodeData} 
-    //           setNetworkSelection={setNetworkSelection} 
-    //           networkData={networkData} 
-    //           nodeData={nodeData} 
-    //           networkSelection={networkSelection} 
-    //           dataSelection={dataSelection} 
-    //           setSuccess={setSuccess}
-    //           user={user}
-    //           configDetails={configDetails}
-    //         />
-    //       }
-    //     </div>
-    //   </MuiPickersUtilsProvider>
-    // </Router>
-  )
+  const theme = useCurrentTheme();
+  return (
+    <ThemeProvider theme={theme}>
+      <Routes />
+      <ToastContainer containerId="App.tsx" />
+    </ThemeProvider>
+  );
+  // <Router>
+  //   <MuiPickersUtilsProvider utils={DateFnsUtils}>
+  //     <div className="App">
+  //       <TopBar configDetails={configDetails} setDataSelection={setDataSelection} setCreatingNetwork={setCreatingNetwork} currentUser={user} setUser={setUser} setIsLoggingIn={setIsLoggingIn} setIsUpdatingUser={setIsUpdatingUser} setCreatingUser={setCreatingUser} setError={setError} />
+  //       {success ? <div className={classes.center}><Typography variant='h6' color='primary'>{success}</Typography></div> : null}
+  //       {error ? <div className={classes.center}><Typography variant='h6' color='error'>{error}</Typography></div> : null}
+  //       { error ? null : needsAdmin && creatingUser ? <CreateUser setIsCreating={setCreatingUser} setSuccess={setSuccess} setShouldUpdate={setShouldUpdate} isAdmin={needsAdmin} hasBack={!needsAdmin} user={user} /> :
+  //         isLoggingIn ? <Login setIsLoggingIn={setIsLoggingIn} setSuccess={setSuccess} setShouldUpdate={setShouldUpdate} /> :
+  //         isUpdatingUser ? <UpdateUser setIsUpdating={setIsUpdatingUser} setSuccess={setSuccess} setShouldUpdate={setShouldUpdate} currentUser={user}/> :
+  //         creatingUser ? <CreateUser setIsCreating={setCreatingUser} setSuccess={setSuccess} setShouldUpdate={setShouldUpdate} networks={networkNames}/> :
+  //         creatingNetwork ? <CreateNetwork setIsCreating={setCreatingNetwork} setSuccess={setSuccess} setShouldUpdate={setShouldUpdate} user={user} config={configDetails} /> :
+  //         isProcessing ? <div className={classes.center}><CircularProgress /></div> :
+  //         <MainTable
+  //           setCreatingNetwork={setCreatingNetwork}
+  //           setNetworkData={setNetworkData}
+  //           setNodeData={setNodeData}
+  //           setNetworkSelection={setNetworkSelection}
+  //           networkData={networkData}
+  //           nodeData={nodeData}
+  //           networkSelection={networkSelection}
+  //           dataSelection={dataSelection}
+  //           setSuccess={setSuccess}
+  //           user={user}
+  //           configDetails={configDetails}
+  //         />
+  //       }
+  //     </div>
+  //   </MuiPickersUtilsProvider>
+  // </Router>
 }
 
 export default App;

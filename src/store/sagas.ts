@@ -5,6 +5,7 @@ import { saga as api } from "./modules/api";
 import { saga as network } from "./modules/network";
 import { saga as node } from "./modules/node";
 import { saga as server } from "./modules/server";
+import { saga as toast } from "./modules/server";
 
 export const createRootSaga = () => {
   function* rootSaga() {
@@ -14,6 +15,7 @@ export const createRootSaga = () => {
       network(),
       node(),
       server(),
+      toast(),
     ]);
   }
   return rootSaga;

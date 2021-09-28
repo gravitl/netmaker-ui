@@ -6,7 +6,6 @@ import {
   GetUser,
   Login,
   GetServerConfig,
-  GetNetworks,
   GetNodes,
   HasAdmin,
   CreateAdmin,
@@ -44,12 +43,6 @@ export const getServerConfig = createAsyncAction(
   "api_getServerConfig_Success",
   "api_getServerConfig_Failure"
 )<GetServerConfig["Request"], GetServerConfig["Response"], Error>();
-
-export const getNetworks = createAsyncAction(
-  "api_getNetworks_Request",
-  "api_getNetworks_Success",
-  "api_getNetworks_Failure"
-)<GetNetworks["Request"], GetNetworks["Response"], Error>();
 
 export const getNodes = createAsyncAction(
   "api_getNodes_Request",

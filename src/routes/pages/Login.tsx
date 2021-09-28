@@ -6,14 +6,14 @@ import {
   CircularProgress,
   Modal,
   Box,
-} from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+} from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { Redirect, useHistory } from "react-router-dom";
+import { Redirect, useHistory, useLocation } from "react-router-dom";
 import { login } from "../../store/modules/api/actions";
 import { authSelectors } from "../../store/selectors";
+import { correctUserNameRegex, correctPasswordRegex } from "../../util/regex";
 
-const useStyles = makeStyles({
+const styles = {
   vertTabs: {
     flex: 1,
     display: "flex",
@@ -47,12 +47,7 @@ const useStyles = makeStyles({
     px: 4,
     pb: 3,
   },
-});
-
-const correctUserNameRegex = new RegExp(
-  /^(([a-zA-Z0-9,\-,.]*)|([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4})){3,40}$/i
-);
-const correctPasswordRegex = new RegExp(/^.{5,64}$/i);
+} as any
 
 const validate = (username: string, password: string) => {
   const isUserName = correctUserNameRegex.test(username);
@@ -68,6 +63,7 @@ export function Login() {
   const isLoggedIn = useSelector(authSelectors.getLoggedIn);
 
   const history = useHistory();
+  const location = useLocation<{background?: Location}>();
 
   const [userName, setUserName] = React.useState("");
   const [error, setError] = React.useState("");
@@ -85,8 +81,6 @@ export function Login() {
       setError("Failed to login, wrong username or password.");
     }
   }, [isLogginIn, isLoggedIn, triedToLogin, setError]);
-
-  const classes = useStyles();
 
   const handleSubmit = useCallback(() => {
     const { status, cause } = validate(userName, password);
@@ -133,14 +127,14 @@ export function Login() {
 
 
   if(isLoggedIn)
-    return <Redirect to="/" />
+    return <Redirect to={location.state?.background?.href || "/"} />
 
   return (
     <Modal style={{display: "flex", flex: 1}} open={true} onClose={() => {
         history.goBack()
     }}>
-    <Box className={classes.modal} >
-        <div className={classes.center}>
+    <Box style={styles.modal} >
+        <div style={styles.center}>
             {error && (
             <Typography variant="h5" color="error">
                 {error}
@@ -150,7 +144,7 @@ export function Login() {
         </div>
         <h3 style={{ display: "flex", flex: 1, flexDirection: "row", textAlign: "center" }}>Login below:</h3>
         <form
-          className={classes.vertTabs}
+          style={styles.vertTabs}
           onSubmit={(e) => {
             e.preventDefault();
             handleSubmit();
@@ -190,9 +184,9 @@ export function Login() {
             fullWidth
             variant="contained"
             color="primary"
-            className={classes.vertTabs}
+            style={styles.vertTabs}
             disabled={isLogginIn}
-            style={{ marginTop: "1em" }}
+            // style={{ marginTop: "1em" }}
           >
             Login
           </Button>

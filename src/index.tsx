@@ -6,6 +6,7 @@ import * as serviceWorker from "./serviceWorker";
 import { createReduxStore } from "./store/createStore";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
+import "./i18n/i18n"
 
 const store = createReduxStore();
 
