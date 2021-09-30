@@ -15,8 +15,7 @@ export interface Network {
   keyupdatetimestamp: number
   defaultkeepalive: number
   defaultsaveconfig: boolean
-  accesskeys: [
-  ],
+  accesskeys: Array<AccessKey>
   allowmanualsignup: boolean
   islocal: boolean
   isdualstack: boolean
@@ -63,3 +62,56 @@ export interface DeleteNetworkPayload {
   },
   Response: void
 }
+
+export interface CreateNetworkPayload {
+  Request: {
+    token: string
+    newNetwork: {
+      addressrange: string
+      netid: string
+      localrange: string
+      islocal: "yes" | "no"
+      isdualstack: "yes" | "no"
+      addressrange6: string
+      defaultudpholepunch: "yes" | "no"
+    }
+  },
+  Response: void
+}
+
+export interface AccessKey {
+  name: string
+  value: string
+  accessstring: string
+  uses: number
+}
+
+export interface GetAccessKeysPayload {
+  Request: {
+    token: string
+    netid: string
+  },
+  Response: Array<AccessKey>
+}
+
+export interface CreateAccessKeyPayload {
+  Request: {
+    token: string
+    netid: string
+    newAccessKey: {
+      name: string
+      uses: number
+    }
+  },
+  Response: AccessKey
+}
+
+export interface DeleteAccessKeyPayload {
+  Request: {
+    token: string
+    netid: string
+    name: string
+  },
+  Response: void
+}
+

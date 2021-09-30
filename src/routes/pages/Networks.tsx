@@ -5,13 +5,15 @@ import {
   Container,
   Typography,
   Button,
-  FormControlLabel,
+  IconButton,
+  Box,
 } from "@mui/material";
-import React from "react";
-import { useSelector } from "react-redux";
+import { Delete } from "@mui/icons-material";
+import React, { useCallback } from "react";
+import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
 import {
   useRouteMatch,
-  Link,
   Switch,
   Route,
   useParams,
@@ -21,21 +23,21 @@ import { NmForm } from "../../components/form/Form";
 import { NmFormInputSwitch } from "../../components/form/FormSwitchInput";
 import { NmFormInputText } from "../../components/form/FormTextInput";
 import { Network } from "../../store/modules/network/types";
-import { networkSelectors } from "../../store/selectors";
+import { authSelectors, networkSelectors } from "../../store/selectors";
+import { NmLink } from "../../components/Link";
+import { updateNetwork } from "../../store/modules/network/actions";
+import { SubmitHandler } from "react-hook-form";
+import { networkToNetworkPayload } from "../../store/modules/network/utils";
+import { deleteNetwork } from "../../store/modules/network/actions";
 
 const networkByNetIdPredicate = (netid: string) => (network: Network) =>
   network.netid === netid;
 
-const NetworkDetails: React.FC = () => {
-  const { path, url } = useRouteMatch();
-  const history = useHistory();
-
-  const { networkId } = useParams<{ networkId: string }>();
-  const network = useSelector(networkSelectors.getNetworks).find(
-    networkByNetIdPredicate(networkId)
-  );
-
-  const isEditing = !!useRouteMatch(`${path}/edit`);
+const NetworkDetailsEdit: React.FC<{
+  network: Network;
+  onSubmit: SubmitHandler<Network>;
+}> = ({ network, onSubmit }) => {
+  const { t } = useTranslation();
 
   if (!network) {
     return <div>Not Found</div>;
@@ -43,36 +45,7 @@ const NetworkDetails: React.FC = () => {
 
   return (
     <>
-      <Switch>
-        <Route path={`${path}/edit`}>
-          Editing network {network.netid}
-          <Button variant="outlined" onClick={() => console.log("submit")}>
-            Save
-          </Button>
-          <Button
-            variant="outlined"
-            onClick={() => {
-              history.push(path);
-            }}
-          >
-            Cancel
-          </Button>
-          <Button
-            variant="outlined"
-            onClick={() => console.log("removeNetwork(networkData.netid)")}
-          >
-            Delete
-          </Button>
-        </Route>
-        <Route exact path={path}>
-          <Link to={`${url}/edit`}>Edit</Link>
-        </Route>
-      </Switch>
-      <NmForm
-        initialState={network}
-        disabled={!isEditing}
-        onSubmit={(data) => console.log(JSON.stringify(data))}
-      >
+      <NmForm initialState={network} onSubmit={onSubmit}>
         <Grid item xs={12}>
           <div>
             <NmFormInputSwitch
@@ -82,69 +55,129 @@ const NetworkDetails: React.FC = () => {
           </div>
         </Grid>
         <NmFormInputText
-          disabled={!isEditing}
-          name={"name"}
-          label={"Label for my input"}
+          name={"addressrange"}
+          label={t("network.addressrange")}
+        />
+        <NmFormInputText
+          name={"addressrange6"}
+          label={t("network.addressrange6")}
+        />
+        <NmFormInputText name={"localrange"} label={t("network.localrange")} />
+        <NmFormInputText
+          name={"displayname"}
+          label={t("network.displayname")}
+        />
+        <NmFormInputText
+          name={"defaultinterface"}
+          label={t("network.defaultinterface")}
+        />
+        <NmFormInputText
+          name={"defaultlistenport"}
+          label={t("network.defaultlistenport")}
+        />
+        <NmFormInputText
+          name={"defaultpostup"}
+          label={t("network.defaultpostup")}
+        />
+        <NmFormInputText
+          name={"defaultpostdown"}
+          label={t("network.defaultpostdown")}
+        />
+        <NmFormInputText
+          name={"defaultkeepalive"}
+          label={t("network.defaultkeepalive")}
+        />
+        <NmFormInputText
+          name={"checkininterval"}
+          label={t("network.checkininterval")}
+        />
+        <NmFormInputText
+          name={"defaultextclientdns"}
+          label={t("network.defaultextclientdns")}
+        />
+        <NmFormInputText name={"defaultmtu"} label={t("network.defaultmtu")} />
+        <NmFormInputSwitch
+          name={"isdualstack"}
+          label={t("network.isdualstack")}
+        />
+        <NmFormInputSwitch
+          name={"defaultsaveconfig"}
+          label={t("network.defaultsaveconfig")}
+        />
+        <NmFormInputSwitch
+          name={"defaultudpholepunch"}
+          label={t("network.defaultudpholepunch")}
         />
       </NmForm>
-      {/* <form >
-            <Grid justify='center' alignItems='center' container>
-                {error && 
-                    <Grid item xs={10}>
-                        <div className={classes.center}>
-                            <Typography variant='body1' color='error'>{error}...</Typography>
-                        </div>
-                    </Grid>
-                }
-                <Grid item xs={12}>
-                    <div >
-                        <FormControlLabel
-                            disabled={!isEditing}
-                            control={<Switch checked={allowManual} disabled={!isEditing} onChange={toggleManual} color='primary' name="allowManual" />}
-                            label={"Allow Node Signup Without Keys"}
-                        />
-                    </div>
-                </Grid>
-                { networkData && settings && Fields.NETWORK_FIELDS.map(fieldName => {
-                    return fieldName !== 'accesskeys' ? 
-                            <Grid item xs={12} md={5}>
-                                {boolFields.indexOf(fieldName) >= 0 ? 
-                                <div className={classes.center}>
-                                    <Tooltip title={IS_UDP_ENABLED(fieldName) ? 
-                                        'UDP Hole Punching disabled when client mode is off.' : ''} placement='top'>
-                                    <FormControlLabel
-                                        control={
-                                        <Switch
-                                            checked={settings[fieldName] === "yes"}
-                                            onChange={(event) => handleBoolChange(event, fieldName)}
-                                            name={fieldName}
-                                            color="primary"
-                                            disabled={!isEditing || readOnlyFields.indexOf(fieldName) >= 0 || IS_UDP_ENABLED(fieldName)}
-                                            id={fieldName}
-                                        />
-                                        }
-                                        label={Fields.NETWORK_DISPLAY_NAME[fieldName]}
-                                    /></Tooltip></div> :
-                                <TextField
-                                    id={fieldName}
-                                    label={Fields.NETWORK_DISPLAY_NAME[fieldName]}
-                                    className={classes.textFieldLeft}
-                                    placeholder={timeFields.indexOf(fieldName) >= 0 ? Fields.timeConverter(settings[fieldName]) : settings[fieldName]}
-                                    value={timeFields.indexOf(fieldName) >= 0 ? Fields.timeConverter(settings[fieldName]) : settings[fieldName]}
-                                    key={fieldName}
-                                    fullWidth
-                                    disabled={!isEditing || readOnlyFields.indexOf(fieldName) >= 0 || (settings.isdualstack === "no" && fieldName === 'addressrange6')}
-                                    margin="normal"
-                                    InputLabelProps={{
-                                        shrink: true,
-                                    }}
-                                    variant="outlined"
-                                    onChange={handleChange}
-                                />}
-                            </Grid> : null
-                    })}
-            </Grid>
-        </form> */}
+    </>
+  );
+};
+
+const NetworkDetails: React.FC = () => {
+  const { path, url } = useRouteMatch();
+  const history = useHistory();
+  const { t } = useTranslation();
+
+  const { networkId } = useParams<{ networkId: string }>();
+  const network = useSelector(networkSelectors.getNetworks).find(
+    networkByNetIdPredicate(networkId)
+  );
+
+  const dispatch = useDispatch();
+  const token = useSelector(authSelectors.getToken);
+  const editNetworkSubmit = useCallback(
+    (data: Network) => {
+      dispatch(
+        updateNetwork.request({
+          token: token!,
+          network: networkToNetworkPayload(data),
+        })
+      );
+    },
+    [dispatch, token]
+  );
+
+  if (!network) {
+    return <div>Not Found</div>;
+  }
+
+  return (
+    <>
+      <br />
+      Nodes last modified:{" "}
+      {new Date(network.nodeslastmodified * 1000).toUTCString()}
+      <br />
+      Network last modified:{" "}
+      {new Date(network.networklastmodified * 1000).toUTCString()}
+      <Switch>
+        <Route path={`${path}/edit`}>
+          <NetworkDetailsEdit network={network} onSubmit={editNetworkSubmit} />
+          <Button
+            variant="outlined"
+            onClick={() => {
+              history.push(
+                url.replace(":networkId", network.netid).replace("/edit", "")
+              );
+            }}
+          >
+            {t("common.cancel")}
+          </Button>
+          <Button
+            variant="outlined"
+            onClick={() => console.log("removeNetwork(networkData.netid)")}
+          >
+            {t("common.delete")}
+          </Button>
+        </Route>
+        <Route exact path={path}>
+          <NmLink to={`${url}/edit`} variant="outlined">
+            {t("common.edit")}
+          </NmLink>
+          <NmLink to={`${url}/accesskeys`} variant="outlined">
+            {t("header.accessKeys")}
+          </NmLink>
+        </Route>
+      </Switch>
     </>
   );
 };
@@ -157,6 +190,19 @@ const NetworkCard: React.FC<{ url: string; networkId: string }> = ({
     networkByNetIdPredicate(networkId)
   );
 
+  const dispatch = useDispatch();
+  const token = useSelector(authSelectors.getToken)!;
+  const deleteNetworkCallback = useCallback(
+    () =>
+      dispatch(
+        deleteNetwork.request({
+          token,
+          netid: network!.netid,
+        })
+      ),
+    [dispatch, token, network]
+  );
+
   if (!network) {
     return <div>Not Found</div>;
   }
@@ -164,11 +210,11 @@ const NetworkCard: React.FC<{ url: string; networkId: string }> = ({
   return (
     <Card variant="outlined" sx={{ margin: "0.5em" }}>
       <CardContent>
-        <Link to={`${url}/${networkId}/details`}>
+        <NmLink to={`${url}/${networkId}/details`}>
           <Typography variant="h5" component="div">
             {network.displayname}
           </Typography>
-        </Link>
+        </NmLink>
         <Typography sx={{ mb: 1.5 }} color="text.secondary">
           Id: {network.netid}
           <br />
@@ -181,6 +227,11 @@ const NetworkCard: React.FC<{ url: string; networkId: string }> = ({
           {new Date(network.networklastmodified * 1000).toUTCString()}
         </Typography>
       </CardContent>
+      <Box>
+        <IconButton aria-label="delete" onClick={deleteNetworkCallback}>
+          <Delete />
+        </IconButton>
+      </Box>
     </Card>
   );
 };
@@ -195,7 +246,7 @@ export const Networks: React.FC = () => {
         <Route exact path={path}>
           <h2>Networks</h2>
           <Grid sx={{ flexWrap: "wrap", display: "flex", flex: 1 }}>
-            {listOfNetworks.map((network, index) => (
+            {listOfNetworks.map((network) => (
               <NetworkCard
                 key={network.netid}
                 url={url}
@@ -203,6 +254,11 @@ export const Networks: React.FC = () => {
               />
             ))}
           </Grid>
+        </Route>
+        <Route path={`${path}/create`}>
+          {/* <NmForm initialState={{}} onSubmit={onSubmit}>
+            
+          </NmForm> */}
         </Route>
         <Route path={`${path}/:networkId/details`}>
           <NetworkDetails />

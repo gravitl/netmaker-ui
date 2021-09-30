@@ -13,11 +13,6 @@ import {
 import Logo from "../netmaker.png";
 import Info from "@mui/icons-material/Info";
 import {
-  NETWORK_DETAIL_TAB_NAME,
-  NODE_DETAIL_TAB_NAME,
-  OTK_DETAIL_TAB_NAME,
-  DNS_DETAIL_TAB_NAME,
-  EXTERNAL_CLIENTS_TAB_NAME,
   UI_VERSION,
 } from "../config";
 import { useTranslation } from 'react-i18next';

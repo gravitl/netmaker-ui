@@ -1,40 +1,69 @@
 import React from "react";
-import { Button } from "@mui/material";
-import { useForm, SubmitHandler, Control } from "react-hook-form";
+import { Button, ExtendButtonBase, ButtonTypeMap } from "@mui/material";
+import {
+  useForm,
+  SubmitHandler,
+  Control,
+  UnpackNestedValue,
+  Resolver,
+} from "react-hook-form";
+import { useTranslation } from "react-i18next";
 
 export const FormContext = React.createContext<{
-  control: Control<any, object>
-  disabled: boolean
-}>({disabled: false, control: {} as any});
+  control: Control<any, object>;
+  disabled: boolean;
+}>({ disabled: false, control: {} as any });
 
-export function NmForm<T>(props: {
-  initialState: T;
+interface FormProps<T> {
+  initialState: UnpackNestedValue<T>;
   disabled?: boolean;
+  submitText?: string;
+  resetText?: string;
+  showReset?: boolean;
   onSubmit: SubmitHandler<T>;
   children?: React.ReactNode;
-}) {
+  submitProps?: Omit<ExtendButtonBase<ButtonTypeMap>, "onChange">;
+  resetProps?: Omit<ExtendButtonBase<ButtonTypeMap>, "onChange">;
+  resolver?: Resolver<T, object>;
+}
+
+export function NmForm<T>({
+  initialState,
+  disabled,
+  showReset,
+  submitText,
+  resetText,
+  children,
+  onSubmit,
+  submitProps,
+  resetProps,
+  resolver,
+}: FormProps<T>) {
   const { handleSubmit, reset, control } = useForm<T>({
-    defaultValues: props.initialState as any,
+    defaultValues: initialState,
+    resolver,
   });
 
+  const { t } = useTranslation();
+
   return (
-    <FormContext.Provider value={{
-      control,
-      disabled: props.disabled || false
-      }}>
+    <FormContext.Provider
+      value={{
+        control,
+        disabled: disabled || false,
+      }}
+    >
       <form>
-        {/* {React.Children.map(props.children, (child) => {
-          if (React.isValidElement(child)) {
-            return React.cloneElement(child, { control });
-          }
-          return child;
-        })} */}
-        {props.children}
+        {children}
         <br />
-        <Button onClick={handleSubmit(props.onSubmit)}>Submit</Button>
-        <Button onClick={() => reset()} variant={"outlined"}>
-          Reset
+        <Button {...submitProps} onClick={handleSubmit(onSubmit)}>
+          {submitText ? submitText : t("common.submit")}
         </Button>
+        {showReset && (
+          <Button {...resetProps} onClick={() => reset()} variant={"outlined"}>
+            {resetText ? resetText : t("common.reset")}
+          </Button>
+        )}
       </form>
     </FormContext.Provider>
   );

@@ -1,26 +1,27 @@
 import React, { useContext } from "react";
-import TextField from "@mui/material/TextField/TextField";
+import TextField, { TextFieldProps } from "@mui/material/TextField/TextField";
 import { Controller } from "react-hook-form";
 import { FormContext } from "./Form";
 
-export const NmFormInputText: React.FC<{
-  name: string;
-  label: string;
-  disabled?: boolean;
-  placeholder?: string;
-}> = ({ name, label, disabled }) => {
+export const NmFormInputText: React.FC<
+  Omit<TextFieldProps, "name" | "onChange" | "value" | "errr" | "helperText"> & {
+    name: string;
+  }
+> = ({ name, disabled, ...textfieldProps }) => {
   const context = useContext(FormContext);
 
   return (
     <Controller
       name={name}
       control={context.control}
-      render={({ field: { onChange, value } }) => (
+      render={({ field: { onChange, value }, fieldState: { error } }) => (
         <TextField
+          {...textfieldProps}
           onChange={onChange}
           disabled={context.disabled || disabled}
           value={value}
-          label={label}
+          error={!!error}
+          helperText={error?.message}
         />
       )}
     />

@@ -22,7 +22,7 @@ const logger = createLogger({
 
 export const createReduxStore = () => {
     const sagaMiddleware = createSagaMiddleware()
-    const enhancer = applyMiddleware(logger, sagaMiddleware)
+    const enhancer = applyMiddleware(/*logger, */sagaMiddleware)
     const store = createStore(createRootReducer(), enhancer)
     sagaMiddleware.run(createRootSaga())
     return store
