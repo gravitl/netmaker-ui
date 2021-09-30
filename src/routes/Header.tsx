@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import {
   AppBar,
   Box,
@@ -17,7 +17,7 @@ import {
 } from "../config";
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useRouteMatch } from "react-router-dom";
+import { useHistory, useLocation, useRouteMatch } from "react-router-dom";
 import { authSelectors, serverSelectors } from "../store/selectors";
 import { logout } from "../store/modules/auth/actions";
 import { NmLink } from "../components"
@@ -92,6 +92,15 @@ export function Header() {
   const isLoggedIn = useSelector(authSelectors.getLoggedIn);
   const dispatch = useDispatch();
 
+  const history = useHistory();
+
+  const tabChange = useCallback((value: string) => {
+    if(history.location.pathname !== value)
+      history.push(value)
+  }, [history])
+
+  const tabValue = `/${history.location.pathname.split('/')[1]}`
+
   return (
     <Box display="flex" alignItems="center" justifyContent="center">
       <Grid container style={styles.topBarMain}>
@@ -148,16 +157,15 @@ export function Header() {
         {isLoggedIn ? (
           <AppBar position="relative" color="default">
             <Tabs
-              value={0}
+              value={tabValue}
               centered
               aria-label="main table"
               textColor="primary"
               indicatorColor="primary"
-              // onChange={handleChange}
             >
-              <Tab label={t("header.networks")} tabIndex={0} />
-              <Tab label={t("header.nodes")} tabIndex={1} />
-              <Tab label={t("header.accessKeys")} tabIndex={2} />
+              <Tab label={t("header.networks")} tabIndex={0} value="/networks" onClick={() => tabChange("/networks")} />
+              <Tab label={t("header.nodes")} tabIndex={1} value="/nodes" onClick={() => tabChange("/nodes")} />
+              <Tab label={t("header.accessKeys")} tabIndex={2} value="/keys" onClick={() => tabChange("/keys")} />
               <Tab
                 label={
                   "DNS" + serverConfig.DNSMode
@@ -166,8 +174,10 @@ export function Header() {
                 }
                 tabIndex={3}
                 disabled={serverConfig.DNSMode}
+                value="/dns"
+                onClick={() => tabChange("/dns")}
               />
-              <Tab label={t("header.externalClients")} tabIndex={4} />
+              <Tab label={t("header.externalClients")} tabIndex={4} value="/external" onClick={() => tabChange("/external")} />
               <div style={styles.central2}>
                 <Tooltip
                   title={
