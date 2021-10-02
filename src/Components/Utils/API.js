@@ -1,9 +1,9 @@
 import axios from 'axios'
-import Common from '../../Common'
+import {BACKEND_URL} from '../../config'
 
 const API = function(key) { 
         return axios.create({
-                baseURL: `${Common.BACKEND_URL}/api`,
+                baseURL: `${BACKEND_URL}/api`,
                 headers: {'authorization': `Bearer ${key}`}
         })
 }

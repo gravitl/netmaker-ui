@@ -1,14 +1,15 @@
 import ls from 'local-storage'
 import axios from 'axios'
 import jwt from 'jwt-decode'
-import Common from '../../Common'
+import {BACKEND_URL} from '../../config'
 
 const API = axios.create({
-	baseURL: `${Common.BACKEND_URL}/api/users`
+	baseURL: `${BACKEND_URL}/api/users`
 })
 
 const USER_KEY = "netmaker-user"
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default {
     getUser: (setUser, setNeedsLogin) => {
         const userData = ls.get(USER_KEY)
