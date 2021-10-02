@@ -7,16 +7,11 @@
     "@emotion/react": "^11.4.1",
     "@emotion/styled": "^11.3.0",
     "@mui/icons-material": "^5.0.1",
+    "@mui/lab": "^5.0.0-alpha.49",
     "@mui/material": "^5.0.1",
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.5.0",
-    "@testing-library/user-event": "^7.2.1",
-    "@types/jest": "^27.0.2",
-    "@types/node": "^16.9.6",
-    "@types/react": "^17.0.24",
-    "@types/react-dom": "^17.0.9",
     "axios": "^0.21.4",
     "copy-to-clipboard": "^3.3.1",
+    "date-fns": "^2.24.0",
     "i18next": "^21.1.1",
     "js-file-download": "^0.4.12",
     "jwt-decode": "^3.1.2",
@@ -61,7 +56,15 @@
     ]
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.5.0",
+    "@testing-library/user-event": "^7.2.1",
+    "@types/jest": "^27.0.2",
+    "@types/node": "^16.9.6",
+    "@types/react": "^17.0.24",
+    "@types/react-dom": "^17.0.9",
     "@types/react-router-dom": "^5.3.0",
-    "@types/redux-logger": "^3.0.9"
+    "@types/redux-logger": "^3.0.9",
+    "@welldone-software/why-did-you-render": "^6.2.1"
   }
 }

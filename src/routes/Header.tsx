@@ -12,32 +12,22 @@ import {
 } from "@mui/material";
 import Logo from "../netmaker.png";
 import Info from "@mui/icons-material/Info";
-import {
-  UI_VERSION,
-} from "../config";
-import { useTranslation } from 'react-i18next';
+import { UI_VERSION } from "../config";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useLocation, useRouteMatch } from "react-router-dom";
 import { authSelectors, serverSelectors } from "../store/selectors";
 import { logout } from "../store/modules/auth/actions";
-import { NmLink } from "../components"
+import { NmLink } from "../components";
+import { PathBreadcrumbs } from "../components/PathBreadcrumbs";
 
 const styles = {
   topBarMain: {
     marginLeft: "1em",
     marginRight: "1em",
-  },
-  root: {
-    flexGrow: 1,
-  },
-  menuButton: {
-    marginRight: "2em",
+    width: "100%",
   },
   title: {
-    textAlign: "center",
-    flexGrow: 1,
-  },
-  title2: {
     textAlign: "center",
     flexGrow: 1,
   },
@@ -67,17 +57,17 @@ export const LoginLink: React.FC = ({ children }) => {
   let location = useLocation();
 
   return (
-      <NmLink
-        color="inherit"
-        to={{
-          pathname: "/login",
-          // This is the trick! This link sets
-          // the `background` in location state.
-          state: { background: location },
-        }}
-      >
-        {children}
-      </NmLink>
+    <NmLink
+      color="inherit"
+      to={{
+        pathname: "/login",
+        // This is the trick! This link sets
+        // the `background` in location state.
+        state: { background: location },
+      }}
+    >
+      {children}
+    </NmLink>
   );
 };
 
@@ -94,106 +84,134 @@ export function Header() {
 
   const history = useHistory();
 
-  const tabChange = useCallback((value: string) => {
-    if(history.location.pathname !== value)
-      history.push(value)
-  }, [history])
+  const tabChange = useCallback(
+    (value: string) => {
+      if (history.location.pathname !== value) history.push(value);
+    },
+    [history]
+  );
 
-  const tabValue = `/${history.location.pathname.split('/')[1]}`
+  const tabValue = `/${history.location.pathname.split("/")[1]}`;
 
   return (
-    <Box display="flex" alignItems="center" justifyContent="center">
-      <Grid container style={styles.topBarMain}>
-        <AppBar position="static">
-          <Toolbar>
-            <Button
-              color="inherit"
-              href={"https://docs.netmaker.org"}
-              target="_blank"
-            >
-              Docs
-            </Button>
-            {isLoggedIn && user!.isAdmin ? (
+    <div style={{ overflowY: 'hidden' }}>
+      <Box display="flex" alignItems="center" justifyContent="center">
+        <Grid container style={styles.topBarMain} xs={12}>
+          <AppBar position="static">
+            <Toolbar>
               <Button
-                style={{ marginLeft: "1em" }}
                 color="inherit"
-                // onClick={() => setCreatingUser(true)}
+                href={"https://docs.netmaker.org"}
+                target="_blank"
               >
-                {t("header.users")}
+                {t("header.docs")}
               </Button>
-            ) : null}
-            <div style={styles.central}>
-              <Typography
-                variant="h3"
-                style={styles.title}
-                onClick={() => window.location.reload()}
-              >
-                <img
-                  style={styles.logo}
-                  src={Logo}
-                  alt="Netmaker makes networks."
-                />
-              </Typography>
-            </div>
-            {showAuthButton &&
-              (isLoggedIn ? (
-                <>
-                  <Typography
-                    component="p"
-                    style={styles.subTitle}
-                    // onClick={() => setIsUpdatingUser(true)}
-                  >
-                    <strong>{user!.name}</strong>
-                  </Typography>
-                  <Button color="inherit" onClick={() => dispatch(logout())}>
-                  {t("header.logout")}
-                  </Button>
-                </>
-              ) : (
-                <LoginLink>{t("header.login")}</LoginLink>
-              ))}
-          </Toolbar>
-        </AppBar>
-        {isLoggedIn ? (
-          <AppBar position="relative" color="default">
-            <Tabs
-              value={tabValue}
-              centered
-              aria-label="main table"
-              textColor="primary"
-              indicatorColor="primary"
-            >
-              <Tab label={t("header.networks")} tabIndex={0} value="/networks" onClick={() => tabChange("/networks")} />
-              <Tab label={t("header.nodes")} tabIndex={1} value="/nodes" onClick={() => tabChange("/nodes")} />
-              <Tab label={t("header.accessKeys")} tabIndex={2} value="/keys" onClick={() => tabChange("/keys")} />
-              <Tab
-                label={
-                  "DNS" + serverConfig.DNSMode
-                    ? `${t("header.dns")} (${t("common.disabled")})`
-                    : t("header.dns")
-                }
-                tabIndex={3}
-                disabled={serverConfig.DNSMode}
-                value="/dns"
-                onClick={() => tabChange("/dns")}
-              />
-              <Tab label={t("header.externalClients")} tabIndex={4} value="/external" onClick={() => tabChange("/external")} />
-              <div style={styles.central2}>
-                <Tooltip
-                  title={
-                    serverConfig.Version
-                      ? `${t("common.version")} ${t("common.server")}: ${serverConfig.Version}, UI: ${UI_VERSION}`
-                      : `${t("common.version")} ${t("common.server")}: ${t("common.notFound")}, UI: ${UI_VERSION}`
-                  }
-                  placement="bottom"
+              {isLoggedIn && user!.isAdmin ? (
+                <Button
+                  style={{ marginLeft: "1em" }}
+                  color="inherit"
+                  // onClick={() => setCreatingUser(true)}
                 >
-                  <Info color="primary" />
-                </Tooltip>
+                  {t("header.users")}
+                </Button>
+              ) : null}
+              <div style={styles.central}>
+                <Typography variant="h3" style={styles.title}>
+                  <img
+                    style={styles.logo}
+                    src={Logo}
+                    alt="Netmaker makes networks."
+                  />
+                </Typography>
               </div>
-            </Tabs>
+              {showAuthButton &&
+                (isLoggedIn ? (
+                  <>
+                    <Typography
+                      component="p"
+                      style={styles.subTitle}
+                      // onClick={() => setIsUpdatingUser(true)}
+                    >
+                      <strong>{user!.name}</strong>
+                    </Typography>
+                    <Button color="inherit" onClick={() => dispatch(logout())}>
+                      {t("header.logout")}
+                    </Button>
+                  </>
+                ) : (
+                  <LoginLink>{t("header.login")}</LoginLink>
+                ))}
+            </Toolbar>
           </AppBar>
-        ) : null}
-      </Grid>
-    </Box>
+          {isLoggedIn ? (
+            <AppBar position="relative" color="default">
+              <Tabs
+                value={tabValue !== "/" ? tabValue : "/networks"}
+                centered
+                aria-label="main table"
+                textColor="primary"
+                indicatorColor="primary"
+              >
+                <Tab
+                  label={t("header.networks")}
+                  tabIndex={0}
+                  value="/networks"
+                  onClick={() => tabChange("/networks")}
+                />
+                <Tab
+                  label={t("header.nodes")}
+                  tabIndex={1}
+                  value="/nodes"
+                  onClick={() => tabChange("/nodes")}
+                />
+                <Tab
+                  label={t("header.accessKeys")}
+                  tabIndex={2}
+                  value="/keys"
+                  onClick={() => tabChange("/keys")}
+                />
+                <Tab
+                  label={
+                    "DNS" + serverConfig.DNSMode
+                      ? `${t("header.dns")} (${t("common.disabled")})`
+                      : t("header.dns")
+                  }
+                  tabIndex={3}
+                  disabled={serverConfig.DNSMode}
+                  value="/dns"
+                  onClick={() => tabChange("/dns")}
+                />
+                <Tab
+                  label={t("header.externalClients")}
+                  tabIndex={4}
+                  value="/external"
+                  onClick={() => tabChange("/external")}
+                />
+                <div style={styles.central2}>
+                  <Tooltip
+                    title={
+                      serverConfig.Version
+                        ? `${t("common.version")} ${t("common.server")}: ${
+                            serverConfig.Version
+                          }, UI: ${UI_VERSION}`
+                        : `${t("common.version")} ${t("common.server")}: ${t(
+                            "common.notFound"
+                          )}, UI: ${UI_VERSION}`
+                    }
+                    placement="bottom"
+                  >
+                    <Info color="primary" />
+                  </Tooltip>
+                </div>
+              </Tabs>
+            </AppBar>
+          ) : null}
+
+          <AppBar position="relative" color="default">
+            <PathBreadcrumbs link="/" title={t("Home")} />
+          </AppBar>
+        </Grid>
+      </Box>
+    </div>
   );
 }

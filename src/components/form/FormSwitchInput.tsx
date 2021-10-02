@@ -1,26 +1,29 @@
-import React, { useContext } from "react";
+import React from "react";
 import SwitchField from "@mui/material/Switch";
 import { Controller } from "react-hook-form";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import { FormContext } from "./Form";
+import { useFormControl } from "./internal/formContext";
+import { FormControlLabelProps } from "@mui/material";
 
 export const NmFormInputSwitch: React.FC<{
   name: string;
   label: string;
   disabled?: boolean;
-}> = ({ name, label, disabled }) => {
-  const context = useContext(FormContext);
+  labelPlacement?: FormControlLabelProps["labelPlacement"]
+}> = ({ name, label, disabled, labelPlacement }) => {
+  const { control, disabled: formDisabled} = useFormControl();
   return (
     <Controller
       name={name}
-      control={context.control}
+      control={control}
       render={({ field: { onChange, value } }) => (
         <FormControlLabel
-          disabled={context.disabled || disabled}
+          disabled={formDisabled || disabled}
+          labelPlacement={labelPlacement}
           control={
             <SwitchField
               checked={value}
-              disabled={context.disabled || disabled}
+              disabled={formDisabled|| disabled}
               onChange={onChange}
               name={name}
             />

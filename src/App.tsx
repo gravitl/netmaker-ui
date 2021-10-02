@@ -14,9 +14,11 @@ import React from "react";
 
 import "./App.css";
 
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer } from "react-toastify";
 import { ThemeProvider } from "@mui/material/styles";
 import { useCurrentTheme } from "./components/theme";
+import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import LocalizationProvider from "@mui/lab/LocalizationProvider";
 // import CreateUser from './Components/Views/CreateUser.js';
 // import UpdateUser from './Components/Views/UpdateUser';
 // import Login from './Components/Views/Login.js';
@@ -25,6 +27,7 @@ import { useCurrentTheme } from "./components/theme";
 // import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 
 import Routes from "./routes/routes";
+import { PathBreadcrumbsProvider } from "./components/PathBreadcrumbs";
 
 // const useStyles = makeStyles((_) => ({
 //   center: {
@@ -156,10 +159,14 @@ function App() {
 
   const theme = useCurrentTheme();
   return (
-    <ThemeProvider theme={theme}>
-      <Routes />
-      <ToastContainer containerId="App.tsx" />
-    </ThemeProvider>
+    <PathBreadcrumbsProvider>
+      <ThemeProvider theme={theme}>
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <Routes />
+          <ToastContainer containerId="App.tsx" />
+        </LocalizationProvider>
+      </ThemeProvider>
+    </PathBreadcrumbsProvider>
   );
   // <Router>
   //   <MuiPickersUtilsProvider utils={DateFnsUtils}>

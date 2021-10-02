@@ -1,4 +1,4 @@
-import { Modify } from "../../../react-app-env";
+import { Modify } from "../../../types/react-app-env";
 
 export interface Network {
   addressrange: string

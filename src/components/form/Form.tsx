@@ -1,20 +1,15 @@
 import React from "react";
-import { Button, ExtendButtonBase, ButtonTypeMap } from "@mui/material";
+import { Button, ExtendButtonBase, ButtonTypeMap, Box, BoxProps } from "@mui/material";
 import {
   useForm,
   SubmitHandler,
-  Control,
   UnpackNestedValue,
   Resolver,
 } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import { FormContext } from "./internal/formContext";
 
-export const FormContext = React.createContext<{
-  control: Control<any, object>;
-  disabled: boolean;
-}>({ disabled: false, control: {} as any });
-
-interface FormProps<T> {
+interface FormProps<T> extends Omit<BoxProps, 'onSubmit' | 'component'> {
   initialState: UnpackNestedValue<T>;
   disabled?: boolean;
   submitText?: string;
@@ -38,6 +33,7 @@ export function NmForm<T>({
   submitProps,
   resetProps,
   resolver,
+  ...boxProps
 }: FormProps<T>) {
   const { handleSubmit, reset, control } = useForm<T>({
     defaultValues: initialState,
@@ -53,7 +49,7 @@ export function NmForm<T>({
         disabled: disabled || false,
       }}
     >
-      <form>
+      <Box {...boxProps} component="form">
         {children}
         <br />
         <Button {...submitProps} onClick={handleSubmit(onSubmit)}>
@@ -64,7 +60,7 @@ export function NmForm<T>({
             {resetText ? resetText : t("common.reset")}
           </Button>
         )}
-      </form>
+      </Box>
     </FormContext.Provider>
   );
 }

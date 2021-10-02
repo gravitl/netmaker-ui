@@ -4,7 +4,7 @@ import { Header } from "./Header";
 
 import Home from "./pages/home";
 import { Login } from "./pages/Login";
-import { Networks } from "./pages/Networks"
+import { Networks } from "./pages/network"
 
 function NoMatch() {
   const location = useLocation();
