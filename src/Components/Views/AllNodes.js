@@ -236,7 +236,7 @@ export default function AllNodes({ setNodeData, nodes, networkName, setSuccess, 
     }
 
     const isLinux = (osName) => {
-        return osName === 'linux'
+        return true // osName === 'linux'
     }
 
     const handleClose = () => {

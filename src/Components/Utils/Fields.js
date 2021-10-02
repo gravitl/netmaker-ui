@@ -12,7 +12,7 @@ export default {
         "defaultpostup",
         "defaultpostdown",
         "defaultkeepalive",
-        "defaultcheckininterval",
+//        "defaultcheckininterval", DEPRICATED
         "defaultextclientdns",
         "defaultmtu",
         "isdualstack",
