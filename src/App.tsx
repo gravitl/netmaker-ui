@@ -13,6 +13,7 @@ import React from "react";
 // import DateFnsUtils from '@date-io/date-fns';
 
 import "./App.css";
+import 'react-toastify/dist/ReactToastify.css';
 
 import { ToastContainer } from "react-toastify";
 import { ThemeProvider } from "@mui/material/styles";
