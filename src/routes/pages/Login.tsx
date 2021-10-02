@@ -54,7 +54,7 @@ export function Login() {
   const isLoggedIn = useSelector(authSelectors.getLoggedIn);
 
   const history = useHistory();
-  const location = useLocation<{ background?: Location }>();
+  const location = useLocation<{ from?: Location }>();
 
   const [error, setError] = React.useState("");
   const [triedToLogin, setTriedToLogin] = React.useState(false);
@@ -113,7 +113,7 @@ export function Login() {
   }, [t]);
 
   if (isLoggedIn)
-    return <Redirect to={location.state?.background?.href || "/"} />;
+    return <Redirect to={location.state?.from || "/"} />;
 
   return (
     <Modal

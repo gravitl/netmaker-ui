@@ -5,6 +5,7 @@ import { Header } from "./Header";
 import Home from "./pages/home";
 import { Login } from "./pages/Login";
 import { Networks } from "./pages/network"
+import { PrivateRoute } from "./PrivateRoute";
 
 function NoMatch() {
   const location = useLocation();
@@ -25,25 +26,25 @@ function Routes() {
   // use it as the location for the <Switch> so
   // we show the gallery in the background, behind
   // the modal.
-  const background = (location.state as any)?.background;
+  const from = (location.state as any)?.from;
 
   return (
     <>
       <Header />
-      <Switch location={background || location}>
+      <Switch location={from || location}>
         <Route exact path="/">
           <Home />
         </Route>
-        <Route path="/networks">
+        <PrivateRoute path="/networks">
           <Networks />
-        </Route>
+        </PrivateRoute>
         <Route path="*">
           <NoMatch />
         </Route>
       </Switch>
 
       {/* Show the modal when a background page is set */}
-      {background && <Route path="/login" children={<Login />} />}
+      {from && <Route path="/login" children={<Login />} />}
     </>
   );
 }

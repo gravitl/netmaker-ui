@@ -31,7 +31,7 @@ export const PathBreadcrumbsProvider: React.FC<React.PropsWithChildren<{}>> = ({
 
   const add = React.useCallback(
     (crumb: Crumb) => {
-      setCrumbs((value) => [...value, crumb]);
+      setCrumbs((value) => [...value, crumb].sort((a,b) => a.link.length > b.link.length ? 1 : -1));
       return () => {
         setCrumbs((value) => [...value.filter((c) => c.link !== crumb.link)]);
       };

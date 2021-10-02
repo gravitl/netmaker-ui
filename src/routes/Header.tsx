@@ -63,7 +63,7 @@ export const LoginLink: React.FC = ({ children }) => {
         pathname: "/login",
         // This is the trick! This link sets
         // the `background` in location state.
-        state: { background: location },
+        state: { from: location },
       }}
     >
       {children}
