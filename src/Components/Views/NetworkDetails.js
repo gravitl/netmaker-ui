@@ -62,12 +62,6 @@ const boolFields = [
     'defaultudpholepunch'
 ]
 
-const boolFieldValues = {
-    defaultsaveconfig : 'Default SaveConfig',
-    isdualstack: 'Dual Stack',
-    defaultudpholepunch: 'UDP Hole Punching'
-}
-
 const intFields = [
     'defaultlistenport',
     'defaultkeepalive',
@@ -202,7 +196,7 @@ export default function NetworkDetails({ networkData, setSelectedNetwork, back, 
         }
   }, [settings, networkData])
 
-  const IS_UDP_ENABLED = (field) => config && config.ClientMode == "off" && field === "defaultudpholepunch"
+  const IS_UDP_ENABLED = (field) => config && config.ClientMode === "off" && field === "defaultudpholepunch"
 
   return (
       <div>
