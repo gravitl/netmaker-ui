@@ -3,7 +3,8 @@ import { Breadcrumbs } from "@mui/material";
 
 import Typography from "@mui/material/Typography";
 import Link, { LinkProps } from "@mui/material/Link";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useRouteMatch } from "react-router-dom";
+import { Modify } from "../types/react-app-env";
 
 interface Crumb {
   title: string;
@@ -79,10 +80,12 @@ export const PathBreadcrumbs: React.FC<Crumb> = ({ title, link }) => {
   );
 };
 
-export const useLinkBreadcrumb = (crumb: Crumb) => {
+export const useLinkBreadcrumb = (crumb: Modify<Crumb, { link?: string}>) => {
   const { add } = useContext(BreadcrumbContext);
+  const { url } = useRouteMatch();
+
   React.useEffect(() => {
-    return add(crumb);
+    return add({link: url, ...crumb});
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 };

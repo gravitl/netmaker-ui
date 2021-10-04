@@ -1,10 +1,10 @@
 import { AxiosResponse } from "axios";
-import { all, put, select, takeEvery } from "redux-saga/effects";
+import { all, call, put, select, takeEvery } from "redux-saga/effects";
 import { getType } from "typesafe-actions";
 import { login } from "../api/actions";
 import { getApi } from "../api/selectors";
 import { getToken } from "../auth/selectors";
-import { asyncToast } from "../toast/actions";
+import { asyncToastSaga } from "../toast/saga";
 import {
   createNetwork,
   deleteNetwork,
@@ -14,7 +14,12 @@ import {
   getAccessKeys,
   deleteAccessKey,
 } from "./actions";
-import { NetworkPayload, GetAccessKeysPayload, CreateAccessKeyPayload, DeleteAccessKeyPayload, CreateNetworkPayload } from "./types";
+import {
+  NetworkPayload,
+  GetAccessKeysPayload,
+  CreateAccessKeyPayload,
+  DeleteAccessKeyPayload,
+} from "./types";
 
 function* handleLoginSuccess() {
   const token: ReturnType<typeof getToken> = yield select(getToken);
@@ -53,29 +58,26 @@ function* handleUpdateNetworkRequest(
   const api: ReturnType<typeof getApi> = yield select(getApi);
 
   try {
-    const promise = api.put(
-      `/networks/${action.payload.network.netid}`,
-      action.payload.network,
-      {
-        headers: {
-          authorization: `Bearer ${action.payload.token}`,
-        },
-      }
-    );
+    const response: AxiosResponse<NetworkPayload> = yield call(asyncToastSaga, {
+      promise: {
+        method: api.put,
+        params: [
+          `/networks/${action.payload.network.netid}`,
+          action.payload.network,
+          {
+            headers: {
+              authorization: `Bearer ${action.payload.token}`,
+            },
+          },
+        ],
+      },
+      params: {
+        pending: `Updaing network ${action.payload.network.netid}`,
+        success: `Updaing network ${action.payload.network.netid} success!`,
+        error: `Updaing network ${action.payload.network.netid} error!`,
+      },
+    });
 
-    yield put(
-      asyncToast({
-        promise: promise,
-        params: {
-          pending: `Updaing network ${action.payload.network.netid}`,
-          success: `Updaing network ${action.payload.network.netid} success!`,
-          error: `Updaing network ${action.payload.network.netid} error!`,
-        },
-      })
-    );
-
-    const response: AxiosResponse<NetworkPayload> = yield promise;
-    console.log(response.data);
     yield put(updateNetwork["success"](response.data));
   } catch (e: unknown) {
     yield put(updateNetwork["failure"](e as Error));
@@ -88,16 +90,27 @@ function* handleDeleteNetworkRequest(
   const api: ReturnType<typeof getApi> = yield select(getApi);
 
   try {
-    const response: AxiosResponse<void> = yield api.delete(
-      `/networks/${action.payload.netid}`,
-      {
-        headers: {
-          authorization: `Bearer ${action.payload.token}`,
-        },
-      }
-    );
-    console.log(response.data);
-    yield put(deleteNetwork["success"]());
+    yield asyncToastSaga({
+      promise: {
+        method: api.delete,
+        params: [
+          `/networks/${action.payload.netid}`,
+          {
+            headers: {
+              authorization: `Bearer ${action.payload.token}`,
+            },
+          },
+        ],
+      },
+      params: {
+        pending: `Deleting network ${action.payload.netid}`,
+        success: `Deleting network ${action.payload.netid} success!`,
+        error: (error) =>
+          `Deleting network ${action.payload.netid} error!\n${error.data.Message}`,
+      },
+    });
+
+    yield put(deleteNetwork["success"]({ netid: action.payload.netid }));
   } catch (e: unknown) {
     yield put(deleteNetwork["failure"](e as Error));
   }
@@ -109,16 +122,26 @@ function* handleCreateNetworkRequest(
   const api: ReturnType<typeof getApi> = yield select(getApi);
 
   try {
-    const response: AxiosResponse<CreateNetworkPayload["Response"]> = yield api.post(
-      `/networks`,
-      action.payload.newNetwork,
-      {
-        headers: {
-          authorization: `Bearer ${action.payload.token}`,
-        },
-      }
-    );
-    console.log(response.data);
+    yield asyncToastSaga({
+      promise: {
+        method: api.post,
+        params: [
+          `/networks`,
+          action.payload.newNetwork,
+          {
+            headers: {
+              authorization: `Bearer ${action.payload.token}`,
+            },
+          },
+        ],
+      },
+      params: {
+        pending: `Creating network ${action.payload.newNetwork.netid}`,
+        success: `Creating network ${action.payload.newNetwork.netid} success!`,
+        error: (error) =>
+          `Creating network ${action.payload.newNetwork.netid} error!\n${error.data.Message}`,
+      },
+    });
     yield put(createNetwork["success"]());
   } catch (e: unknown) {
     yield put(createNetwork["failure"](e as Error));
@@ -131,14 +154,15 @@ function* handleDeleteAccessKeyRequest(
   const api: ReturnType<typeof getApi> = yield select(getApi);
 
   try {
-    const response: AxiosResponse<DeleteAccessKeyPayload["Response"]> = yield api.delete(
-      `/networks/${action.payload.netid}/keys/${action.payload.name}`,
-      {
-        headers: {
-          authorization: `Bearer ${action.payload.token}`,
-        },
-      }
-    );
+    const response: AxiosResponse<DeleteAccessKeyPayload["Response"]> =
+      yield api.delete(
+        `/networks/${action.payload.netid}/keys/${action.payload.name}`,
+        {
+          headers: {
+            authorization: `Bearer ${action.payload.token}`,
+          },
+        }
+      );
     console.log(response.data);
     yield put(deleteAccessKey["success"]());
   } catch (e: unknown) {
@@ -152,14 +176,12 @@ function* handleGetAccessKeysRequest(
   const api: ReturnType<typeof getApi> = yield select(getApi);
 
   try {
-    const response: AxiosResponse<GetAccessKeysPayload["Response"]> = yield api.get(
-      `/networks/${action.payload.netid}/keys`,
-      {
+    const response: AxiosResponse<GetAccessKeysPayload["Response"]> =
+      yield api.get(`/networks/${action.payload.netid}/keys`, {
         headers: {
           authorization: `Bearer ${action.payload.token}`,
         },
-      }
-    );
+      });
     console.log(response.data);
     yield put(getAccessKeys["success"](response.data));
   } catch (e: unknown) {
@@ -173,15 +195,16 @@ function* handleCreateAccessKeyRequest(
   const api: ReturnType<typeof getApi> = yield select(getApi);
 
   try {
-    const response: AxiosResponse<CreateAccessKeyPayload["Response"]> = yield api.put(
-      `/networks/${action.payload.netid}/keys`,
-      action.payload.newAccessKey,
-      {
-        headers: {
-          authorization: `Bearer ${action.payload.token}`,
-        },
-      }
-    );
+    const response: AxiosResponse<CreateAccessKeyPayload["Response"]> =
+      yield api.put(
+        `/networks/${action.payload.netid}/keys`,
+        action.payload.newAccessKey,
+        {
+          headers: {
+            authorization: `Bearer ${action.payload.token}`,
+          },
+        }
+      );
     console.log(response.data);
     yield put(createAccessKey["success"](response.data));
   } catch (e: unknown) {
@@ -196,9 +219,16 @@ export function* saga() {
     takeEvery(getType(updateNetwork["request"]), handleUpdateNetworkRequest),
     takeEvery(getType(deleteNetwork["request"]), handleDeleteNetworkRequest),
     takeEvery(getType(createNetwork["request"]), handleCreateNetworkRequest),
-    takeEvery(getType(deleteAccessKey["request"]), handleDeleteAccessKeyRequest),
+    takeEvery(
+      getType(deleteAccessKey["request"]),
+      handleDeleteAccessKeyRequest
+    ),
     takeEvery(getType(getAccessKeys["request"]), handleGetAccessKeysRequest),
-    takeEvery(getType(createAccessKey["request"]), handleCreateAccessKeyRequest),
+    takeEvery(
+      getType(createAccessKey["request"]),
+      handleCreateAccessKeyRequest
+    ),
+    takeEvery(getType(createNetwork["success"]), handleGetNetworksRequest),
     handleLoginSuccess(),
   ]);
 }

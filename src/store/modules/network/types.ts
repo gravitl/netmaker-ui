@@ -60,7 +60,9 @@ export interface DeleteNetworkPayload {
     token: string
     netid: string
   },
-  Response: void
+  Response: {
+    netid: string
+  }
 }
 
 export interface CreateNetworkPayload {

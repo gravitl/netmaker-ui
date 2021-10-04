@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { NmForm } from "../../../components/form/Form";
 import { NmFormInputSwitch } from "../../../components/form/FormSwitchInput";
 import { NmFormInputText } from "../../../components/form/FormTextInput";
+import { useLinkBreadcrumb } from "../../../components/PathBreadcrumbs";
 import { createNetwork } from "../../../store/modules/network/actions";
 import { authSelectors } from "../../../store/selectors";
 
@@ -49,6 +50,10 @@ export const NetworkCreate: React.FC = () => {
     },
     [dispatch, token]
   );
+
+  useLinkBreadcrumb({
+    title: t("Create")
+  })
 
   return (
     <NmForm

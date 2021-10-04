@@ -16,9 +16,7 @@ export const Networks: React.FC = () => {
   const { t } = useTranslation();
   const listOfNetworks = useSelector(networkSelectors.getNetworks);
 
-
   useLinkBreadcrumb({
-    link: url,
     title: t("Networks")
   })
 

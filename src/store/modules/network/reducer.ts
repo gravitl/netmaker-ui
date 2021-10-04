@@ -1,6 +1,6 @@
 import { produce } from "immer";
 import { createReducer } from "typesafe-actions";
-import { getNetworks } from "./actions";
+import { deleteNetwork, getNetworks, updateNetwork } from "./actions";
 import { Network } from "./types";
 import { networkPayloadToNetwork } from "./utils";
 
@@ -24,4 +24,17 @@ export const reducer = createReducer({
       draftState.networks = [];
       draftState.isFetching = false;
     })
-  );
+  )
+  .handleAction(updateNetwork["success"], (state, action) =>
+    produce(state, (draftState) => {
+      const i = draftState.networks.findIndex((network) => network.netid === action.payload.netid)
+      if(~i) {
+        draftState.networks[i] = {...draftState.networks[i], ...networkPayloadToNetwork(action.payload)}
+      }
+    })
+  )
+  .handleAction(deleteNetwork["success"], (state, action) =>
+    produce(state, (draftState) => {
+      draftState.networks = draftState.networks.filter((network) => network.netid !== action.payload.netid)
+    })
+  )
