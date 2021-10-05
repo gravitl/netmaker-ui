@@ -1,33 +1,26 @@
 import { Container } from "@mui/material";
 import React from "react";
 import { useRouteMatch, Switch, Route } from "react-router-dom";
-import { NetworkCreate } from "./NetworkCreate";
-import { NetworkDetails } from "./NetworkDetails";
 import { useTranslation } from "react-i18next";
-import { NetworkTable } from "./NetworkTable";
-import { useLinkBreadcrumb } from "../../../components/PathBreadcrumbs";
+import { NodeTable } from "./NodeTable";
 
-export const Networks: React.FC = () => {
+export const Nodes: React.FC = () => {
   const { path } = useRouteMatch();
   const { t } = useTranslation();
-
-  useLinkBreadcrumb({
-    title: t("Networks")
-  })
 
   return (
     <Container>
       <Switch>
         <Route exact path={path}>
-          <h2>{t("Networks")}</h2>
-          <NetworkTable />
+          <h2>{t("Nodes")}</h2>
+          <NodeTable />
         </Route>
-        <Route path={`${path}/create`}>
+        {/* <Route path={`${path}/create`}>
           <NetworkCreate />
         </Route>
         <Route path={`${path}/:networkId`}>
           <NetworkDetails />
-        </Route>
+        </Route> */}
       </Switch>
     </Container>
   );

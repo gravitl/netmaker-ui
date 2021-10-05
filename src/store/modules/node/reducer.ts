@@ -1,7 +1,8 @@
 import { produce } from "immer";
 import { createReducer } from "typesafe-actions";
-import { getNodes } from "../api/actions";
+import { getNodes } from "./actions";
 import { Node } from "./types";
+import { nodePayloadToNode } from "./utils";
 
 export const reducer = createReducer({
   nodes: [] as Array<Node>,
@@ -14,7 +15,7 @@ export const reducer = createReducer({
   )
   .handleAction(getNodes["success"], (state, action) =>
     produce(state, (draftState) => {
-      draftState.nodes = action.payload;
+      draftState.nodes = action.payload.map(nodePayloadToNode);
       draftState.isFetching = false;
     })
   )

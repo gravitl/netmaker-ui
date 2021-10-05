@@ -1,46 +1,70 @@
+import { Modify } from "../../../types/react-app-env";
+
 export interface Node {
-  id: "02:42:ac:11:65:57###Lan",
-  address: "10.10.100.2",
-  address6: "",
-  localaddress: "172.25.0.2",
-  name: "real-bishop",
-  listenport: 51821,
-  publickey: "wwo8qHQmFnAkwRYm6npFXd6lSS1TU7lbc6DY1h/M5G4=",
-  endpoint: "89.177.140.210",
-  postup: "",
-  postdown: "",
+  id: string;
+  address: string;
+  address6: string;
+  localaddress: string;
+  name: string;
+  listenport: number;
+  publickey: string;
+  endpoint: string;
+  postup: string;
+  postdown: string;
   allowedips: [
   ],
-  persistentkeepalive: 20,
-  saveconfig: "no",
-  accesskey: "2Q6Sqe9ZvQ8SNG0s",
-  interface: "nm-Lan",
-  lastmodified: 1632242708,
-  keyupdatetimestamp: 1632242708,
-  expdatetime: 1931562385,
-  lastpeerupdate: 1631562385,
-  lastcheckin: 1632242708,
-  macaddress: "02:42:ac:11:65:57",
-  checkininterval: 30,
-  password: "$2a$05$NY.h3LsFtBGo94YsN7L2nufuz/a6efvOcCWtTm8fVI6XgBdgiXWie",
-  network: "Lan",
-  ispending: "no",
-  isegressgateway: "no",
-  isingressgateway: "no",
+  persistentkeepalive: number;
+  saveconfig: boolean;
+  accesskey: string;
+  interface: string;
+  lastmodified: number;
+  keyupdatetimestamp: number;
+  expdatetime: number;
+  lastpeerupdate: number;
+  lastcheckin: number;
+  macaddress: string;
+  checkininterval: number;
+  password: string;
+  network: string;
+  ispending: string;
+  isegressgateway: boolean;
+  isingressgateway: boolean;
   egressgatewayranges: [
   ],
-  ingressgatewayrange: "",
-  isstatic: "yes",
-  udpholepunch: "yes",
-  pullchanges: "no",
-  dnson: "yes",
-  isdualstack: "no",
-  isserver: "no",
-  action: "noop",
-  islocal: "no",
-  localrange: "",
-  roaming: "yes",
-  ipforwarding: "yes",
-  os: "linux",
-  mtu: 1280,
+  ingressgatewayrange: string;
+  isstatic: boolean;
+  udpholepunch: boolean;
+  pullchanges: boolean;
+  dnson: boolean;
+  isdualstack: boolean;
+  isserver: boolean;
+  action: string;
+  islocal: boolean;
+  localrange: string;
+  roaming: boolean;
+  ipforwarding: boolean;
+  os: string;
+  mtu: number;
+}
+
+export type NodePayload = Modify<Node, {
+  saveconfig: "yes" | "no";
+  isegressgateway: "yes" | "no";
+  isingressgateway: "yes" | "no";
+  isstatic: "yes" | "no";
+  udpholepunch: "yes" | "no";
+  pullchanges: "yes" | "no";
+  dnson: "yes" | "no";
+  isdualstack: "yes" | "no";
+  isserver: "yes" | "no";
+  islocal: "yes" | "no";
+  roaming: "yes" | "no";
+  ipforwarding: "yes" | "no";
+ }>
+
+export interface GetNodes {
+  Request: {
+    token: string
+  },
+  Response: Array<NodePayload>
 }

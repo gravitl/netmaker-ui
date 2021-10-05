@@ -9,6 +9,7 @@ import { Modify } from "../types/react-app-env";
 interface Crumb {
   title: string;
   link: string;
+  prefix?: string;
 }
 
 type BreadcrumbContextType = {
@@ -32,7 +33,11 @@ export const PathBreadcrumbsProvider: React.FC<React.PropsWithChildren<{}>> = ({
 
   const add = React.useCallback(
     (crumb: Crumb) => {
-      setCrumbs((value) => [...value, crumb].sort((a,b) => a.link.length > b.link.length ? 1 : -1));
+      setCrumbs((value) =>
+        [...value, crumb].sort((a, b) =>
+          a.link.length > b.link.length ? 1 : -1
+        )
+      );
       return () => {
         setCrumbs((value) => [...value.filter((c) => c.link !== crumb.link)]);
       };
@@ -60,32 +65,56 @@ export const PathBreadcrumbs: React.FC<Crumb> = ({ title, link }) => {
       <LinkRouter underline="hover" color="inherit" to={link}>
         {title}
       </LinkRouter>
-      {crumbs.map((value, index) => {
-        return index === crumbs.length - 1 ? (
-          <Typography color="text.primary" key={value.link}>
-            {value.title}
-          </Typography>
-        ) : (
-          <LinkRouter
-            underline="hover"
-            color="inherit"
-            to={value.link}
-            key={value.link}
-          >
-            {value.title}
-          </LinkRouter>
-        );
-      })}
+      {crumbs.reduce<JSX.Element[]>((acc, value, index) => {
+        if (index === crumbs.length - 1) {
+          if (value.prefix !== undefined) {
+            acc.push(
+              <Typography color="text.primary" key={value.link + value.prefix}>
+                {value.prefix}
+              </Typography>
+            );
+          }
+          acc.push(
+            <Typography color="text.primary" key={value.link}>
+              {value.title}
+            </Typography>
+          );
+        } else {
+          if (value.prefix !== undefined) {
+            acc.push(
+              <LinkRouter
+                underline="hover"
+                color="inherit"
+                to={value.link}
+                key={value.link + value.prefix}
+              >
+                {value.prefix}
+              </LinkRouter>
+            );
+          }
+          acc.push(
+            <LinkRouter
+              underline="hover"
+              color="inherit"
+              to={value.link}
+              key={value.link}
+            >
+              {value.title}
+            </LinkRouter>
+          );
+        }
+        return acc;
+      }, [])}
     </Breadcrumbs>
   );
 };
 
-export const useLinkBreadcrumb = (crumb: Modify<Crumb, { link?: string}>) => {
+export const useLinkBreadcrumb = (crumb: Modify<Crumb, { link?: string }>) => {
   const { add } = useContext(BreadcrumbContext);
   const { url } = useRouteMatch();
 
   React.useEffect(() => {
-    return add({link: url, ...crumb});
+    return add({ link: url, ...crumb });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 };

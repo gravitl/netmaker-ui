@@ -1,10 +1,7 @@
 import { Container } from "@mui/material";
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
 
-const Product: React.FC = () => {
-  // const dispatch = useDispatch()
-  //const cards = useSelector(getCards)
+export const Home: React.FC = () => {
 
   return (
     <Container>
@@ -12,4 +9,3 @@ const Product: React.FC = () => {
     </Container>
   );
 };
-export default Product;

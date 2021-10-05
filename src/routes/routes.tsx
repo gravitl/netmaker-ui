@@ -2,9 +2,7 @@ import React from "react";
 import { Switch, Route, useLocation } from "react-router-dom";
 import { Header } from "./Header";
 
-import Home from "./pages/home";
-import { Login } from "./pages/Login";
-import { Networks } from "./pages/network"
+import { Home, Login, Networks, Nodes } from "./pages";
 import { PrivateRoute } from "./PrivateRoute";
 
 function NoMatch() {
@@ -37,6 +35,9 @@ function Routes() {
         </Route>
         <PrivateRoute path="/networks">
           <Networks />
+        </PrivateRoute>
+        <PrivateRoute path="/nodes">
+          <Nodes />
         </PrivateRoute>
         <Route path="*">
           <NoMatch />

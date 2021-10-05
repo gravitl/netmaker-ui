@@ -6,7 +6,6 @@ import {
   GetUser,
   Login,
   GetServerConfig,
-  GetNodes,
   HasAdmin,
   CreateAdmin,
   CreateUser,
@@ -43,12 +42,6 @@ export const getServerConfig = createAsyncAction(
   "api_getServerConfig_Success",
   "api_getServerConfig_Failure"
 )<GetServerConfig["Request"], GetServerConfig["Response"], Error>();
-
-export const getNodes = createAsyncAction(
-  "api_getNodes_Request",
-  "api_getNodes_Success",
-  "api_getNodes_Failure"
-)<GetNodes["Request"], GetNodes["Response"], Error>();
 
 export const hasAdmin = createAsyncAction(
   "api_hasAdmin_Request",

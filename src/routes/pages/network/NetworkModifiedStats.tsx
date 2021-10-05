@@ -1,6 +1,7 @@
 import { Grid, TextField } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { useNetwork, datePickerConverter } from "./utils";
+import { datePickerConverter } from "../../../util/unixTime";
+import { useNetwork } from "./utils";
 
 export const NetworkModifiedStats: React.FC<{ netid: string }> = ({
   netid,

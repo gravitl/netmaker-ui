@@ -1,6 +1,5 @@
 import { AxiosResponse } from "axios";
 import { User } from "../auth/types";
-import { Node } from "../node/types";
 
 export interface GetPayload {
   url: string;
@@ -60,13 +59,6 @@ export interface GetServerConfig {
     Verbosity: number
     Version: string
   }
-}
-
-export interface GetNodes {
-  Request: {
-    token: string
-  },
-  Response: Array<Node>
 }
 
 export interface HasAdmin {

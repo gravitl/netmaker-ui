@@ -1,11 +1,10 @@
 import { select, put, takeEvery, all } from "redux-saga/effects"
 import { getType } from "typesafe-actions"
-import { get, getAllUsers, getUser, login, getServerConfig, getNodes, hasAdmin, createAdmin, createUser, deleteUser, updateUser } from "./actions"
+import { get, getAllUsers, getUser, login, getServerConfig, hasAdmin, createAdmin, createUser, deleteUser, updateUser } from "./actions"
 import { getToken } from "../auth/selectors"
 import { getApi } from "./selectors"
 import { AxiosResponse } from "axios"
 import jwtDecode from "jwt-decode"
-import { Node } from "../node/types"
 
 function* handleGetRequest(action: ReturnType<typeof get["request"]>) {
   const token: ReturnType<typeof getToken> = yield select(getToken)
@@ -91,22 +90,6 @@ function* handleGetServerConfigRequest(action: ReturnType<typeof getServerConfig
     yield put(getServerConfig["success"](response.data))
   } catch (e: unknown) {
     yield put(getServerConfig["failure"](e as Error))
-  }
-}
-
-function* handleGetNodesRequest(action: ReturnType<typeof getNodes["request"]>) {
-  const api: ReturnType<typeof getApi> = yield select(getApi)
-
-  try {
-    const response: AxiosResponse<Array<Node>> = yield api.get("/nodes", {
-      headers: {
-        authorization: `Bearer ${action.payload.token}`
-      }
-    })
-    console.log(response.data)
-    yield put(getNodes["success"](response.data))
-  } catch (e: unknown) {
-    yield put(getNodes["failure"](e as Error))
   }
 }
 
@@ -201,7 +184,6 @@ export function* saga() {
     takeEvery(getType(getUser["request"]), handleGetUserRequest),
     takeEvery(getType(login["request"]), handleLoginRequest),
     takeEvery(getType(getServerConfig["request"]), handleGetServerConfigRequest),
-    takeEvery(getType(getNodes["request"]), handleGetNodesRequest),
     takeEvery(getType(hasAdmin["request"]), handleHasAdminRequest),
     takeEvery(getType(createAdmin["request"]), handleCreateAdminRequest),
     takeEvery(getType(createUser["request"]), handleCreateUserRequest),
