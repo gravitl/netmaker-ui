@@ -5,8 +5,9 @@ import { Node } from "../../../store/modules/node";
 import { useTranslation } from "react-i18next";
 import { useRouteMatch, useParams, Route, Switch } from "react-router-dom";
 import { useLinkBreadcrumb } from "../../../components/PathBreadcrumbs";
-import { useNodesByNetworkId } from "../node/utils";
+import { useNodesByNetworkId } from "./utils";
 import { NodeDetails } from "../node/NodeDetails";
+import { Grid } from "@mui/material";
 
 const columns: TableColumns<Node> = [
   {
@@ -32,7 +33,6 @@ const columns: TableColumns<Node> = [
   },
 ];
 
-
 export const NetworkNodes: React.FC = () => {
   const { path, url } = useRouteMatch();
   const { t } = useTranslation();
@@ -54,7 +54,17 @@ export const NetworkNodes: React.FC = () => {
   return (
     <Switch>
         <Route exact path={path}>
-          <h2>{t("Networks")}</h2>
+          <Grid container 
+  direction="row"
+  justifyContent="space-between"
+  alignItems="center">
+            <Grid item>
+          <h2>{t("Nodes")}</h2>
+          </Grid>
+            <Grid item>
+          <h2>{t("Create new")}</h2>
+          </Grid>
+          </Grid>
           <NmTable 
             columns={columns}
             rows={listOfNodes}

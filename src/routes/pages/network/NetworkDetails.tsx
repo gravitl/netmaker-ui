@@ -5,7 +5,9 @@ import {
   Switch as SwitchField,
   FormControlLabel,
 } from "@mui/material";
+import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
 import {
   useRouteMatch,
   useHistory,
@@ -15,6 +17,8 @@ import {
 } from "react-router-dom";
 import { NmLink } from "../../../components";
 import { useLinkBreadcrumb } from "../../../components/PathBreadcrumbs";
+import { deleteNetwork } from "../../../store/modules/network/actions";
+import { authSelectors } from "../../../store/selectors";
 import { NetworkDetailsEdit } from "./NetworkEdit";
 import { NetworkModifiedStats } from "./NetworkModifiedStats";
 import { NetworkNodes } from "./NetworkNodes";
@@ -32,6 +36,19 @@ export const NetworkDetails: React.FC = () => {
     link: url,
     title: networkId,
   });
+
+  const dispatch = useDispatch();
+  const token = useSelector(authSelectors.getToken)!;
+  const deleteNetworkCallback = useCallback(
+    () =>
+      dispatch(
+        deleteNetwork.request({
+          token,
+          netid: network!.netid,
+        })
+      ),
+    [dispatch, token, network]
+  );
 
   if (!network) {
     return <div>Not Found</div>;
@@ -58,7 +75,7 @@ export const NetworkDetails: React.FC = () => {
           </Button>
           <Button
             variant="outlined"
-            onClick={() => console.log("removeNetwork(networkData.netid)")}
+            onClick={() => deleteNetworkCallback()}
           >
             {t("common.delete")}
           </Button>

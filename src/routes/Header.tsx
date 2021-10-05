@@ -96,7 +96,7 @@ export function Header() {
   return (
     <div style={{ overflowY: 'hidden' }}>
       <Box display="flex" alignItems="center" justifyContent="center">
-        <Grid container style={styles.topBarMain} xs={12}>
+        <Grid container style={styles.topBarMain}>
           <AppBar position="static">
             <Toolbar>
               <Button
@@ -187,7 +187,7 @@ export function Header() {
                   value="/external"
                   onClick={() => tabChange("/external")}
                 />
-                <div style={styles.central2}>
+                <Box style={styles.central2}>
                   <Tooltip
                     title={
                       serverConfig.Version
@@ -202,7 +202,7 @@ export function Header() {
                   >
                     <Info color="primary" />
                   </Tooltip>
-                </div>
+                </Box>
               </Tabs>
             </AppBar>
           ) : null}

@@ -1,4 +1,4 @@
-import { Container } from "@mui/material";
+import { Container, Grid } from "@mui/material";
 import React from "react";
 import { useRouteMatch, Switch, Route } from "react-router-dom";
 import { NetworkCreate } from "./NetworkCreate";
@@ -6,6 +6,7 @@ import { NetworkDetails } from "./NetworkDetails";
 import { useTranslation } from "react-i18next";
 import { NetworkTable } from "./NetworkTable";
 import { useLinkBreadcrumb } from "../../../components/PathBreadcrumbs";
+import { NmLink } from "../../../components";
 
 export const Networks: React.FC = () => {
   const { path } = useRouteMatch();
@@ -19,7 +20,17 @@ export const Networks: React.FC = () => {
     <Container>
       <Switch>
         <Route exact path={path}>
-          <h2>{t("Networks")}</h2>
+          <Grid container 
+  direction="row"
+  justifyContent="space-between"
+  alignItems="center">
+            <Grid item>
+          <h2>{t("Nodes")}</h2>
+          </Grid>
+            <Grid item>
+          <NmLink to={{pathname: '/networks/create'}}>{t("New Network")}</NmLink>
+          </Grid>
+          </Grid>
           <NetworkTable />
         </Route>
         <Route path={`${path}/create`}>

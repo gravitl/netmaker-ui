@@ -211,6 +211,12 @@ function* handleCreateAccessKeyRequest(
     yield put(createAccessKey["failure"](e as Error));
   }
 }
+function* handleDeleteNetworkSuccess(
+  action: ReturnType<typeof deleteNetwork["success"]>
+) {
+  // TODO: Navigate back to networks
+
+}
 
 export function* saga() {
   yield all([
@@ -229,6 +235,7 @@ export function* saga() {
       handleCreateAccessKeyRequest
     ),
     takeEvery(getType(createNetwork["success"]), handleGetNetworksRequest),
+    takeEvery(getType(deleteNetwork["success"]), handleDeleteNetworkSuccess),
     handleLoginSuccess(),
   ]);
 }
