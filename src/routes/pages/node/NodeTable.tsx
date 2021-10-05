@@ -36,7 +36,7 @@ export const NodeTable: React.FC = () => {
   const listOfNodes = useSelector(nodeSelectors.getNodes);
 
   useLinkBreadcrumb({
-    title: t("Nodes"),
+    title: t("breadcrumbs.nodes"),
   });
 
   return (

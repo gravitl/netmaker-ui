@@ -208,7 +208,7 @@ export function Header() {
           ) : null}
 
           <AppBar position="relative" color="default">
-            <PathBreadcrumbs link="/" title={t("Home")} />
+            <PathBreadcrumbs link="/" title={t("breadcrumbs.home")} />
           </AppBar>
         </Grid>
       </Box>

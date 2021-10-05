@@ -42,7 +42,7 @@ export const NetworkNodes: React.FC = () => {
   
     useLinkBreadcrumb({
       link: url,
-      title: t("Nodes"),
+      title: t("breadcrumbs.nodes"),
     });
 
   if(!listOfNodes) {
@@ -59,7 +59,7 @@ export const NetworkNodes: React.FC = () => {
   justifyContent="space-between"
   alignItems="center">
             <Grid item>
-          <h2>{t("Nodes")}</h2>
+          <h2>{t("node.nodes")}</h2>
           </Grid>
             <Grid item>
           <h2>{t("Create new")}</h2>

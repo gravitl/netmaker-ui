@@ -10,6 +10,12 @@ export interface LanguageResource {
     externalClients: string;
     users: string;
   };
+  breadcrumbs: {
+    home: string;
+    networks: string;
+    nodes: string;
+    edit: string;
+  }
   common: {
     disabled: string;
     notFound: string;
@@ -23,6 +29,7 @@ export interface LanguageResource {
     edit: string;
   };
   network: {
+    networks: string;
     addressrange: string;
     addressrange6: string;
     localrange: string;
@@ -43,6 +50,25 @@ export interface LanguageResource {
     defaultudpholepunch: string;
   };
   node: {
+    nodes: string;
+    id: string;
+    accesskey: string;
+    lastpeerupdate: string;
+    keyupdatetimestamp: string;
+    checkininterval: string;
+    ispending: string;
+    action: string;
+    localrange: string;
+    isingressgateway: string;
+    isegressgateway: string
+    pullchanges: string;
+    dnson: string;
+    isdualstack: string;
+    ipforwarding: string;
+    roaming: string;
+    islocal: string;
+    isserver: string;
+    ingressgatewayrange: string;
     address: string;
     address6: string;
     name: string;

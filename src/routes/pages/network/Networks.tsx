@@ -13,7 +13,7 @@ export const Networks: React.FC = () => {
   const { t } = useTranslation();
 
   useLinkBreadcrumb({
-    title: t("Networks")
+    title: t("breadcrumbs.networks")
   })
 
   return (
@@ -25,7 +25,7 @@ export const Networks: React.FC = () => {
   justifyContent="space-between"
   alignItems="center">
             <Grid item>
-          <h2>{t("Nodes")}</h2>
+          <h2>{t("network.networks")}</h2>
           </Grid>
             <Grid item>
           <NmLink to={{pathname: '/networks/create'}}>{t("New Network")}</NmLink>
