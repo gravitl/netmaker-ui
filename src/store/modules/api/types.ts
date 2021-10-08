@@ -1,4 +1,3 @@
-import { AxiosResponse } from "axios";
 import { User } from "../auth/types";
 
 export interface GetPayload {
@@ -9,14 +8,14 @@ export interface GetAllUsers {
   Request: {
     token: string
   },
-  Response: AxiosResponse<{}>
+  Response: Array<User>
 }
 
 export interface GetUser {
   Request: {
     token: string
   },
-  Response: AxiosResponse<{}>
+  Response: User
 }
 
 export interface Login {

@@ -218,6 +218,11 @@ function* handleDeleteNetworkSuccess(
 
 }
 
+// Update keys
+// post http://hakeee.duckdns.org:8081/api/networks/testnet/keyupdate
+// Token
+// reponse empty NetworkPayload
+
 export function* saga() {
   yield all([
     takeEvery(getType(login["success"]), handleLoginSuccess),

@@ -5,6 +5,7 @@ import { getToken } from "../auth/selectors"
 import { getApi } from "./selectors"
 import { AxiosResponse } from "axios"
 import jwtDecode from "jwt-decode"
+import { User } from "../auth"
 
 function* handleGetRequest(action: ReturnType<typeof get["request"]>) {
   const token: ReturnType<typeof getToken> = yield select(getToken)
@@ -28,7 +29,7 @@ function* handleGetAllUsersRequest(action: ReturnType<typeof getAllUsers["reques
   const api: ReturnType<typeof getApi> = yield select(getApi)
 
   try {
-    const response: AxiosResponse = yield api.get("/users", {
+    const response: AxiosResponse<Array<User>> = yield api.get("/users", {
       headers: {
         authorization: `Bearer ${action.payload.token}`
       }
@@ -49,7 +50,7 @@ function* handleGetUserRequest(action: ReturnType<typeof getUser["request"]>) {
         authorization: `Bearer ${action.payload.token}`
       }
     })
-    yield put(getUser["success"](response))
+    yield put(getUser["success"](response.data))
   } catch (e: unknown) {
     yield put(getUser["failure"](e as Error))
   }
@@ -63,7 +64,7 @@ function* handleLoginRequest(action: ReturnType<typeof login["request"]>) {
     const decoded: {
       IsAdmin: boolean
       UserName: string
-      Networks: unknown
+      Networks: Array<string>
       exp: number
     } = jwtDecode(response.data.Response.AuthToken)
     yield put(login["success"]({
@@ -71,7 +72,8 @@ function* handleLoginRequest(action: ReturnType<typeof login["request"]>) {
       user: {
         "isAdmin": decoded.IsAdmin,
         "name": decoded.UserName,
-        "exp": decoded.exp
+        "exp": decoded.exp,
+        "networks": decoded.Networks
     }}))
   } catch (e: unknown) {
     yield put(login["failure"](e as Error))

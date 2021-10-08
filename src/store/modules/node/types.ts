@@ -62,9 +62,92 @@ export type NodePayload = Modify<Node, {
   ipforwarding: "yes" | "no";
  }>
 
-export interface GetNodes {
+export interface ExternalClient {
+  clientid: string;
+  description: string;
+  privatekey: string;
+  publickey: string;
+  network: string;
+  address: string;
+  ingressgatewayid: string;
+  ingressgatewayendpoint: string;
+  lastmodified: number
+}
+
+export interface GetNodesPayload {
   Request: {
     token: string
   },
   Response: Array<NodePayload>
+}
+
+export interface UpdateNodePayload {
+  Request: {
+    token: string
+    netid: string
+    node: Node
+  },
+  Response: NodePayload
+}
+
+export interface GetExternalClientsPayload {
+  Request: {
+    token: string
+  },
+  Response: null | Array<ExternalClient>
+}
+
+export interface CreateExternalClientPayload {
+  Request: {
+    token: string
+    netid: string
+    nodeid: string
+  },
+  Response: void
+}
+
+export interface DeleteExternalClientPayload {
+  Request: {
+    token: string
+    netid: string
+    clientName: string
+  },
+  Response: void
+}
+
+export interface CreateEgressNodePayload {
+  Request: {
+    token: string
+    netid: string
+    nodeid: string
+    payload: {
+    ranges: Array<string>
+    interface: string
+    }
+  }
+  Response: NodePayload
+}
+
+export interface DeleteNodePayload {
+  Request: {
+    token: string
+    netid: string
+    nodeid: string}
+  Response: void
+}
+
+export interface CreatIngressNodePayload {
+  Request: {
+    token: string
+    netid: string
+    nodeid: string}
+  Response: void
+}
+
+export interface DeleteIngressNodePayload {
+  Request: {
+    token: string
+    netid: string
+    nodeid: string}
+  Response: void
 }

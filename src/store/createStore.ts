@@ -1,6 +1,6 @@
 import { TypedUseSelectorHook, useSelector } from "react-redux"
 import { applyMiddleware, createStore } from "redux"
-import { createLogger } from "redux-logger"
+// import { createLogger } from "redux-logger"
 import createSagaMiddleware from "redux-saga"
 
 import { RootAction as RA } from "./actions"
@@ -16,9 +16,9 @@ declare module "typesafe-actions" {
   }
 }
 
-const logger = createLogger({
-    level: "info",
-})
+// const logger = createLogger({
+//     level: "info",
+// })
 
 export const createReduxStore = () => {
     const sagaMiddleware = createSagaMiddleware()
