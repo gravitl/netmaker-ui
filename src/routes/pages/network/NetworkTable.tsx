@@ -6,6 +6,7 @@ import { Network } from "../../../store/modules/network";
 import { datePickerConverter } from '../../../util/unixTime'
 import { NmTable, TableColumns } from "../../../components/Table";
 import { Delete } from '@mui/icons-material'
+import { useTranslation } from "react-i18next";
 
 const columns: TableColumns<Network> = [
   { id: 'netid', label: 'NetId', minWidth: 170, sortable: true, format: (value) => <NmLink to={`/networks/${value}`}>{value}</NmLink>},
@@ -26,15 +27,18 @@ const columns: TableColumns<Network> = [
   }
 ];
 
+
+
 export const NetworkTable: React.FC = () => {
   const listOfNetworks = useSelector(networkSelectors.getNetworks);
+  const { t } = useTranslation()
 
   return (
     <NmTable 
       columns={columns}
       rows={listOfNetworks}
       getRowId={(row) => row.netid}
-      actions={[{ icon: <Delete />, onClick: (row) => {console.log(`Delete network ${row.netid}`)} }]}
+      actions={[(row) => ({ tooltip: t("Delete"), disabled: false, icon: <Delete />, onClick: () => {console.log(`Delete network ${row.netid}`)} })]}
     />
   )
 };
