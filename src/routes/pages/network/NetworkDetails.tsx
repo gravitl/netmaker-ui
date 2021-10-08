@@ -16,6 +16,7 @@ import {
   Route,
 } from "react-router-dom";
 import { NmLink } from "../../../components";
+import { useDialog } from "../../../components/ConfirmDialog";
 import { useLinkBreadcrumb } from "../../../components/PathBreadcrumbs";
 import { deleteNetwork } from "../../../store/modules/network/actions";
 import { authSelectors } from "../../../store/selectors";
@@ -37,18 +38,25 @@ export const NetworkDetails: React.FC = () => {
     title: networkId,
   });
 
+  const {Component, setProps} = useDialog()
+
   const dispatch = useDispatch();
   const token = useSelector(authSelectors.getToken)!;
   const deleteNetworkCallback = useCallback(
     () =>
-      dispatch(
-        deleteNetwork.request({
-          token,
-          netid: network!.netid,
-        })
-      ),
-    [dispatch, token, network]
+      setProps({
+        message: t("dialog.deleteNetwork"),
+        onSubmit: () =>dispatch(
+          deleteNetwork.request({
+            token,
+            netid: network!.netid,
+          })
+        ),
+      })
+      ,
+    [dispatch, token, network, setProps, t]
   );
+
 
   if (!network) {
     return <div>Not Found</div>;
@@ -189,6 +197,7 @@ export const NetworkDetails: React.FC = () => {
           </NmLink>
         </Route>
       </Switch>
+      <Component />
     </>
   );
 };
