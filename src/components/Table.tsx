@@ -1,5 +1,5 @@
 import React from "react";
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TableCellProps } from "@mui/material";
+import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TableCellProps, IconButton } from "@mui/material";
 import { useRouteMatch, useLocation, useHistory } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
@@ -27,9 +27,10 @@ export interface Props<Row> {
   rows: Array<Row>
   getRowId: (row: Row) => React.Key
   rowsPerPageOptions?: Array<number>
+  actions?: Array<{icon: JSX.Element, onClick: (row: Row) => void}>
 }
 
-export function NmTable<T>({columns, rows, getRowId, rowsPerPageOptions}: Props<T>) {
+export function NmTable<T>({actions, columns, rows, getRowId, rowsPerPageOptions}: Props<T>) {
   const { url } = useRouteMatch();
   const history = useHistory();
   const query = useQuery();
@@ -64,6 +65,7 @@ export function NmTable<T>({columns, rows, getRowId, rowsPerPageOptions}: Props<
                   {column.label ? column.label : column.labelKey ? t(column.labelKey ) : "No column label or key"}
                 </TableCell>
               ))}
+              {actions?.map((_, i) => <TableCell width={40} key={`a${i}`}/>)}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -82,6 +84,7 @@ export function NmTable<T>({columns, rows, getRowId, rowsPerPageOptions}: Props<
                         </TableCell>
                       );
                     })}
+                    {actions?.map((action, i) => <TableCell width={40} key={`a${i}`}><IconButton onClick={() => action.onClick(row)}>{action.icon}</IconButton></TableCell>)}
                   </TableRow>
                 );
               })}
