@@ -23,3 +23,33 @@ export interface ServerConfig {
   Verbosity: number // 0
   Version: string // "v0.7.3"
 }
+export interface GetServerConfigPayload {
+  Request: {
+    token: string
+  },
+  Response: {
+    APIConnString: string
+    APIHost: string
+    APIPort: string
+    AgentBackend: string
+    AllowedOrigin: string
+    ClientMode: string
+    CoreDNSAddr: string
+    DNSMode: string
+    Database: string
+    DefaultNodeLimit: number
+    DisableDefaultNet: string
+    DisableRemoteIPCheck: string
+    GRPCConnString: string
+    GRPCHost: string
+    GRPCPort: string
+    GRPCSSL: string
+    GRPCSecure: string
+    MasterKey: string
+    Platform: string
+    RestBackend: string
+    SQLConn: string
+    Verbosity: number
+    Version: string
+  }
+}

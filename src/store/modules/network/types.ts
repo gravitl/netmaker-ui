@@ -41,15 +41,12 @@ export type NetworkPayload = Modify<Network, {
 }>
 
 export interface GetNetworksPayload {
-  Request: {
-    token: string
-  },
+  Request: void,
   Response: Array<NetworkPayload>
 }
 
 export interface UpdateNetworkPayload {
   Request: {
-    token: string
     network: NetworkPayload
   },
   Response: NetworkPayload
@@ -57,7 +54,6 @@ export interface UpdateNetworkPayload {
 
 export interface DeleteNetworkPayload {
   Request: {
-    token: string
     netid: string
   },
   Response: {
@@ -67,8 +63,6 @@ export interface DeleteNetworkPayload {
 
 export interface CreateNetworkPayload {
   Request: {
-    token: string
-    newNetwork: {
       addressrange: string
       netid: string
       localrange: string
@@ -76,7 +70,6 @@ export interface CreateNetworkPayload {
       isdualstack: "yes" | "no"
       addressrange6: string
       defaultudpholepunch: "yes" | "no"
-    }
   },
   Response: void
 }
@@ -90,7 +83,6 @@ export interface AccessKey {
 
 export interface GetAccessKeysPayload {
   Request: {
-    token: string
     netid: string
   },
   Response: Array<AccessKey>
@@ -98,7 +90,6 @@ export interface GetAccessKeysPayload {
 
 export interface CreateAccessKeyPayload {
   Request: {
-    token: string
     netid: string
     newAccessKey: {
       name: string
@@ -110,7 +101,6 @@ export interface CreateAccessKeyPayload {
 
 export interface DeleteAccessKeyPayload {
   Request: {
-    token: string
     netid: string
     name: string
   },

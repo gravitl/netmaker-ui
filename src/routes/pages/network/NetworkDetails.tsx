@@ -7,7 +7,7 @@ import {
 } from "@mui/material";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
   useRouteMatch,
   useHistory,
@@ -19,7 +19,6 @@ import { NmLink } from "../../../components";
 import { useDialog } from "../../../components/ConfirmDialog";
 import { useLinkBreadcrumb } from "../../../components/PathBreadcrumbs";
 import { deleteNetwork } from "../../../store/modules/network/actions";
-import { authSelectors } from "../../../store/selectors";
 import { NetworkDetailsEdit } from "./NetworkEdit";
 import { NetworkModifiedStats } from "./NetworkModifiedStats";
 import { NetworkNodes } from "./NetworkNodes";
@@ -41,20 +40,18 @@ export const NetworkDetails: React.FC = () => {
   const {Component, setProps} = useDialog()
 
   const dispatch = useDispatch();
-  const token = useSelector(authSelectors.getToken)!;
   const deleteNetworkCallback = useCallback(
     () =>
       setProps({
         message: t("dialog.deleteNetwork"),
         onSubmit: () =>dispatch(
           deleteNetwork.request({
-            token,
             netid: network!.netid,
           })
         ),
       })
       ,
-    [dispatch, token, network, setProps, t]
+    [dispatch, network, setProps, t]
   );
 
 

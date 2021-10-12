@@ -1,10 +1,9 @@
 import { Delete } from "@mui/icons-material";
 import { Card, CardContent, Typography, Box, IconButton } from "@mui/material";
 import { useCallback } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { NmLink } from "../../../components";
 import { deleteNetwork } from "../../../store/modules/network/actions";
-import { authSelectors } from "../../../store/selectors";
 import { NetworkModifiedStats } from "./NetworkModifiedStats";
 import { useNetwork } from "./utils";
 
@@ -15,16 +14,14 @@ export const NetworkCard: React.FC<{ url: string; networkId: string }> = ({
   const network = useNetwork(networkId)
 
   const dispatch = useDispatch();
-  const token = useSelector(authSelectors.getToken)!;
   const deleteNetworkCallback = useCallback(
     () =>
       dispatch(
         deleteNetwork.request({
-          token,
           netid: network!.netid,
         })
       ),
-    [dispatch, token, network]
+    [dispatch, network]
   );
 
   if (!network) {

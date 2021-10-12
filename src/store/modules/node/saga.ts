@@ -1,62 +1,73 @@
-import { all, call, put, select, takeEvery } from "redux-saga/effects"
-import { createEgressNode, createExternalClient, createIngressNode, deleteExternalClient, deleteIngressNode, deleteNode, getExternalClients, getNodes, updateNode } from "./actions"
-import { login } from "../api/actions"
-import { getToken } from "../auth/selectors"
-import { AxiosResponse } from "axios"
-import { getType } from "typesafe-actions"
-import { getApi } from "../api/selectors"
-import { ExternalClient, NodePayload } from "./types"
-import { asyncToastSaga } from "../toast/saga"
-import { i18n } from "../../../i18n/i18n"
-import { nodeToNodePayload } from "./utils"
+import { all, fork, put, select, takeEvery } from "redux-saga/effects";
+import {
+  createEgressNode,
+  createExternalClient,
+  createIngressNode,
+  deleteExternalClient,
+  deleteIngressNode,
+  deleteNode,
+  getExternalClients,
+  getNodes,
+  updateNode,
+} from "./actions";
+import { login } from "../auth/actions";
+import { getToken } from "../auth/selectors";
+import { AxiosResponse } from "axios";
+import { getType } from "typesafe-actions";
+import { ExternalClient, NodePayload } from "./types";
+import { generatorToastSaga } from "../toast/saga";
+import { i18n } from "../../../i18n/i18n";
+import { nodeToNodePayload } from "./utils";
+import { apiRequestWithAuthSaga } from "../api/saga";
 
-function* handleGetNodesRequest(action: ReturnType<typeof getNodes["request"]>) {
-  const api: ReturnType<typeof getApi> = yield select(getApi)
-
+function* handleGetNodesRequest(
+  action: ReturnType<typeof getNodes["request"]>
+) {
   try {
-    const response: AxiosResponse<Array<NodePayload>> = yield api.get("/nodes", {
-      headers: {
-        authorization: `Bearer ${action.payload.token}`
-      }
-    })
-    console.log(response.data)
-    yield put(getNodes["success"](response.data))
+    const response: AxiosResponse<Array<NodePayload>> =
+      yield apiRequestWithAuthSaga("get", "/nodes", {});
+    yield put(getNodes["success"](response.data));
   } catch (e: unknown) {
-    yield put(getNodes["failure"](e as Error))
+    yield put(getNodes["failure"](e as Error));
   }
 }
 
 function* handleLoginSuccess() {
-  const token: ReturnType<typeof getToken> = yield select(getToken)
-  if(token)
-    yield put(getNodes.request({
-      token
-    }))
+  const token: ReturnType<typeof getToken> = yield select(getToken);
+  if (token)
+    yield put(
+      getNodes.request({
+        token,
+      })
+    );
 }
 
-function* handleUpdateNodeRequest(action: ReturnType<typeof updateNode["request"]>) {
-  const api: ReturnType<typeof getApi> = yield select(getApi);
-
+function* handleUpdateNodeRequest(
+  action: ReturnType<typeof updateNode["request"]>
+) {
   try {
-    const response: AxiosResponse<NodePayload> = yield call(asyncToastSaga, {
-      promise: {
-        method: api.put,
-        params: [
-          `/nodes/${action.payload.netid}/${action.payload.node.id}`,
-          nodeToNodePayload(action.payload.node),
-          {
-            headers: {
-              authorization: `Bearer ${action.payload.token}`,
-            },
-          },
-        ],
-      },
+    yield fork(generatorToastSaga, {
+      success: updateNode["success"],
+      error: updateNode["failure"],
       params: {
-        pending: i18n.t("updateNodeToastRequest", {nodeid: action.payload.node.id}),
-        success: i18n.t("updateNodeToastSuccess", {nodeid: action.payload.node.id}),
-        error: i18n.t("updateNodeToastError", {nodeid: action.payload.node.id}),
+        pending: i18n.t("updateNodeToastRequest", {
+          nodeid: action.payload.node.id,
+        }),
+        success: i18n.t("updateNodeToastSuccess", {
+          nodeid: action.payload.node.id,
+        }),
+        error: i18n.t("updateNodeToastError", {
+          nodeid: action.payload.node.id,
+        }),
       },
     });
+
+    const response: AxiosResponse<NodePayload> = yield apiRequestWithAuthSaga(
+      "put",
+      `/nodes/${action.payload.netid}/${action.payload.node.id}`,
+      nodeToNodePayload(action.payload.node),
+      {}
+    );
 
     yield put(updateNode["success"](response.data));
   } catch (e: unknown) {
@@ -64,28 +75,31 @@ function* handleUpdateNodeRequest(action: ReturnType<typeof updateNode["request"
   }
 }
 
-function* handleDeleteNodeRequest(action: ReturnType<typeof deleteNode["request"]>) {
-  const api: ReturnType<typeof getApi> = yield select(getApi);
-
+function* handleDeleteNodeRequest(
+  action: ReturnType<typeof deleteNode["request"]>
+) {
   try {
-    yield call(asyncToastSaga, {
-      promise: {
-        method: api.delete,
-        params: [
-          `/nodes/${action.payload.netid}/${action.payload.nodeid}`,
-          {
-            headers: {
-              authorization: `Bearer ${action.payload.token}`,
-            },
-          },
-        ],
-      },
+    yield fork(generatorToastSaga, {
+      success: deleteNode["success"],
+      error: deleteNode["failure"],
       params: {
-        pending: i18n.t("deleteNodeToastRequest", {nodeid: action.payload.nodeid}),
-        success: i18n.t("deleteNodeToastSuccess", {nodeid: action.payload.nodeid}),
-        error: i18n.t("deleteNodeToastError", {nodeid: action.payload.nodeid}),
+        pending: i18n.t("deleteNodeToastRequest", {
+          nodeid: action.payload.nodeid,
+        }),
+        success: i18n.t("deleteNodeToastSuccess", {
+          nodeid: action.payload.nodeid,
+        }),
+        error: i18n.t("deleteNodeToastError", {
+          nodeid: action.payload.nodeid,
+        }),
       },
     });
+
+    yield apiRequestWithAuthSaga(
+      "delete",
+      `/nodes/${action.payload.netid}/${action.payload.nodeid}`,
+      {}
+    );
 
     yield put(deleteNode["success"]());
   } catch (e: unknown) {
@@ -93,29 +107,32 @@ function* handleDeleteNodeRequest(action: ReturnType<typeof deleteNode["request"
   }
 }
 
-function* handleCreateIngressNodeRequest(action: ReturnType<typeof createIngressNode["request"]>) {
-  const api: ReturnType<typeof getApi> = yield select(getApi);
-
+function* handleCreateIngressNodeRequest(
+  action: ReturnType<typeof createIngressNode["request"]>
+) {
   try {
-    yield call(asyncToastSaga, {
-      promise: {
-        method: api.post,
-        params: [
-          `/nodes/${action.payload.netid}/${action.payload.nodeid}/createingress`,
-          {},
-          {
-            headers: {
-              authorization: `Bearer ${action.payload.token}`,
-            },
-          },
-        ],
-      },
+    yield fork(generatorToastSaga, {
+      success: createIngressNode["success"],
+      error: createIngressNode["failure"],
       params: {
-        pending: i18n.t("createIngressNodeToastRequest", {nodeid: action.payload.nodeid}),
-        success: i18n.t("createIngressNodeToastSuccess", {nodeid: action.payload.nodeid}),
-        error: i18n.t("createIngressNodeToastError", {nodeid: action.payload.nodeid}),
+        pending: i18n.t("createIngressNodeToastRequest", {
+          nodeid: action.payload.nodeid,
+        }),
+        success: i18n.t("createIngressNodeToastSuccess", {
+          nodeid: action.payload.nodeid,
+        }),
+        error: i18n.t("createIngressNodeToastError", {
+          nodeid: action.payload.nodeid,
+        }),
       },
     });
+
+    yield apiRequestWithAuthSaga(
+      "post",
+      `/nodes/${action.payload.netid}/${action.payload.nodeid}/createingress`,
+      {},
+      {}
+    );
 
     yield put(createIngressNode["success"]());
   } catch (e: unknown) {
@@ -123,28 +140,31 @@ function* handleCreateIngressNodeRequest(action: ReturnType<typeof createIngress
   }
 }
 
-function* handleDeleteIngressNodeRequest(action: ReturnType<typeof deleteIngressNode["request"]>) {
-  const api: ReturnType<typeof getApi> = yield select(getApi);
-
+function* handleDeleteIngressNodeRequest(
+  action: ReturnType<typeof deleteIngressNode["request"]>
+) {
   try {
-    yield call(asyncToastSaga, {
-      promise: {
-        method: api.delete,
-        params: [
-          `/nodes/${action.payload.netid}/${action.payload.nodeid}/deleteingress`,
-          {
-            headers: {
-              authorization: `Bearer ${action.payload.token}`,
-            },
-          },
-        ],
-      },
+    yield fork(generatorToastSaga, {
+      success: deleteIngressNode["success"],
+      error: deleteIngressNode["failure"],
       params: {
-        pending: i18n.t("deleteIngressNodeToastRequest", {nodeid: action.payload.nodeid}),
-        success: i18n.t("deleteIngressNodeToastSuccess", {nodeid: action.payload.nodeid}),
-        error: i18n.t("deleteIngressNodeToastError", {nodeid: action.payload.nodeid}),
+        pending: i18n.t("deleteIngressNodeToastRequest", {
+          nodeid: action.payload.nodeid,
+        }),
+        success: i18n.t("deleteIngressNodeToastSuccess", {
+          nodeid: action.payload.nodeid,
+        }),
+        error: i18n.t("deleteIngressNodeToastError", {
+          nodeid: action.payload.nodeid,
+        }),
       },
     });
+
+    yield apiRequestWithAuthSaga(
+      "delete",
+      `/nodes/${action.payload.netid}/${action.payload.nodeid}/deleteingress`,
+      {}
+    );
 
     yield put(deleteIngressNode["success"]());
   } catch (e: unknown) {
@@ -152,17 +172,12 @@ function* handleDeleteIngressNodeRequest(action: ReturnType<typeof deleteIngress
   }
 }
 
-function* handleGetExternalClientRequest(action: ReturnType<typeof getExternalClients["request"]>) {
-  const api: ReturnType<typeof getApi> = yield select(getApi);
-
+function* handleGetExternalClientRequest(
+  action: ReturnType<typeof getExternalClients["request"]>
+) {
   try {
-    const response: AxiosResponse<Array<ExternalClient> | null> = yield call(api.get,
-          `/extclients`,
-          {
-            headers: {
-              authorization: `Bearer ${action.payload.token}`,
-            },
-          })
+    const response: AxiosResponse<Array<ExternalClient> | null> =
+      yield apiRequestWithAuthSaga("get", `/extclients`, {});
 
     yield put(getExternalClients["success"](response.data));
   } catch (e: unknown) {
@@ -170,29 +185,32 @@ function* handleGetExternalClientRequest(action: ReturnType<typeof getExternalCl
   }
 }
 
-function* handleCreateExternalClientRequest(action: ReturnType<typeof createExternalClient["request"]>) {
-  const api: ReturnType<typeof getApi> = yield select(getApi);
-
+function* handleCreateExternalClientRequest(
+  action: ReturnType<typeof createExternalClient["request"]>
+) {
   try {
-    const response: AxiosResponse<void> = yield call(asyncToastSaga, {
-      promise: {
-        method: api.post,
-        params: [
-          `/extclients/${action.payload.netid}/${action.payload.nodeid}`,
-          {},
-          {
-            headers: {
-              authorization: `Bearer ${action.payload.token}`,
-            },
-          },
-        ],
-      },
+    yield fork(generatorToastSaga, {
+      success: createExternalClient["success"],
+      error: createExternalClient["failure"],
       params: {
-        pending: i18n.t("createExternalClientToastRequest", {nodeid: action.payload.nodeid}),
-        success: i18n.t("createExternalClientToastSuccess", {nodeid: action.payload.nodeid}),
-        error: i18n.t("createExternalClientToastError", {nodeid: action.payload.nodeid}),
+        pending: i18n.t("createExternalClientToastRequest", {
+          nodeid: action.payload.nodeid,
+        }),
+        success: i18n.t("createExternalClientToastSuccess", {
+          nodeid: action.payload.nodeid,
+        }),
+        error: i18n.t("createExternalClientToastError", {
+          nodeid: action.payload.nodeid,
+        }),
       },
     });
+
+    const response: AxiosResponse<void> = yield apiRequestWithAuthSaga(
+      "post",
+      `/extclients/${action.payload.netid}/${action.payload.nodeid}`,
+      {},
+      {}
+    );
 
     yield put(createExternalClient["success"](response.data));
   } catch (e: unknown) {
@@ -200,58 +218,64 @@ function* handleCreateExternalClientRequest(action: ReturnType<typeof createExte
   }
 }
 
-function* handleDeleteExternalClientRequest(action: ReturnType<typeof deleteExternalClient["request"]>) {
-  const api: ReturnType<typeof getApi> = yield select(getApi);
-
+function* handleDeleteExternalClientRequest(
+  action: ReturnType<typeof deleteExternalClient["request"]>
+) {
   try {
-    const response: AxiosResponse<void> = yield call(asyncToastSaga, {
-      promise: {
-        method: api.delete,
-        params: [
-          `/extclients/${action.payload.netid}/${action.payload.clientName}`,
-          {
-            headers: {
-              authorization: `Bearer ${action.payload.token}`,
-            },
-          },
-        ],
-      },
+    yield fork(generatorToastSaga, {
+      success: deleteExternalClient["success"],
+      error: deleteExternalClient["failure"],
       params: {
-        pending: i18n.t("deleteExternalClientToastRequest", {nodeName: action.payload.clientName}),
-        success: i18n.t("deleteExternalClientToastSuccess", {nodeName: action.payload.clientName}),
-        error: i18n.t("deleteExternalClientToastError", {nodeName: action.payload.clientName}),
+        pending: i18n.t("deleteExternalClientToastRequest", {
+          nodeName: action.payload.clientName,
+        }),
+        success: i18n.t("deleteExternalClientToastSuccess", {
+          nodeName: action.payload.clientName,
+        }),
+        error: i18n.t("deleteExternalClientToastError", {
+          nodeName: action.payload.clientName,
+        }),
       },
     });
 
-    yield put(deleteExternalClient["success"](response.data));
+    yield apiRequestWithAuthSaga(
+      "delete",
+      `/extclients/${action.payload.netid}/${action.payload.clientName}`,
+      {}
+    );
+
+    yield put(deleteExternalClient["success"]());
   } catch (e: unknown) {
     yield put(deleteExternalClient["failure"](e as Error));
   }
 }
 
-function* handleCreateEgressNodeRequest(action: ReturnType<typeof createEgressNode["request"]>) {
-  const api: ReturnType<typeof getApi> = yield select(getApi);
-
+function* handleCreateEgressNodeRequest(
+  action: ReturnType<typeof createEgressNode["request"]>
+) {
   try {
-    const response: AxiosResponse<NodePayload> = yield call(asyncToastSaga, {
-      promise: {
-        method: api.post,
-        params: [
-          `/nodes/${action.payload.netid}/${action.payload.nodeid}/creategateway`,
-          action.payload.payload,
-          {
-            headers: {
-              authorization: `Bearer ${action.payload.token}`,
-            },
-          },
-        ],
-      },
+    yield fork(generatorToastSaga, {
+      success: createEgressNode["success"],
+      error: createEgressNode["failure"],
       params: {
-        pending: i18n.t("createEgressNodeToastRequest", {nodeName: action.payload.nodeid}),
-        success: i18n.t("createEgressNodeToastSuccess", {nodeName: action.payload.nodeid}),
-        error: i18n.t("createEgressNodeToastError", {nodeName: action.payload.nodeid}),
+        pending: i18n.t("createEgressNodeToastRequest", {
+          nodeName: action.payload.nodeid,
+        }),
+        success: i18n.t("createEgressNodeToastSuccess", {
+          nodeName: action.payload.nodeid,
+        }),
+        error: i18n.t("createEgressNodeToastError", {
+          nodeName: action.payload.nodeid,
+        }),
       },
     });
+
+    const response: AxiosResponse<NodePayload> = yield apiRequestWithAuthSaga(
+      "post",
+      `/nodes/${action.payload.netid}/${action.payload.nodeid}/creategateway`,
+      action.payload.payload,
+      {}
+    );
 
     yield put(createEgressNode["success"](response.data));
   } catch (e: unknown) {
@@ -270,13 +294,31 @@ export function* saga() {
 
     takeEvery(getType(updateNode["request"]), handleUpdateNodeRequest),
     takeEvery(getType(deleteNode["request"]), handleDeleteNodeRequest),
-    takeEvery(getType(createIngressNode["request"]), handleCreateIngressNodeRequest),
-    takeEvery(getType(deleteIngressNode["request"]), handleDeleteIngressNodeRequest),
-    takeEvery(getType(getExternalClients["request"]), handleGetExternalClientRequest),
-    takeEvery(getType(createExternalClient["request"]), handleCreateExternalClientRequest),
-    takeEvery(getType(deleteExternalClient["request"]), handleDeleteExternalClientRequest),
-    takeEvery(getType(createEgressNode["request"]), handleCreateEgressNodeRequest),
+    takeEvery(
+      getType(createIngressNode["request"]),
+      handleCreateIngressNodeRequest
+    ),
+    takeEvery(
+      getType(deleteIngressNode["request"]),
+      handleDeleteIngressNodeRequest
+    ),
+    takeEvery(
+      getType(getExternalClients["request"]),
+      handleGetExternalClientRequest
+    ),
+    takeEvery(
+      getType(createExternalClient["request"]),
+      handleCreateExternalClientRequest
+    ),
+    takeEvery(
+      getType(deleteExternalClient["request"]),
+      handleDeleteExternalClientRequest
+    ),
+    takeEvery(
+      getType(createEgressNode["request"]),
+      handleCreateEgressNodeRequest
+    ),
 
-    handleLoginSuccess()
-  ])
+    handleLoginSuccess(),
+  ]);
 }

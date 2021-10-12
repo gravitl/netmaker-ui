@@ -1,7 +1,6 @@
 
 import { ToastContent, ToastOptions, UpdateOptions } from "react-toastify";
-
-// type SecondArgumentType<T> = T extends (arg1: any, arg2: infer U, ...args: any[]) => any ? U : never;
+import { PayloadActionCreator } from "typesafe-actions";
 
 export type ToastPromiseType = string | UpdateOptions
 export type ToastPromiseFunctionType<T> = (value: T) => ToastPromiseType
@@ -25,3 +24,11 @@ export interface AsyncToastPayload<T> {
   }
   options?: ToastOptions
 }
+
+export interface GeneratorToastPayload {
+  params: ToastPromiseParams<any>
+  success: PayloadActionCreator<string, any>
+  error: PayloadActionCreator<string, Error>
+  options?: ToastOptions
+}
+

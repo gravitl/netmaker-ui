@@ -2,7 +2,7 @@ import React, { useCallback, useEffect } from "react";
 import { Typography, CircularProgress, Modal, Box } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, useHistory, useLocation } from "react-router-dom";
-import { login } from "../../store/modules/api/actions";
+import { login } from "../../store/modules/auth/actions";
 import { authSelectors } from "../../store/selectors";
 import { correctUserNameRegex, correctPasswordRegex } from "../../util/regex";
 import { NmForm } from "../../components/form/Form";

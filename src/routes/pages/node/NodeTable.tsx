@@ -6,6 +6,11 @@ import { useTranslation } from "react-i18next";
 import { useLinkBreadcrumb } from "../../../components/PathBreadcrumbs";
 import { Node } from "../../../store/modules/node";
 import { NmTable, TableColumns } from "../../../components/Table";
+import { Badge } from "@mui/material";
+
+const WARNING = '#ffcc00'
+const ERROR = '#ED4337'
+const HEALTHY = '#11772d'
 
 const columns: TableColumns<Node> = [
   {
@@ -28,6 +33,20 @@ const columns: TableColumns<Node> = [
     minWidth: 170,
     align: "right",
     format: (value) => <NmLink to={`/networks/${value}`}>{value}</NmLink>,
+  },
+  {
+    id: "lastcheckin",
+    labelKey: "node.status",
+    minWidth: 170,
+    align: "right",
+    format: (lastcheckin) => {
+      const time = (Date.now()/1000)
+      if(time - lastcheckin >= 1800)
+        return <Badge sx={{backgroundColor: ERROR}}>ERROR</Badge>
+      if(time - lastcheckin >= 300)
+        return <Badge sx={{backgroundColor: WARNING}}>WARNING</Badge>
+        return <Badge sx={{backgroundColor: HEALTHY}}>HEALTHY</Badge>
+    }
   },
 ];
 

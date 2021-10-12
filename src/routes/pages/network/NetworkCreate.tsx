@@ -1,12 +1,11 @@
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { NmForm } from "../../../components/form/Form";
 import { NmFormInputSwitch } from "../../../components/form/FormSwitchInput";
 import { NmFormInputText } from "../../../components/form/FormTextInput";
 import { useLinkBreadcrumb } from "../../../components/PathBreadcrumbs";
 import { createNetwork } from "../../../store/modules/network/actions";
-import { authSelectors } from "../../../store/selectors";
 
 interface CreateNetwork {
   addressrange: string;
@@ -32,28 +31,24 @@ export const NetworkCreate: React.FC = () => {
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
-  const token = useSelector(authSelectors.getToken);
 
   const onSubmit = useCallback(
     (data: CreateNetwork) => {
       dispatch(
         createNetwork.request({
-          token: token!,
-          newNetwork: {
-            ...data,
-            islocal: data.islocal ? "yes" : "no",
-            isdualstack: data.isdualstack ? "yes" : "no",
-            defaultudpholepunch: data.defaultudpholepunch ? "yes" : "no",
-          },
+          ...data,
+          islocal: data.islocal ? "yes" : "no",
+          isdualstack: data.isdualstack ? "yes" : "no",
+          defaultudpholepunch: data.defaultudpholepunch ? "yes" : "no",
         })
       );
     },
-    [dispatch, token]
+    [dispatch]
   );
 
   useLinkBreadcrumb({
-    title: t("Create")
-  })
+    title: t("Create"),
+  });
 
   return (
     <NmForm

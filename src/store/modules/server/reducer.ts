@@ -1,6 +1,6 @@
 import { produce } from "immer";
 import { createReducer } from "typesafe-actions";
-import { getServerConfig } from "../api/actions";
+import { getServerConfig } from "./actions";
 import { ServerConfig } from "./types";
 
 export const reducer = createReducer({

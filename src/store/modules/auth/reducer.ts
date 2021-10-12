@@ -2,8 +2,7 @@ import { produce } from "immer";
 import * as ls from 'local-storage'
 import { createReducer } from "typesafe-actions";
 import { USER_KEY } from "../../../config";
-import { login } from "../api/actions";
-import { logout, setUser } from "./actions";
+import { login, logout, setUser } from "./actions";
 import { LocalStorageUserKeyValue } from "./types";
 
 const initialValues = ls.get<LocalStorageUserKeyValue | undefined>(USER_KEY)
