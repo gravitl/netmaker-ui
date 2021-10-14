@@ -1,9 +1,7 @@
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { NmForm } from "../../../components/form/Form";
-import { NmFormInputSwitch } from "../../../components/form/FormSwitchInput";
-import { NmFormInputText } from "../../../components/form/FormTextInput";
+import { NmForm, NmFormInputSwitch, NmFormInputText } from "../../../components/form";
 import { useLinkBreadcrumb } from "../../../components/PathBreadcrumbs";
 import { createNetwork } from "../../../store/modules/network/actions";
 

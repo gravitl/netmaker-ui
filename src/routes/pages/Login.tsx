@@ -5,10 +5,8 @@ import { Redirect, useHistory, useLocation } from "react-router-dom";
 import { login } from "../../store/modules/auth/actions";
 import { authSelectors } from "../../store/selectors";
 import { correctUserNameRegex, correctPasswordRegex } from "../../util/regex";
-import { NmForm } from "../../components/form/Form";
-import { NmFormInputText } from "../../components/form/FormTextInput";
+import { NmForm, NmFormInputText, validate } from "../../components/form";
 import { useTranslation } from "react-i18next";
-import { validate } from "../../components/form/validate";
 
 const styles = {
   vertTabs: {
