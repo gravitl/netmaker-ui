@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 import { Typography, CircularProgress, Modal, Box } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, useHistory, useLocation } from "react-router-dom";
@@ -8,6 +8,7 @@ import { correctUserNameRegex, correctPasswordRegex } from "../../util/regex";
 import { NmForm } from "../../components/form/Form";
 import { NmFormInputText } from "../../components/form/FormTextInput";
 import { useTranslation } from "react-i18next";
+import { validate } from "../../components/form/validate";
 
 const styles = {
   vertTabs: {
@@ -79,38 +80,20 @@ export function Login() {
     [dispatch, setTriedToLogin]
   );
 
-  const loginResolver = useCallback((data: typeof initialLoginForm) => {
-    const usernameError = !correctUserNameRegex.test(data.username)
-      ? {
-          message: t("login.validation.username"),
-          type: "value",
-        }
-      : undefined;
-    const passwordError = !correctPasswordRegex.test(data.password)
-      ? {
-          message: t("login.validation.password"),
-          type: "value",
-        }
-      : undefined;
-
-    if (usernameError || passwordError) {
-      return {
-        errors: {
-          username: usernameError,
-          password: passwordError,
-        },
-        values: {},
-      };
-    }
-
-    return {
-      values: {
-        username: data.username,
-        password: data.password,
-      },
-      errors: {},
-    };
-  }, [t]);
+  const loginValidation = useMemo(() => validate<typeof initialLoginForm>({
+    username: (username) => !correctUserNameRegex.test(username)
+    ? {
+        message: t("login.validation.username"),
+        type: "value",
+      }
+    : undefined,
+    password: (password) => !correctPasswordRegex.test(password)
+    ? {
+        message: t("login.validation.password"),
+        type: "value",
+      }
+    : undefined
+  }), [t])
 
   if (isLoggedIn)
     return <Redirect to={location.state?.from || "/"} />;
@@ -144,7 +127,7 @@ export function Login() {
         </h3>
         <NmForm
           initialState={initialLoginForm}
-          resolver={loginResolver}
+          resolver={loginValidation}
           onSubmit={loginSubmit}
           submitText={t("login.login")}
           submitProps={{
