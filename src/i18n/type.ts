@@ -29,6 +29,7 @@ export interface LanguageResource {
     edit: string;
   };
   network: {
+    allowmanualsignup: string;
     networks: string;
     addressrange: string;
     addressrange6: string;

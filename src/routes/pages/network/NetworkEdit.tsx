@@ -1,4 +1,3 @@
-import { Grid } from "@mui/material";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -42,14 +41,6 @@ export const NetworkDetailsEdit: React.FC<{
         "& .MuiTextField-root": { m: 1, width: "25ch" },
       }}
     >
-      <Grid item xs={12}>
-        <div>
-          <NmFormInputSwitch
-            name={"allowmanualsignup"}
-            label={"Allow Node Signup Without Keys"}
-          />
-        </div>
-      </Grid>
       <NmFormInputText
         name={"addressrange"}
         label={t("network.addressrange")}
@@ -89,6 +80,10 @@ export const NetworkDetailsEdit: React.FC<{
         label={t("network.defaultextclientdns")}
       />
       <NmFormInputText name={"defaultmtu"} label={t("network.defaultmtu")} />
+      <NmFormInputSwitch
+        name={"allowmanualsignup"}
+        label={"Allow Node Signup Without Keys"}
+      />
       <NmFormInputSwitch
         name={"isdualstack"}
         label={t("network.isdualstack")}

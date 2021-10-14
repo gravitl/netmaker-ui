@@ -31,6 +31,7 @@ export const en: LanguageResource = {
     edit: "Edit",
   },
   network: {
+    allowmanualsignup: "Allow Node Signup Without Keys",
     networks: "Network",
     addressrange: "Address Range (IPv4)",
     addressrange6: "Address Range (IPv6)",

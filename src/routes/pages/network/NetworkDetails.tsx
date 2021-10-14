@@ -93,15 +93,6 @@ export const NetworkDetails: React.FC = () => {
               "& .MuiTextField-root": { m: 1, width: "25ch" },
             }}
           >
-            <Grid item xs={12}>
-              <FormControlLabel
-                label={t("Allow Node Signup Without Keys")}
-                control={
-                  <SwitchField checked={network.allowmanualsignup} disabled />
-                }
-                disabled
-              />
-            </Grid>
             <TextField
               disabled
               value={network.addressrange}
@@ -161,6 +152,13 @@ export const NetworkDetails: React.FC = () => {
               disabled
               value={network.defaultmtu}
               label={t("network.defaultmtu")}
+            />
+            <FormControlLabel
+              label={t("network.allowmanualsignup")}
+              control={
+                <SwitchField checked={network.allowmanualsignup} disabled />
+              }
+              disabled
             />
             <FormControlLabel
               label={t("network.isdualstack")}
