@@ -81,6 +81,13 @@ export default function Login({ setIsLoggingIn, setSuccess, setShouldUpdate }) {
         setUserName(event.target.value.trim())
     }
 
+    React.useEffect(() => {
+        let oauthResponse = USER.getParameterByName("oauth")
+        if (oauthResponse && !error) {
+            setError('OAuth authentication failure occurred, notify admin or check server configuration.')
+        }
+    }, [error])
+
     return (
         <Grid container justify='center' className={classes.mainContainer}>
             <Grid item xs={8} >

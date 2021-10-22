@@ -50,9 +50,9 @@ function App() {
 
   React.useEffect(() => {       
     let loginParam = USER.getParameterByName('login')
-    let emailParam = USER.getParameterByName('email')
-    if (loginParam && emailParam) {
-      USER.setUserFromParams(loginParam, emailParam).then(
+    let userParam = USER.getParameterByName('user')
+    if (loginParam && userParam) {
+      return USER.setUserFromParams(loginParam, userParam).then(
         () => setTimeout(() => {
           window.location.replace(window.location.href.split('?')[0])
         }, 200)
