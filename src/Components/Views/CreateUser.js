@@ -1,8 +1,9 @@
-import { TextField, Button, Grid, Typography, CircularProgress, FormControlLabel } from '@material-ui/core'
+import { TextField, Button, Grid, Typography, CircularProgress, FormControlLabel, IconButton, Tooltip } from '@material-ui/core'
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import USER from '../Utils/User'
 import User from '../Utils/User'
+import Common from '../../Common'
 import Switch from '@material-ui/core/Switch';
 import Checkbox from '@material-ui/core/Checkbox'
 import Select from '@material-ui/core/Select';
@@ -11,6 +12,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
+import VpnKey from '@material-ui/icons/VpnKey';
 
 const styles = {
     vertTabs: {
@@ -292,17 +294,33 @@ export default function CreateUser({ setIsCreating, setSuccess, setShouldUpdate,
                         </Select>
                     </FormControl>
                     </div> }
-                    <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        color="primary"
-                        className={classes.submit}
-                        disabled={isProcessing}
-                        style={{marginTop: '1em', marginBottom: '2em'}}
-                    >
-                       {!deleteMode ? `CREATE USER` : `DELETE USER`}
-                    </Button>
+                    <Grid container style={{display: 'flex', justifyContent: 'space-between', marginTop: '1em', marginBottom: '2em'}}>
+                        <Grid item xs={6}>
+                            <Button
+                                type="submit"
+                                variant="contained"
+                                color="primary"
+                                fullWidth
+                                disabled={isProcessing}
+                            >
+                            {!deleteMode ? `CREATE USER` : `DELETE USER`}
+                            </Button>
+                        </Grid>
+                        {!deleteMode ? 
+                            <Grid item xs={2}>
+                                <Tooltip aria-label='Use OAuth provider to login' title='Use OAuth Provider to sign in' placement='top'>
+                                    <IconButton
+                                        color="primary"
+                                        variant="contained"
+                                        disabled={isProcessing}
+                                        href={`${Common.BACKEND_URL}/api/oauth/login`}
+                                    >
+                                        <VpnKey />
+                                    </IconButton>
+                                </Tooltip>
+                            </Grid>
+                        : null}
+                    </Grid>
                 </form>
             </Grid>
         </Grid> : null

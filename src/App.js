@@ -50,18 +50,13 @@ function App() {
 
   React.useEffect(() => {       
     let loginParam = USER.getParameterByName('login')
-    if (loginParam && !user) {
-      loginParam = Buffer.from(loginParam, 'base64').toString().split('   ')
-      if (loginParam.length === 2) {
-        const u = loginParam[0].trim()
-        const t = loginParam[1].trim()
-        const userProvided = USER.decode(u, t)
-        if (userProvided) {
-            setTimeout(() => {
-              window.location.replace(window.location.href.split('?')[0])
-          }, 200)  
-        }
-      }
+    let emailParam = USER.getParameterByName('email')
+    if (loginParam && emailParam) {
+      USER.setUserFromParams(loginParam, emailParam).then(
+        () => setTimeout(() => {
+          window.location.replace(window.location.href.split('?')[0])
+        }, 200)
+      ).catch(err => setError(`Could not parse user from params provided ${err}`))
     }
     USER.hasAdmin((hasAdmin, err) => { 
       if (err) {
@@ -89,7 +84,7 @@ function App() {
               setConfigDetails({
                 DNSMode: "off",
                 EXTClients: "off",
-                Version: "0.7.2"
+                Version: "0.8"
               })
             })
 

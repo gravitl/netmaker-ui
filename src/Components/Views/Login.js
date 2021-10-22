@@ -1,7 +1,11 @@
-import { TextField, Button, Grid, Typography, CircularProgress } from '@material-ui/core'
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
+import { TextField, Button, Grid, Typography, CircularProgress, IconButton, Tooltip } from '@material-ui/core'
+import VpnKey from '@material-ui/icons/VpnKey'
+
 import USER from '../Utils/User'
+import Common from '../../Common'
+
 
 const styles = {
     vertTabs: {
@@ -122,17 +126,33 @@ export default function Login({ setIsLoggingIn, setSuccess, setShouldUpdate }) {
                         value={password}
                         autoComplete="false"
                     />
-                    <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        color="primary"
-                        className={classes.submit}
-                        disabled={isProcessing}
-                        style={{marginTop: '1em'}}
-                    >
-                        Login
-                    </Button>
+                    <Grid container justifyContent='space-between'>
+                        <Grid item xs={6}>
+                            <Button
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                color="primary"
+                                className={classes.submit}
+                                disabled={isProcessing}
+                                style={{marginTop: '1em'}}
+                            >
+                                Login
+                            </Button>
+                        </Grid>
+                        <Grid item xs={2}>
+                            <Tooltip aria-label='Use OAuth provider to login' title='Use OAuth Provider to sign in' placement='top'>
+                                <IconButton
+                                    color="primary"
+                                    variant="contained"
+                                    disabled={isProcessing}
+                                    href={`${Common.BACKEND_URL}/api/oauth/login`}
+                                >
+                                    <VpnKey />
+                                </IconButton>
+                            </Tooltip>
+                        </Grid>
+                    </Grid>
                 </form>
             </Grid>
         </Grid>

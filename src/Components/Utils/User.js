@@ -72,6 +72,17 @@ export default {
             return false
         }
     },
+    setUserFromParams: async (token, username) => {
+        const decoded = jwt(token)
+        const userdata = await API.get(`/${username}`, {headers: {
+            'Authorization': `Bearer ${token}`
+        }})
+        if (userdata.status === 200 && userdata.data && userdata.data.isadmin) {
+            ls.set(USER_KEY, JSON.stringify({username, expiration: decoded.exp, token, isadmin: true}))
+        } else {
+            ls.set(USER_KEY, JSON.stringify({username, expiration: decoded.exp, token, isadmin: false}))
+        } 
+    },
     createRegularUser: async (token, username, password, networks) => {
         try {
             const userResponse = await API.post(`/${username}`, {username, password, networks}, {
