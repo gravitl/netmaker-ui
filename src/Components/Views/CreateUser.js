@@ -365,7 +365,7 @@ export default function CreateUser({ setIsCreating, setSuccess, setShouldUpdate,
                             {!deleteMode ? `CREATE USER` : `DELETE USER`}
                             </Button>
                         </Grid>
-                        {!deleteMode && isCreatingAdmin ? 
+                        {isAdmin? 
                             <Grid item xs={2}>
                                 <Tooltip aria-label='Use OAuth provider to login' title='Use OAuth Provider to sign in' placement='top'>
                                     <IconButton
