@@ -87,7 +87,7 @@ export default function MainTable ({ setNetworkData, setNodeData, setNetworkSele
                     { 
                         networkSelection >= 0 && dataSelection === 0 ? <NetworkDetails config={configDetails} user={user} networkData={networkData[networkSelection]} back={false} setShouldUpdate={setShouldUpdate} setSuccess={setSuccess} setNetworkData={setNetworkData}/> : 
                         networkSelection >= 0 && dataSelection === 1 ? <AllNodes config={configDetails} user={user} networks={networkData} setNodeData={setNodeData} nodes={nodeData} networkName={networkData[networkSelection].netid} setSuccess={setSuccess}/> : 
-                        networkSelection >= 0 && dataSelection === 2 ? <AccessKeys user={user} data={networkData[networkSelection]} /> :
+                        networkSelection >= 0 && dataSelection === 2 ? <AccessKeys user={user} data={networkData[networkSelection]} serverVersion={configDetails.Version}/> :
                         networkSelection >= 0 && dataSelection === 3 ? <DNS user={user} data={networkData[networkSelection]} nodes={nodeData} /> :
                         networkSelection >= 0 && dataSelection === 4 ? <ExternalClients user={user} data={networkData[networkSelection]} nodes={nodeData} /> :
                         networkSelection < 0 && dataSelection === 2 ? <AccessKeys user={user} data={null} /> :

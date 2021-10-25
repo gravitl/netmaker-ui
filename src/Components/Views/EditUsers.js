@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core/styles'
 
 import Select from '@material-ui/core/Select';
 import FormControl from '@material-ui/core/FormControl';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Input from '@material-ui/core/Input';
@@ -71,6 +72,15 @@ export default function EditUsers({networks, users, submitNetworkChanges, isProc
     const classes = useStyles()
     const [selectedNetworks, setSelectedNetworks] = React.useState([])
     const [userName, setUserName] = React.useState('')
+    const [makingAdmin, setMakingAdmin] = React.useState(false)
+
+    const toggleMakingAdmin = (event) => {
+        console.log(event.target.checked)
+        if (event.target.checked) {
+            setSelectedNetworks([])
+        }
+        setMakingAdmin(!makingAdmin)
+    }
 
     const handleNetChange = (event) => {
         setSelectedNetworks(event.target.value);
@@ -85,7 +95,7 @@ export default function EditUsers({networks, users, submitNetworkChanges, isProc
                 </div>
             </Grid>
             {(users && networks && users.length) ? <>
-            <Grid item xs={6}>
+            <Grid item xs={5}>
                 <div className={classes.currentUserBox}>
                     <FormControl variant="outlined" className={classes.formControl} fullWidth>
                         <InputLabel htmlFor="outlined-age-native-simple">Select User</InputLabel>
@@ -105,8 +115,8 @@ export default function EditUsers({networks, users, submitNetworkChanges, isProc
                     </FormControl>
                 </div>
             </Grid>
-            <Grid item xs={6}>
-                <FormControl className={classes.formControl} fullWidth>
+            <Grid item xs={5}>
+                <FormControl className={classes.formControl} fullWidth disabled={makingAdmin}>
                     <InputLabel id="networks-checkbox-label">Select Accessible Networks</InputLabel>
                     <Select
                     labelId="networks-checkbox-label"
@@ -127,10 +137,30 @@ export default function EditUsers({networks, users, submitNetworkChanges, isProc
                     </Select>
                 </FormControl>
             </Grid>
+            <Grid item xs={1}>
+            <FormControlLabel
+                control={
+                <Checkbox
+                    checked={makingAdmin}
+                    onChange={toggleMakingAdmin}
+                    name="isAddress6"
+                    color="primary"
+                />
+                }
+                label="Make Admin"
+            />
+            </Grid>
             <Grid item xs={6}>
                 <div className={classes.buttonMarg}>
                     <Button
-                        onClick={() => submitNetworkChanges(userName, selectedNetworks)}
+                        onClick={() => { 
+                            if (makingAdmin && window.confirm(`Are you sure you want to convert ${userName} into an Admin?`)) {
+                                submitNetworkChanges(userName, selectedNetworks, makingAdmin) 
+                            }
+                            else {
+                                submitNetworkChanges(userName, selectedNetworks, false)
+                            }
+                        }}
                         className={classes.buttonMarg}
                         type="submit"
                         variant="contained"

@@ -83,11 +83,12 @@ export default {
             ls.set(USER_KEY, JSON.stringify({username, expiration: decoded.exp, token, isadmin: false}))
         } 
     },
-    updateUserNetworks: async(token, username, networks) => {
+    updateUserNetworks: async(token, username, networks, makeAdmin) => {
         try {
             const userResponse = await API.put(`/networks/${username}`, {
                 username,
-                networks
+                networks,
+                isadmin: makeAdmin,
             }, {
                 headers: {
                     'Authorization': `Bearer ${token}`,

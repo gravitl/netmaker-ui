@@ -124,16 +124,16 @@ export default function CreateUser({ setIsCreating, setSuccess, setShouldUpdate,
         return {status: true}
     }
 
-    const handleUserNetworkUpdate = async (username, nets) => {
+    const handleUserNetworkUpdate = async (username, nets, makeAdmin) => {
         if (currentUser && currentUser.token && username) {
             setIsProcessing(true)
-            const response = await USER.updateUserNetworks(currentUser.token, username, nets)
+            const response = await USER.updateUserNetworks(currentUser.token, username, nets, makeAdmin)
             if (response) {
                 setSuccess(`successfully updated networks for user, ${username}`)
                 setError('')
                 setTimeout(() => setSuccess(''), 1200)
             } else {
-                setError(`failed to update networks for user, ${username}`)
+                setError(`failed to push edits for user, ${username}`)
             }
             setIsProcessing(false)
         } else {
