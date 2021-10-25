@@ -184,11 +184,11 @@ export default function OtkDetails({ data, user, serverVersion }) {
                 <div className={classes.paper}>
                     <Card className={classes.center}>
                         <CardContent>
-                            <h4>Your Access Key:</h4>
-                            <h5>{keyText}<Tooltip title={'COPY ACCESS KEY'} placement='top'><IconButton variant="outlined" onClick={() => copy(keyText)}><FilterNone /></IconButton></Tooltip></h5>
+                            {/* <h4>Your Access Key:</h4>
+                            <h5>{keyText}<Tooltip title={'COPY ACCESS KEY'} placement='top'><IconButton variant="outlined" onClick={() => copy(keyText)}><FilterNone /></IconButton></Tooltip></h5> */}
                             <h4>Your Access Token: </h4>
                             <h5>{modalText}<Tooltip title={'COPY ACCESS TOKEN'} placement='top'><IconButton variant="outlined" onClick={copyToClipboard}><FilterNone /></IconButton></Tooltip></h5>
-                            <p>Please save your key as you will be unable to access it again.</p>
+                            <p>Please save your token as you will be unable to access it again.</p>
                             <h5>Your agent install command with access token:</h5>
                             <h6>{getAgentInstallCommand()}<Tooltip title={'COPY AGENT INSTALL COMMAND'} placement='top'><IconButton variant="outlined" onClick={() => copy(getAgentInstallCommand())}><FilterNone /></IconButton></Tooltip></h6>
                         </CardContent>
