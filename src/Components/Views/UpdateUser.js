@@ -52,15 +52,17 @@ export default function UpdateUser({ setIsUpdating, setSuccess, setShouldUpdate,
             setUserName('')
             setPassword('')
             setConfirmPassword('')
-            if (response) {
+            if (response && response.status === 200) {
                 setSuccess(`Successfully updated user ${userName}.`)
                 setIsUpdating(false)
                 setShouldUpdate(true)
                 setTimeout(() => {
                     window.location.reload()
                 }, 500)
+            } else if (response && response.message) {
+                setError('OAuth users can not change their credentials.')
             } else {
-                setError('Could not complete request, please try again later.')
+                setError('Could not complete request, please check server or try again later.')
             }
         } else {
             if (cause === 'user')

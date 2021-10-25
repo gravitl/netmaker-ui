@@ -5,14 +5,16 @@ import USER from '../Utils/User'
 import User from '../Utils/User'
 import Common from '../../Common'
 import Switch from '@material-ui/core/Switch';
-import Checkbox from '@material-ui/core/Checkbox'
+import Checkbox from '@material-ui/core/Checkbox';
 import Select from '@material-ui/core/Select';
 import FormControl from '@material-ui/core/FormControl';
 import ListItemText from '@material-ui/core/ListItemText';
 import Input from '@material-ui/core/Input';
+import Modal from '@material-ui/core/Modal';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import VpnKey from '@material-ui/icons/VpnKey';
+import EditUsers from './EditUsers'
 
 const styles = {
     vertTabs: {
@@ -39,6 +41,11 @@ const styles = {
     chip: {
         margin: 2,
     },
+    modal: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
 }
 
 const useStyles = makeStyles(theme => ({...styles,
@@ -49,6 +56,14 @@ const useStyles = makeStyles(theme => ({...styles,
     },
     noLabel: {
         marginTop: theme.spacing(3),
+    },
+    paperModal: {
+        position: 'absolute',
+        width: '60%',
+        backgroundColor: theme.palette.background.paper,
+        outline: 0, // Disable browser on-focus borders
+        boxShadow: theme.shadows[5],
+        padding: theme.spacing(2, 4, 3),
     },
 }))
 
@@ -63,6 +78,7 @@ export default function CreateUser({ setIsCreating, setSuccess, setShouldUpdate,
     const [confirmPassword, setConfirmPassword] = React.useState('')
     const [selectedNetworks, setSelectedNetworks] = React.useState([])
     const [deleteMode, setDeleteMode] = React.useState(false)
+    const [editingMode, setEditingMode] = React.useState(false)
     const [users, setUsers] = React.useState([])
 
     const classes = useStyles()
@@ -108,6 +124,23 @@ export default function CreateUser({ setIsCreating, setSuccess, setShouldUpdate,
         return {status: true}
     }
 
+    const handleUserNetworkUpdate = async (username, nets) => {
+        if (currentUser && currentUser.token && username) {
+            setIsProcessing(true)
+            const response = await USER.updateUserNetworks(currentUser.token, username, nets)
+            if (response) {
+                setSuccess(`successfully updated networks for user, ${username}`)
+                setError('')
+                setTimeout(() => setSuccess(''), 1200)
+            } else {
+                setError(`failed to update networks for user, ${username}`)
+            }
+            setIsProcessing(false)
+        } else {
+            setError('no user found to complete request')
+        }
+    }
+
     const handleSubmit = async () => {
         const { status, cause } = validate()
         if (status) { // check if validated
@@ -120,7 +153,7 @@ export default function CreateUser({ setIsCreating, setSuccess, setShouldUpdate,
                 }
             } else {
                 if (isAdmin || isCreatingAdmin) {
-                    response = await USER.createAdmin(userName, password)
+                    response = await USER.createUserAdmin(currentUser.token, userName, password)
                 } else {
                     if (selectedNetworks.length > 0) response = await USER.createRegularUser(currentUser.token, userName, password, selectedNetworks)
                     else {  
@@ -172,8 +205,13 @@ export default function CreateUser({ setIsCreating, setSuccess, setShouldUpdate,
         setUserName(event.target.value.trim())
     }
 
+    const handleClose = () => {
+        setEditingMode(false)
+    }
+
     return ((currentUser || isAdmin) ?
-        <Grid container xs={12} justify='center' className={classes.mainContainer}>
+        <Grid container justify='center' className={classes.mainContainer}>
+
             <Grid item xs={8} >
                 <div className={classes.center} >
                     {error && 
@@ -190,12 +228,33 @@ export default function CreateUser({ setIsCreating, setSuccess, setShouldUpdate,
                     Back
                 </Button> : null}
             </Grid>
+            {editingMode ? <Grid item xs={10}>
+                <Modal
+                    aria-labelledby="gravitl"
+                    aria-describedby="Copy your Netmaker Access Token Value"
+                    className={classes.modal}
+                    open={editingMode}
+                    onClose={handleClose}
+                    disablePortal
+                    disableEnforceFocus
+                    disableAutoFocus
+                >
+                    <div className={classes.paperModal}>
+                        <EditUsers submitNetworkChanges={handleUserNetworkUpdate} networks={networks} users={users.filter(user => !user.isadmin)} />
+                    </div>
+                </Modal>
+            </Grid> :
             <Grid item xs={8}>
                 {
                     currentUser && currentUser.isadmin && !isAdmin ?<div className={classes.currentUserBox}>
                     <FormControlLabel
                         control={<Switch checked={deleteMode} color="primary" onChange={() => {setUserName('');setPassword('');setDeleteMode(!deleteMode);}} name="checkedA" />}
                         label="Delete a User?"
+                        fullWidth
+                    />
+                    <FormControlLabel
+                        control={<Switch checked={editingMode} color="primary" onChange={() => {setEditingMode(true)}} name="checkedB" />}
+                        label="Edit users?"
                         fullWidth
                     /></div>: null
                 }
@@ -306,7 +365,7 @@ export default function CreateUser({ setIsCreating, setSuccess, setShouldUpdate,
                             {!deleteMode ? `CREATE USER` : `DELETE USER`}
                             </Button>
                         </Grid>
-                        {!deleteMode ? 
+                        {!deleteMode && isCreatingAdmin ? 
                             <Grid item xs={2}>
                                 <Tooltip aria-label='Use OAuth provider to login' title='Use OAuth Provider to sign in' placement='top'>
                                     <IconButton
@@ -322,7 +381,7 @@ export default function CreateUser({ setIsCreating, setSuccess, setShouldUpdate,
                         : null}
                     </Grid>
                 </form>
-            </Grid>
+            </Grid>}
         </Grid> : null
     )
 }

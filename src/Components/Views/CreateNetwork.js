@@ -1,7 +1,9 @@
-import { TextField, Button, Grid, Typography, CircularProgress, FormControlLabel, Checkbox, Tooltip } from '@material-ui/core'
-import React from 'react'
-import { makeStyles } from '@material-ui/core/styles'
-import API from '../Utils/API'
+import React from 'react';
+
+import { TextField, Button, Grid, Typography, CircularProgress, FormControlLabel, Checkbox, Tooltip, IconButton } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles';
+import API from '../Utils/API';
+import AutoAwesome from '@material-ui/icons/AutorenewOutlined';
 
 const styles = {
     vertTabs: {
@@ -16,6 +18,26 @@ const styles = {
     center: {
         textAlign: 'center'
     }
+}
+
+const potentialNetworkNames = [
+    "office",
+    "gaming",
+    "home",
+    "cloud",
+    "lan-party",
+    "netmade",
+    "my-network",
+    "it-dept",
+    "network",
+    "dev",
+    "kube-net",
+    "securoserv",
+    "netmaker-hub",
+]
+
+const generateRandomNumber = () => {
+    return Math.floor(Math.random() * 254) + 1
 }
 
 const useStyles = makeStyles(styles)
@@ -123,6 +145,12 @@ export default function CreateNetwork({ setIsCreating, setSuccess, setShouldUpda
         setIsAddress6(event.target.checked)
     }
 
+    const setFillValues = () => {
+        const index = Math.floor(Math.random() * potentialNetworkNames.length)
+        setNetworkName(potentialNetworkNames[index])
+        setAddressrange(`10.${generateRandomNumber()}.${generateRandomNumber()}.0/24`)
+    }
+
     return (
         <Grid container xs={12} justify='center' className={classes.mainContainer}>
             <Grid item xs={8} >
@@ -142,34 +170,51 @@ export default function CreateNetwork({ setIsCreating, setSuccess, setShouldUpda
             </Grid>
             <Grid item xs={8}>
                 <form className={classes.form} onSubmit={e => { e.preventDefault(); handleSubmit(); }}>
-                    <TextField
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        id="networkName"
-                        label="Network Name"
-                        name="networkName"
-                        placeholder='my-net'
-                        autoComplete="false"
-                        autoFocus
-                        value={networkName}
-                        onChange={handleUpdateNetworkName}
-                    />
-                    <TextField
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        name="addressrange"
-                        label="Address Range"
-                        placeholder='0.0.0.0/32'
-                        type="text"
-                        onChange={handleUpdateAddress}
-                        id="addressrange"
-                        value={addressrange}
-                        autoComplete="false"
-                    />
+                    <Grid container justifyContent='space-between' alignItems='center'>
+                        <Grid item xs={5}>
+                            <TextField
+                                variant="outlined"
+                                margin="normal"
+                                required
+                                fullWidth
+                                id="networkName"
+                                label="Network Name"
+                                name="networkName"
+                                placeholder='my-net'
+                                autoComplete="false"
+                                autoFocus
+                                value={networkName}
+                                onChange={handleUpdateNetworkName}
+                            />
+                        </Grid>
+                        <Grid item xs={5}>
+                            <TextField
+                                variant="outlined"
+                                margin="normal"
+                                required
+                                fullWidth
+                                name="addressrange"
+                                label="Address Range"
+                                placeholder='0.0.0.0/32'
+                                type="text"
+                                onChange={handleUpdateAddress}
+                                id="addressrange"
+                                value={addressrange}
+                                autoComplete="false"
+                            />
+                        </Grid>
+                        <Grid item xs={1}>
+                            <Tooltip title='Autofill network values' aria-label='autofill network values button' placement='top'>
+                                <IconButton
+                                onClick={setFillValues}
+                                variant="contained"
+                                color="primary"
+                                disabled={isProcessing}>
+                                    <AutoAwesome />
+                                </IconButton>
+                            </Tooltip>
+                        </Grid>
+                    </Grid>
                     <Grid container justifyContent='center' alignItems='center'>
                         <Grid item xs={isAddress6 ? 4 : 12}>
                             <FormControlLabel

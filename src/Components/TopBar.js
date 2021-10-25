@@ -12,7 +12,7 @@ const OTK_DETAIL_TAB_NAME = 'access keys'
 const DNS_DETAIL_TAB_NAME = 'dns'
 const EXTERNAL_CLIENTS_TAB_NAME = 'external clients'
 // == set UI version here ==
-const UI_VERSION = "0.8.1"
+const UI_VERSION = "0.8.5"
 
 // function getWindowDimensions() {
 //     const { innerWidth: width, innerHeight: height } = window;

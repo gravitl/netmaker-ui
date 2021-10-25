@@ -83,9 +83,38 @@ export default {
             ls.set(USER_KEY, JSON.stringify({username, expiration: decoded.exp, token, isadmin: false}))
         } 
     },
+    updateUserNetworks: async(token, username, networks) => {
+        try {
+            const userResponse = await API.put(`/networks/${username}`, {
+                username,
+                networks
+            }, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-type': 'application/json',
+                }
+            });
+            return userResponse.status === 200
+        } catch (err) {
+            return false
+        }
+    },
     createRegularUser: async (token, username, password, networks) => {
         try {
             const userResponse = await API.post(`/${username}`, {username, password, networks}, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-type': 'application/json',
+                }
+            });
+            return userResponse
+        } catch(err) {
+            return false
+        }
+    },
+    createUserAdmin: async (token, username, password) => {
+        try {
+            const userResponse = await API.post(`/${username}`, {username, password, isAdmin: true}, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-type': 'application/json',
@@ -117,14 +146,22 @@ export default {
                     'Authorization': `Bearer ${oldUser.token}`
                 } })
                 if (userdata.status === 200) {
-                    // console.log(userdata.data.Response.AuthToken)
                     ls.set(USER_KEY, JSON.stringify({username: username, expiration: oldUser.expiration, token: oldUser.token}))
-                    return userdata.data
+                    return {
+                        status: 200,
+                        data: userdata.data
+                    }
                 } else {
                     return false
                 }
             } else return false
         } catch (err) {
+            if (err.response.data && err.response.data.Message && err.response.data.Message.includes('oauth')) {
+                return {
+                    status: err.response.status,
+                    message: err.response.data.Message
+                }
+            }
             return false
         }
     },
