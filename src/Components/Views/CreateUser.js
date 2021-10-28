@@ -153,13 +153,10 @@ export default function CreateUser({ setIsCreating, setSuccess, setShouldUpdate,
                 }
             } else {
                 if (isAdmin || isCreatingAdmin) {
-                    response = await USER.createUserAdmin(currentUser.token, userName, password)
+                    console.log("deleteme: GETTING HERE")
+                    response = await USER.createUserAdmin(userName, password)
                 } else {
-                    if (selectedNetworks.length > 0) response = await USER.createRegularUser(currentUser.token, userName, password, selectedNetworks)
-                    else {  
-                        setIsProcessing(false)
-                        return setError('Please select at least 1 network for the user.')
-                    }
+                    response = await USER.createRegularUser(currentUser.token, userName, password, selectedNetworks)
                 }
             }
             if (!response) {

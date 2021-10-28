@@ -113,11 +113,10 @@ export default {
             return false
         }
     },
-    createUserAdmin: async (token, username, password) => {
+    createUserAdmin: async (username, password) => {
         try {
-            const userResponse = await API.post(`/${username}`, {username, password, isAdmin: true}, {
+            const userResponse = await API.post(`/adm/createadmin`, {username, password, isAdmin: true}, {
                 headers: {
-                    'Authorization': `Bearer ${token}`,
                     'Content-type': 'application/json',
                 }
             });
