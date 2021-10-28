@@ -75,7 +75,6 @@ export default function EditUsers({networks, users, submitNetworkChanges, isProc
     const [makingAdmin, setMakingAdmin] = React.useState(false)
 
     const toggleMakingAdmin = (event) => {
-        console.log(event.target.checked)
         if (event.target.checked) {
             setSelectedNetworks([])
         }

@@ -153,7 +153,6 @@ export default function CreateUser({ setIsCreating, setSuccess, setShouldUpdate,
                 }
             } else {
                 if (isAdmin || isCreatingAdmin) {
-                    console.log("deleteme: GETTING HERE")
                     response = await USER.createUserAdmin(userName, password)
                 } else {
                     response = await USER.createRegularUser(currentUser.token, userName, password, selectedNetworks)

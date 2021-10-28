@@ -175,7 +175,6 @@ export default function AllNodes({ setNodeData, nodes, networkName, setSuccess, 
         if (window.confirm(`Are you certain you want to make a relay from: ${node.name} in network: ${node.network}?`)) {
             try {
                 if (node && relayAddresses && relayAddresses.length) {
-                    console.log(relayAddresses)
                     const response = await API(user.token).post(`/nodes/${node.network}/${node.macaddress}/createrelay`, {
                         relayaddrs: relayAddresses
                     })

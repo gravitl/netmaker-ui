@@ -85,8 +85,9 @@ export default function Login({ setIsLoggingIn, setSuccess, setShouldUpdate }) {
         let oauthResponse = USER.getParameterByName("oauth")
         if (oauthResponse && !error) {
             setError('OAuth authentication failure occurred, notify admin or check server configuration.')
+            setTimeout(() => { if (window.location.href.includes('oauth')) { window.location.replace(window.location.href.split('?')[0]); }}, 3000);
         }
-    }, [error])
+    })
 
     return (
         <Grid container justify='center' className={classes.mainContainer}>
