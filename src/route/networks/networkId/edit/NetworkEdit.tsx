@@ -1,12 +1,12 @@
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { NmForm, NmFormInputSwitch, NmFormInputText } from "../../../components/form";
-import { updateNetwork } from "../../../store/modules/network/actions";
-import { Network } from "../../../store/modules/network/types";
-import { networkToNetworkPayload } from "../../../store/modules/network/utils";
+import { NmForm, NmFormInputSwitch, NmFormInputText } from "~components/form";
+import { updateNetwork } from "~modules/network/actions";
+import { Network } from "~modules/network/types";
+import { networkToNetworkPayload } from "~modules/network/utils";
 
-export const NetworkDetailsEdit: React.FC<{
+export const NetworkEdit: React.FC<{
   network: Network;
 }> = ({ network }) => {
   const { t } = useTranslation();

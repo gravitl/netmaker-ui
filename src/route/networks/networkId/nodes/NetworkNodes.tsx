@@ -1,12 +1,12 @@
 import React from "react";
-import { NmLink } from "../../../components";
-import { NmTable, TableColumns } from "../../../components/Table";
-import { Node } from "../../../store/modules/node";
+import { NmLink } from "~components/index";
+import { NmTable, TableColumns } from "~components/Table";
+import { Node } from "~modules/node";
 import { useTranslation } from "react-i18next";
 import { useRouteMatch, useParams, Route, Switch } from "react-router-dom";
-import { useLinkBreadcrumb } from "../../../components/PathBreadcrumbs";
-import { useNodesByNetworkId } from "./utils";
-import { NodeDetails } from "../node/NodeDetails";
+import { useLinkBreadcrumb } from "~components/PathBreadcrumbs";
+import { useNodesByNetworkId } from "~util/network";
+import { NodeId } from "./nodeId/NodeId";
 import { Grid } from "@mui/material";
 
 const columns: TableColumns<Node> = [
@@ -75,7 +75,7 @@ export const NetworkNodes: React.FC = () => {
           {/* <NetworkCreate /> */}
         </Route>
         <Route path={`${path}/:nodeId`}>
-          <NodeDetails />
+          <NodeId />
         </Route>
       </Switch>
   )

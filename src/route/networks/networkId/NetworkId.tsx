@@ -15,16 +15,16 @@ import {
   Switch,
   Route,
 } from "react-router-dom";
-import { NmLink } from "../../../components";
-import { useDialog } from "../../../components/ConfirmDialog";
-import { useLinkBreadcrumb } from "../../../components/PathBreadcrumbs";
-import { deleteNetwork } from "../../../store/modules/network/actions";
-import { NetworkDetailsEdit } from "./NetworkEdit";
-import { NetworkModifiedStats } from "./NetworkModifiedStats";
-import { NetworkNodes } from "./NetworkNodes";
-import { useNetwork } from "./utils";
+import { NmLink } from "~components/index";
+import { useDialog } from "~components/ConfirmDialog";
+import { useLinkBreadcrumb } from "~components/PathBreadcrumbs";
+import { deleteNetwork } from "~modules/network/actions";
+import { NetworkEdit } from "./edit/NetworkEdit";
+import { NetworkModifiedStats } from "./components/NetworkModifiedStats";
+import { NetworkNodes } from "./nodes/NetworkNodes";
+import { useNetwork } from "~util/network";
 
-export const NetworkDetails: React.FC = () => {
+export const NetworkId: React.FC = () => {
   const { path, url } = useRouteMatch();
   const history = useHistory();
   const { t } = useTranslation();
@@ -67,7 +67,7 @@ export const NetworkDetails: React.FC = () => {
         </Route>
         <Route path={`${path}/edit`}>
           <NetworkModifiedStats netid={networkId} />
-          <NetworkDetailsEdit network={network} />
+          <NetworkEdit network={network} />
           <Button
             variant="outlined"
             onClick={() => {

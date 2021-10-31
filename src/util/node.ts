@@ -2,8 +2,8 @@ import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
 import { RootState } from "typesafe-actions";
-import { Node } from "../../../store/modules/node";
-import { nodeSelectors } from "../../../store/selectors";
+import { Node } from "~modules/node";
+import { nodeSelectors } from "~store/selectors";
 
 const nodeByIdPredicate = (id: Node["id"]) => (node: Node) => node.id === id;
 

@@ -2,10 +2,10 @@ import React, { useCallback, useEffect, useMemo } from "react";
 import { Typography, CircularProgress, Modal, Box } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, useHistory, useLocation } from "react-router-dom";
-import { login } from "../../store/modules/auth/actions";
-import { authSelectors } from "../../store/selectors";
-import { correctUserNameRegex, correctPasswordRegex } from "../../util/regex";
-import { NmForm, NmFormInputText, validate } from "../../components/form";
+import { actions } from "~store/actions";
+import { authSelectors } from "~store/selectors";
+import { correctUserNameRegex, correctPasswordRegex } from "~util/regex";
+import { NmForm, NmFormInputText, validate } from "~components/form";
 import { useTranslation } from "react-i18next";
 
 const styles = {
@@ -72,7 +72,7 @@ export function Login() {
 
   const loginSubmit = useCallback(
     (data: typeof initialLoginForm) => {
-      dispatch(login.request(data));
+      dispatch(actions.auth.login.request(data));
       setTriedToLogin(true);
     },
     [dispatch, setTriedToLogin]

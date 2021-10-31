@@ -1,16 +1,12 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { nodeSelectors } from "../../../store/selectors";
-import { NmLink } from "../../../components";
+import { nodeSelectors } from "~store/selectors";
+import { NmLink } from "~components/index";
 import { useTranslation } from "react-i18next";
-import { useLinkBreadcrumb } from "../../../components/PathBreadcrumbs";
-import { Node } from "../../../store/modules/node";
-import { NmTable, TableColumns } from "../../../components/Table";
-import { Badge } from "@mui/material";
-
-const WARNING = '#ffcc00'
-const ERROR = '#ED4337'
-const HEALTHY = '#11772d'
+import { useLinkBreadcrumb } from "~components/PathBreadcrumbs";
+import { Node } from "~modules/node";
+import { NmTable, TableColumns } from "~components/Table";
+import { Chip } from "@mui/material";
 
 const columns: TableColumns<Node> = [
   {
@@ -42,10 +38,10 @@ const columns: TableColumns<Node> = [
     format: (lastcheckin) => {
       const time = (Date.now()/1000)
       if(time - lastcheckin >= 1800)
-        return <Badge sx={{backgroundColor: ERROR}}>ERROR</Badge>
+        return <Chip color="error" label="ERROR" />
       if(time - lastcheckin >= 300)
-        return <Badge sx={{backgroundColor: WARNING}}>WARNING</Badge>
-        return <Badge sx={{backgroundColor: HEALTHY}}>HEALTHY</Badge>
+        return <Chip color="warning" label="WARNING" />
+        return <Chip color="success" label="HEALTHY" />
     }
   },
 ];

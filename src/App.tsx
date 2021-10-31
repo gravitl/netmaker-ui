@@ -27,7 +27,8 @@ import LocalizationProvider from "@mui/lab/LocalizationProvider";
 // import {BACKEND_URL} from './config'
 // import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 
-import Routes from "./routes/routes";
+import Routes from "./route/root";
+// import Routes from "./routes/routes";
 import { PathBreadcrumbsProvider } from "./components/PathBreadcrumbs";
 
 // const useStyles = makeStyles((_) => ({

@@ -2,7 +2,7 @@ import { Container } from "@mui/material";
 import React from "react";
 import { useRouteMatch, Switch, Route } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { NodeTable } from "./NodeTable";
+import { NodeTable } from "./components/NodeTable";
 
 export const Nodes: React.FC = () => {
   const { path } = useRouteMatch();

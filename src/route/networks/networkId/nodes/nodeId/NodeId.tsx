@@ -13,12 +13,12 @@ import {
   Switch,
   Route,
 } from "react-router-dom";
-import { NmLink } from "../../../components";
-import { useLinkBreadcrumb } from "../../../components/PathBreadcrumbs";
-import { useNode } from "./utils";
-import { datePickerConverter } from '../../../util/unixTime'
+import { NmLink } from "~components/index";
+import { useLinkBreadcrumb } from "~components/PathBreadcrumbs";
+import { useNode } from "~util/node";
+import { datePickerConverter } from '~util/unixTime'
 
-export const NodeDetails: React.FC = () => {
+export const NodeId: React.FC = () => {
   const { path, url } = useRouteMatch();
   const history = useHistory();
   const { t } = useTranslation();

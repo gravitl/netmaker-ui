@@ -2,9 +2,9 @@ import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
 import { RootState } from "typesafe-actions";
-import { Network } from "../../../store/modules/network/types";
-import { Node } from "../../../store/modules/node/types";
-import { networkSelectors, nodeSelectors } from "../../../store/selectors";
+import { Network } from "~modules/network/types";
+import { Node } from "~modules/node/types";
+import { networkSelectors, nodeSelectors } from "~store/selectors";
 
 const networkByNetIdPredicate = (netid: string) => (network: Network) =>
   network.netid === netid;
