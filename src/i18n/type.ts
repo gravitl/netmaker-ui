@@ -15,6 +15,7 @@ export interface LanguageResource {
     networks: string;
     nodes: string;
     edit: string;
+    accessKeys: string;
   }
   common: {
     disabled: string;

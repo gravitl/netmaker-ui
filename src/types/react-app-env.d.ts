@@ -21,3 +21,10 @@ declare module '@mui/material/styles' {
   interface ThemeOptions extends DeepPartial<Theme> {
   }
 }
+
+declare module '@mui/styles' {
+  import { Theme, ThemeOptions } from '@mui/material/styles'
+  interface DefaultTheme extends Theme {
+
+  }
+}

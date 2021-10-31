@@ -20,6 +20,7 @@ import { useDialog } from "~components/ConfirmDialog";
 import { useLinkBreadcrumb } from "~components/PathBreadcrumbs";
 import { deleteNetwork } from "~modules/network/actions";
 import { NetworkEdit } from "./edit/NetworkEdit";
+import { AccessKeys } from "./accesskeys/AccessKeys";
 import { NetworkModifiedStats } from "./components/NetworkModifiedStats";
 import { NetworkNodes } from "./nodes/NetworkNodes";
 import { useNetwork } from "~util/network";
@@ -37,23 +38,22 @@ export const NetworkId: React.FC = () => {
     title: networkId,
   });
 
-  const {Component, setProps} = useDialog()
+  const { Component, setProps } = useDialog();
 
   const dispatch = useDispatch();
   const deleteNetworkCallback = useCallback(
     () =>
       setProps({
         message: t("dialog.deleteNetwork"),
-        onSubmit: () =>dispatch(
-          deleteNetwork.request({
-            netid: network!.netid,
-          })
-        ),
-      })
-      ,
+        onSubmit: () =>
+          dispatch(
+            deleteNetwork.request({
+              netid: network!.netid,
+            })
+          ),
+      }),
     [dispatch, network, setProps, t]
   );
-
 
   if (!network) {
     return <div>Not Found</div>;
@@ -62,6 +62,9 @@ export const NetworkId: React.FC = () => {
   return (
     <>
       <Switch>
+        <Route path={`${path}/accesskeys`}>
+          <AccessKeys />
+        </Route>
         <Route path={`${path}/nodes`}>
           <NetworkNodes />
         </Route>
@@ -78,10 +81,7 @@ export const NetworkId: React.FC = () => {
           >
             {t("common.cancel")}
           </Button>
-          <Button
-            variant="outlined"
-            onClick={() => deleteNetworkCallback()}
-          >
+          <Button variant="outlined" onClick={() => deleteNetworkCallback()}>
             {t("common.delete")}
           </Button>
         </Route>

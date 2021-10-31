@@ -17,6 +17,7 @@ export const en: LanguageResource = {
     networks: "Networks",
     nodes: "Nodes",
     edit: "Edit",
+    accessKeys: "AccessKeys",
   },
   common: {
     disabled: "Disabled",

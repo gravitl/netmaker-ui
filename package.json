@@ -9,6 +9,7 @@
     "@mui/icons-material": "^5.0.1",
     "@mui/lab": "^5.0.0-alpha.49",
     "@mui/material": "^5.0.1",
+    "@mui/styles": "^5.0.2",
     "axios": "^0.21.4",
     "copy-to-clipboard": "^3.3.1",
     "date-fns": "^2.24.0",
