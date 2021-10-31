@@ -1,70 +1,70 @@
 export interface User {
-  name: string;
-  isAdmin: boolean;
-  exp: number;
-  networks: null | Array<string>;
+  name: string
+  isAdmin: boolean
+  exp: number
+  networks: null | Array<string>
 }
 
 export interface LocalStorageUserKeyValue {
-  token: string;
-  user: User;
+  token: string
+  user: User
 }
 
 export interface GetAllUsers {
-  Request: void;
-  Response: Array<User>;
+  Request: void
+  Response: Array<User>
 }
 
 export interface GetUser {
   Request: void
-  Response: User;
+  Response: User
 }
 
 export interface Login {
   Request: {
-    username: string;
-    password: string;
-  };
+    username: string
+    password: string
+  }
   Response: {
-    token: string;
-    user: User;
-  };
+    token: string
+    user: User
+  }
 }
 
 export interface HasAdmin {
-  Request: void;
-  Response: boolean;
+  Request: void
+  Response: boolean
 }
 
 export interface CreateAdmin {
   Request: {
-    username: string;
-    password: string;
-  };
-  Response: {};
+    username: string
+    password: string
+  }
+  Response: {}
 }
 
 export interface CreateUser {
   Request: {
-    username: string;
-    password: string;
-    networks: Array<string>;
-  };
-  Response: {};
+    username: string
+    password: string
+    networks: Array<string>
+  }
+  Response: {}
 }
 
 export interface DeleteUser {
   Request: {
-    username: string;
-  };
-  Response: {};
+    username: string
+  }
+  Response: {}
 }
 
 export interface UpdateUser {
   Request: {
-    newUsername: string;
-    oldUsername: string;
-    password: string;
-  };
-  Response: User;
+    newUsername: string
+    oldUsername: string
+    password: string
+  }
+  Response: User
 }

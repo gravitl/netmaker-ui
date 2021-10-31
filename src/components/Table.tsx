@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react'
 import {
   Paper,
   Table,
@@ -11,41 +11,41 @@ import {
   TableCellProps,
   IconButton,
   Tooltip,
-} from "@mui/material";
-import { useRouteMatch, useLocation, useHistory } from "react-router-dom";
-import { useTranslation } from "react-i18next";
+} from '@mui/material'
+import { useRouteMatch, useLocation, useHistory } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 function useQuery() {
-  return new URLSearchParams(useLocation().search);
+  return new URLSearchParams(useLocation().search)
 }
 
 type Column<Row> = {
   [Key in keyof Row]: {
-    id: Key extends React.Key | null | undefined ? Key : never;
-    format?: (value: Row[Key], row: Row) => React.ReactChild;
-    minWidth: number;
-    align?: TableCellProps["align"];
-    labelKey?: string;
-    label?: string;
+    id: Key extends React.Key | null | undefined ? Key : never
+    format?: (value: Row[Key], row: Row) => React.ReactChild
+    minWidth: number
+    align?: TableCellProps['align']
+    labelKey?: string
+    label?: string
 
-    sortable?: boolean;
-  };
-}[keyof Row];
+    sortable?: boolean
+  }
+}[keyof Row]
 
-export type TableColumns<Row> = Array<Column<Row>>;
+export type TableColumns<Row> = Array<Column<Row>>
 
 export interface ActionIconProps {
-  icon: JSX.Element;
-  onClick: () => void;
-  disabled?: boolean;
-  tooltip?: string;
+  icon: JSX.Element
+  onClick: () => void
+  disabled?: boolean
+  tooltip?: string
 }
 export interface Props<Row> {
-  columns: TableColumns<Row>;
-  rows: Array<Row>;
-  getRowId: (row: Row) => React.Key;
-  rowsPerPageOptions?: Array<number>;
-  actions?: Array<(row: Row) => ActionIconProps>;
+  columns: TableColumns<Row>
+  rows: Array<Row>
+  getRowId: (row: Row) => React.Key
+  rowsPerPageOptions?: Array<number>
+  actions?: Array<(row: Row) => ActionIconProps>
 }
 
 function renderActionIcon(
@@ -54,15 +54,15 @@ function renderActionIcon(
 ) {
   return (
     <TableCell width={40} key={`a${i}`}>
-      <Tooltip title={tooltip || ""}>
+      <Tooltip title={tooltip || ''}>
         <span>
-        <IconButton disabled={disabled} onClick={onClick}>
-          {icon}
-        </IconButton>
+          <IconButton disabled={disabled} onClick={onClick}>
+            {icon}
+          </IconButton>
         </span>
       </Tooltip>
     </TableCell>
-  );
+  )
 }
 
 export function NmTable<T>({
@@ -72,35 +72,35 @@ export function NmTable<T>({
   getRowId,
   rowsPerPageOptions,
 }: Props<T>) {
-  const { url } = useRouteMatch();
-  const history = useHistory();
-  const query = useQuery();
-  const { t } = useTranslation();
+  const { url } = useRouteMatch()
+  const history = useHistory()
+  const query = useQuery()
+  const { t } = useTranslation()
 
   const setQueryParams = (page: number, rowsPerPage: number) =>
-    history.push(`${url}?page=${page}&rowsPerPage=${rowsPerPage}`);
+    history.push(`${url}?page=${page}&rowsPerPage=${rowsPerPage}`)
 
-  rowsPerPageOptions = rowsPerPageOptions || [10, 25, 100];
-  const page = query.has("page") ? Number(query.get("page")) : 0;
-  const rowsPerPage = query.has("rowsPerPage")
-    ? Number(query.get("rowsPerPage"))
-    : rowsPerPageOptions[0];
+  rowsPerPageOptions = rowsPerPageOptions || [10, 25, 100]
+  const page = query.has('page') ? Number(query.get('page')) : 0
+  const rowsPerPage = query.has('rowsPerPage')
+    ? Number(query.get('rowsPerPage'))
+    : rowsPerPageOptions[0]
 
   const handleChangePage = (
     _: React.MouseEvent<HTMLButtonElement, MouseEvent> | null,
     newPage: number
   ) => {
-    setQueryParams(newPage, rowsPerPage);
-  };
+    setQueryParams(newPage, rowsPerPage)
+  }
 
   const handleChangeRowsPerPage = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | undefined
   ) => {
-    setQueryParams(0, Number(event?.target?.value));
-  };
+    setQueryParams(0, Number(event?.target?.value))
+  }
 
   return (
-    <Paper sx={{ width: "100%", overflow: "hidden" }}>
+    <Paper sx={{ width: '100%', overflow: 'hidden' }}>
       <TableContainer sx={{ maxHeight: 440 }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
@@ -115,7 +115,7 @@ export function NmTable<T>({
                     ? column.label
                     : column.labelKey
                     ? t(column.labelKey)
-                    : "No column label or key"}
+                    : 'No column label or key'}
                 </TableCell>
               ))}
               {actions?.map((_, i) => (
@@ -135,20 +135,20 @@ export function NmTable<T>({
                     key={getRowId(row)}
                   >
                     {columns.map((column) => {
-                      const value = row[column.id];
+                      const value = row[column.id]
                       return (
                         <TableCell key={column.id} align={column.align}>
                           {column.format !== undefined
                             ? column.format(value, row)
                             : value}
                         </TableCell>
-                      );
+                      )
                     })}
                     {actions?.map((action, i) =>
                       renderActionIcon(action(row), i)
                     )}
                   </TableRow>
-                );
+                )
               })}
           </TableBody>
         </Table>
@@ -163,5 +163,5 @@ export function NmTable<T>({
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
     </Paper>
-  );
+  )
 }

@@ -1,14 +1,17 @@
-import React from "react";
-import TextField, { TextFieldProps } from "@mui/material/TextField/TextField";
-import { Controller } from "react-hook-form";
-import { useFormControl } from "./internal/formContext";
+import React from 'react'
+import TextField, { TextFieldProps } from '@mui/material/TextField/TextField'
+import { Controller } from 'react-hook-form'
+import { useFormControl } from './internal/formContext'
 
 export const NmFormInputText: React.FC<
-  Omit<TextFieldProps, "name" | "onChange" | "value" | "error" | "helperText"> & {
-    name: string;
+  Omit<
+    TextFieldProps,
+    'name' | 'onChange' | 'value' | 'error' | 'helperText'
+  > & {
+    name: string
   }
 > = ({ name, disabled, ...textfieldProps }) => {
-  const { control, disabled: formDisabled} = useFormControl();
+  const { control, disabled: formDisabled } = useFormControl()
 
   return (
     <Controller
@@ -25,5 +28,5 @@ export const NmFormInputText: React.FC<
         />
       )}
     />
-  );
-};
+  )
+}

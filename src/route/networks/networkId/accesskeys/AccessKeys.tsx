@@ -1,87 +1,87 @@
-import { Box, Grid, Button, Card, CardContent } from "@mui/material";
-import React from "react";
-import { makeStyles } from "@mui/styles";
-import { Delete } from "@mui/icons-material";
-import { useTranslation } from "react-i18next";
+import { Box, Grid, Button, Card, CardContent } from '@mui/material'
+import React from 'react'
+import { makeStyles } from '@mui/styles'
+import { Delete } from '@mui/icons-material'
+import { useTranslation } from 'react-i18next'
 import {
   useRouteMatch,
   useHistory,
   useParams,
   Route,
   Switch,
-} from "react-router-dom";
-import { useLinkBreadcrumb } from "~components/PathBreadcrumbs";
-import { useNetwork } from "~util/network";
+} from 'react-router-dom'
+import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
+import { useNetwork } from '~util/network'
 
 const useStyles = makeStyles((theme) => ({
   modal: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   paper: {
-    position: "absolute",
-    width: "60%",
+    position: 'absolute',
+    width: '60%',
     backgroundColor: theme.palette.background.paper,
     outline: 0, // Disable browser on-focus borders
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
   },
   center: {
-    textAlign: "center",
+    textAlign: 'center',
   },
   cardMain: {
-    width: "100%",
-    marginTop: "1em",
+    width: '100%',
+    marginTop: '1em',
   },
   container: {
-    maxHeight: "38em",
-    overflowY: "scroll",
-    overflow: "hidden",
-    borderRadius: "8px",
+    maxHeight: '38em',
+    overflowY: 'scroll',
+    overflow: 'hidden',
+    borderRadius: '8px',
   },
   button: {
-    marginLeft: "0.25em",
-    marginRight: "0.25em",
-    "&:hover": {
-      backgroundColor: "#0000e4",
+    marginLeft: '0.25em',
+    marginRight: '0.25em',
+    '&:hover': {
+      backgroundColor: '#0000e4',
     },
   },
   button2: {
-    marginLeft: "0.25em",
-    marginRight: "0.25em",
-    "&:hover": {
-      backgroundColor: "#e40000",
+    marginLeft: '0.25em',
+    marginRight: '0.25em',
+    '&:hover': {
+      backgroundColor: '#e40000',
     },
   },
   main: {
-    marginTop: "2em",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
+    marginTop: '2em',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   backDrop: {
-    background: "rgba(255,0,0,1.0)",
+    background: 'rgba(255,0,0,1.0)',
   },
-}));
+}))
 
 export const AccessKeys: React.FC = () => {
-  const { path, url } = useRouteMatch();
-  const history = useHistory();
-  const { t } = useTranslation();
+  const { path, url } = useRouteMatch()
+  const history = useHistory()
+  const { t } = useTranslation()
 
-  const classes = useStyles();
+  const classes = useStyles()
 
-  const { networkId } = useParams<{ networkId: string }>();
-  const network = useNetwork(networkId);
+  const { networkId } = useParams<{ networkId: string }>()
+  const network = useNetwork(networkId)
 
   useLinkBreadcrumb({
     link: url,
-    title: t("breadcrumbs.accessKeys"),
-  });
+    title: t('breadcrumbs.accessKeys'),
+  })
 
   if (!network) {
-    return <div>{t("Not found!")}</div>;
+    return <div>{t('Not found!')}</div>
   }
 
   return (
@@ -98,7 +98,7 @@ export const AccessKeys: React.FC = () => {
                 <Button
                   className={classes.button}
                   variant="outlined"
-                  onClick={() => console.log("setIsCreating(true)")}
+                  onClick={() => console.log('setIsCreating(true)')}
                 >
                   Add New Access Key
                 </Button>
@@ -108,7 +108,10 @@ export const AccessKeys: React.FC = () => {
               {network.accesskeys.map((accessKey) => (
                 <Card key={accessKey.name} className={classes.cardMain}>
                   <CardContent>
-                    <Grid container sx={{justifyContent: "center", alignItems: "center"}}>
+                    <Grid
+                      container
+                      sx={{ justifyContent: 'center', alignItems: 'center' }}
+                    >
                       <Grid item xs={4} className={classes.center}>
                         <h3>Name: {accessKey.name}</h3>
                       </Grid>
@@ -118,7 +121,9 @@ export const AccessKeys: React.FC = () => {
                       <Grid item xs={4} className={classes.center}>
                         <Button
                           className={classes.button2}
-                          onClick={() => console.log("deleteKey(accessKey.name)")}
+                          onClick={() =>
+                            console.log('deleteKey(accessKey.name)')
+                          }
                           variant="outlined"
                         >
                           Delete Key <Delete />
@@ -133,5 +138,5 @@ export const AccessKeys: React.FC = () => {
         </Box>
       </Route>
     </Switch>
-  );
-};
+  )
+}

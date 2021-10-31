@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback } from 'react'
 import {
   AppBar,
   Box,
@@ -9,58 +9,58 @@ import {
   Toolbar,
   Tooltip,
   Typography,
-} from "@mui/material";
-import Logo from "../netmaker.png";
-import Info from "@mui/icons-material/Info";
-import { UI_VERSION } from "../config";
-import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
-import { useHistory, useLocation, useRouteMatch } from "react-router-dom";
-import { authSelectors, serverSelectors } from "../store/selectors";
-import { logout } from "../store/modules/auth/actions";
-import { NmLink } from "../components";
-import { PathBreadcrumbs } from "../components/PathBreadcrumbs";
+} from '@mui/material'
+import Logo from '../netmaker.png'
+import Info from '@mui/icons-material/Info'
+import { UI_VERSION } from '../config'
+import { useTranslation } from 'react-i18next'
+import { useDispatch, useSelector } from 'react-redux'
+import { useHistory, useLocation, useRouteMatch } from 'react-router-dom'
+import { authSelectors, serverSelectors } from '../store/selectors'
+import { logout } from '../store/modules/auth/actions'
+import { NmLink } from '../components'
+import { PathBreadcrumbs } from '../components/PathBreadcrumbs'
 
 const styles = {
   topBarMain: {
-    marginLeft: "1em",
-    marginRight: "1em",
-    width: "100%",
+    marginLeft: '1em',
+    marginRight: '1em',
+    width: '100%',
   },
   title: {
-    textAlign: "center",
+    textAlign: 'center',
     flexGrow: 1,
   },
   subTitle: {
-    paddingRight: "3em",
-    cursor: "pointer",
+    paddingRight: '3em',
+    cursor: 'pointer',
   },
   logo: {
-    objectFit: "cover",
-    width: "50%",
-    height: "100%",
-    minWidth: "2em",
+    objectFit: 'cover',
+    width: '50%',
+    height: '100%',
+    minWidth: '2em',
   },
   central: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   central2: {
-    display: "flex",
-    justifyContent: "space-evenly",
-    alignItems: "center",
+    display: 'flex',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
   },
-} as any;
+} as any
 
 export const LoginLink: React.FC = ({ children }) => {
-  let location = useLocation();
+  let location = useLocation()
 
   return (
     <NmLink
       color="inherit"
       to={{
-        pathname: "/login",
+        pathname: '/login',
         // This is the trick! This link sets
         // the `background` in location state.
         state: { from: location },
@@ -68,30 +68,30 @@ export const LoginLink: React.FC = ({ children }) => {
     >
       {children}
     </NmLink>
-  );
-};
+  )
+}
 
 export function Header() {
-  const { t } = useTranslation();
+  const { t } = useTranslation()
 
-  const match = useRouteMatch("/login");
-  const showAuthButton = !match;
+  const match = useRouteMatch('/login')
+  const showAuthButton = !match
 
-  const user = useSelector(authSelectors.getUser);
-  const serverConfig = useSelector(serverSelectors.getServerConfig);
-  const isLoggedIn = useSelector(authSelectors.getLoggedIn);
-  const dispatch = useDispatch();
+  const user = useSelector(authSelectors.getUser)
+  const serverConfig = useSelector(serverSelectors.getServerConfig)
+  const isLoggedIn = useSelector(authSelectors.getLoggedIn)
+  const dispatch = useDispatch()
 
-  const history = useHistory();
+  const history = useHistory()
 
   const tabChange = useCallback(
     (value: string) => {
-      if (history.location.pathname !== value) history.push(value);
+      if (history.location.pathname !== value) history.push(value)
     },
     [history]
-  );
+  )
 
-  const tabValue = `/${history.location.pathname.split("/")[1]}`;
+  const tabValue = `/${history.location.pathname.split('/')[1]}`
 
   return (
     <div style={{ overflowY: 'hidden' }}>
@@ -101,18 +101,18 @@ export function Header() {
             <Toolbar>
               <Button
                 color="inherit"
-                href={"https://docs.netmaker.org"}
+                href={'https://docs.netmaker.org'}
                 target="_blank"
               >
-                {t("header.docs")}
+                {t('header.docs')}
               </Button>
               {isLoggedIn && user!.isAdmin ? (
                 <Button
-                  style={{ marginLeft: "1em" }}
+                  style={{ marginLeft: '1em' }}
                   color="inherit"
                   // onClick={() => setCreatingUser(true)}
                 >
-                  {t("header.users")}
+                  {t('header.users')}
                 </Button>
               ) : null}
               <div style={styles.central}>
@@ -135,67 +135,67 @@ export function Header() {
                       <strong>{user!.name}</strong>
                     </Typography>
                     <Button color="inherit" onClick={() => dispatch(logout())}>
-                      {t("header.logout")}
+                      {t('header.logout')}
                     </Button>
                   </>
                 ) : (
-                  <LoginLink>{t("header.login")}</LoginLink>
+                  <LoginLink>{t('header.login')}</LoginLink>
                 ))}
             </Toolbar>
           </AppBar>
           {isLoggedIn ? (
             <AppBar position="relative" color="default">
               <Tabs
-                value={tabValue !== "/" ? tabValue : "/networks"}
+                value={tabValue !== '/' ? tabValue : '/networks'}
                 centered
                 aria-label="main table"
                 textColor="primary"
                 indicatorColor="primary"
               >
                 <Tab
-                  label={t("header.networks")}
+                  label={t('header.networks')}
                   tabIndex={0}
                   value="/networks"
-                  onClick={() => tabChange("/networks")}
+                  onClick={() => tabChange('/networks')}
                 />
                 <Tab
-                  label={t("header.nodes")}
+                  label={t('header.nodes')}
                   tabIndex={1}
                   value="/nodes"
-                  onClick={() => tabChange("/nodes")}
+                  onClick={() => tabChange('/nodes')}
                 />
                 <Tab
-                  label={t("header.accessKeys")}
+                  label={t('header.accessKeys')}
                   tabIndex={2}
                   value="/keys"
-                  onClick={() => tabChange("/keys")}
+                  onClick={() => tabChange('/keys')}
                 />
                 <Tab
                   label={
-                    "DNS" + serverConfig.DNSMode
-                      ? `${t("header.dns")} (${t("common.disabled")})`
-                      : t("header.dns")
+                    'DNS' + serverConfig.DNSMode
+                      ? `${t('header.dns')} (${t('common.disabled')})`
+                      : t('header.dns')
                   }
                   tabIndex={3}
                   disabled={serverConfig.DNSMode}
                   value="/dns"
-                  onClick={() => tabChange("/dns")}
+                  onClick={() => tabChange('/dns')}
                 />
                 <Tab
-                  label={t("header.externalClients")}
+                  label={t('header.externalClients')}
                   tabIndex={4}
                   value="/external"
-                  onClick={() => tabChange("/external")}
+                  onClick={() => tabChange('/external')}
                 />
                 <Box style={styles.central2}>
                   <Tooltip
                     title={
                       serverConfig.Version
-                        ? `${t("common.version")} ${t("common.server")}: ${
+                        ? `${t('common.version')} ${t('common.server')}: ${
                             serverConfig.Version
                           }, UI: ${UI_VERSION}`
-                        : `${t("common.version")} ${t("common.server")}: ${t(
-                            "common.notFound"
+                        : `${t('common.version')} ${t('common.server')}: ${t(
+                            'common.notFound'
                           )}, UI: ${UI_VERSION}`
                     }
                     placement="bottom"
@@ -208,10 +208,10 @@ export function Header() {
           ) : null}
 
           <AppBar position="relative" color="default">
-            <PathBreadcrumbs link="/" title={t("breadcrumbs.home")} />
+            <PathBreadcrumbs link="/" title={t('breadcrumbs.home')} />
           </AppBar>
         </Grid>
       </Box>
     </div>
-  );
+  )
 }

@@ -39,7 +39,8 @@
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
-    "eject": "react-app-rewired eject"
+    "eject": "react-app-rewired eject",
+    "format": "prettier -w ./src"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -67,6 +68,7 @@
     "@types/react-router-dom": "^5.3.0",
     "@types/redux-logger": "^3.0.9",
     "@welldone-software/why-did-you-render": "^6.2.1",
+    "prettier": "^2.4.1",
     "react-app-rewire-alias": "^1.1.4",
     "react-app-rewired": "^2.1.8"
   }

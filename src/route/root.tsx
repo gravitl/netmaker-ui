@@ -1,24 +1,24 @@
-import React from "react";
-import { Switch, Route, useLocation } from "react-router-dom";
-import { Header } from "./Header";
+import React from 'react'
+import { Switch, Route, useLocation } from 'react-router-dom'
+import { Header } from './Header'
 
-import { Dashboard } from "./dashboard/Dashboard";
-import { Nodes } from "./nodes/Nodes";
+import { Dashboard } from './dashboard/Dashboard'
+import { Nodes } from './nodes/Nodes'
 import { Login } from './login/Login'
 import { Networks } from './networks/Networks'
-import { PrivateRoute } from "./PrivateRoute";
+import { PrivateRoute } from './PrivateRoute'
 
 function NoMatch() {
-  const location = useLocation();
+  const location = useLocation()
   return (
     <div>
       No match for <code>{location.pathname}</code>
     </div>
-  );
+  )
 }
 
 function Routes() {
-  let location = useLocation();
+  let location = useLocation()
 
   // This piece of state is set when one of the
   // gallery links is clicked. The `background` state
@@ -27,7 +27,7 @@ function Routes() {
   // use it as the location for the <Switch> so
   // we show the gallery in the background, behind
   // the modal.
-  const from = (location.state as any)?.from;
+  const from = (location.state as any)?.from
 
   return (
     <>
@@ -50,6 +50,6 @@ function Routes() {
       {/* Show the modal when a background page is set */}
       {from && <Route path="/login" children={<Login />} />}
     </>
-  );
+  )
 }
-export default Routes;
+export default Routes

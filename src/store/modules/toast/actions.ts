@@ -1,4 +1,4 @@
-import { createAction } from "typesafe-actions";
-import { ToastPayload } from "./types";
+import { createAction } from 'typesafe-actions'
+import { ToastPayload } from './types'
 
-export const toast = createAction("toast_toast")<ToastPayload>();
+export const toast = createAction('toast_toast')<ToastPayload>()

@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react'
 // //import Avatar from 'react-avatar';
 // import { makeStyles } from '@material-ui/core/styles'
 // import { BrowserRouter as Router } from 'react-router-dom'
@@ -12,14 +12,14 @@ import React from "react";
 // import CreateNetwork from './Components/Views/CreateNetwork';
 // import DateFnsUtils from '@date-io/date-fns';
 
-import "./App.css";
-import 'react-toastify/dist/ReactToastify.css';
+import './App.css'
+import 'react-toastify/dist/ReactToastify.css'
 
-import { ToastContainer } from "react-toastify";
-import { ThemeProvider } from "@mui/material/styles";
-import { useCurrentTheme } from "./components/theme";
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import LocalizationProvider from "@mui/lab/LocalizationProvider";
+import { ToastContainer } from 'react-toastify'
+import { ThemeProvider } from '@mui/material/styles'
+import { useCurrentTheme } from './components/theme'
+import AdapterDateFns from '@mui/lab/AdapterDateFns'
+import LocalizationProvider from '@mui/lab/LocalizationProvider'
 // import CreateUser from './Components/Views/CreateUser.js';
 // import UpdateUser from './Components/Views/UpdateUser';
 // import Login from './Components/Views/Login.js';
@@ -27,9 +27,9 @@ import LocalizationProvider from "@mui/lab/LocalizationProvider";
 // import {BACKEND_URL} from './config'
 // import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 
-import Routes from "./route/root";
+import Routes from './route/root'
 // import Routes from "./routes/routes";
-import { PathBreadcrumbsProvider } from "./components/PathBreadcrumbs";
+import { PathBreadcrumbsProvider } from './components/PathBreadcrumbs'
 
 // const useStyles = makeStyles((_) => ({
 //   center: {
@@ -159,7 +159,7 @@ function App() {
   //   }
   // }, [networkData, user, isBackend])
 
-  const theme = useCurrentTheme();
+  const theme = useCurrentTheme()
   return (
     <PathBreadcrumbsProvider>
       <ThemeProvider theme={theme}>
@@ -169,7 +169,7 @@ function App() {
         </LocalizationProvider>
       </ThemeProvider>
     </PathBreadcrumbsProvider>
-  );
+  )
   // <Router>
   //   <MuiPickersUtilsProvider utils={DateFnsUtils}>
   //     <div className="App">
@@ -201,4 +201,4 @@ function App() {
   // </Router>
 }
 
-export default App;
+export default App

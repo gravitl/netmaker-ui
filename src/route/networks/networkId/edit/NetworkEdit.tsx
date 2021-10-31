@@ -1,17 +1,17 @@
-import { useCallback } from "react";
-import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
-import { NmForm, NmFormInputSwitch, NmFormInputText } from "~components/form";
-import { updateNetwork } from "~modules/network/actions";
-import { Network } from "~modules/network/types";
-import { networkToNetworkPayload } from "~modules/network/utils";
+import { useCallback } from 'react'
+import { useTranslation } from 'react-i18next'
+import { useDispatch } from 'react-redux'
+import { NmForm, NmFormInputSwitch, NmFormInputText } from '~components/form'
+import { updateNetwork } from '~modules/network/actions'
+import { Network } from '~modules/network/types'
+import { networkToNetworkPayload } from '~modules/network/utils'
 
 export const NetworkEdit: React.FC<{
-  network: Network;
+  network: Network
 }> = ({ network }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation()
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
   const onSubmit = useCallback(
     (data: Network) => {
@@ -19,13 +19,13 @@ export const NetworkEdit: React.FC<{
         updateNetwork.request({
           network: networkToNetworkPayload(data),
         })
-      );
+      )
     },
     [dispatch]
-  );
+  )
 
   if (!network) {
-    return <div>Not Found</div>;
+    return <div>Not Found</div>
   }
 
   return (
@@ -33,67 +33,67 @@ export const NetworkEdit: React.FC<{
       initialState={network}
       onSubmit={onSubmit}
       submitProps={{
-        variant: "outlined",
+        variant: 'outlined',
       }}
       sx={{
-        "& .MuiTextField-root": { m: 1, width: "25ch" },
+        '& .MuiTextField-root': { m: 1, width: '25ch' },
       }}
     >
       <NmFormInputText
-        name={"addressrange"}
-        label={t("network.addressrange")}
+        name={'addressrange'}
+        label={t('network.addressrange')}
       />
       <NmFormInputText
-        name={"addressrange6"}
-        label={t("network.addressrange6")}
+        name={'addressrange6'}
+        label={t('network.addressrange6')}
       />
-      <NmFormInputText name={"localrange"} label={t("network.localrange")} />
-      <NmFormInputText name={"displayname"} label={t("network.displayname")} />
+      <NmFormInputText name={'localrange'} label={t('network.localrange')} />
+      <NmFormInputText name={'displayname'} label={t('network.displayname')} />
       <NmFormInputText
-        name={"defaultinterface"}
-        label={t("network.defaultinterface")}
-      />
-      <NmFormInputText
-        name={"defaultlistenport"}
-        label={t("network.defaultlistenport")}
+        name={'defaultinterface'}
+        label={t('network.defaultinterface')}
       />
       <NmFormInputText
-        name={"defaultpostup"}
-        label={t("network.defaultpostup")}
+        name={'defaultlistenport'}
+        label={t('network.defaultlistenport')}
       />
       <NmFormInputText
-        name={"defaultpostdown"}
-        label={t("network.defaultpostdown")}
+        name={'defaultpostup'}
+        label={t('network.defaultpostup')}
       />
       <NmFormInputText
-        name={"defaultkeepalive"}
-        label={t("network.defaultkeepalive")}
+        name={'defaultpostdown'}
+        label={t('network.defaultpostdown')}
       />
       <NmFormInputText
-        name={"checkininterval"}
-        label={t("network.checkininterval")}
+        name={'defaultkeepalive'}
+        label={t('network.defaultkeepalive')}
       />
       <NmFormInputText
-        name={"defaultextclientdns"}
-        label={t("network.defaultextclientdns")}
+        name={'checkininterval'}
+        label={t('network.checkininterval')}
       />
-      <NmFormInputText name={"defaultmtu"} label={t("network.defaultmtu")} />
+      <NmFormInputText
+        name={'defaultextclientdns'}
+        label={t('network.defaultextclientdns')}
+      />
+      <NmFormInputText name={'defaultmtu'} label={t('network.defaultmtu')} />
       <NmFormInputSwitch
-        name={"allowmanualsignup"}
-        label={"Allow Node Signup Without Keys"}
-      />
-      <NmFormInputSwitch
-        name={"isdualstack"}
-        label={t("network.isdualstack")}
+        name={'allowmanualsignup'}
+        label={'Allow Node Signup Without Keys'}
       />
       <NmFormInputSwitch
-        name={"defaultsaveconfig"}
-        label={t("network.defaultsaveconfig")}
+        name={'isdualstack'}
+        label={t('network.isdualstack')}
       />
       <NmFormInputSwitch
-        name={"defaultudpholepunch"}
-        label={t("network.defaultudpholepunch")}
+        name={'defaultsaveconfig'}
+        label={t('network.defaultsaveconfig')}
+      />
+      <NmFormInputSwitch
+        name={'defaultudpholepunch'}
+        label={t('network.defaultudpholepunch')}
       />
     </NmForm>
-  );
-};
+  )
+}

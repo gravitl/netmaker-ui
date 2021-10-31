@@ -26,7 +26,7 @@ export interface ServerConfig {
 export interface GetServerConfigPayload {
   Request: {
     token: string
-  },
+  }
   Response: {
     APIConnString: string
     APIHost: string

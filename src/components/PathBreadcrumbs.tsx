@@ -1,35 +1,35 @@
-import React, { useContext } from "react";
-import { Breadcrumbs } from "@mui/material";
+import React, { useContext } from 'react'
+import { Breadcrumbs } from '@mui/material'
 
-import Typography from "@mui/material/Typography";
-import Link, { LinkProps } from "@mui/material/Link";
-import { Link as RouterLink, useRouteMatch } from "react-router-dom";
-import { Modify } from "../types/react-app-env";
+import Typography from '@mui/material/Typography'
+import Link, { LinkProps } from '@mui/material/Link'
+import { Link as RouterLink, useRouteMatch } from 'react-router-dom'
+import { Modify } from '../types/react-app-env'
 
 interface Crumb {
-  title: string;
-  link: string;
-  prefix?: string;
+  title: string
+  link: string
+  prefix?: string
 }
 
 type BreadcrumbContextType = {
-  add: (crumb: Crumb) => () => void;
-  crumbs: Array<Crumb>;
-};
+  add: (crumb: Crumb) => () => void
+  crumbs: Array<Crumb>
+}
 
 const BreadcrumbContext = React.createContext<BreadcrumbContextType>({
   add: () => () => {},
   crumbs: [],
-});
+})
 
-const LinkRouter: React.FC<Omit<LinkProps<RouterLink>, "component">> = (
+const LinkRouter: React.FC<Omit<LinkProps<RouterLink>, 'component'>> = (
   props
-) => <Link {...props} component={RouterLink} />;
+) => <Link {...props} component={RouterLink} />
 
 export const PathBreadcrumbsProvider: React.FC<React.PropsWithChildren<{}>> = ({
   children,
 }) => {
-  const [crumbs, setCrumbs] = React.useState<Array<Crumb>>([]);
+  const [crumbs, setCrumbs] = React.useState<Array<Crumb>>([])
 
   const add = React.useCallback(
     (crumb: Crumb) => {
@@ -37,13 +37,13 @@ export const PathBreadcrumbsProvider: React.FC<React.PropsWithChildren<{}>> = ({
         [...value, crumb].sort((a, b) =>
           a.link.length > b.link.length ? 1 : -1
         )
-      );
+      )
       return () => {
-        setCrumbs((value) => [...value.filter((c) => c.link !== crumb.link)]);
-      };
+        setCrumbs((value) => [...value.filter((c) => c.link !== crumb.link)])
+      }
     },
     [setCrumbs]
-  );
+  )
 
   return (
     <BreadcrumbContext.Provider
@@ -54,11 +54,11 @@ export const PathBreadcrumbsProvider: React.FC<React.PropsWithChildren<{}>> = ({
     >
       {children}
     </BreadcrumbContext.Provider>
-  );
-};
+  )
+}
 
 export const PathBreadcrumbs: React.FC<Crumb> = ({ title, link }) => {
-  const { crumbs } = useContext(BreadcrumbContext);
+  const { crumbs } = useContext(BreadcrumbContext)
 
   return (
     <Breadcrumbs aria-label="breadcrumb">
@@ -72,13 +72,13 @@ export const PathBreadcrumbs: React.FC<Crumb> = ({ title, link }) => {
               <Typography color="text.primary" key={value.link + value.prefix}>
                 {value.prefix}
               </Typography>
-            );
+            )
           }
           acc.push(
             <Typography color="text.primary" key={value.link}>
               {value.title}
             </Typography>
-          );
+          )
         } else {
           if (value.prefix !== undefined) {
             acc.push(
@@ -90,7 +90,7 @@ export const PathBreadcrumbs: React.FC<Crumb> = ({ title, link }) => {
               >
                 {value.prefix}
               </LinkRouter>
-            );
+            )
           }
           acc.push(
             <LinkRouter
@@ -101,20 +101,20 @@ export const PathBreadcrumbs: React.FC<Crumb> = ({ title, link }) => {
             >
               {value.title}
             </LinkRouter>
-          );
+          )
         }
-        return acc;
+        return acc
       }, [])}
     </Breadcrumbs>
-  );
-};
+  )
+}
 
 export const useLinkBreadcrumb = (crumb: Modify<Crumb, { link?: string }>) => {
-  const { add } = useContext(BreadcrumbContext);
-  const { url } = useRouteMatch();
+  const { add } = useContext(BreadcrumbContext)
+  const { url } = useRouteMatch()
 
   React.useEffect(() => {
-    return add({ link: url, ...crumb });
+    return add({ link: url, ...crumb })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-};
+  }, [])
+}
