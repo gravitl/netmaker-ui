@@ -1,9 +1,9 @@
 import { produce } from 'immer'
 import * as ls from 'local-storage'
-import { createReducer } from "typesafe-actions";
-import { USER_KEY } from "../../../config";
-import { createAdmin, hasAdmin, login, logout, setUser } from "./actions";
-import { LocalStorageUserKeyValue } from "./types";
+import { createReducer } from 'typesafe-actions'
+import { USER_KEY } from '../../../config'
+import { createAdmin, hasAdmin, login, logout, setUser } from './actions'
+import { LocalStorageUserKeyValue } from './types'
 
 const initialValues = ls.get<LocalStorageUserKeyValue | undefined>(USER_KEY)
 
@@ -53,29 +53,29 @@ export const reducer = createReducer({
       ls.set<void>(USER_KEY, undefined)
     })
   )
-  .handleAction(hasAdmin["success"], (state, result) =>
+  .handleAction(hasAdmin['success'], (state, result) =>
     produce(state, (draftState) => {
-      draftState.hasAdmin = result.payload;
+      draftState.hasAdmin = result.payload
     })
   )
-  .handleAction(hasAdmin["failure"], (state, _) =>
+  .handleAction(hasAdmin['failure'], (state, _) =>
     produce(state, (draftState) => {
-      draftState.hasAdmin = false;
+      draftState.hasAdmin = false
     })
   )
-  .handleAction(createAdmin["request"], (state, _) => 
+  .handleAction(createAdmin['request'], (state, _) =>
     produce(state, (draftState) => {
-      draftState.isCreating = true;
+      draftState.isCreating = true
     })
   )
-  .handleAction(createAdmin["success"], (state, _) => 
+  .handleAction(createAdmin['success'], (state, _) =>
     produce(state, (draftState) => {
-      draftState.hasAdmin = true;
-      draftState.isCreating = false;
+      draftState.hasAdmin = true
+      draftState.isCreating = false
     })
   )
-  .handleAction(createAdmin["failure"], (state, _) => 
+  .handleAction(createAdmin['failure'], (state, _) =>
     produce(state, (draftState) => {
-      draftState.isCreating = false;
+      draftState.isCreating = false
     })
   )
