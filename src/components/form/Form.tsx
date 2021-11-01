@@ -1,31 +1,28 @@
-import React from 'react'
-import {
-  Button,
-  ExtendButtonBase,
-  ButtonTypeMap,
-  Box,
-  BoxProps,
-} from '@mui/material'
+import React from "react";
+import { IconButton, Button, ExtendButtonBase, ButtonTypeMap, Box, BoxProps, Grid, Tooltip } from "@mui/material";
 import {
   useForm,
   SubmitHandler,
   UnpackNestedValue,
   Resolver,
-} from 'react-hook-form'
-import { useTranslation } from 'react-i18next'
-import { FormContext } from './internal/formContext'
+  DeepPartial,
+} from "react-hook-form";
+import { useTranslation } from "react-i18next";
+import { FormContext } from "./internal/formContext";
+import { VpnKey } from "@mui/icons-material";
 
 interface FormProps<T> extends Omit<BoxProps, 'onSubmit' | 'component'> {
-  initialState: UnpackNestedValue<T>
-  disabled?: boolean
-  submitText?: string
-  resetText?: string
-  showReset?: boolean
-  onSubmit: SubmitHandler<T>
-  children?: React.ReactNode
-  submitProps?: Omit<ExtendButtonBase<ButtonTypeMap>, 'onChange'>
-  resetProps?: Omit<ExtendButtonBase<ButtonTypeMap>, 'onChange'>
-  resolver?: Resolver<T, object>
+  initialState: UnpackNestedValue<DeepPartial<T>>;
+  disabled?: boolean;
+  submitText?: string;
+  resetText?: string;
+  showReset?: boolean;
+  showOauth?: boolean;
+  onSubmit: SubmitHandler<T>;
+  children?: React.ReactNode;
+  submitProps?: Omit<ExtendButtonBase<ButtonTypeMap>, "onChange">;
+  resetProps?: Omit<ExtendButtonBase<ButtonTypeMap>, "onChange">;
+  resolver?: Resolver<T, object>;
 }
 
 export function NmForm<T>({
@@ -38,6 +35,7 @@ export function NmForm<T>({
   onSubmit,
   submitProps,
   resetProps,
+  showOauth,
   resolver,
   ...boxProps
 }: FormProps<T>) {
@@ -58,9 +56,22 @@ export function NmForm<T>({
       <Box {...boxProps} component="form">
         {children}
         <br />
-        <Button {...submitProps} onClick={handleSubmit(onSubmit)}>
-          {submitText ? submitText : t('common.submit')}
-        </Button>
+        <Grid container justifyContent="space-around" alignItems="center">
+          <Grid item xs={10}>
+            <Button {...submitProps} onClick={handleSubmit(onSubmit)}>
+              {submitText ? submitText : t("common.submit")}
+            </Button>
+          </Grid>
+          {showOauth ?
+            <Grid item xs={1}>
+              <Tooltip placement="top" title={t("login.oauth.login") as string}>
+                <IconButton color="primary">
+                  <VpnKey />
+                </IconButton>
+              </Tooltip>
+            </Grid>
+          : null}
+        </Grid>
         {showReset && (
           <Button {...resetProps} onClick={() => reset()} variant={'outlined'}>
             {resetText ? resetText : t('common.reset')}

@@ -1,19 +1,10 @@
-import { AxiosResponse } from 'axios'
-import jwtDecode from 'jwt-decode'
-import { all, put, takeEvery } from 'redux-saga/effects'
-import { getType } from 'typesafe-actions'
-import { User } from './types'
-import { apiRequestWithAuthSaga, apiRequestSaga } from '../api/saga'
-import {
-  getAllUsers,
-  getUser,
-  login,
-  hasAdmin,
-  createAdmin,
-  createUser,
-  deleteUser,
-  updateUser,
-} from './actions'
+import { AxiosResponse } from "axios";
+import jwtDecode from "jwt-decode";
+import { all, call, put, takeEvery } from "redux-saga/effects";
+import { getType } from "typesafe-actions";
+import { User } from "./types";
+import { apiRequestWithAuthSaga, apiRequestSaga } from "../api/saga";
+import { getAllUsers, getUser, login, hasAdmin, createAdmin, createUser, deleteUser, updateUser } from "./actions";
 
 function* handleGetAllUsersRequest(
   action: ReturnType<typeof getAllUsers['request']>
@@ -78,8 +69,8 @@ function* handleHasAdminRequest(
       'get',
       '/users/adm/hasadmin',
       {}
-    )
-    yield put(hasAdmin['success'](response.status === 200))
+    );
+    yield put(hasAdmin["success"](response.status === 200 && response.data));
   } catch (e: unknown) {
     yield put(hasAdmin['failure'](e as Error))
   }
@@ -169,13 +160,14 @@ function* handleUpdateUserRequest(
 
 export function* saga() {
   yield all([
-    takeEvery(getType(getAllUsers['request']), handleGetAllUsersRequest),
-    takeEvery(getType(getUser['request']), handleGetUserRequest),
-    takeEvery(getType(login['request']), handleLoginRequest),
-    takeEvery(getType(hasAdmin['request']), handleHasAdminRequest),
-    takeEvery(getType(createAdmin['request']), handleCreateAdminRequest),
-    takeEvery(getType(createUser['request']), handleCreateUserRequest),
-    takeEvery(getType(deleteUser['request']), handleDeleteUserRequest),
-    takeEvery(getType(updateUser['request']), handleUpdateUserRequest),
-  ])
+    takeEvery(getType(getAllUsers["request"]), handleGetAllUsersRequest),
+    takeEvery(getType(getUser["request"]), handleGetUserRequest),
+    takeEvery(getType(login["request"]), handleLoginRequest),
+    takeEvery(getType(hasAdmin["request"]), handleHasAdminRequest),
+    takeEvery(getType(createAdmin["request"]), handleCreateAdminRequest),
+    takeEvery(getType(createUser["request"]), handleCreateUserRequest),
+    takeEvery(getType(deleteUser["request"]), handleDeleteUserRequest),
+    takeEvery(getType(updateUser["request"]), handleUpdateUserRequest),
+    call(handleHasAdminRequest, hasAdmin.request()),
+  ]);
 }

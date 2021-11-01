@@ -98,15 +98,24 @@ export interface LanguageResource {
   }
   login: {
     validation: {
-      username: string
-      password: string
+      username: string;
+      password: string;
+      confirmation: string;
     }
     label: {
-      username: string
-      password: string
+      username: string;
+      password: string;
+      confirmation: string;
     }
-    header: string
-    login: string
-    loginFailed: string
+    oauth: {
+      login: string;
+    },
+    admin: {
+      create: string;
+      creating: string;
+    },
+    header: string;
+    login: string;
+    loginFailed: string;
   }
 }

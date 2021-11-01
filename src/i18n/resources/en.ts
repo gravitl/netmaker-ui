@@ -100,14 +100,21 @@ export const en: LanguageResource = {
   },
   login: {
     validation: {
-      username:
-        'Invalid user name provided. Must be between 3 to 40 alphanumeric characters with "-" or "." or an email address.',
-      password:
-        'Invalid password provided. Must be between 5 to 64 characters with no white space.',
+      username: 'Invalid user name provided. Must be between 3 to 40 alphanumeric characters with "-" or "." or an email address.',
+      password: "Invalid password provided. Must be between 5 to 64 characters with no white space.",
+      confirmation: "Confirmation password does not match given password."
     },
     label: {
-      username: 'Username',
-      password: 'Password',
+      username: "Username",
+      password: "Password",
+      confirmation: "Password Confirmation"
+    },
+    oauth: {
+      login: "Use OAuth Provider to login.",
+    },
+    admin: {
+      create: "Create an Admin",
+      creating: "Create Admin",
     },
     header: 'Login below:',
     login: 'Login',
