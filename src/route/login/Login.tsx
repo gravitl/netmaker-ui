@@ -51,7 +51,6 @@ export function Login() {
   const hasAdmin = useSelector(authSelectors.hasAdmin)
 
   const authRenderSwitch = () => {
-    console.log('HAS ADMIN: ' + hasAdmin)
     if (hasAdmin) return <LoginView />
     return <CreateAdminView />
   }

@@ -1,4 +1,5 @@
 import { produce } from 'immer'
+import jwtDecode from 'jwt-decode'
 import * as ls from 'local-storage'
 import { createReducer } from 'typesafe-actions'
 import { USER_KEY } from '../../../config'
@@ -26,13 +27,23 @@ export const reducer = createReducer({
   )
   .handleAction(login['success'], (state, action) =>
     produce(state, (draftState) => {
-      draftState.user = action.payload.user
       draftState.token = action.payload.token
       draftState.isLoggingIn = false
-
+      const decoded: {
+        IsAdmin: boolean
+        UserName: string
+        Networks: Array<string>
+        exp: number
+      } = jwtDecode(action.payload.token)
+      draftState.user = {
+        isAdmin: decoded.IsAdmin,
+        name: decoded.UserName,
+        networks: decoded.Networks,
+        exp: decoded.exp,
+      }
       ls.set<LocalStorageUserKeyValue>(USER_KEY, {
         token: action.payload.token,
-        user: action.payload.user,
+        user: draftState.user,
       })
     })
   )

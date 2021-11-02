@@ -117,5 +117,18 @@ export interface LanguageResource {
     header: string
     login: string
     loginFailed: string
+    logout: string
+  }
+  users: {
+    header: string
+    create: string
+    delete: string
+    edit: string
+    details: string
+    networks: {
+      create: string
+      delete: string
+      edit: string
+    }
   }
 }

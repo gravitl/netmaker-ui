@@ -19,6 +19,7 @@ import {
 import { useTranslation } from 'react-i18next'
 import { FormContext } from './internal/formContext'
 import { VpnKey } from '@mui/icons-material'
+import { BACKEND_URL } from '../../config'
 
 interface FormProps<T> extends Omit<BoxProps, 'onSubmit' | 'component'> {
   initialState: UnpackNestedValue<DeepPartial<T>>
@@ -74,7 +75,7 @@ export function NmForm<T>({
           {showOauth ? (
             <Grid item xs={1}>
               <Tooltip placement="top" title={t('login.oauth.login') as string}>
-                <IconButton color="primary">
+                <IconButton color="primary" href={`${BACKEND_URL}/api/oauth/login`} >
                   <VpnKey />
                 </IconButton>
               </Tooltip>

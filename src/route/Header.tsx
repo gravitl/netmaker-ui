@@ -53,7 +53,12 @@ const styles = {
   },
 } as any
 
-export const LoginLink: React.FC = ({ children }) => {
+interface LoginLinkProps {
+  children: any,
+  setOpen: () => void,
+}
+
+export const LoginLink: React.FC<LoginLinkProps> = ({ children, setOpen  }) => {
   let location = useLocation()
 
   return (
@@ -71,7 +76,12 @@ export const LoginLink: React.FC = ({ children }) => {
   )
 }
 
-export function Header() {
+interface ToggleProps {
+  DrawerHandler: () => void,
+  open: boolean
+}
+
+export function Header(Props: ToggleProps) {
   const { t } = useTranslation()
 
   const match = useRouteMatch('/login')
@@ -139,7 +149,7 @@ export function Header() {
                     </Button>
                   </>
                 ) : (
-                  <LoginLink>{t('header.login')}</LoginLink>
+                  <LoginLink setOpen={Props.DrawerHandler}>{t('header.login')}</LoginLink>
                 ))}
             </Toolbar>
           </AppBar>

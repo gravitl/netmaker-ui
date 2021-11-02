@@ -121,5 +121,18 @@ export const en: LanguageResource = {
     header: 'Login below:',
     login: 'Login',
     loginFailed: 'Failed to login, wrong username or password.',
+    logout: 'Logout',
   },
+  users: {
+    header: "Users",
+    create: "Create User",
+    delete: "Delete User",
+    edit: "Edit User",
+    details: "View User Details",
+    networks: {
+      create: "Add a Network to User",
+      delete: "Remove a Network from User",
+      edit: "Edit User Networks"
+    }
+  }
 }

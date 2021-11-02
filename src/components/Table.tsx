@@ -12,12 +12,9 @@ import {
   IconButton,
   Tooltip,
 } from '@mui/material'
-import { useRouteMatch, useLocation, useHistory } from 'react-router-dom'
+import { useRouteMatch, useHistory } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-
-function useQuery() {
-  return new URLSearchParams(useLocation().search)
-}
+import { useQuery } from '~util/query'
 
 type Column<Row> = {
   [Key in keyof Row]: {

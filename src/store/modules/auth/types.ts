@@ -27,7 +27,6 @@ export interface Login {
   }
   Response: {
     token: string
-    user: User
   }
 }
 

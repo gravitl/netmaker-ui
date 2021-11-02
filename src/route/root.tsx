@@ -7,6 +7,7 @@ import { Nodes } from './nodes/Nodes'
 import { Login } from './login/Login'
 import { Networks } from './networks/Networks'
 import { PrivateRoute } from './PrivateRoute'
+import CustomDrawer from '~components/drawer/CustomDrawer'
 
 function NoMatch() {
   const location = useLocation()
@@ -31,7 +32,7 @@ function Routes() {
 
   return (
     <>
-      <Header />
+      <CustomDrawer />  
       <Switch location={from || location}>
         <Route exact path="/">
           <Dashboard />
@@ -42,6 +43,7 @@ function Routes() {
         <PrivateRoute path="/nodes">
           <Nodes />
         </PrivateRoute>
+        <Route path="/login" children={<Login />} />
         <Route path="*">
           <NoMatch />
         </Route>

@@ -7,6 +7,7 @@ import { correctUserNameRegex, correctPasswordRegex } from '../../util/regex'
 import { authSelectors } from '../../store/selectors'
 import { login } from '../../store/modules/auth/actions'
 import { Redirect, useLocation } from 'react-router'
+import { useQuery } from '~util/query'
 
 const styles = {
   centerText: {
@@ -33,10 +34,25 @@ export default function Login() {
   const [error, setError] = React.useState('')
   const [triedToLogin, setTriedToLogin] = React.useState(false)
   const location = useLocation<{ from?: Location }>()
+  const query = useQuery()
+
+  const oauth = query.has('oauth') ? query.get('oauth') : ''
+  const loginParam = query.has('login') ? query.get('login') : ''
+  //   const user = query.has('user') ? query.get('user') : ''
 
   const initialLoginForm = { username: '', password: '' }
 
   useEffect(() => {
+    if (oauth) {
+        setError(t('login.loginFailed'))
+        setTriedToLogin(true)
+    }
+
+    if (loginParam) {
+        dispatch(login.success({token: loginParam}))
+        
+    }
+
     if (!triedToLogin) {
       return
     }
@@ -46,7 +62,7 @@ export default function Login() {
     } else if (!isLoggedIn) {
       setError(t('login.loginFailed'))
     }
-  }, [isLogginIn, isLoggedIn, triedToLogin, setError, t])
+  }, [isLogginIn, isLoggedIn, triedToLogin, oauth, loginParam, dispatch, setError, t])
 
   const loginValidation = useMemo(
     () =>
