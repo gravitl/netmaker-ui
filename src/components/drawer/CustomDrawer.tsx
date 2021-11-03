@@ -105,7 +105,7 @@ const styles = {
   logo: {
     objectFit: 'cover',
     height: 70,
-  },
+  } as React.DetailedHTMLProps<React.ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement>["style"],
   headerLogo: {
     width: '50%',
     height: 100,
@@ -130,7 +130,7 @@ const styles = {
     alignItems: 'center',
     width: '100%',
   },
-} as any
+}
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean

@@ -15,6 +15,7 @@ import {
   UnpackNestedValue,
   Resolver,
   DeepPartial,
+  UseFormReset,
 } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { FormContext } from './internal/formContext'
@@ -36,7 +37,12 @@ interface FormProps<T> extends Omit<BoxProps, 'onSubmit' | 'component'> {
   onCancel?: () => void
 }
 
-export function NmForm<T>({
+export interface FormRef<T> {
+  reset: UseFormReset<T>
+  values: UnpackNestedValue<T>
+}
+
+export const NmForm = React.forwardRef(function NmFormInternal<T>({
   initialState,
   disabled,
   showReset,
@@ -50,11 +56,17 @@ export function NmForm<T>({
   resolver,
   onCancel,
   ...boxProps
-}: FormProps<T>) {
-  const { handleSubmit, reset, control } = useForm<T>({
+}: FormProps<T>,
+ref: React.ForwardedRef<FormRef<T>>) {
+  const { handleSubmit, reset, control, getValues } = useForm<T>({
     defaultValues: initialState,
     resolver,
   })
+
+  React.useImperativeHandle(ref, () => ({
+    reset,
+    values: getValues()
+  }))
 
   const { t } = useTranslation()
 
@@ -104,4 +116,4 @@ export function NmForm<T>({
       </Box>
     </FormContext.Provider>
   )
-}
+})

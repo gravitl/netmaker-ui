@@ -25,3 +25,9 @@ declare module '@mui/styles' {
   import { Theme, ThemeOptions } from '@mui/material/styles'
   interface DefaultTheme extends Theme {}
 }
+
+declare module "react" {
+  function forwardRef<T, P = {}>(
+    render: (props: P, ref: React.Ref<T>) => React.ReactElement | null
+  ): (props: P & React.RefAttributes<T>) => React.ReactElement | null;
+}

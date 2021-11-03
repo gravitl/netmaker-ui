@@ -1,8 +1,9 @@
-import { Grid } from '@mui/material'
+import React from 'react'
+import { Grid, Button } from '@mui/material'
 import { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
-import { NmForm, NmFormInputSwitch, NmFormInputText } from '~components/form'
+import { FormRef, NmForm, NmFormInputSwitch, NmFormInputText } from '~components/form'
 import { updateNetwork } from '~modules/network/actions'
 import { Network } from '~modules/network/types'
 import { networkToNetworkPayload } from '~modules/network/utils'
@@ -14,6 +15,8 @@ export const NetworkEdit: React.FC<{
   const { t } = useTranslation()
 
   const dispatch = useDispatch()
+
+  const formRef = React.createRef<FormRef<Network>>()
 
   const onSubmit = useCallback(
     (data: Network) => {
@@ -41,8 +44,15 @@ export const NetworkEdit: React.FC<{
       sx={{
         '& .MuiTextField-root': { m: 1, width: '25ch' },
       }}
+      ref={formRef}
     >
       <Grid container justifyContent="flex-end" alignItems="center">
+        <Button onClick={() => {
+          console.log("Prefill Button Press ", formRef.current)
+          formRef.current?.reset({...formRef.current?.values, displayname: "Updated By Prefill Button"}, { keepDefaultValues: true})
+        }}>
+          Set displayName
+          </Button>
         <Grid item xs={12} sm={4} md={3}>
           <NmFormInputText
             name={'addressrange'}
