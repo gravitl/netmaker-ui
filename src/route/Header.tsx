@@ -54,11 +54,11 @@ const styles = {
 } as any
 
 interface LoginLinkProps {
-  children: any,
-  setOpen: () => void,
+  children: any
+  setOpen: () => void
 }
 
-export const LoginLink: React.FC<LoginLinkProps> = ({ children, setOpen  }) => {
+export const LoginLink: React.FC<LoginLinkProps> = ({ children, setOpen }) => {
   let location = useLocation()
 
   return (
@@ -77,7 +77,7 @@ export const LoginLink: React.FC<LoginLinkProps> = ({ children, setOpen  }) => {
 }
 
 interface ToggleProps {
-  DrawerHandler: () => void,
+  DrawerHandler: () => void
   open: boolean
 }
 
@@ -149,7 +149,9 @@ export function Header(Props: ToggleProps) {
                     </Button>
                   </>
                 ) : (
-                  <LoginLink setOpen={Props.DrawerHandler}>{t('header.login')}</LoginLink>
+                  <LoginLink setOpen={Props.DrawerHandler}>
+                    {t('header.login')}
+                  </LoginLink>
                 ))}
             </Toolbar>
           </AppBar>

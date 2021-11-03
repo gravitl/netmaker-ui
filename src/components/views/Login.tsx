@@ -44,13 +44,12 @@ export default function Login() {
 
   useEffect(() => {
     if (oauth) {
-        setError(t('login.loginFailed'))
-        setTriedToLogin(true)
+      setError(t('login.loginFailed'))
+      setTriedToLogin(true)
     }
 
     if (loginParam) {
-        dispatch(login.success({token: loginParam}))
-        
+      dispatch(login.success({ token: loginParam }))
     }
 
     if (!triedToLogin) {
@@ -62,7 +61,16 @@ export default function Login() {
     } else if (!isLoggedIn) {
       setError(t('login.loginFailed'))
     }
-  }, [isLogginIn, isLoggedIn, triedToLogin, oauth, loginParam, dispatch, setError, t])
+  }, [
+    isLogginIn,
+    isLoggedIn,
+    triedToLogin,
+    oauth,
+    loginParam,
+    dispatch,
+    setError,
+    t,
+  ])
 
   const loginValidation = useMemo(
     () =>

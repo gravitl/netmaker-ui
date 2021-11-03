@@ -31,7 +31,7 @@ export const Networks: React.FC = () => {
             </Grid>
             <Grid item>
               <NmLink to={{ pathname: '/networks/create' }}>
-                {t('New Network')}
+                {t('network.create')}
               </NmLink>
             </Grid>
           </Grid>

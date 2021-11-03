@@ -103,6 +103,7 @@ export default function Login() {
           initialState={initialAdminForm}
           resolver={createAdminValidation}
           onSubmit={createSubmit}
+          onCancel={() => {}}
           submitText={t('login.admin.creating')}
           showOauth
           submitProps={{

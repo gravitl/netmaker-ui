@@ -26,7 +26,7 @@ const initialState: CreateNetwork = {
   islocal: false,
   isdualstack: false,
   addressrange6: '',
-  defaultudpholepunch: true,
+  defaultudpholepunch: false,
 }
 
 export const NetworkCreate: React.FC = () => {
@@ -49,7 +49,7 @@ export const NetworkCreate: React.FC = () => {
   )
 
   useLinkBreadcrumb({
-    title: t('Create'),
+    title: t('common.create'),
   })
 
   return (
@@ -59,7 +59,7 @@ export const NetworkCreate: React.FC = () => {
       submitProps={{
         variant: 'outlined',
       }}
-      submitText={t('network.create.submit')}
+      submitText={t('network.create')}
       sx={{
         paddingTop: '1em',
         flex: 1,

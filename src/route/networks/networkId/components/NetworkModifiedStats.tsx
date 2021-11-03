@@ -9,24 +9,27 @@ export const NetworkModifiedStats: React.FC<{ netid: string }> = ({
   const network = useNetwork(netid)
   const { t } = useTranslation()
 
+  const fieldStyle = {
+    marginTop: '1em',
+  }
+
   if (!network) {
     return null
   }
   return (
     <Grid
       container
-      spacing={0}
-      direction="row"
-      flexShrink="initial"
-      sx={{
-        '& .MuiTextField-root': { m: 1, width: '25ch' },
-      }}
+      display="flex"
+      justifyContent="space-between"
+      alignItems="center"
+      style={{ marginBottom: '2em' }}
     >
-      <Grid item>
+      <Grid item xs={12} md={6}>
         <TextField
-          label={t('Last modified nodes:')}
+          label={t('network.nodeslastmodified')}
           type="datetime-local"
           disabled
+          style={fieldStyle}
           value={datePickerConverter(network.nodeslastmodified)}
           InputLabelProps={{
             shrink: true,
@@ -34,11 +37,12 @@ export const NetworkModifiedStats: React.FC<{ netid: string }> = ({
         />
       </Grid>
 
-      <Grid item>
+      <Grid item xs={12} md={6}>
         <TextField
-          label={t('Last modified network:')}
+          label={t('network.networklastmodified')}
           type="datetime-local"
           disabled
+          style={fieldStyle}
           value={datePickerConverter(network.networklastmodified)}
           InputLabelProps={{
             shrink: true,

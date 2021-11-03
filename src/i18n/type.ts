@@ -16,6 +16,10 @@ export interface LanguageResource {
     nodes: string
     edit: string
     accessKeys: string
+    extClients: string
+    users: string
+    dns: string
+    dashboard: string
   }
   common: {
     disabled: string
@@ -28,6 +32,9 @@ export interface LanguageResource {
     submit: string
     reset: string
     edit: string
+    create: string
+    accept: string
+    view: string
   }
   network: {
     allowmanualsignup: string
@@ -50,6 +57,10 @@ export interface LanguageResource {
     defaultsaveconfig: string
     accesskeys: string
     defaultudpholepunch: string
+    islocal: string
+    create: string
+    netid: string
+    deleteconfirm: string
   }
   node: {
     nodes: string

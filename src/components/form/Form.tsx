@@ -18,7 +18,7 @@ import {
 } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { FormContext } from './internal/formContext'
-import { VpnKey } from '@mui/icons-material'
+import { Cancel, VpnKey } from '@mui/icons-material'
 import { BACKEND_URL } from '../../config'
 
 interface FormProps<T> extends Omit<BoxProps, 'onSubmit' | 'component'> {
@@ -33,6 +33,7 @@ interface FormProps<T> extends Omit<BoxProps, 'onSubmit' | 'component'> {
   submitProps?: Omit<ExtendButtonBase<ButtonTypeMap>, 'onChange'>
   resetProps?: Omit<ExtendButtonBase<ButtonTypeMap>, 'onChange'>
   resolver?: Resolver<T, object>
+  onCancel?: () => void
 }
 
 export function NmForm<T>({
@@ -47,6 +48,7 @@ export function NmForm<T>({
   resetProps,
   showOauth,
   resolver,
+  onCancel,
   ...boxProps
 }: FormProps<T>) {
   const { handleSubmit, reset, control } = useForm<T>({
@@ -75,8 +77,20 @@ export function NmForm<T>({
           {showOauth ? (
             <Grid item xs={1}>
               <Tooltip placement="top" title={t('login.oauth.login') as string}>
-                <IconButton color="primary" href={`${BACKEND_URL}/api/oauth/login`} >
+                <IconButton
+                  color="primary"
+                  href={`${BACKEND_URL}/api/oauth/login`}
+                >
                   <VpnKey />
+                </IconButton>
+              </Tooltip>
+            </Grid>
+          ) : null}
+          {onCancel ? (
+            <Grid item xs={1}>
+              <Tooltip placement="top" title={t('common.cancel') as string}>
+                <IconButton color="primary" onClick={onCancel}>
+                  <Cancel />
                 </IconButton>
               </Tooltip>
             </Grid>

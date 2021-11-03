@@ -106,12 +106,7 @@ function* handleCreateNetworkRequest(
       },
     })
 
-    yield apiRequestWithAuthSaga(
-      'post',
-      `/networks/${action.payload.netid}`,
-      action.payload,
-      {}
-    )
+    yield apiRequestWithAuthSaga('post', '/networks', action.payload, {})
 
     yield put(createNetwork['success']())
   } catch (e: unknown) {

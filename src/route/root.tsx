@@ -1,6 +1,5 @@
 import React from 'react'
 import { Switch, Route, useLocation } from 'react-router-dom'
-import { Header } from './Header'
 
 import { Dashboard } from './dashboard/Dashboard'
 import { Nodes } from './nodes/Nodes'
@@ -8,6 +7,7 @@ import { Login } from './login/Login'
 import { Networks } from './networks/Networks'
 import { PrivateRoute } from './PrivateRoute'
 import CustomDrawer from '~components/drawer/CustomDrawer'
+import { Grid } from '@mui/material'
 
 function NoMatch() {
   const location = useLocation()
@@ -31,27 +31,30 @@ function Routes() {
   const from = (location.state as any)?.from
 
   return (
-    <>
-      <CustomDrawer />  
-      <Switch location={from || location}>
-        <Route exact path="/">
-          <Dashboard />
-        </Route>
-        <PrivateRoute path="/networks">
-          <Networks />
-        </PrivateRoute>
-        <PrivateRoute path="/nodes">
-          <Nodes />
-        </PrivateRoute>
-        <Route path="/login" children={<Login />} />
-        <Route path="*">
-          <NoMatch />
-        </Route>
-      </Switch>
-
-      {/* Show the modal when a background page is set */}
-      {from && <Route path="/login" children={<Login />} />}
-    </>
+    <Grid container justifyContent="right">
+      <Grid item xs={12}>
+        <CustomDrawer />
+      </Grid>
+      <Grid item xs={11}>
+        <Switch location={from || location}>
+          <Route exact path="/">
+            <Dashboard />
+          </Route>
+          <PrivateRoute path="/networks">
+            <Networks />
+          </PrivateRoute>
+          <PrivateRoute path="/nodes">
+            <Nodes />
+          </PrivateRoute>
+          <Route path="/login" children={<Login />} />
+          <Route path="*">
+            <NoMatch />
+          </Route>
+        </Switch>
+        {/* Show the modal when a background page is set */}
+        {from && <Route path="/login" children={<Login />} />}
+      </Grid>
+    </Grid>
   )
 }
 export default Routes

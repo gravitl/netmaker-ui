@@ -1,38 +1,37 @@
-import * as React from 'react';
-import { useCallback } from 'react'; 
-import { styled, useTheme, Theme, CSSObject } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import MuiDrawer from '@mui/material/Drawer';
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import List from '@mui/material/List';
-import CssBaseline from '@mui/material/CssBaseline';
-import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import ListItem from '@mui/material/ListItem';
-import AddToQueue from '@mui/icons-material/AddToQueue';
-import Wifi from '@mui/icons-material/Wifi';
-import DeviceHub from '@mui/icons-material/DeviceHub';
-import Devices from '@mui/icons-material/Devices';
-import Language from '@mui/icons-material/Language';
-import Logout from '@mui/icons-material/Logout';
-import Login from '@mui/icons-material/Login';
-import Info from '@mui/icons-material/Info';
-import Dashboard from '@mui/icons-material/Dashboard';
-import UsersIcon from '@mui/icons-material/People';
-import LibraryBooks from '@mui/icons-material/LibraryBooks';
-import Person from '@mui/icons-material/Person';
-import { PathBreadcrumbs } from '~components/PathBreadcrumbs';
+import * as React from 'react'
+import { styled, useTheme, Theme, CSSObject } from '@mui/material/styles'
+import Box from '@mui/material/Box'
+import MuiDrawer from '@mui/material/Drawer'
+import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar'
+import Toolbar from '@mui/material/Toolbar'
+import List from '@mui/material/List'
+import CssBaseline from '@mui/material/CssBaseline'
+import Typography from '@mui/material/Typography'
+import Divider from '@mui/material/Divider'
+import IconButton from '@mui/material/IconButton'
+import MenuIcon from '@mui/icons-material/Menu'
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
+import ChevronRightIcon from '@mui/icons-material/ChevronRight'
+import ListItemIcon from '@mui/material/ListItemIcon'
+import ListItemText from '@mui/material/ListItemText'
+import ListItem from '@mui/material/ListItem'
+import AddToQueue from '@mui/icons-material/AddToQueue'
+import Wifi from '@mui/icons-material/Wifi'
+import DeviceHub from '@mui/icons-material/DeviceHub'
+import Devices from '@mui/icons-material/Devices'
+import Language from '@mui/icons-material/Language'
+import Logout from '@mui/icons-material/Logout'
+import Login from '@mui/icons-material/Login'
+import Info from '@mui/icons-material/Info'
+import Dashboard from '@mui/icons-material/Dashboard'
+import UsersIcon from '@mui/icons-material/People'
+import LibraryBooks from '@mui/icons-material/LibraryBooks'
+import Person from '@mui/icons-material/Person'
+import { PathBreadcrumbs } from '~components/PathBreadcrumbs'
 import { useTranslation } from 'react-i18next'
-import { ListItemButton } from '@mui/material';
+import { ListItemButton } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
-import { useHistory, useLocation, useRouteMatch, Link } from 'react-router-dom'
+import { useLocation, useRouteMatch, Link } from 'react-router-dom'
 import { authSelectors, serverSelectors } from '../../store/selectors'
 import { logout } from '../../store/modules/auth/actions'
 import { NmLink } from '../../components/Link'
@@ -40,7 +39,7 @@ import { NmLink } from '../../components/Link'
 import { UI_VERSION } from '../../config'
 import Logo from '../../netmaker.png'
 
-const drawerWidth = 240;
+const drawerWidth = 240
 
 const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,
@@ -49,7 +48,7 @@ const openedMixin = (theme: Theme): CSSObject => ({
     duration: theme.transitions.duration.enteringScreen,
   }),
   overflowX: 'hidden',
-});
+})
 
 const closedMixin = (theme: Theme): CSSObject => ({
   transition: theme.transitions.create('width', {
@@ -61,7 +60,7 @@ const closedMixin = (theme: Theme): CSSObject => ({
   [theme.breakpoints.up('sm')]: {
     width: `calc(${theme.spacing(9)} + 1px)`,
   },
-});
+})
 
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -70,24 +69,24 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   padding: theme.spacing(0, 1),
   // necessary for content to be below app bar
   ...theme.mixins.toolbar,
-}));
+}))
 
-const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
-  ({ theme, open }) => ({
-    width: drawerWidth,
-    flexShrink: 0,
-    whiteSpace: 'nowrap',
-    boxSizing: 'border-box',
-    ...(open && {
-      ...openedMixin(theme),
-      '& .MuiDrawer-paper': openedMixin(theme),
-    }),
-    ...(!open && {
-      ...closedMixin(theme),
-      '& .MuiDrawer-paper': closedMixin(theme),
-    }),
+const Drawer = styled(MuiDrawer, {
+  shouldForwardProp: (prop) => prop !== 'open',
+})(({ theme, open }) => ({
+  width: drawerWidth,
+  flexShrink: 0,
+  whiteSpace: 'nowrap',
+  boxSizing: 'border-box',
+  ...(open && {
+    ...openedMixin(theme),
+    '& .MuiDrawer-paper': openedMixin(theme),
   }),
-);
+  ...(!open && {
+    ...closedMixin(theme),
+    '& .MuiDrawer-paper': closedMixin(theme),
+  }),
+}))
 
 const styles = {
   topBarMain: {
@@ -130,30 +129,30 @@ const styles = {
     justifyContent: 'space-between',
     alignItems: 'center',
     width: '100%',
-  }
+  },
 } as any
 
 interface AppBarProps extends MuiAppBarProps {
-  open?: boolean;
+  open?: boolean
 }
 
 const AppBar = styled(MuiAppBar, {
-    shouldForwardProp: (prop) => prop !== 'open',
-  })<AppBarProps>(({ theme, open }) => ({
-    zIndex: theme.zIndex.drawer + 1,
+  shouldForwardProp: (prop) => prop !== 'open',
+})<AppBarProps>(({ theme, open }) => ({
+  zIndex: theme.zIndex.drawer + 1,
+  transition: theme.transitions.create(['width', 'margin'], {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  ...(open && {
+    marginLeft: drawerWidth,
+    width: `calc(100% - ${drawerWidth}px)`,
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
+      duration: theme.transitions.duration.enteringScreen,
     }),
-    ...(open && {
-      marginLeft: drawerWidth,
-      width: `calc(100% - ${drawerWidth}px)`,
-      transition: theme.transitions.create(['width', 'margin'], {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.enteringScreen,
-      }),
-    }),
-}));
+  }),
+}))
 
 export const LoginLink: React.FC = ({ children }) => {
   let location = useLocation()
@@ -182,107 +181,111 @@ export default function CustomDrawer() {
   const isLoggedIn = useSelector(authSelectors.getLoggedIn)
   const dispatch = useDispatch()
 
-  const history = useHistory()
-
-  const tabChange = useCallback(
-    (value: string) => {
-      if (history.location.pathname !== value) history.push(value)
-    },
-    [history]
-  )
-
-  const tabValue = `/${history.location.pathname.split('/')[1]}`
-  const { t } = useTranslation();
-  const theme = useTheme();
-  const [open, setOpen] = React.useState(true);
+  const { t } = useTranslation()
+  const theme = useTheme()
+  const [open, setOpen] = React.useState(true)
 
   const handleDrawerOpen = () => {
-    setOpen(true);
-  };
+    setOpen(true)
+  }
 
   const handleDrawerClose = () => {
-    setOpen(false);
-  };
+    setOpen(false)
+  }
 
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       <AppBar position="fixed" open={open}>
         <Toolbar>
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              onClick={handleDrawerOpen}
-              edge="start"
-              sx={{
-                marginRight: '36px',
-                ...(open && { display: 'none' }),
-              }}
-            >
-              <MenuIcon />
-            </IconButton>
-            <div style={styles.toolbarButtons}>
-              <div style={styles.headerLogo}>
-                <img
-                  style={styles.logo}
-                  src={Logo}
-                  alt="Netmaker makes networks."
-                />
-              </div>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            onClick={handleDrawerOpen}
+            edge="start"
+            sx={{
+              marginRight: '36px',
+              ...(open && { display: 'none' }),
+            }}
+          >
+            <MenuIcon />
+          </IconButton>
+          <div style={styles.toolbarButtons}>
+            <div style={styles.headerLogo}>
+              <img
+                style={styles.logo}
+                src={Logo}
+                alt="Netmaker makes networks."
+              />
             </div>
-          </Toolbar>
-          <PathBreadcrumbs link="/" title={t('breadcrumbs.home')} />
+          </div>
+        </Toolbar>
+        <PathBreadcrumbs link="/" title={t('breadcrumbs.home')} />
       </AppBar>
       <Drawer variant="permanent" open={open}>
         <Toolbar />
         <DrawerHeader>
           <IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+            {theme.direction === 'rtl' ? (
+              <ChevronRightIcon />
+            ) : (
+              <ChevronLeftIcon />
+            )}
           </IconButton>
         </DrawerHeader>
         <Divider />
         <List>
-          {[{text: 'Dashboard', icon: <Dashboard />, link: '/'}, {text: 'Networks', icon: <Wifi />, link: '/networks'}, {text: 'Nodes', icon: <DeviceHub />, link: '/nodes'}, {text: 'Access Keys', icon: <AddToQueue />, link: '/access-keys'}, {text: 'Ext. Clients', icon: <Devices />, link: '/ext-clients'}, {text: 'DNS', icon: <Language />, link: '/dns'}].map((item) => (
+          {[
+            { text: 'Dashboard', icon: <Dashboard />, link: '/' },
+            { text: 'Networks', icon: <Wifi />, link: '/networks' },
+            { text: 'Nodes', icon: <DeviceHub />, link: '/nodes' },
+            { text: 'Access Keys', icon: <AddToQueue />, link: '/access-keys' },
+            { text: 'Ext. Clients', icon: <Devices />, link: '/ext-clients' },
+            { text: 'DNS', icon: <Language />, link: '/dns' },
+          ].map((item) => (
             <ListItemButton component={Link} to={item.link} key={item.text}>
-              <ListItemIcon>
-                {item.icon}
-              </ListItemIcon>
+              <ListItemIcon>{item.icon}</ListItemIcon>
               <ListItemText primary={item.text} />
             </ListItemButton>
           ))}
         </List>
         <Divider />
         <List>
-          <ListItemButton component={"a"} href="https://docs.netmaker.org" target="_blank" rel="noopener noreferer">
+          <ListItemButton
+            component={'a'}
+            href="https://docs.netmaker.org"
+            target="_blank"
+            rel="noopener noreferer"
+          >
             <ListItemIcon aria-label={t('header.docs')}>
               <LibraryBooks />
             </ListItemIcon>
             <ListItemText primary={t('header.docs')} />
           </ListItemButton>
           {showAuthButton &&
-              (isLoggedIn ? (<>
-              <ListItemButton >
-                <ListItemIcon aria-label={t('users.details')}>
-                  <Person />
-                </ListItemIcon>
-                <ListItemText primary={user?.name} />
-              </ListItemButton>
-              <ListItemButton onClick={() => dispatch(logout())}>
-                <ListItemIcon aria-label={t('header.logout')}>
-                  <Logout />
-                </ListItemIcon>
-                <ListItemText primary={t('header.logout')} />
-              </ListItemButton></>
-                )
-              : (
-                <ListItemButton component={Link} to="/login">
-                  <ListItemIcon aria-label={t('header.login')}>
-                    <Login />
+            (isLoggedIn ? (
+              <>
+                <ListItemButton>
+                  <ListItemIcon aria-label={t('users.details')}>
+                    <Person />
                   </ListItemIcon>
-                  <ListItemText primary={t('header.login')} />
+                  <ListItemText primary={user?.name} />
                 </ListItemButton>
-              )
-          )}
+                <ListItemButton onClick={() => dispatch(logout())}>
+                  <ListItemIcon aria-label={t('header.logout')}>
+                    <Logout />
+                  </ListItemIcon>
+                  <ListItemText primary={t('header.logout')} />
+                </ListItemButton>
+              </>
+            ) : (
+              <ListItemButton component={Link} to="/login">
+                <ListItemIcon aria-label={t('header.login')}>
+                  <Login />
+                </ListItemIcon>
+                <ListItemText primary={t('header.login')} />
+              </ListItemButton>
+            ))}
         </List>
         <Divider />
         <List>
@@ -295,19 +298,20 @@ export default function CustomDrawer() {
             </ListItemButton>
           ) : null}
           <ListItem>
-              <ListItemIcon aria-label={t('users.header')}>
-                <Info />
-              </ListItemIcon>
-              <ListItemText primary={`UI: ${UI_VERSION}`} secondary={`Server: ${serverConfig.Version}`} />
+            <ListItemIcon aria-label={t('users.header')}>
+              <Info />
+            </ListItemIcon>
+            <ListItemText
+              primary={`UI: ${UI_VERSION}`}
+              secondary={`Server: ${serverConfig.Version}`}
+            />
           </ListItem>
         </List>
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
-        <Typography paragraph>
-         Netmaker does a lot.
-        </Typography>
+        <Typography paragraph>Netmaker does a lot.</Typography>
       </Box>
     </Box>
-  );
+  )
 }

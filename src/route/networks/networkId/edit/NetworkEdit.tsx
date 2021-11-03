@@ -1,3 +1,4 @@
+import { Grid } from '@mui/material'
 import { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
@@ -8,7 +9,8 @@ import { networkToNetworkPayload } from '~modules/network/utils'
 
 export const NetworkEdit: React.FC<{
   network: Network
-}> = ({ network }) => {
+  onCancel: () => void
+}> = ({ network, onCancel }) => {
   const { t } = useTranslation()
 
   const dispatch = useDispatch()
@@ -32,6 +34,7 @@ export const NetworkEdit: React.FC<{
     <NmForm
       initialState={network}
       onSubmit={onSubmit}
+      onCancel={onCancel}
       submitProps={{
         variant: 'outlined',
       }}
@@ -39,61 +42,101 @@ export const NetworkEdit: React.FC<{
         '& .MuiTextField-root': { m: 1, width: '25ch' },
       }}
     >
-      <NmFormInputText
-        name={'addressrange'}
-        label={t('network.addressrange')}
-      />
-      <NmFormInputText
-        name={'addressrange6'}
-        label={t('network.addressrange6')}
-      />
-      <NmFormInputText name={'localrange'} label={t('network.localrange')} />
-      <NmFormInputText name={'displayname'} label={t('network.displayname')} />
-      <NmFormInputText
-        name={'defaultinterface'}
-        label={t('network.defaultinterface')}
-      />
-      <NmFormInputText
-        name={'defaultlistenport'}
-        label={t('network.defaultlistenport')}
-      />
-      <NmFormInputText
-        name={'defaultpostup'}
-        label={t('network.defaultpostup')}
-      />
-      <NmFormInputText
-        name={'defaultpostdown'}
-        label={t('network.defaultpostdown')}
-      />
-      <NmFormInputText
-        name={'defaultkeepalive'}
-        label={t('network.defaultkeepalive')}
-      />
-      <NmFormInputText
-        name={'checkininterval'}
-        label={t('network.checkininterval')}
-      />
-      <NmFormInputText
-        name={'defaultextclientdns'}
-        label={t('network.defaultextclientdns')}
-      />
-      <NmFormInputText name={'defaultmtu'} label={t('network.defaultmtu')} />
-      <NmFormInputSwitch
-        name={'allowmanualsignup'}
-        label={'Allow Node Signup Without Keys'}
-      />
-      <NmFormInputSwitch
-        name={'isdualstack'}
-        label={t('network.isdualstack')}
-      />
-      <NmFormInputSwitch
-        name={'defaultsaveconfig'}
-        label={t('network.defaultsaveconfig')}
-      />
-      <NmFormInputSwitch
-        name={'defaultudpholepunch'}
-        label={t('network.defaultudpholepunch')}
-      />
+      <Grid container justifyContent="flex-end" alignItems="center">
+        <Grid item xs={12} sm={4} md={3}>
+          <NmFormInputText
+            name={'addressrange'}
+            label={t('network.addressrange')}
+          />
+        </Grid>
+        <Grid item xs={12} sm={4} md={3}>
+          <NmFormInputText
+            name={'addressrange6'}
+            label={t('network.addressrange6')}
+          />
+        </Grid>
+        <Grid item xs={12} sm={4} md={3}>
+          <NmFormInputText
+            name={'localrange'}
+            label={t('network.localrange')}
+          />
+        </Grid>
+        <Grid item xs={12} sm={4} md={3}>
+          <NmFormInputText
+            name={'displayname'}
+            label={t('network.displayname')}
+          />
+        </Grid>
+        <Grid item xs={12} sm={4} md={3}>
+          <NmFormInputText
+            name={'defaultinterface'}
+            label={t('network.defaultinterface')}
+          />
+        </Grid>
+        <Grid item xs={12} sm={4} md={3}>
+          <NmFormInputText
+            name={'defaultlistenport'}
+            label={t('network.defaultlistenport')}
+            type="number"
+          />
+        </Grid>
+        <Grid item xs={12} sm={4} md={3}>
+          <NmFormInputText
+            name={'defaultpostup'}
+            label={t('network.defaultpostup')}
+          />
+        </Grid>
+        <Grid item xs={12} sm={4} md={3}>
+          <NmFormInputText
+            name={'defaultpostdown'}
+            label={t('network.defaultpostdown')}
+          />
+        </Grid>
+        <Grid item xs={12} sm={4} md={3}>
+          <NmFormInputText
+            name={'defaultkeepalive'}
+            label={t('network.defaultkeepalive')}
+            type="number"
+          />
+        </Grid>
+        <Grid item xs={12} sm={4} md={3}>
+          <NmFormInputText
+            name={'defaultextclientdns'}
+            label={t('network.defaultextclientdns')}
+          />
+        </Grid>
+        <Grid item xs={12} sm={4} md={3}>
+          <NmFormInputText
+            name={'defaultmtu'}
+            label={t('network.defaultmtu')}
+            type="number"
+          />
+        </Grid>
+        <Grid item xs={12} sm={4} md={3}>
+          <NmFormInputSwitch
+            name={'allowmanualsignup'}
+            label={'Allow Node Signup Without Keys'}
+          />
+        </Grid>
+        <Grid item xs={12} sm={4} md={3}>
+          <NmFormInputSwitch
+            name={'isdualstack'}
+            label={t('network.isdualstack')}
+          />
+        </Grid>
+        <Grid item xs={12} sm={4} md={3}>
+          <NmFormInputSwitch
+            name={'defaultsaveconfig'}
+            label={t('network.defaultsaveconfig')}
+          />
+        </Grid>
+        <Grid item xs={12} sm={4} md={3}>
+          <NmFormInputSwitch
+            name={'defaultudpholepunch'}
+            label={t('network.defaultudpholepunch')}
+          />
+        </Grid>
+      </Grid>
     </NmForm>
   )
 }

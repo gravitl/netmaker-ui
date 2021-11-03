@@ -40,6 +40,14 @@ export type NetworkPayload = Modify<
     isipv6: 'no' | 'yes'
     isgrpchub: 'no' | 'yes'
     defaultudpholepunch: 'no' | 'yes'
+    // defaultmtu: number
+    // checkininterval: number
+    // keyupdatetimestamp: number
+    // defaultkeepalive: number
+    // nodeslastmodified: number
+    // networklastmodified: number
+    // defaultlistenport: number
+    // nodelimit: number
   }
 >
 

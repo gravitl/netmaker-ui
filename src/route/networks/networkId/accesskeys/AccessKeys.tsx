@@ -5,7 +5,7 @@ import { Delete } from '@mui/icons-material'
 import { useTranslation } from 'react-i18next'
 import {
   useRouteMatch,
-  useHistory,
+  //  useHistory,
   useParams,
   Route,
   Switch,
@@ -67,7 +67,7 @@ const useStyles = makeStyles((theme) => ({
 
 export const AccessKeys: React.FC = () => {
   const { path, url } = useRouteMatch()
-  const history = useHistory()
+  // const history = useHistory()
   const { t } = useTranslation()
 
   const classes = useStyles()

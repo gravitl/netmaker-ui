@@ -18,6 +18,10 @@ export const en: LanguageResource = {
     nodes: 'Nodes',
     edit: 'Edit',
     accessKeys: 'AccessKeys',
+    extClients: 'Ext Clients',
+    users: 'Users',
+    dns: 'DNS',
+    dashboard: 'Dashboard',
   },
   common: {
     disabled: 'Disabled',
@@ -30,10 +34,13 @@ export const en: LanguageResource = {
     submit: 'Submit',
     reset: 'Reset',
     edit: 'Edit',
+    create: 'Create',
+    accept: 'Accept',
+    view: 'View',
   },
   network: {
     allowmanualsignup: 'Allow Node Signup Without Keys',
-    networks: 'Network',
+    networks: 'Networks',
     addressrange: 'Address Range (IPv4)',
     addressrange6: 'Address Range (IPv6)',
     localrange: 'Local Range',
@@ -52,6 +59,10 @@ export const en: LanguageResource = {
     defaultsaveconfig: 'Default Saveconfig',
     accesskeys: 'Access Keys',
     defaultudpholepunch: 'Default UDP Hole Punch',
+    islocal: 'Is Local Network',
+    create: 'Create Network',
+    netid: 'Network Name',
+    deleteconfirm: 'Are you sure you want to delete this network?',
   },
   node: {
     nodes: 'Nodes',
@@ -124,15 +135,15 @@ export const en: LanguageResource = {
     logout: 'Logout',
   },
   users: {
-    header: "Users",
-    create: "Create User",
-    delete: "Delete User",
-    edit: "Edit User",
-    details: "View User Details",
+    header: 'Users',
+    create: 'Create User',
+    delete: 'Delete User',
+    edit: 'Edit User',
+    details: 'View User Details',
     networks: {
-      create: "Add a Network to User",
-      delete: "Remove a Network from User",
-      edit: "Edit User Networks"
-    }
-  }
+      create: 'Add a Network to User',
+      delete: 'Remove a Network from User',
+      edit: 'Edit User Networks',
+    },
+  },
 }
