@@ -35,6 +35,7 @@ export interface LanguageResource {
     create: string
     accept: string
     view: string
+    autofill: string
   }
   network: {
     allowmanualsignup: string

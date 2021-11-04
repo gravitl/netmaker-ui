@@ -37,6 +37,7 @@ export const en: LanguageResource = {
     create: 'Create',
     accept: 'Accept',
     view: 'View',
+    autofill: 'Autofill',
   },
   network: {
     allowmanualsignup: 'Allow Node Signup Without Keys',
@@ -58,7 +59,7 @@ export const en: LanguageResource = {
     isdualstack: 'Is Dual Stack (IPv4 + IPv6)',
     defaultsaveconfig: 'Default Saveconfig',
     accesskeys: 'Access Keys',
-    defaultudpholepunch: 'Default UDP Hole Punch',
+    defaultudpholepunch: 'UDP Hole Punching',
     islocal: 'Is Local Network',
     create: 'Create Network',
     netid: 'Network Name',

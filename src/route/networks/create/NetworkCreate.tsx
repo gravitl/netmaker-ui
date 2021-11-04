@@ -1,13 +1,16 @@
-import { useCallback } from 'react'
+import React, { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
+import { Button } from '@mui/material'
 import {
+  FormRef,
   NmForm,
   NmFormInputSwitch,
   NmFormInputText,
 } from '../../../components/form'
 import { useLinkBreadcrumb } from '../../../components/PathBreadcrumbs'
 import { createNetwork } from '../../../store/modules/network/actions'
+import { randomNetworkName, randomCIDR } from '~util/fields'
 
 interface CreateNetwork {
   addressrange: string
@@ -48,6 +51,8 @@ export const NetworkCreate: React.FC = () => {
     [dispatch]
   )
 
+  const formRef = React.createRef<FormRef<CreateNetwork>>()
+
   useLinkBreadcrumb({
     title: t('common.create'),
   })
@@ -72,39 +77,48 @@ export const NetworkCreate: React.FC = () => {
           m: 1,
           width: '25ch',
           justifyContent: 'center',
-          flex: '1 0 40%',
+          flex: '2 0 60%',
         },
         '& .MuiSwitch-root': {
           m: 1,
           justifyContent: 'center',
-          flex: '1 0 20%',
+          flex: '`1 0 25%',
         },
         '& .MuiButton-root': {
           m: 1,
           justifyContent: 'center',
-          flex: '1 0 100%',
+          flex: '0 0 20%',
         },
       }}
+      ref={formRef}
     >
+      <NmFormInputText name={'netid'} label={t('network.netid')} />
       <NmFormInputText
         name={'addressrange'}
         label={t('network.addressrange')}
+      />
+      <NmFormInputSwitch
+        name={'defaultudpholepunch'}
+        label={t('network.defaultudpholepunch')}
+      /> 
+      <NmFormInputSwitch name={'islocal'} label={t('network.islocal')} />
+      <NmFormInputText name={'localrange'} label={t('network.localrange')} />
+      <NmFormInputSwitch
+        name={'isdualstack'}
+        label={t('network.isdualstack')}
       />
       <NmFormInputText
         name={'addressrange6'}
         label={t('network.addressrange6')}
       />
-      <NmFormInputText name={'localrange'} label={t('network.localrange')} />
-      <NmFormInputText name={'netid'} label={t('network.netid')} />
-      <NmFormInputSwitch
-        name={'isdualstack'}
-        label={t('network.isdualstack')}
-      />
-      <NmFormInputSwitch name={'islocal'} label={t('network.islocal')} />
-      <NmFormInputSwitch
-        name={'defaultudpholepunch'}
-        label={t('network.defaultudpholepunch')}
-      />
+      <Button onClick={() => {
+        console.log("Prefill Button Press ", formRef.current)
+        formRef.current?.reset({...formRef.current?.values, netid: randomNetworkName(), addressrange: randomCIDR()}, { keepDefaultValues: true})
+      }}
+        variant='contained'
+      >
+         {t('common.autofill')}
+        </Button>
       <br />
     </NmForm>
   )

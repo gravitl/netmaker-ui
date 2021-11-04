@@ -1,5 +1,5 @@
 import React from 'react'
-import { Grid, Button } from '@mui/material'
+import { Grid } from '@mui/material'
 import { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
@@ -46,13 +46,7 @@ export const NetworkEdit: React.FC<{
       }}
       ref={formRef}
     >
-      <Grid container justifyContent="flex-end" alignItems="center">
-        <Button onClick={() => {
-          console.log("Prefill Button Press ", formRef.current)
-          formRef.current?.reset({...formRef.current?.values, displayname: "Updated By Prefill Button"}, { keepDefaultValues: true})
-        }}>
-          Set displayName
-          </Button>
+      <Grid container justifyContent="space-around" alignItems="center">
         <Grid item xs={12} sm={4} md={3}>
           <NmFormInputText
             name={'addressrange'}
@@ -115,7 +109,7 @@ export const NetworkEdit: React.FC<{
             label={t('network.defaultextclientdns')}
           />
         </Grid>
-        <Grid item xs={12} sm={4} md={3}>
+        <Grid item xs={12} sm={4} md={4}>
           <NmFormInputText
             name={'defaultmtu'}
             label={t('network.defaultmtu')}

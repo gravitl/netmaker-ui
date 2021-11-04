@@ -86,6 +86,8 @@ export const NetworkId: React.FC = () => {
             sx={{
               '& .MuiTextField-root': { m: 1, width: '25ch' },
             }}
+            justifyContent="space-around"
+            alignItems="center"
           >
             <Grid item xs={12} sm={4} md={3}>
               <TextField
@@ -154,18 +156,11 @@ export const NetworkId: React.FC = () => {
             <Grid item xs={12} sm={6} md={3}>
               <TextField
                 disabled
-                value={network.checkininterval}
-                label={t('network.checkininterval')}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
-              <TextField
-                disabled
                 value={network.defaultextclientdns}
                 label={t('network.defaultextclientdns')}
               />
             </Grid>
-            <Grid item xs={12} sm={6} md={3}>
+            <Grid item xs={12} sm={6} md={4}>
               <TextField
                 disabled
                 value={network.defaultmtu}
@@ -210,9 +205,9 @@ export const NetworkId: React.FC = () => {
           </Grid>
           <Grid
             container
-            justifyContent="space-around"
-            alignItems="center"
-            style={{ marginBottom: '2em' }}
+            justifyContent="space-evenly"
+            alignItems="flex-end"
+            style={{ marginBottom: '2em', marginTop: '2em'}}
           >
             <Grid item xs={6} sm={3}>
               <NmLink to={`${url}/edit`} variant="outlined">
