@@ -8,6 +8,7 @@ import { Networks } from './networks/Networks'
 import { PrivateRoute } from './PrivateRoute'
 import CustomDrawer from '~components/drawer/CustomDrawer'
 import { Grid } from '@mui/material'
+import { AccessKeys } from './accesskeys/AccessKeys'
 
 function NoMatch() {
   const location = useLocation()
@@ -37,14 +38,17 @@ function Routes() {
       </Grid>
       <Grid item xs={11}>
         <Switch location={from || location}>
-          <Route exact path="/">
+          <PrivateRoute exact path="/">
             <Dashboard />
-          </Route>
+          </PrivateRoute>
           <PrivateRoute path="/networks">
             <Networks />
           </PrivateRoute>
           <PrivateRoute path="/nodes">
             <Nodes />
+          </PrivateRoute>
+          <PrivateRoute path="/access-keys">
+            <AccessKeys />
           </PrivateRoute>
           <Route path="/login" children={<Login />} />
           <Route path="*">

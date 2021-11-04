@@ -220,7 +220,7 @@ export const NetworkId: React.FC = () => {
               </NmLink>
             </Grid>
             <Grid item xs={6} sm={3}>
-              <NmLink to={`${url}/accesskeys`} variant="outlined">
+              <NmLink to={`/access-keys/${networkId}`} variant="outlined">
                 {t('header.accessKeys')}
               </NmLink>
             </Grid>

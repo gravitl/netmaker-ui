@@ -10,6 +10,12 @@ export interface LanguageResource {
     externalClients: string
     users: string
   }
+  accesskey: {
+    accesskeys: string
+    create: string
+    delete: string
+    viewing: string
+  }
   breadcrumbs: {
     home: string
     networks: string
@@ -37,6 +43,7 @@ export interface LanguageResource {
     view: string
     autofill: string
     manage: string
+    select: string
   }
   dashboard: {
     title: string
@@ -44,6 +51,7 @@ export interface LanguageResource {
   network: {
     allowmanualsignup: string
     networks: string
+    network: string
     addressrange: string
     addressrange6: string
     localrange: string

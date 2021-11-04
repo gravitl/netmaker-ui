@@ -12,12 +12,18 @@ export const en: LanguageResource = {
     externalClients: 'External clients',
     users: 'Users',
   },
+  accesskey: {
+    accesskeys: "Access Keys",
+    create: "Create an Access Key",
+    delete: "Delete Access Key",
+    viewing: "Viewing Access Keys for"
+  },
   breadcrumbs: {
     home: 'Home',
     networks: 'Networks',
     nodes: 'Nodes',
     edit: 'Edit',
-    accessKeys: 'AccessKeys',
+    accessKeys: 'Access Keys',
     extClients: 'Ext Clients',
     users: 'Users',
     dns: 'DNS',
@@ -39,13 +45,15 @@ export const en: LanguageResource = {
     view: 'View',
     autofill: 'Autofill',
     manage: 'Manage your',
+    select: 'Select',
   },
   dashboard: {
-    title: "Dashboard"
+    title: "Netmaker Dashboard"
   },
   network: {
     allowmanualsignup: 'Allow Node Signup Without Keys',
     networks: 'Networks',
+    network: 'Network',
     addressrange: 'Address Range (IPv4)',
     addressrange6: 'Address Range (IPv6)',
     localrange: 'Local Range',
