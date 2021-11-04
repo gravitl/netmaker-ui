@@ -38,6 +38,10 @@ export const en: LanguageResource = {
     accept: 'Accept',
     view: 'View',
     autofill: 'Autofill',
+    manage: 'Manage your',
+  },
+  dashboard: {
+    title: "Dashboard"
   },
   network: {
     allowmanualsignup: 'Allow Node Signup Without Keys',
