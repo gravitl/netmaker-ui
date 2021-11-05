@@ -6,10 +6,8 @@ on:
       tag:
         description: 'docker tag'
         required: true
-  pull_request:
-    branches:
-      - 'test'
-      - 'master'
+release:
+  type: [published]
 
 jobs:
   docker:
@@ -17,14 +15,14 @@ jobs:
     steps:
       - name: Set tag
         run: |
-            if [[ -n "${{ github.event.inputs.tag }}" ]]; then
-              TAG=${{ github.event.inputs.tag }}
-            elif [[ "${{ github.base_ref }}" == 'master' ]]; then
-              TAG="latest"
-            else
-              TAG="${{ github.base_ref }}"
-            fi
-            echo "TAG=${TAG}" >> $GITHUB_ENV
+          if [[ -n "${{ github.event.inputs.tag }}" ]]; then
+          TAG=${{ github.event.inputs.tag }}
+          elif [[ "${{ github.base_ref }}" == 'master' ]]; then
+          TAG="latest"
+          else
+          TAG="${{ github.base_ref }}"
+          fi
+          echo "TAG=${TAG}" >> $GITHUB_ENV
       - name: Checkout
         uses: actions/checkout@v2
       - name: Set up QEMU
@@ -35,11 +33,11 @@ jobs:
         uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build and push latest
         uses: docker/build-push-action@v2
         with:
           context: .
-          platforms: linux/amd64, linux/arm64
-          push: true
-          tags: gravitl/netmaker-ui:${{ env.TAG }}
+        platforms: linux/amd64, linux/arm64
+        push: true
+        tags: gravitl/netmaker-ui:${{ env.TAG }}
