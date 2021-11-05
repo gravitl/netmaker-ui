@@ -4,13 +4,15 @@ import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import SpeedDial from '@mui/material/SpeedDial';
+import Avatar from '@mui/material/Avatar';
 import SpeedDialIcon from '@mui/material/SpeedDialIcon';
 import SpeedDialAction from '@mui/material/SpeedDialAction';
 import PreviewIcon from '@mui/icons-material/Preview';
-
+import { grey } from '@mui/material/colors';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { useTranslation } from 'react-i18next'
+import { DeviceHub } from '@mui/icons-material';
 
 const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
     '&.MuiSpeedDial-directionRight': {
@@ -27,6 +29,13 @@ export default function NodeCard() {
         marginTop: '1em',
     }
 
+    const cardContentStyle = {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'column',
+    } as any
+
     const actions = [
         { icon: <Link to='/nodes' ><PreviewIcon /></Link>, name: t('common.view')},
     ];
@@ -34,13 +43,17 @@ export default function NodeCard() {
     return (
         <Card sx={{ minWidth: 275 }} variant='outlined' style={cardStyle}>
             <CardContent>
-                <Typography variant="h5" component="div">
-                {t('node.nodes')}
-                </Typography>
-                <Typography variant="body2">
-                    {`${t('common.manage')} ${t('node.nodes')}`}
-                <br />
-                </Typography>
+                <Avatar sx={{ bgcolor: grey[900] }} aria-label={t('node.nodes')} >
+                    <DeviceHub />
+                </Avatar>
+                <div style={cardContentStyle}>
+                    <Typography variant="h5" component="div">
+                    {t('node.nodes')}
+                    </Typography>
+                    <Typography variant="body2">
+                        {`${t('common.manage')} ${t('node.nodes')}`}
+                    </Typography>
+                </div>
             </CardContent>
             <CardActions>
                 <StyledSpeedDial

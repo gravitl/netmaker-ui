@@ -1,4 +1,4 @@
-import { Network, NetworkPayload } from './types'
+import { Network, NetworkPayload, AccessKey, CreateAccessKeyPayload } from './types'
 
 export const networkToNetworkPayload = (network: Network): NetworkPayload => {
   return {

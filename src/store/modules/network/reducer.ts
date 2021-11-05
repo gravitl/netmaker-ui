@@ -1,12 +1,14 @@
 import { produce } from 'immer'
 import { createReducer } from 'typesafe-actions'
-import { deleteNetwork, getNetworks, updateNetwork } from './actions'
-import { Network } from './types'
+import { deleteNetwork, getNetworks, updateNetwork, getAccessKeys, deleteAccessKey, createAccessKey } from './actions'
+import { Network, AccessKey } from './types'
 import { networkPayloadToNetwork } from './utils'
 
 export const reducer = createReducer({
   networks: [] as Array<Network>,
   isFetching: false as boolean,
+  accessKeys: [] as Array<AccessKey>,
+  netid: '' as string,
 })
   .handleAction(getNetworks['request'], (state, _) =>
     produce(state, (draftState) => {

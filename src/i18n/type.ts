@@ -12,9 +12,12 @@ export interface LanguageResource {
   }
   accesskey: {
     accesskeys: string
+    accesskey: string
     create: string
     delete: string
     viewing: string
+    usesremaining: string
+    none: string
   }
   breadcrumbs: {
     home: string
@@ -44,6 +47,7 @@ export interface LanguageResource {
     autofill: string
     manage: string
     select: string
+    name: string
   }
   dashboard: {
     title: string

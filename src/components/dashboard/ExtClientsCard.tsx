@@ -8,10 +8,13 @@ import SpeedDialIcon from '@mui/material/SpeedDialIcon';
 import SpeedDialAction from '@mui/material/SpeedDialAction';
 import PreviewIcon from '@mui/icons-material/Preview';
 import CreateIcon from '@mui/icons-material/AddBox';
+import { grey } from '@mui/material/colors';
+import Avatar from '@mui/material/Avatar';
 
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { useTranslation } from 'react-i18next'
+import { Devices } from '@mui/icons-material';
 
 const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
     '&.MuiSpeedDial-directionRight': {
@@ -33,16 +36,27 @@ export default function NodeCard() {
         { icon: <Link to='/ext-clients/create' ><CreateIcon /></Link>, name: t('common.create')},
     ];
 
+    const cardContentStyle = {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'column',
+    } as any
+
     return (
         <Card sx={{ minWidth: 275 }} variant='outlined' style={cardStyle}>
             <CardContent>
-                <Typography variant="h5" component="div">
-                {t('breadcrumbs.extClients')}
-                </Typography>
-                <Typography variant="body2">
-                    {`${t('common.manage')} ${t('breadcrumbs.extClients')}`}
-                <br />
-                </Typography>
+                <Avatar sx={{ bgcolor: grey[900] }} aria-label={t('breadcrumbs.extClients')} >
+                    <Devices />
+                </Avatar>
+                <div style={cardContentStyle}>
+                    <Typography variant="h5" component="div">
+                    {t('breadcrumbs.extClients')}
+                    </Typography>
+                    <Typography variant="body2">
+                        {`${t('common.manage')} ${t('breadcrumbs.extClients')}`}
+                    </Typography>
+                </div>
             </CardContent>
             <CardActions>
                 <StyledSpeedDial

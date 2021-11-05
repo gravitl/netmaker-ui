@@ -14,9 +14,12 @@ export const en: LanguageResource = {
   },
   accesskey: {
     accesskeys: "Access Keys",
+    accesskey: "Access Key",
     create: "Create an Access Key",
     delete: "Delete Access Key",
-    viewing: "Viewing Access Keys for"
+    viewing: "Viewing Access Keys for",
+    usesremaining: "Uses Remaining",
+    none: "No Access Keys Found"
   },
   breadcrumbs: {
     home: 'Home',
@@ -46,6 +49,7 @@ export const en: LanguageResource = {
     autofill: 'Autofill',
     manage: 'Manage your',
     select: 'Select',
+    name: 'Name',
   },
   dashboard: {
     title: "Netmaker Dashboard"

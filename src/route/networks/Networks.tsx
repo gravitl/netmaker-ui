@@ -30,7 +30,7 @@ export const Networks: React.FC = () => {
               <h2>{t('network.networks')}</h2>
             </Grid>
             <Grid item>
-              <NmLink to={{ pathname: '/networks/create' }}>
+              <NmLink variant='contained' to={{ pathname: '/networks/create' }}>
                 {t('network.create')}
               </NmLink>
             </Grid>

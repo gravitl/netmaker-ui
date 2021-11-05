@@ -19,7 +19,7 @@ import {
 } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { FormContext } from './internal/formContext'
-import { Cancel, VpnKey } from '@mui/icons-material'
+import { AdminPanelSettings, Cancel } from '@mui/icons-material'
 import { BACKEND_URL } from '../../config'
 
 interface FormProps<T> extends Omit<BoxProps, 'onSubmit' | 'component'> {
@@ -81,19 +81,19 @@ ref: React.ForwardedRef<FormRef<T>>) {
         {children}
         <br />
         <Grid container justifyContent="space-around" alignItems="center">
-          <Grid item xs={10}>
+          <Grid item xs={8}>
             <Button {...submitProps} onClick={handleSubmit(onSubmit)}>
               {submitText ? submitText : t('common.submit')}
             </Button>
           </Grid>
           {showOauth ? (
-            <Grid item xs={1}>
+            <Grid item xs={2}>
               <Tooltip placement="top" title={t('login.oauth.login') as string}>
                 <IconButton
                   color="primary"
                   href={`${BACKEND_URL}/api/oauth/login`}
                 >
-                  <VpnKey />
+                  <AdminPanelSettings />
                 </IconButton>
               </Tooltip>
             </Grid>

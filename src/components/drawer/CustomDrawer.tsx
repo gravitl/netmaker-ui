@@ -15,7 +15,6 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
 import ListItem from '@mui/material/ListItem'
-import AddToQueue from '@mui/icons-material/AddToQueue'
 import Wifi from '@mui/icons-material/Wifi'
 import DeviceHub from '@mui/icons-material/DeviceHub'
 import Devices from '@mui/icons-material/Devices'
@@ -27,6 +26,7 @@ import Dashboard from '@mui/icons-material/Dashboard'
 import UsersIcon from '@mui/icons-material/People'
 import LibraryBooks from '@mui/icons-material/LibraryBooks'
 import Person from '@mui/icons-material/Person'
+import VpnKey from '@mui/icons-material/VpnKey'
 import { PathBreadcrumbs } from '~components/PathBreadcrumbs'
 import { useTranslation } from 'react-i18next'
 import { ListItemButton } from '@mui/material'
@@ -183,7 +183,7 @@ export default function CustomDrawer() {
 
   const { t } = useTranslation()
   const theme = useTheme()
-  const [open, setOpen] = React.useState(true)
+  const [open, setOpen] = React.useState(false)
 
   const handleDrawerOpen = () => {
     setOpen(true)
@@ -220,7 +220,9 @@ export default function CustomDrawer() {
             </div>
           </div>
         </Toolbar>
-        <PathBreadcrumbs link="/" title={t('breadcrumbs.home')} />
+        <div style={styles.central}>
+          <PathBreadcrumbs link="/" title={t('breadcrumbs.home')} />
+        </div>
       </AppBar>
       <Drawer variant="permanent" open={open}>
         <Toolbar />
@@ -239,7 +241,7 @@ export default function CustomDrawer() {
             { text: 'Dashboard', icon: <Dashboard />, link: '/' },
             { text: 'Networks', icon: <Wifi />, link: '/networks' },
             { text: 'Nodes', icon: <DeviceHub />, link: '/nodes' },
-            { text: 'Access Keys', icon: <AddToQueue />, link: '/access-keys' },
+            { text: 'Access Keys', icon: <VpnKey />, link: '/access-keys' },
             { text: 'Ext. Clients', icon: <Devices />, link: '/ext-clients' },
             { text: 'DNS', icon: <Language />, link: '/dns' },
           ].map((item) => (

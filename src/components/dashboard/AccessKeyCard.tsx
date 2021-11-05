@@ -8,10 +8,13 @@ import SpeedDialIcon from '@mui/material/SpeedDialIcon';
 import SpeedDialAction from '@mui/material/SpeedDialAction';
 import PreviewIcon from '@mui/icons-material/Preview';
 import CreateIcon from '@mui/icons-material/AddBox';
+import { grey } from '@mui/material/colors';
+import Avatar from '@mui/material/Avatar';
 
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { useTranslation } from 'react-i18next'
+import { VpnKey } from '@mui/icons-material';
 
 const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
     '&.MuiSpeedDial-directionRight': {
@@ -28,6 +31,13 @@ export default function NodeCard() {
         marginTop: '1em',
     }
 
+    const cardContentStyle = {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'column',
+    } as any
+
     const actions = [
         { icon: <Link to='/access-keys' ><PreviewIcon /></Link>, name: t('common.view')},
         { icon: <Link to='/access-keys/create' ><CreateIcon /></Link>, name: t('common.create')},
@@ -36,13 +46,17 @@ export default function NodeCard() {
     return (
         <Card sx={{ minWidth: 275 }} variant='outlined' style={cardStyle} >
             <CardContent>
-                <Typography variant="h5" component="div">
-                {t('breadcrumbs.accessKeys')}
-                </Typography>
-                <Typography variant="body2">
-                    {`${t('common.manage')} ${t('breadcrumbs.accessKeys')}`}
-                <br />
-                </Typography>
+                <Avatar sx={{ bgcolor: grey[900] }} aria-label={t('breadcrumbs.accessKeys')} >
+                    <VpnKey />
+                </Avatar>
+                <div style={cardContentStyle}>
+                    <Typography variant="h5" component="div">
+                    {t('breadcrumbs.accessKeys')}
+                    </Typography>
+                    <Typography variant="body2">
+                        {`${t('common.manage')} ${t('breadcrumbs.accessKeys')}`}
+                    </Typography>
+                </div>
             </CardContent>
             <CardActions>
                 <StyledSpeedDial

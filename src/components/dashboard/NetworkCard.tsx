@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
+import Avatar from '@mui/material/Avatar';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import SpeedDial from '@mui/material/SpeedDial';
@@ -8,10 +9,12 @@ import SpeedDialIcon from '@mui/material/SpeedDialIcon';
 import SpeedDialAction from '@mui/material/SpeedDialAction';
 import PreviewIcon from '@mui/icons-material/Preview';
 import CreateIcon from '@mui/icons-material/AddBox';
+import { grey } from '@mui/material/colors';
 
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { useTranslation } from 'react-i18next'
+import { Wifi } from '@mui/icons-material';
 
 const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
     '&.MuiSpeedDial-directionRight': {
@@ -27,6 +30,13 @@ export default function NetworkCard() {
         marginBottom: '1em',
         marginTop: '1em',
     }
+
+    const cardContentStyle = {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'column',
+    } as any
     
     const actions = [
         { icon: <Link color='primary' to='/networks' ><PreviewIcon /></Link>, name: t('common.view')},
@@ -36,13 +46,17 @@ export default function NetworkCard() {
     return (
         <Card sx={{ minWidth: 275 }} variant='outlined' style={cardStyle}>
             <CardContent>
-                <Typography variant="h5" component="div">
-                {t('network.networks')}
-                </Typography>
-                <Typography variant="body2">
+                <Avatar sx={{ bgcolor: grey[900] }} aria-label={t('network.networks')} >
+                    <Wifi />
+                </Avatar>
+                <div style={cardContentStyle}>
+                    <Typography variant="h5" component="div">
+                    {t('network.networks')}
+                    </Typography>
+                    <Typography variant="body2">
                     {`${t('common.manage')} ${t('network.networks')}`}
-                <br />
-                </Typography>
+                    </Typography>
+                </div>
             </CardContent>
             <CardActions>
                 <StyledSpeedDial
