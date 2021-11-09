@@ -18,13 +18,13 @@ export const AccessKeySelect: React.FC = () => {
   const { t } = useTranslation()
   const history = useHistory()
 
-  const centerStyle = {
-    textAlign: 'center'
-  } as any
-
   return (
     <Grid container justifyContent='center' alignItems='center'>
-      <Grid item xs={6} style={centerStyle}>
+      <Grid item xs={6} sx={
+        {
+          textAlign: 'center'
+        }
+      }>
         <CustomSelect
           placeholder={`${t('common.select')} ${t('network.network')}`}
           onSelect={(selected) => {

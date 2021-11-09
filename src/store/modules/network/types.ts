@@ -107,7 +107,10 @@ export interface CreateAccessKeyPayload {
       uses: number
     }
   }
-  Response: AccessKey
+  Response: {
+    netid: string 
+    newAccessKey: AccessKey
+  }
 }
 
 export interface DeleteAccessKeyPayload {
@@ -115,5 +118,8 @@ export interface DeleteAccessKeyPayload {
     netid: string
     name: string
   }
-  Response: void
+  Response: {
+    netid: string
+    name: string
+  }
 }

@@ -119,12 +119,23 @@ function* handleDeleteAccessKeyRequest(
   action: ReturnType<typeof deleteAccessKey['request']>
 ) {
   try {
+    yield fork(generatorToastSaga, {
+      success: deleteAccessKey['success'],
+      error: deleteAccessKey['failure'],
+      params: {
+        pending: `Deleting Access Key ${action.payload.name}`,
+        success: `Deleting Access Key ${action.payload.name} success!`,
+        error: (error) =>
+          `Deleting Access Key ${action.payload.name} error!\n${error.response.data.Message}`,
+      },
+    })
+
     yield apiRequestWithAuthSaga(
       'delete',
       `/networks/${action.payload.netid}/keys/${action.payload.name}`,
       {}
     )
-    yield put(deleteAccessKey['success']())
+    yield put(deleteAccessKey['success'](action.payload))
   } catch (e: unknown) {
     yield put(deleteAccessKey['failure'](e as Error))
   }
@@ -150,16 +161,31 @@ function* handleCreateAccessKeyRequest(
   action: ReturnType<typeof createAccessKey['request']>
 ) {
   try {
-    action.payload.newAccessKey.uses = ntoi(action.payload.newAccessKey.uses)
+    yield fork(generatorToastSaga, {
+      success: createAccessKey['success'],
+      error: createAccessKey['failure'],
+      params: {
+        pending: `Creating Access Key ${action.payload.newAccessKey.name}`,
+        success: `Creating Access Key ${action.payload.newAccessKey.name} success!`,
+        error: (error) =>
+          `Creating Access Key ${action.payload.newAccessKey.name} error!\n${error.response.data.Message}`,
+      },
+    })
 
-    const response: AxiosResponse<CreateAccessKeyPayload['Response']> =
+    action.payload.newAccessKey.uses = Number(action.payload.newAccessKey.uses)
+
+    const response: AxiosResponse =
       yield apiRequestWithAuthSaga(
         'post',
         `/networks/${action.payload.netid}/keys`,
         action.payload.newAccessKey,
         {}
       )
-    yield put(createAccessKey['success'](response.data))
+    
+    yield put(createAccessKey['success']({
+      netid: action.payload.netid,
+      newAccessKey: response.data
+    }))
   } catch (e: unknown) {
     yield put(createAccessKey['failure'](e as Error))
   }

@@ -1,14 +1,18 @@
 import { produce } from 'immer'
 import { createReducer } from 'typesafe-actions'
-import { deleteNetwork, getNetworks, updateNetwork } from './actions'
-import { Network, AccessKey } from './types'
+import {
+  deleteNetwork,
+  getNetworks,
+  updateNetwork,
+  deleteAccessKey,
+  createAccessKey,
+} from './actions'
+import { Network } from './types'
 import { networkPayloadToNetwork } from './utils'
 
 export const reducer = createReducer({
   networks: [] as Array<Network>,
   isFetching: false as boolean,
-  accessKeys: [] as Array<AccessKey>,
-  netid: '' as string,
 })
   .handleAction(getNetworks['request'], (state, _) =>
     produce(state, (draftState) => {
@@ -47,10 +51,28 @@ export const reducer = createReducer({
       )
     })
   )
-  // .handleAction(deleteAccessKey['success'], (state, action) => 
-  //   produce(state, (draftState) => {
-  //     draftState.accessKeys = draftState.accessKeys.filter(
-  //       accessKey => accessKey.name !== action.payload
-  //     )
-  //   })
-  // )
+  .handleAction(deleteAccessKey['success'], (state, action) =>
+    produce(state, (draftState) => {
+      const index = draftState.networks.findIndex(
+        (network) => network.netid === action.payload.netid
+      )
+      if (~index) {
+        draftState.networks[index].accesskeys = draftState.networks[
+          index
+        ].accesskeys.filter(
+          (accessKey) => accessKey.name !== action.payload.name
+        )
+      }
+    })
+  )
+  .handleAction(createAccessKey['success'], (state, action) => 
+    produce(state, (draftState) => {
+      const index = draftState.networks.findIndex(
+        (network) => network.netid === action.payload.netid
+      )
+      if (~index) {
+        draftState.networks[index].accesskeys.push(action.payload.newAccessKey)
+      }
+    })
+  )
+
