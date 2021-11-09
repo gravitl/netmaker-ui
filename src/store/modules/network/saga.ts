@@ -19,6 +19,7 @@ import {
   CreateAccessKeyPayload,
 } from './types'
 import { apiRequestWithAuthSaga } from '../api/saga'
+import { ntoi } from '~util/fields'
 
 function* handleLoginSuccess() {
   const token: ReturnType<typeof getToken> = yield select(getToken)
@@ -149,9 +150,11 @@ function* handleCreateAccessKeyRequest(
   action: ReturnType<typeof createAccessKey['request']>
 ) {
   try {
+    action.payload.newAccessKey.uses = ntoi(action.payload.newAccessKey.uses)
+
     const response: AxiosResponse<CreateAccessKeyPayload['Response']> =
       yield apiRequestWithAuthSaga(
-        'put',
+        'post',
         `/networks/${action.payload.netid}/keys`,
         action.payload.newAccessKey,
         {}

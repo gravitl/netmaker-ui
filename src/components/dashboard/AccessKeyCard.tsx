@@ -40,7 +40,7 @@ export default function NodeCard() {
 
     const actions = [
         { icon: <Link to='/access-keys' ><PreviewIcon /></Link>, name: t('common.view')},
-        { icon: <Link to='/access-keys/create' ><CreateIcon /></Link>, name: t('common.create')},
+        // { icon: <Link to='/access-keys/create' ><CreateIcon /></Link>, name: t('common.create')},
     ];
 
     return (

@@ -1,14 +1,16 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { useRouteMatch, useHistory, useParams } from 'react-router-dom'
+import { useRouteMatch, useParams, useHistory } from 'react-router-dom'
 import { networkSelectors } from '../../../store/selectors'
 import { useTranslation } from 'react-i18next'
-import CustomSelect from '~components/select/CustomSelect'
-import { Button, Grid, Typography } from '@mui/material'
+import { Button, Grid, IconButton, Tooltip, Typography } from '@mui/material'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 // import { deleteAccessKey, getAccessKeys } from '../../../store/modules/network/actions'
 import { useNetwork } from '~util/network'
 import { NmLink } from '~components/Link'
+import { Delete } from '@mui/icons-material'
+import { deleteAccessKey } from '~store/modules/network/actions'
+import CustomDialog from '~components/dialog/CustomDialog'
 
 export const NetworkAccessKeys: React.FC = () => {
   const listOfNetworks = useSelector(networkSelectors.getNetworks)
@@ -19,31 +21,65 @@ export const NetworkAccessKeys: React.FC = () => {
       networkNames.push(listOfNetworks[i].netid)
     }
   }
-  const { path, url } = useRouteMatch()
-  const { t } = useTranslation()
   const history = useHistory()
+  const { url } = useRouteMatch()
+  const { t } = useTranslation()
   const { netid } = useParams<{ netid: string }>()
-  const network = useNetwork(netid)
+  let network = useNetwork(netid)
+  const dispatch = useDispatch()
+  const [open, setOpen] = React.useState(false)
+  const [keyName, setKeyName] = React.useState('')
 
   useLinkBreadcrumb({
     link: url,
     title: netid,
   })
 
-  const titleStyle = {
-      textAlign: 'center'
+  const styles = {
+    titleStyle: {
+        textAlign: 'center'
+    },
+    centerStyle: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
+    buttonMargin: {
+        marginTop: '1em'
+    }
   } as any
 
-  const centerStyle = {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  } as any
+  const handleClose = () => {
+      setKeyName('')
+      setOpen(false)
+  }
+
+  const handleOpen = () => {
+    setOpen(true)
+  }
+
+  const handleDeleteNetwork = () => {
+    dispatch(
+        deleteAccessKey.request({
+            netid,
+            name: keyName,
+        })
+    )
+  }
 
   return (
     <Grid container justifyContent='space-around' alignItems='center'>
+        {open && 
+            <CustomDialog
+                open={open}
+                handleClose={handleClose}
+                handleAccept={handleDeleteNetwork}
+                message={t('accesskey.deleteconfirm')}
+                title={`${t('common.delete')} ${keyName}`}
+            />                
+        }
         <Grid item xs={12}>
-            <div style={titleStyle}>
+            <div style={styles.titleStyle}>
                 <Typography variant='h4'>
                     {`${t('accesskey.viewing')} ${netid}`}
                 </Typography>
@@ -51,23 +87,38 @@ export const NetworkAccessKeys: React.FC = () => {
             <hr />
         </Grid>
         <Grid item xs={10}>
-            <div style={titleStyle}>
+            <div style={styles.titleStyle}>
             {network && network?.accesskeys ?
                 <Grid container justifyContent='center' alignItems='center'>
                         <Grid item xs={5}>
-                            {t('common.name')}
+                            <Typography variant='h6'>
+                                {t('common.name')}
+                            </Typography>
                         </Grid>
                         <Grid item xs={5}>
+                            <Typography variant='h6'>
                             {t('accesskey.usesremaining')}
+                            </Typography>
                         </Grid>
-                    {network?.accesskeys.map(accesskey => <div key={accesskey.name}>
-                        <Grid item xs={5}>
-                            {accesskey.name}
+                        <Grid item xs={2}>
                         </Grid>
-                        <Grid item xs={5}>
-                            {accesskey.uses}
-                        </Grid>
-                    </div>)}
+                        <Grid item xs={12}>
+                        {network?.accesskeys.map(accesskey => <Grid container key={accesskey.name} style={styles.buttonMargin}>
+                            <Grid item xs={5}>
+                                {accesskey.name}
+                            </Grid>
+                            <Grid item xs={5}>
+                                {accesskey.uses}
+                            </Grid>
+                            <Grid item xs={2}>
+                                <Tooltip title={t('common.delete') as string} placement='top'>
+                                    <IconButton color='error' onClick={() => {handleOpen(); setKeyName(accesskey.name);}}>
+                                        <Delete />
+                                    </IconButton>
+                                </Tooltip>
+                            </Grid>
+                        </Grid>)}
+                    </Grid>
                 </Grid>
                 :
                 <Typography variant='h6'>
@@ -77,20 +128,12 @@ export const NetworkAccessKeys: React.FC = () => {
             </div> 
         </Grid>
         <Grid item xs={6}>
-            <div style={centerStyle}>
-                <CustomSelect
-                    placeholder={`${t('common.select')} ${t('network.network')}`}
-                    onSelect={(selected) => {
-                            history.push(
-                                path.replace(':netid', selected)
-                            )
-                        }
-                    }
-                    items={networkNames}
-                />
-                <NmLink variant='contained' to={netid ? `/access-keys/create/${netid}` : '/access-keys/create'}>
+            <div style={styles.centerStyle}>
+                <Button style={styles.buttonMargin} fullWidth variant='contained' onClick={
+                    () => history.push(`${url}/create`)
+                }>
                     {`${t('common.create')} ${t('accesskey.accesskey')}`}
-                </NmLink>
+                </Button>
             </div>
         </Grid>
     </Grid>

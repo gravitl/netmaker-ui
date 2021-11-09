@@ -9,6 +9,7 @@ import { PrivateRoute } from './PrivateRoute'
 import CustomDrawer from '~components/drawer/CustomDrawer'
 import { Grid } from '@mui/material'
 import { AccessKeys } from './accesskeys/AccessKeys'
+import { ExtClients } from './extclients/ExtClients'
 
 function NoMatch() {
   const location = useLocation()
@@ -49,6 +50,9 @@ function Routes() {
           </PrivateRoute>
           <PrivateRoute path="/access-keys">
             <AccessKeys />
+          </PrivateRoute>
+          <PrivateRoute path="/ext-clients">
+            <ExtClients />
           </PrivateRoute>
           <Route path="/login" children={<Login />} />
           <Route path="*">

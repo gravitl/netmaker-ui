@@ -4,16 +4,14 @@ import { useRouteMatch, Switch, Route } from 'react-router-dom'
 // import { NetworkCreate } from './create/NetworkCreate'
 import { useTranslation } from 'react-i18next'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
-import { AccessKeySelect } from './components/AccessKeySelect'
-import { NetworkAccessKeys } from './components/NetworkAccessKeys'
-import { AccessKeyCreate } from './components/AccessKeyCreate'
+import { NetworkSelect } from './components/NetworkSelect'
 
-export const AccessKeys: React.FC = () => {
+export const ExtClients: React.FC = () => {
   const { path } = useRouteMatch()
   const { t } = useTranslation()
 
   useLinkBreadcrumb({
-    title: t('breadcrumbs.accessKeys'),
+    title: t('breadcrumbs.extClients'),
   })
 
   const titleStyle = {
@@ -33,18 +31,15 @@ export const AccessKeys: React.FC = () => {
             <Grid item xs={5}>
             <div style={titleStyle}>
                 <Typography variant='h4'>
-                    {t('accesskey.accesskeys')}
+                    {t('extclient.extclients')}
                 </Typography>
             </div>
             </Grid>
           </Grid>
-          <AccessKeySelect />
+          <NetworkSelect />
         </Route>
-        <Route path={`${path}/:netid/create`}>
-            <AccessKeyCreate />
-        </Route>
-        <Route path={`${path}/:netid`}>
-            <NetworkAccessKeys />
+        <Route exact path={`${path}/create`}>
+            <h3>Create ExtClient</h3>
         </Route>
       </Switch>
     </Container>

@@ -19,7 +19,10 @@ export const en: LanguageResource = {
     delete: "Delete Access Key",
     viewing: "Viewing Access Keys for",
     usesremaining: "Uses Remaining",
-    none: "No Access Keys Found"
+    none: "No Access Keys Found",
+    name: "Name",
+    uses: "Uses",
+    deleteconfirm: "Are you sure you want to delete this access key?",
   },
   breadcrumbs: {
     home: 'Home',
@@ -53,6 +56,25 @@ export const en: LanguageResource = {
   },
   dashboard: {
     title: "Netmaker Dashboard"
+  },
+  dns: {
+    dns: 'DNS',
+    create: 'Create DNS Entry',
+    delete: 'Delete DNS Entry',
+    viewing: 'Viewing DNS for',
+    none: 'No Entries Found',
+    entry: 'DNS Entry',
+    deleteconfirm: 'Are you sure you want to remove this DNS Entry?',
+  },
+  extclient: {
+    extclients: "External Clients",
+    extclient: "Ext Client",
+    create: "Create Ext Client",
+    delete: "Delete Ext Client",
+    viewing: "Viewing Ext Client",
+    none: "No Ext Clients Found",
+    name: "Name",
+    deleteconfirm: "Are you sure you want to delete this Ext. Client?"
   },
   network: {
     allowmanualsignup: 'Allow Node Signup Without Keys',

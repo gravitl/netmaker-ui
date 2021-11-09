@@ -18,6 +18,9 @@ export interface LanguageResource {
     viewing: string
     usesremaining: string
     none: string
+    name: string
+    uses: string
+    deleteconfirm: string
   }
   breadcrumbs: {
     home: string
@@ -51,6 +54,25 @@ export interface LanguageResource {
   }
   dashboard: {
     title: string
+  }
+  dns: {
+    dns: string
+    create: string
+    delete: string
+    viewing: string
+    none: string
+    entry: string
+    deleteconfirm: string
+  }
+  extclient: {
+    extclients: string
+    extclient: string
+    create: string
+    delete: string
+    viewing: string
+    none: string
+    name: string
+    deleteconfirm: string
   }
   network: {
     allowmanualsignup: string

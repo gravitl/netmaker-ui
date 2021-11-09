@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next'
 import CustomSelect from '~components/select/CustomSelect'
 import { Grid } from '@mui/material'
 
-export const AccessKeySelect: React.FC = () => {
+export const NetworkSelect: React.FC = () => {
   const listOfNetworks = useSelector(networkSelectors.getNetworks)
   const networkNames = []
   if (listOfNetworks) {

@@ -1,6 +1,6 @@
 import { produce } from 'immer'
 import { createReducer } from 'typesafe-actions'
-import { deleteNetwork, getNetworks, updateNetwork, getAccessKeys, deleteAccessKey, createAccessKey } from './actions'
+import { deleteNetwork, getNetworks, updateNetwork } from './actions'
 import { Network, AccessKey } from './types'
 import { networkPayloadToNetwork } from './utils'
 
@@ -47,3 +47,10 @@ export const reducer = createReducer({
       )
     })
   )
+  // .handleAction(deleteAccessKey['success'], (state, action) => 
+  //   produce(state, (draftState) => {
+  //     draftState.accessKeys = draftState.accessKeys.filter(
+  //       accessKey => accessKey.name !== action.payload
+  //     )
+  //   })
+  // )
