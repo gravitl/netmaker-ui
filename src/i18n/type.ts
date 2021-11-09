@@ -55,6 +55,12 @@ export interface LanguageResource {
   dashboard: {
     title: string
   }
+  dialog: {
+    title: string
+    deleteNetwork: string
+    confirm: string
+    cancel: string
+  }
   dns: {
     dns: string
     create: string

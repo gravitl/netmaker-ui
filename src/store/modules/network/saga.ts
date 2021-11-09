@@ -16,10 +16,8 @@ import {
 import {
   NetworkPayload,
   GetAccessKeysPayload,
-  CreateAccessKeyPayload,
 } from './types'
 import { apiRequestWithAuthSaga } from '../api/saga'
-import { ntoi } from '~util/fields'
 
 function* handleLoginSuccess() {
   const token: ReturnType<typeof getToken> = yield select(getToken)

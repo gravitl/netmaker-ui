@@ -76,9 +76,10 @@ export const AccessKeyCreate: React.FC = () => {
                 initialState={initialState}
                 onSubmit={onSubmit}
                 submitProps={{
-                    variant: 'outlined',
+                    variant: 'contained',
+                    fullWidth: 'true',
                 }}
-                submitText={t('accesskey.create')}
+                submitText={t('common.create')}
             >
                 <Grid container justifyContent='center' alignItems='center'>
                 <Grid item xs={12} md={6}>
@@ -90,18 +91,6 @@ export const AccessKeyCreate: React.FC = () => {
                 </Grid>
             </NmForm>
         </Grid>
-        {/* <Grid item xs={6} style={centerStyle}>
-            <CustomSelect
-            placeholder={`${t('common.select')} ${t('network.network')}`}
-            onSelect={(selected) => {
-                history.push(
-                    `${path}/${selected}`
-                )
-                }
-            }
-            items={networkNames}
-            />
-        </Grid> */}
     </Grid>
   )
 }

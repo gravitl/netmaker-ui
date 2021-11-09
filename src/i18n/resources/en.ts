@@ -57,6 +57,12 @@ export const en: LanguageResource = {
   dashboard: {
     title: "Netmaker Dashboard"
   },
+  dialog: {
+    title: 'Please confirm',
+    deleteNetwork: 'Are you sure you want to delete this network?',
+    confirm: 'Continue',
+    cancel: 'Cancel',
+  },
   dns: {
     dns: 'DNS',
     create: 'Create DNS Entry',

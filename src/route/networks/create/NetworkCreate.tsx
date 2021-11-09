@@ -92,7 +92,6 @@ export const NetworkCreate: React.FC = () => {
         </Grid>
         <Grid item xs={12} sm={12} md={2} className={classes.rowMargin}>
           <Button onClick={() => {
-              console.log("Prefill Button Press ", formRef.current)
               formRef.current?.reset({...formRef.current?.values, netid: randomNetworkName(), addressrange: randomCIDR()}, { keepDefaultValues: true})
             }}
               variant='contained'
