@@ -5,8 +5,10 @@ import { networkSelectors } from '../../../store/selectors'
 import { useTranslation } from 'react-i18next'
 import { Grid, Typography } from '@mui/material'
 import { NmForm, NmFormInputText } from '~components/form'
-import { createAccessKey } from '../../../store/modules/network/actions'
+import { createAccessKey, clearMetadata } from '../../../store/modules/network/actions'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
+import { useNetwork } from '~util/network'
+import AccessKeyDetails from './AccessKeyDetails'
 
 export const AccessKeyCreate: React.FC = () => {
   const listOfNetworks = useSelector(networkSelectors.getNetworks)
@@ -20,6 +22,8 @@ export const AccessKeyCreate: React.FC = () => {
   const { url } = useRouteMatch()
   const { t } = useTranslation()
   const dispatch = useDispatch()
+  const network = useNetwork(netid)
+  const [ modalOpen, setModalOpen ] = React.useState(false)
 
   useLinkBreadcrumb({
     title: t('common.create')
@@ -28,6 +32,24 @@ export const AccessKeyCreate: React.FC = () => {
       link: url.replace('/create', ''),
       title: netid
   })
+
+  const handleOpen = () => setModalOpen(true)
+
+  const handleClose = useCallback(
+    () => {
+      dispatch(
+        clearMetadata.request({
+          netid
+        })
+      )
+      setModalOpen(false)
+    },
+    [dispatch, netid]
+  )
+
+  if (network?.metadata && !modalOpen) {
+    handleOpen()
+  }
 
   const centerStyle = {
     textAlign: 'center',
@@ -57,9 +79,17 @@ export const AccessKeyCreate: React.FC = () => {
     },
     [dispatch, netid]
   )
-
+  
   return (
     <Grid container justifyContent='center' alignItems='center'>
+        {network?.metadata && <AccessKeyDetails 
+          title={t('accesskey.details')}
+          keyValue={network.metadata.value as string}
+          accessString={network.metadata.accessString as string}
+          open={modalOpen}
+          handleClose={handleClose}
+          handleOpen={handleOpen}
+        />}
         <Grid item xs={10} style={centerStyle}>
             <Typography variant='h4'>
                 {t('accesskey.create')}
@@ -77,7 +107,7 @@ export const AccessKeyCreate: React.FC = () => {
                 onSubmit={onSubmit}
                 submitProps={{
                     variant: 'contained',
-                    fullWidth: 'true',
+                    fullWidth: true,
                 }}
                 submitText={t('common.create')}
             >

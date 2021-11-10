@@ -23,6 +23,9 @@ export const en: LanguageResource = {
     name: "Name",
     uses: "Uses",
     deleteconfirm: "Are you sure you want to delete this access key?",
+    details: 'Viewing your New Access Key Details',
+    accessToken: 'Access Token',
+    installCommand: 'Agent Install Command',
   },
   breadcrumbs: {
     home: 'Home',
@@ -53,6 +56,7 @@ export const en: LanguageResource = {
     manage: 'Manage your',
     select: 'Select',
     name: 'Name',
+    copy: 'Copy',
   },
   dashboard: {
     title: "Netmaker Dashboard"

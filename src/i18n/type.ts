@@ -21,6 +21,9 @@ export interface LanguageResource {
     name: string
     uses: string
     deleteconfirm: string
+    details: string
+    accessToken: string
+    installCommand: string
   }
   breadcrumbs: {
     home: string
@@ -51,6 +54,7 @@ export interface LanguageResource {
     manage: string
     select: string
     name: string
+    copy: string
   }
   dashboard: {
     title: string

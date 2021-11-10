@@ -73,7 +73,7 @@ export const NetworkCreate: React.FC = () => {
       initialState={initialState}
       onSubmit={onSubmit}
       submitProps={{
-        variant: 'outlined',
+        variant: 'contained',
         fullWidth: true,
       }}
       submitText={t('network.create')}
@@ -94,7 +94,7 @@ export const NetworkCreate: React.FC = () => {
           <Button onClick={() => {
               formRef.current?.reset({...formRef.current?.values, netid: randomNetworkName(), addressrange: randomCIDR()}, { keepDefaultValues: true})
             }}
-              variant='contained'
+              variant='outlined'
             >
               {t('common.autofill')}
           </Button>

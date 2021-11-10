@@ -12,6 +12,7 @@ import {
   createAccessKey,
   getAccessKeys,
   deleteAccessKey,
+  clearMetadata,
 } from './actions'
 import {
   NetworkPayload,
@@ -22,6 +23,14 @@ import { apiRequestWithAuthSaga } from '../api/saga'
 function* handleLoginSuccess() {
   const token: ReturnType<typeof getToken> = yield select(getToken)
   if (token) yield put(getNetworks.request())
+}
+
+function* handleClearMetadata(
+  action: ReturnType<typeof clearMetadata['request']>
+) {
+  const netid = action.payload.netid
+  if (netid) yield put(clearMetadata['success']({netid}))
+  else yield put(clearMetadata['failure'](Error('could not clear metadata')))
 }
 
 function* handleGetNetworksRequest() {
@@ -202,6 +211,7 @@ function* handleDeleteNetworkSuccess(
 export function* saga() {
   yield all([
     takeEvery(getType(login['success']), handleLoginSuccess),
+    takeEvery(getType(clearMetadata['request']), handleClearMetadata),
     takeEvery(getType(getNetworks['request']), handleGetNetworksRequest),
     takeEvery(getType(updateNetwork['request']), handleUpdateNetworkRequest),
     takeEvery(getType(deleteNetwork['request']), handleDeleteNetworkRequest),

@@ -27,4 +27,4 @@ export const randomCIDR = () => `10.${genRandomNumber(254, true)}.${genRandomNum
 
 export const randomNetworkName = () => validNetworkNames[genRandomNumber(validNetworkNames.length, false)]
 
-export const ntoi = (x: number) => parseInt(`${x}`, 10) // converts number to integer for api requests
+export const copy = (text: string) => navigator.clipboard.writeText(text)

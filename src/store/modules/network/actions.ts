@@ -7,7 +7,15 @@ import {
   CreateAccessKeyPayload,
   GetAccessKeysPayload,
   DeleteAccessKeyPayload,
+  IndexNetworkPayload,
 } from './types'
+
+export const clearMetadata = createAsyncAction(
+  'network_clearMetadata_Request',
+  'network_clearMetadata_Success',
+  'network_clearMetadata_Failure'
+
+)<IndexNetworkPayload['Request'], IndexNetworkPayload['Response'], Error>()
 
 export const getNetworks = createAsyncAction(
   'network_getNetworks_Request',

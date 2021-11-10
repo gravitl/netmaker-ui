@@ -16,6 +16,7 @@ export interface Network {
   defaultkeepalive: number
   defaultsaveconfig: boolean
   accesskeys: Array<AccessKey>
+  metadata?: Metadata
   allowmanualsignup: boolean
   islocal: boolean
   isdualstack: boolean
@@ -72,6 +73,15 @@ export interface DeleteNetworkPayload {
   }
 }
 
+export interface IndexNetworkPayload {
+  Request: {
+    netid: string
+  }
+  Response: {
+    netid: string
+  }
+}
+
 export interface CreateNetworkPayload {
   Request: {
     addressrange: string
@@ -83,6 +93,11 @@ export interface CreateNetworkPayload {
     defaultudpholepunch: 'yes' | 'no'
   }
   Response: void
+}
+
+export interface Metadata {
+  value?: string
+  accessString?: string
 }
 
 export interface AccessKey {

@@ -6,6 +6,7 @@ import {
   updateNetwork,
   deleteAccessKey,
   createAccessKey,
+  clearMetadata,
 } from './actions'
 import { Network } from './types'
 import { networkPayloadToNetwork } from './utils'
@@ -72,6 +73,20 @@ export const reducer = createReducer({
       )
       if (~index) {
         draftState.networks[index].accesskeys.push(action.payload.newAccessKey)
+        draftState.networks[index].metadata = {
+          accessString: action.payload.newAccessKey.accessstring,
+          value: action.payload.newAccessKey.value
+        }
+      }
+    })
+  )
+  .handleAction(clearMetadata['success'], (state, action) => 
+    produce(state, (draftState) => {
+      const index = draftState.networks.findIndex(
+        (network) => network.netid === action.payload.netid
+      )
+      if (~index) {
+        draftState.networks[index].metadata = undefined
       }
     })
   )
