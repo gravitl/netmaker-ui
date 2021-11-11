@@ -155,6 +155,7 @@ export interface LanguageResource {
     mtu: string
     relayaddrs: string
     os: string
+    status: string
   }
   login: {
     validation: {

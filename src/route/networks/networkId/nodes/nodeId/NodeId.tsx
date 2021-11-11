@@ -15,7 +15,8 @@ import {
 } from 'react-router-dom'
 import { NmLink } from '~components/index'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
-import { useNode } from '~util/node'
+import { decode64 } from '~util/fields'
+import { useNodeById } from '~util/node'
 import { datePickerConverter } from '~util/unixTime'
 
 export const NodeId: React.FC = () => {
@@ -24,7 +25,7 @@ export const NodeId: React.FC = () => {
   const { t } = useTranslation()
 
   const { nodeId } = useParams<{ nodeId: string }>()
-  const node = useNode(decodeURIComponent(nodeId))
+  const node = useNodeById(decode64(decodeURIComponent(nodeId)))
 
   useLinkBreadcrumb({
     link: url,
@@ -33,6 +34,10 @@ export const NodeId: React.FC = () => {
 
   if (!node) {
     return <div>Not Found</div>
+  }
+
+  const rowMargin = {
+    margin: '1em 0 1em 0'
   }
 
   return (
@@ -62,185 +67,228 @@ export const NodeId: React.FC = () => {
       <Route exact path={path}>
         <Grid
           container
-          sx={{
-            '& .MuiTextField-root': { m: 1, width: '25ch' },
-          }}
+          // sx={{
+          //   '& .MuiTextField-root': { m: 1, width: '25ch' },
+          // }}
         >
-          <TextField disabled value={node.id} label={t('node.id')} />
-          <TextField disabled value={node.address} label={t('node.address')} />
+          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
+            <TextField disabled value={node.address} label={t('node.address')} />
+          </Grid>
+          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <TextField
             disabled
             value={node.address6}
             label={t('node.address6')}
           />
+          </Grid>
+          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <TextField
             disabled
             value={node.localaddress}
             label={t('node.localaddress')}
           />
+          </Grid>
+          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <TextField disabled value={node.name} label={t('node.name')} />
+          </Grid>
+          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <TextField
             disabled
             value={node.listenport}
             label={t('node.listenport')}
           />
+          </Grid>
+          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <TextField
             disabled
             value={node.publickey}
             label={t('node.publickey')}
           />
+          </Grid>
+          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <TextField
             disabled
             value={node.endpoint}
             label={t('node.endpoint')}
           />
+          </Grid>
+          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <TextField disabled value={node.postup} label={t('node.postup')} />
+          </Grid>
+          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <TextField
             disabled
             value={node.postdown}
             label={t('node.postdown')}
           />
-          allowedips: [ ],
+          </Grid>
+          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
+          <TextField
+            disabled
+            value={node.allowedips ? node.allowedips.join(',') : ''}
+            label={t('node.allowedips')}
+          />
+          </Grid>
+          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <TextField
             disabled
             value={node.persistentkeepalive}
             label={t('node.persistentkeepalive')}
           />
+          </Grid>
+          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <TextField
             disabled
             value={node.accesskey}
             label={t('node.accesskey')}
           />
+          </Grid>
+          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <TextField
             disabled
             value={node.interface}
             label={t('node.interface')}
           />
+          </Grid>
+          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <TextField
             disabled
             value={datePickerConverter(node.lastmodified)}
             label={t('node.lastmodified')}
           />
+          </Grid>
+          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <TextField
             disabled
             value={datePickerConverter(node.keyupdatetimestamp)}
             label={t('node.keyupdatetimestamp')}
           />
+          </Grid>
+          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <TextField
             disabled
             value={datePickerConverter(node.expdatetime)}
             label={t('node.expdatetime')}
           />
+          </Grid>
+          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <TextField
             disabled
             value={datePickerConverter(node.lastpeerupdate)}
             label={t('node.lastpeerupdate')}
           />
+          </Grid>
+          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <TextField
             disabled
             value={datePickerConverter(node.lastcheckin)}
             label={t('node.lastcheckin')}
           />
+          </Grid>
+          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <TextField
             disabled
             value={node.macaddress}
             label={t('node.macaddress')}
           />
-          <TextField
-            disabled
-            value={node.checkininterval}
-            label={t('node.checkininterval')}
-          />
-          <TextField
-            disabled
-            value={node.password}
-            label={t('node.password')}
-          />
+          </Grid>
+          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <TextField disabled value={node.network} label={t('node.network')} />
+          </Grid>
+          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <TextField
             disabled
-            value={node.ispending}
-            label={t('node.ispending')}
+            value={node.egressgatewayranges ? node.egressgatewayranges.join(',') : ''}
+            label={t('node.egressgatewayranges')}
           />
-          egressgatewayranges: [ ],
-          <TextField
-            disabled
-            value={node.ingressgatewayrange}
-            label={t('node.ingressgatewayrange')}
-          />
-          <TextField disabled value={node.action} label={t('node.action')} />
+          </Grid>
+          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <TextField
             disabled
             value={node.localrange}
             label={t('node.localrange')}
           />
+          </Grid>
+          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <TextField disabled value={node.os} label={t('node.os')} />
+          </Grid>
+          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <TextField disabled value={node.mtu} label={t('node.mtu')} />
+          </Grid>
+          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <FormControlLabel
             label={t('node.saveconfig')}
             control={<SwitchField checked={node.saveconfig} disabled />}
             disabled
           />
-          <FormControlLabel
-            label={t('node.isegressgateway')}
-            control={<SwitchField checked={node.isegressgateway} disabled />}
-            disabled
-          />
-          <FormControlLabel
-            label={t('node.isingressgateway')}
-            control={<SwitchField checked={node.isingressgateway} disabled />}
-            disabled
-          />
+          </Grid>
+          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <FormControlLabel
             label={t('node.isstatic')}
             control={<SwitchField checked={node.isstatic} disabled />}
             disabled
           />
+          </Grid>
+          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <FormControlLabel
             label={t('node.udpholepunch')}
             control={<SwitchField checked={node.udpholepunch} disabled />}
             disabled
           />
-          <FormControlLabel
-            label={t('node.pullchanges')}
-            control={<SwitchField checked={node.pullchanges} disabled />}
-            disabled
-          />
+          </Grid>
+          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <FormControlLabel
             label={t('node.dnson')}
             control={<SwitchField checked={node.dnson} disabled />}
             disabled
           />
+          </Grid>
+          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <FormControlLabel
             label={t('node.isdualstack')}
             control={<SwitchField checked={node.isdualstack} disabled />}
             disabled
           />
+          </Grid>
+          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <FormControlLabel
             label={t('node.isserver')}
             control={<SwitchField checked={node.isserver} disabled />}
             disabled
           />
+          </Grid>
+          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <FormControlLabel
             label={t('node.islocal')}
             control={<SwitchField checked={node.islocal} disabled />}
             disabled
           />
+          </Grid>
+          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <FormControlLabel
             label={t('node.roaming')}
             control={<SwitchField checked={node.roaming} disabled />}
             disabled
           />
+          </Grid>
+          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <FormControlLabel
             label={t('node.ipforwarding')}
             control={<SwitchField checked={node.ipforwarding} disabled />}
             disabled
           />
+          </Grid>
+          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
+            <NmLink to={`${url}/edit`} variant="outlined">
+            {t('common.edit')}
+            </NmLink>
+          </Grid>
+          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
+            <Button variant='outlined'>
+            {t('common.delete')}
+            </Button>
+          </Grid>
         </Grid>
-
-        <NmLink to={`${url}/edit`} variant="outlined">
-          {t('common.edit')}
-        </NmLink>
       </Route>
     </Switch>
   )

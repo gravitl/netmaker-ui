@@ -140,8 +140,8 @@ export const en: LanguageResource = {
     publickey: 'Publickey',
     endpoint: 'Endpoint',
     expdatetime: 'Node Expiration Date/Time',
-    postup: 'Postup',
-    postdown: 'Postdown',
+    postup: 'Postup ("; " separated)',
+    postdown: 'Postdown ("; " separated)',
     persistentkeepalive: 'Persistent Keepalive',
     saveconfig: 'Saveconfig',
     interface: 'Interface',
@@ -157,6 +157,7 @@ export const en: LanguageResource = {
     mtu: 'MTU',
     relayaddrs: 'Relay Addresses (Comma Separated)',
     os: 'Node Operating System',
+    status: 'Status',
   },
   login: {
     validation: {

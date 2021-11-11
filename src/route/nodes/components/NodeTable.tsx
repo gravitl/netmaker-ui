@@ -7,22 +7,27 @@ import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 import { Node } from '~modules/node'
 import { NmTable, TableColumns } from '~components/Table'
 import { Chip } from '@mui/material'
+import { encode64 } from '~util/fields'
 
 const columns: TableColumns<Node> = [
   {
-    id: 'id',
-    label: 'Id',
-    minWidth: 170,
-    sortable: true,
+    id: 'id', 
+    labelKey: 'node.id', 
+    minWidth: 170, 
+    sortable: true, 
     format: (value, node) => (
       <NmLink
-        to={`/networks/${node.network}/nodes/${encodeURIComponent(value)}`}
+        to={`/networks/${node.network}/nodes/${encodeURIComponent(encode64(value))}`}
       >
-        {value}
+        {encode64(value)}
       </NmLink>
-    ),
+    ), 
   },
-  { id: 'name', labelKey: 'node.name', minWidth: 100, sortable: true },
+  { id: 'name', 
+    labelKey: 'node.name', 
+    minWidth: 100, 
+    sortable: true,
+  },
   {
     id: 'address',
     labelKey: 'node.address',

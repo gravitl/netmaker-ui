@@ -28,3 +28,6 @@ export const randomCIDR = () => `10.${genRandomNumber(254, true)}.${genRandomNum
 export const randomNetworkName = () => validNetworkNames[genRandomNumber(validNetworkNames.length, false)]
 
 export const copy = (text: string) => navigator.clipboard.writeText(text)
+
+export const decode64 = (str: string):string => Buffer.from(str, 'base64').toString('binary');
+export const encode64 = (str: string):string => Buffer.from(str, 'binary').toString('base64');

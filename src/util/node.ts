@@ -7,16 +7,32 @@ import { nodeSelectors } from '~store/selectors'
 
 const nodeByIdPredicate = (id: Node['id']) => (node: Node) => node.id === id
 
-const makeSelectNode = () =>
+const nodeByNamePredicate = (name: Node['name']) => (node: Node) => node.name === name
+
+const makeSelectNodeByID = () =>
   createSelector(
     nodeSelectors.getNodes,
     (_: RootState, id: Node['id']) => id,
     (nodes, id) => nodes.find(nodeByIdPredicate(id))
   )
 
-export const useNode = (id: Node['id']) => {
-  const selectNode = useMemo(makeSelectNode, [])
+export const useNodeById = (id: Node['id']) => {
+  const selectNode = useMemo(makeSelectNodeByID, [])
   return useSelector<RootState, Node | undefined>((state) =>
     selectNode(state, id)
+  )
+}
+
+const makeSelectNode = () =>
+  createSelector(
+    nodeSelectors.getNodes,
+    (_: RootState, name: Node['name']) => name,
+    (nodes, name) => nodes.find(nodeByNamePredicate(name))
+  )
+
+export const useNode = (name: Node['name']) => {
+  const selectNode = useMemo(makeSelectNode, [])
+  return useSelector<RootState, Node | undefined>((state) =>
+    selectNode(state, name)
   )
 }
