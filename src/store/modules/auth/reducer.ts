@@ -3,8 +3,16 @@ import jwtDecode from 'jwt-decode'
 import * as ls from 'local-storage'
 import { createReducer } from 'typesafe-actions'
 import { USER_KEY } from '../../../config'
-import { createAdmin, hasAdmin, login, logout, setUser } from './actions'
-import { LocalStorageUserKeyValue } from './types'
+import {
+  createAdmin,
+  createUser,
+  getAllUsers,
+  hasAdmin,
+  login,
+  logout,
+  setUser,
+} from './actions'
+import { LocalStorageUserKeyValue, User } from './types'
 
 const initialValues = ls.get<LocalStorageUserKeyValue | undefined>(USER_KEY)
 
@@ -14,6 +22,7 @@ export const reducer = createReducer({
   isLoggingIn: false,
   hasAdmin: false,
   isCreating: false,
+  users: [] as User[],
 })
   .handleAction(setUser, (state, action) =>
     produce(state, (draftState) => {
@@ -88,5 +97,25 @@ export const reducer = createReducer({
   .handleAction(createAdmin['failure'], (state, _) =>
     produce(state, (draftState) => {
       draftState.isCreating = false
+    })
+  )
+  .handleAction(getAllUsers['success'], (state, action) =>
+    produce(state, (draftState) => {
+      draftState.users = action.payload.map((user: any) => ({
+        isAdmin: user.isadmin,
+        name: user.username,
+        networks: user.networks,
+        exp: 0
+      }))
+    })
+  )
+  .handleAction(createUser['success'], (state, { payload }) =>
+    produce(state, (draftState) => {
+      draftState.users.push({
+        isAdmin: payload.isadmin,
+        name: payload.username,
+        exp: 0,
+        networks: payload.networks
+      })
     })
   )

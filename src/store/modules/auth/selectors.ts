@@ -12,3 +12,4 @@ export const getLoggedIn = createSelector(
 export const isLogginIn = createSelector(getAuth, (auth) => auth.isLoggingIn)
 export const hasAdmin = createSelector(getAuth, (auth) => auth.hasAdmin)
 export const isCreating = createSelector(getAuth, (auth) => auth.isCreating)
+export const getUsers = createSelector(getAuth, (auth) => auth.users)

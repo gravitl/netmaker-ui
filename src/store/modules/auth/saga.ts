@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios'
-import { all, call, put, takeEvery } from 'redux-saga/effects'
+import { all, call, put, select, takeEvery } from 'redux-saga/effects'
 import { getType } from 'typesafe-actions'
 import { User } from './types'
 import { apiRequestWithAuthSaga, apiRequestSaga } from '../api/saga'
@@ -13,6 +13,8 @@ import {
   deleteUser,
   updateUser,
 } from './actions'
+import { authSelectors } from '~store/selectors'
+import { getHistory } from '../router/selectors'
 
 function* handleGetAllUsersRequest(
   action: ReturnType<typeof getAllUsers['request']>
@@ -100,6 +102,7 @@ function* handleCreateUserRequest(
         username: action.payload.username,
         password: action.payload.password,
         networks: action.payload.networks,
+        isadmin: action.payload.isadmin,
       },
       {
         headers: {
@@ -107,8 +110,11 @@ function* handleCreateUserRequest(
         },
       }
     )
-    console.log(response.data)
+
     yield put(createUser['success'](response.data))
+
+    const history: ReturnType<typeof getHistory> = yield select(getHistory)
+    history?.push('/users')
   } catch (e: unknown) {
     yield put(createUser['failure'](e as Error))
   }
@@ -154,16 +160,29 @@ function* handleUpdateUserRequest(
   }
 }
 
+function* handleIsLoggedIn() {
+  const isLoggedIn: boolean = yield select(authSelectors.getLoggedIn)
+
+  if(isLoggedIn) {
+    const token: string = yield select(authSelectors.getToken)
+    yield put(login.success({
+      token
+    }))
+  }
+}
+
 export function* saga() {
   yield all([
     takeEvery(getType(getAllUsers['request']), handleGetAllUsersRequest),
     takeEvery(getType(getUser['request']), handleGetUserRequest),
     takeEvery(getType(login['request']), handleLoginRequest),
+    takeEvery(getType(login['success']), handleGetAllUsersRequest),
     takeEvery(getType(hasAdmin['request']), handleHasAdminRequest),
     takeEvery(getType(createAdmin['request']), handleCreateAdminRequest),
     takeEvery(getType(createUser['request']), handleCreateUserRequest),
     takeEvery(getType(deleteUser['request']), handleDeleteUserRequest),
     takeEvery(getType(updateUser['request']), handleUpdateUserRequest),
     call(handleHasAdminRequest, hasAdmin.request()),
+    call(handleIsLoggedIn),
   ])
 }

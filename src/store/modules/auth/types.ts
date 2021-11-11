@@ -47,9 +47,10 @@ export interface CreateUser {
   Request: {
     username: string
     password: string
+    isadmin: boolean
     networks: Array<string>
   }
-  Response: {}
+  Response: Omit<CreateUser["Request"], 'password'>
 }
 
 export interface DeleteUser {
