@@ -9,3 +9,4 @@ export * from './modules/server/types'
 
 export * from './modules/api/types'
 export * from './modules/toast/types'
+export * from './modules/router/types'

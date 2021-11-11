@@ -10,6 +10,7 @@ import CustomDrawer from '~components/drawer/CustomDrawer'
 import { Grid } from '@mui/material'
 import { AccessKeys } from './accesskeys/AccessKeys'
 import { ExtClients } from './extclients/ExtClients'
+import { RouterState } from '~store/modules/router/Component'
 
 function NoMatch() {
   const location = useLocation()
@@ -59,6 +60,7 @@ function Routes() {
             <NoMatch />
           </Route>
         </Switch>
+        <RouterState />
         {/* Show the modal when a background page is set */}
         {from && <Route path="/login" children={<Login />} />}
       </Grid>
