@@ -18,7 +18,7 @@ import {
 } from '~components/form'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 import { createUser } from '~modules/auth/actions'
-import { Redirect, useLocation } from 'react-router-dom'
+import { Redirect, useLocation, useHistory } from 'react-router-dom'
 import { authSelectors, networkSelectors } from '~store/selectors'
 import { correctUserNameRegex, correctPasswordRegex } from '~util/regex'
 import ListItem from '@mui/material/ListItem'
@@ -50,6 +50,7 @@ export const UserCreate: React.FC = () => {
   const listOfNetworks = useSelector(networkSelectors.getNetworks)
   const { t } = useTranslation()
   const location = useLocation<{ from?: Location }>()
+  const history = useHistory()
   const isCreating = useSelector(authSelectors.isCreating)
   const formRef = React.createRef<FormRef<CreateUser>>()
   const { Component: Dialog, setProps: setDialog } = useDialog()
@@ -154,7 +155,7 @@ export const UserCreate: React.FC = () => {
           initialState={initialState}
           resolver={createAdminValidation}
           onSubmit={onSubmit}
-          onCancel={() => {}}
+          onCancel={() => history.goBack()}
           submitText={t('users.creating')}
           submitProps={{
             type: 'submit',
