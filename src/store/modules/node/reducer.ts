@@ -1,6 +1,6 @@
 import { produce } from 'immer'
 import { createReducer } from 'typesafe-actions'
-import { createEgressNode, deleteEgressNode, deleteNode, getNodes, updateNode } from './actions'
+import { createEgressNode, createIngressNode, createRelayNode, deleteEgressNode, deleteIngressNode, deleteNode, deleteRelayNode, getNodes, updateNode } from './actions'
 import { Node } from './types'
 import { nodePayloadToNode } from './utils'
 
@@ -56,6 +56,46 @@ export const reducer = createReducer({
     })
   )
   .handleAction(deleteEgressNode['success'], (state, action) => 
+    produce(state, (draftState) => {
+      const index = draftState.nodes.findIndex(
+        node => node.id === action.payload.id
+      )
+      if (~index) {
+        draftState.nodes[index] = nodePayloadToNode(action.payload)
+      }
+    })
+  )
+  .handleAction(createIngressNode['success'], (state, action) => 
+    produce(state, (draftState) => {
+      const index = draftState.nodes.findIndex(
+        node => node.id === action.payload.id
+      )
+      if (~index) {
+        draftState.nodes[index] = nodePayloadToNode(action.payload)
+      }
+    })
+  )
+  .handleAction(deleteIngressNode['success'], (state, action) =>
+    produce(state, (draftState) => {
+      const index = draftState.nodes.findIndex(
+        node => node.id === action.payload.id
+      )
+      if (~index) {
+        draftState.nodes[index] = nodePayloadToNode(action.payload)
+      }
+    })
+  )
+  .handleAction(createRelayNode['success'], (state, action) =>
+    produce(state, (draftState) => {
+      const index = draftState.nodes.findIndex(
+        node => node.id === action.payload.id
+      )
+      if (~index) {
+        draftState.nodes[index] = nodePayloadToNode(action.payload)
+      }
+    })
+  )
+  .handleAction(deleteRelayNode['success'], (state, action) =>
     produce(state, (draftState) => {
       const index = draftState.nodes.findIndex(
         node => node.id === action.payload.id

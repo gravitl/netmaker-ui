@@ -57,6 +57,7 @@ export interface LanguageResource {
     select: string
     name: string
     copy: string
+    selectall: string
   }
   dashboard: {
     title: string
@@ -179,6 +180,7 @@ export interface LanguageResource {
     confirmingress: string
     confirmegress: string
     deleteconfirm: string
+    choose: string
   }
   login: {
     validation: {
@@ -227,18 +229,30 @@ export interface LanguageResource {
     },
     create: {
       success: {
+        accesskey: string
         egress: string
+        ingress: string
+        relay: string
       }
       failure: {
+        accesskey: string
         egress: string
+        ingress: string
+        relay: string
       }
     },
     delete: {
       success: {
+        accesskey: string
         egress: string
+        ingress: string
+        relay: string
       },
       failure: {
+        accesskey: string
         egress: string
+        ingress: string
+        relay: string
       }
     }
   }

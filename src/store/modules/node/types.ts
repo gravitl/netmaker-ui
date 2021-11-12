@@ -141,6 +141,28 @@ export interface CreateEgressNodePayload {
   Response: NodePayload
 }
 
+export interface CreateRelayNodePayload {
+  Request: {
+    netid: string
+    nodeid: string
+    nodemac: string
+    payload: {
+      ranges: Array<string>
+    }
+  }
+  Response: NodePayload
+}
+
+export interface DeleteRelayNodePayload {
+  Request: {
+    netid: string
+    nodeid: string
+    nodemac: string
+  }
+  Response: NodePayload
+}
+
+
 export interface DeleteNodePayload {
   Request: {
     netid: string
@@ -153,18 +175,17 @@ export interface DeleteNodePayload {
 
 export interface CreatIngressNodePayload {
   Request: {
-    token: string
     netid: string
+    nodemac: string
     nodeid: string
   }
-  Response: void
+  Response: NodePayload
 }
 
 export interface DeleteIngressNodePayload {
   Request: {
-    token: string
     netid: string
     nodeid: string
   }
-  Response: void
+  Response: NodePayload
 }

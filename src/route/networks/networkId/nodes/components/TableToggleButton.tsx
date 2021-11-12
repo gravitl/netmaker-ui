@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { IconButton, Tooltip } from '@mui/material'
 import { Block, Check } from '@mui/icons-material'
-import { deleteIngressNode, deleteEgressNode } from '~modules/node/actions'
+import { deleteIngressNode, deleteEgressNode, createIngressNode, deleteRelayNode } from '~modules/node/actions'
 import { Node } from '~store/types'
 import { encode64 } from '~util/fields'
 import { Link } from 'react-router-dom'
@@ -30,7 +30,6 @@ export const TableToggleButton: React.FC<{
   SignalIcon: ReactNode,
   children?: ReactNode,
   withHistory?: boolean,
-  onSelect: () => void,
 }> = ({
     which,
     node,
@@ -38,7 +37,6 @@ export const TableToggleButton: React.FC<{
     createText,
     removeText,
     SignalIcon,
-    onSelect,
     withHistory, }) => {
   const dispatch = useDispatch()
   const [ hovering, setHovering ] = React.useState(false)
@@ -56,16 +54,33 @@ export const TableToggleButton: React.FC<{
       case 'egress':
         dispatch(deleteEgressNode.request({
           netid: node.network,
-          nodeMac: node.macaddress
+          nodeMac: node.macaddress,
         }))
         break
       case 'ingress':
         dispatch(deleteIngressNode.request({
-          token: '',
           netid: node.network,
-          nodeid: node.macaddress
+          nodeid: node.macaddress,
         }))
         break
+      case 'relay':
+        dispatch(deleteRelayNode.request({
+          netid: node.network,
+          nodeid: node.id,
+          nodemac: node.macaddress,
+        }))
+        break
+    }
+  }
+
+  const createIngress = () => {
+    console.log('CALLED')
+    if (which === 'ingress') {
+      dispatch(createIngressNode.request({
+        netid: node.network,
+        nodeid: node.id,
+        nodemac: node.macaddress,
+      }))
     }
   }
 
@@ -73,9 +88,9 @@ export const TableToggleButton: React.FC<{
       <CustomDialog
           open={open}
           handleClose={handleClose}
-          handleAccept={() => removeAction(which)}
-          message={removeText}
-          title={`${t('common.delete')} ${which}`}
+          handleAccept={() => isOn ? removeAction(which) : createIngress()}
+          message={isOn ? removeText : createText}
+          title={`${isOn ? t('common.delete') : t('common.create')} ${which}`}
         />
     <Tooltip placement='top' title={String(!isOn ? createText : removeText)}>
       {withHistory && !isOn? 
@@ -89,11 +104,11 @@ export const TableToggleButton: React.FC<{
           onMouseLeave={handleHoverLeave}
         >
           {!isOn ? SignalIcon : hovering ? <Block /> : <Check />}
-        </IconButton> : 
-          <IconButton
+        </IconButton> :
+        <IconButton
           color={isOn ? 'success' : 'default'} 
           sx={isOn ? hoverRedStyle : hoverBlueStyle}
-          onClick={!isOn ? onSelect : handleOpen}
+          onClick={handleOpen}
           onMouseEnter={handleHoverEnter}
           onMouseLeave={handleHoverLeave}
         >

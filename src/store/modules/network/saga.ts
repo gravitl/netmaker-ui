@@ -4,6 +4,7 @@ import { getType } from 'typesafe-actions'
 import { login } from '../auth/actions'
 import { getToken } from '../auth/selectors'
 import { generatorToastSaga } from '../toast/saga'
+import { i18n } from '../../../i18n/i18n'
 import {
   createNetwork,
   deleteNetwork,
@@ -172,10 +173,10 @@ function* handleCreateAccessKeyRequest(
       success: createAccessKey['success'],
       error: createAccessKey['failure'],
       params: {
-        pending: `Creating Access Key ${action.payload.newAccessKey.name}`,
-        success: `Creating Access Key ${action.payload.newAccessKey.name} success!`,
+        pending: i18n.t('common.pending'),
+        success: i18n.t('toast.create.success.accesskey'),
         error: (error) =>
-          `Creating Access Key ${action.payload.newAccessKey.name} error!\n${error.response.data.Message}`,
+          `${i18n.t('toast.create.failure.accesskey')}\n${error.response.data.Message}`,
       },
     })
 

@@ -1,6 +1,16 @@
-import React from 'react'
-import { Modal, Box } from '@mui/material'
+import React, { useCallback } from 'react'
+import { Modal, Box, Grid, Typography } from '@mui/material'
 import { useHistory } from 'react-router-dom'
+import { useRouteMatch, useParams } from 'react-router-dom'
+import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
+import { useTranslation } from 'react-i18next'
+import { useDispatch } from 'react-redux'
+import { createRelayNode } from '~modules/node/actions'
+import { useNodeById } from '~util/node'
+import { useNodesByNetworkId } from '~util/network'
+import { decode64 } from '~util/fields'
+import { FormRef, NmForm, NmFormInputText } from '~components/form'
+import RelaySelect from './RelaySelect'
 
 const styles = {
   centerText: {
@@ -31,7 +41,7 @@ const styles = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 400,
+    width: '50%',
     backgroundColor: 'white',
     border: '1px solid #000',
     minWidth: '33%',
@@ -44,6 +54,63 @@ const styles = {
 
 export function CreateRelay() {
   const history = useHistory()
+  const { t } = useTranslation()
+  const { networkId, nodeId } = useParams<{ networkId: string, nodeId: string }>()
+  const { url } = useRouteMatch()
+  const node = useNodeById(decode64(nodeId))
+  const dispatch = useDispatch()
+  const nodes = useNodesByNetworkId(networkId)
+  const nodeMac = node?.macaddress as string
+  const nodeNames = []
+
+  useLinkBreadcrumb({
+    link: url,
+    title: t('breadcrumbs.createrelay'),
+  })
+
+  interface RelayData {
+      ranges: string
+  }
+
+  const initialState: RelayData = {
+    ranges: ''  
+  }
+
+  const onSubmit = useCallback(
+      (data: RelayData) => {
+        const newRanges = data.ranges.split(',')
+        for (let i = 0; i < newRanges.length; i++) {
+            newRanges[i] = newRanges[i].trim()
+        }
+        dispatch(createRelayNode.request({
+            netid: networkId,
+            nodeid: nodeId,
+            nodemac: nodeMac,
+            payload: {
+                ranges: newRanges,
+            }
+        }))
+        history.goBack()
+      }, [dispatch, networkId, nodeMac, nodeId, history]
+  )
+
+  if (!node || !nodes) {
+      return <h2>{t('error.notfound')}</h2>
+  }
+
+  for (let i = 0; i < nodes.length; i++) {
+    if (nodes) {
+      const data = {name: nodes[i].name, address: nodes[i].address }
+      nodeNames.push(data)
+    }
+  }
+
+  const formRef = React.createRef<FormRef<RelayData>>()
+
+  const updateRanges = (value: string) => {
+    formRef.current?.reset({...formRef.current?.values, ranges: value}, { keepDefaultValues: true})
+  }
+
   return (
     <Modal
       style={{ display: 'flex', flex: 1 }}
@@ -53,7 +120,39 @@ export function CreateRelay() {
       }}
     >
       <Box style={styles.modal}>
-          <h2>Hello World</h2>
+          <NmForm
+            initialState={initialState}
+            onSubmit={onSubmit}
+            submitProps={{
+                fullWidth: true,
+                variant: 'contained'
+            }}
+            submitText={t('common.create')}
+            sx={{margin: '2em 0 2em 0'}}
+            ref={formRef}
+          >
+            <Grid container justifyContent='space-around' alignItems='center' sx={{margin: '1em 0 1em 0'}}>
+                <Grid item xs={12} sm={8} sx={{textAlign: 'center', margin: '1em 0 1em 0'}}>
+                    <Typography variant='h4'>
+                        {`${t('node.createrelay')} : ${node.name}`}
+                    </Typography>
+                </Grid>
+                <Grid item xs={12} sm={5}>
+                    <NmFormInputText 
+                        multiline 
+                        minRows={2} 
+                        fullWidth 
+                        disabled
+                        name={'ranges'} 
+                        label={t('node.relayaddrs')} 
+                        sx={{height: '100%', margin: '1em 0 1em 0'}} 
+                    />
+                </Grid>
+                <Grid item xs={12} sm={5}>
+                    <RelaySelect names={nodeNames} onSelect={updateRanges} />
+                </Grid>
+            </Grid>
+          </NmForm>
       </Box>
     </Modal>
   )

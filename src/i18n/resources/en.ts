@@ -59,6 +59,7 @@ export const en: LanguageResource = {
     select: 'Select',
     name: 'Name',
     copy: 'Copy',
+    selectall: 'Select All',
   },
   dashboard: {
     title: "Netmaker Dashboard"
@@ -181,6 +182,7 @@ export const en: LanguageResource = {
     confirmingress: 'Are you sure you want to make an Ingress Gateway?',
     confirmrelay: 'Are you sure you want to make a Relay Server?',
     deleteconfirm: 'Are you sure you want to delete this node?',
+    choose: 'Select Node(s)',
   },
   login: {
     validation: {
@@ -231,18 +233,30 @@ export const en: LanguageResource = {
     },
     create: {
       success: {
-        egress: 'Succesfully created Egress Gateway!'
+        accesskey: 'Succesfully created Access Key!',
+        egress: 'Succesfully created Egress Gateway!',
+        ingress: 'Successfully created Ingress Gateway!',
+        relay: 'Successfully created Relay!'
       },
       failure: {
-        egress: 'Failed to create Egress Gateway.'
+        accesskey: 'Failed to create Access Key.',
+        egress: 'Failed to create Egress Gateway.',
+        ingress: 'Failed to create Ingress Gateway.',
+        relay: 'Failed to create Relay.',
       }
     },
     delete: {
       success: {
-        egress: 'Succesfully removed Egress Gateway!'
+        accesskey: 'Succesfully removed Access Key!',
+        egress: 'Succesfully removed Egress Gateway!',
+        ingress: 'Successfully removed Ingress Gateway!',
+        relay: 'Successfully removed Relay!',
       },
       failure: {
-        egress: 'Failed to remove Egress Gateway.'
+        accesskey: 'Failed to remove Access Key.',
+        egress: 'Failed to remove Egress Gateway.',
+        ingress: 'Failed to remove Ingress Gateway.',
+        relay: 'Failed to remove Relay.',
       }
     }
   }

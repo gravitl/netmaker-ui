@@ -1,5 +1,4 @@
 import React from 'react'
-import { IconButton, Tooltip } from '@mui/material'
 import { NmLink } from '~components/index'
 import { NmTable, TableColumns } from '~components/Table'
 import { Node } from '~modules/node'
@@ -10,16 +9,11 @@ import { useNodesByNetworkId } from '~util/network'
 import { NodeId } from './nodeId/NodeId'
 import { Chip, Grid, Typography } from '@mui/material'
 import { encode64 } from '~util/fields'
-import { CallMerge, CallSplit, Check, LeakAdd } from '@mui/icons-material'
+import { AltRoute, CallMerge, CallSplit } from '@mui/icons-material'
 import { i18n } from '../../../../i18n/i18n'
 import { CreateEgress } from './components/CreateEgress'
 import { TableToggleButton } from './components/TableToggleButton'
-
-const hoverRedStyle = {
-  ':hover': {
-    color: 'red'
-  }
-}
+import { CreateRelay } from './components/CreateRelay'
 
 const columns: TableColumns<Node> = [
   { id: 'name',
@@ -57,56 +51,42 @@ const columns: TableColumns<Node> = [
       which='egress'
       isOn={isegress}
       node={row}
-      createText={i18n.t('node.createegress')}
-      removeText={i18n.t('node.removeegress')}
+      createText={`${i18n.t('node.createegress')} : ${row.name}`}
+      removeText={`${i18n.t('node.removeegress')} : ${row.name}`}
       SignalIcon={<CallSplit />}
-      onSelect={() => {}}
       withHistory
     />
-      // <Tooltip placement='top' title={String(!isegress ? i18n.t('node.createegress') : i18n.t('node.removeegress'))}>
-      //   <IconButton 
-      //     color={isegress ? 'success' : 'default'} 
-      //     component={Link}
-      //     to={`/networks/${row.network}/nodes/${encode64(row.id)}/create-egress`}
-      //     sx={hoverRedStyle}
-      //   >
-      //     {!isegress ? <CallSplit /> : <Check />}
-      //   </IconButton>
-      // </Tooltip>
   },
   {
     id: 'isingressgateway',
     labelKey: 'node.statusingress',
     minWidth: 30,
     align: 'center',
-    format: (isingress) =>
-      <Tooltip 
-        placement='top'
-        title={String(!isingress ? i18n.t('node.createingress') : i18n.t('node.removeingress'))}>
-        <IconButton 
-          color={isingress ? 'success' : 'default'}
-          disabled={isingress}
-          sx={hoverRedStyle}
-        >
-          {!isingress ? <CallMerge /> : <Check />}
-        </IconButton>
-      </Tooltip>
+    format: (isingress, row) =>
+    <TableToggleButton 
+      which='ingress'
+      isOn={isingress}
+      node={row}
+      createText={`${i18n.t('node.createingress')} : ${row.name}`}
+      removeText={`${i18n.t('node.removeingress')} : ${row.name}`}
+      SignalIcon={<CallMerge />}
+    />
   },
   {
     id: 'isrelay',
     labelKey: 'node.statusrelay',
     minWidth: 30,
     align: 'center',
-    format: (isrelay) =>
-      <Tooltip placement='top' title={String(!isrelay ? i18n.t('node.createrelay') : i18n.t('node.removerelay'))}>
-        <IconButton 
-          color={isrelay ? 'success' : 'default'} 
-          disabled={isrelay}
-          sx={hoverRedStyle}
-        >
-        {!isrelay ? <LeakAdd /> : <Check />}
-        </IconButton>
-      </Tooltip>
+    format: (isrelay, row) =>
+      <TableToggleButton 
+        which='relay'
+        isOn={isrelay}
+        node={row}
+        createText={`${i18n.t('node.createrelay')} : ${row.name}`}
+        removeText={`${i18n.t('node.removerelay')} : ${row.name}`}
+        SignalIcon={<AltRoute />}
+        withHistory
+      />
   },
   {
     id: 'lastcheckin',
@@ -162,6 +142,7 @@ export const NetworkNodes: React.FC = () => {
         />
       </Route>
       <Route path={`${path}/:nodeId/create-egress`} children={<CreateEgress />} />
+      <Route path={`${path}/:nodeId/create-relay`} children={<CreateRelay />} />
       <Route path={`${path}/:nodeId`}>
         <NodeId />
       </Route>
