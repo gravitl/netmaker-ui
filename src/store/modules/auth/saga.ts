@@ -124,13 +124,13 @@ function* handleDeleteUserRequest(
   action: ReturnType<typeof deleteUser['request']>
 ) {
   try {
-    const response: AxiosResponse = yield apiRequestWithAuthSaga(
+    yield apiRequestWithAuthSaga(
       'delete',
       `/users/${action.payload.username}`,
       {}
     )
-    console.log(response.data)
-    yield put(deleteUser['success'](response.data))
+    
+    yield put(deleteUser['success'](action.payload))
   } catch (e: unknown) {
     yield put(deleteUser['failure'](e as Error))
   }

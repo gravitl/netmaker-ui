@@ -1,9 +1,13 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { authSelectors } from '~store/selectors'
 import { NmLink } from '~components/Link'
 import { NmTable, TableColumns } from '~components/Table'
 import { User } from '~store/types'
+import { Delete } from '@mui/icons-material'
+import { useDialog } from '~components/ConfirmDialog'
+import { useTranslation } from 'react-i18next'
+import { deleteUser } from '~store/modules/auth/actions'
 
 const columns: TableColumns<User> = [
   {
@@ -42,10 +46,30 @@ const columns: TableColumns<User> = [
 
 export const UserTable: React.FC = () => {
   const users = useSelector(authSelectors.getUsers)
+  const { Component: Dialog, setProps } = useDialog()
+  const { t } = useTranslation()
+  const dispatch = useDispatch()
 
   return (
     <>
-      <NmTable columns={columns} rows={users} getRowId={(row) => row.name} />
+      <NmTable columns={columns} rows={users} getRowId={(row) => row.name} 
+        actions={[
+          (row) => ({
+            tooltip: t('common.delete'),
+            disabled: false,
+            icon: <Delete />,
+            onClick: () => {
+              setProps({
+                message: t('users.delete'),
+                title: t('users.deleteTitle'),
+                onSubmit: () => dispatch(deleteUser.request({
+                  username: row.name
+                }))
+              })
+            },
+          }),
+        ]}/>
+        <Dialog />
     </>
   )
 }

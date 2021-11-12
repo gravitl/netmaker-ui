@@ -57,7 +57,9 @@ export interface DeleteUser {
   Request: {
     username: string
   }
-  Response: {}
+  Response: {
+    username: string
+  }
 }
 
 export interface UpdateUser {
