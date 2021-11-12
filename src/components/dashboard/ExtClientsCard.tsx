@@ -7,7 +7,7 @@ import SpeedDial from '@mui/material/SpeedDial';
 import SpeedDialIcon from '@mui/material/SpeedDialIcon';
 import SpeedDialAction from '@mui/material/SpeedDialAction';
 import PreviewIcon from '@mui/icons-material/Preview';
-import CreateIcon from '@mui/icons-material/AddBox';
+// import CreateIcon from '@mui/icons-material/AddBox';
 import { grey } from '@mui/material/colors';
 import Avatar from '@mui/material/Avatar';
 
@@ -33,7 +33,7 @@ export default function NodeCard() {
 
     const actions = [
         { icon: <Link to='/ext-clients' ><PreviewIcon /></Link>, name: t('common.view')},
-        { icon: <Link to='/ext-clients/create' ><CreateIcon /></Link>, name: t('common.create')},
+        // { icon: <Link to='/ext-clients/create' ><CreateIcon /></Link>, name: t('common.create')},
     ];
 
     const cardContentStyle = {

@@ -38,7 +38,7 @@ export const ExtClients: React.FC = () => {
           </Grid>
           <NetworkSelect />
         </Route>
-        <Route exact path={`${path}/create`}>
+        <Route path={`${path}/:netid`}>
             <h3>Create ExtClient</h3>
         </Route>
       </Switch>
