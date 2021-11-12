@@ -8,25 +8,22 @@ import { Node } from '~modules/node'
 import { NmTable, TableColumns } from '~components/Table'
 import { Chip } from '@mui/material'
 import { encode64 } from '~util/fields'
+import { TableToggleButton } from '../../networks/networkId/nodes/components/TableToggleButton'
+import { AltRoute, CallMerge, CallSplit } from '@mui/icons-material'
+import { i18n } from '../../../i18n/i18n'
 
 const columns: TableColumns<Node> = [
-  {
-    id: 'id', 
-    labelKey: 'node.id', 
-    minWidth: 170, 
-    sortable: true, 
+  { id: 'name',
+    labelKey: 'node.name',
+    minWidth: 100,
+    sortable: true,
     format: (value, node) => (
       <NmLink
-        to={`/networks/${node.network}/nodes/${encodeURIComponent(encode64(value))}`}
+        to={`/networks/${node.network}/nodes/${encodeURIComponent(encode64(node.id))}`}
       >
-        {encode64(value)}
+        {value}
       </NmLink>
     ), 
-  },
-  { id: 'name', 
-    labelKey: 'node.name', 
-    minWidth: 100, 
-    sortable: true,
   },
   {
     id: 'address',
@@ -40,6 +37,53 @@ const columns: TableColumns<Node> = [
     minWidth: 170,
     align: 'right',
     format: (value) => <NmLink to={`/networks/${value}`}>{value}</NmLink>,
+  },
+  {
+    id: 'isegressgateway',
+    labelKey: 'node.statusegress',
+    minWidth: 30,
+    align: 'center',
+    format: (isegress, row) =>
+    <TableToggleButton 
+      which='egress'
+      isOn={isegress}
+      node={row}
+      createText={`${i18n.t('node.createegress')} : ${row.name}`}
+      removeText={`${i18n.t('node.removeegress')} : ${row.name}`}
+      SignalIcon={<CallSplit />}
+      withHistory
+    />
+  },
+  {
+    id: 'isingressgateway',
+    labelKey: 'node.statusingress',
+    minWidth: 30,
+    align: 'center',
+    format: (isingress, row) =>
+    <TableToggleButton 
+      which='ingress'
+      isOn={isingress}
+      node={row}
+      createText={`${i18n.t('node.createingress')} : ${row.name}`}
+      removeText={`${i18n.t('node.removeingress')} : ${row.name}`}
+      SignalIcon={<CallMerge />}
+    />
+  },
+  {
+    id: 'isrelay',
+    labelKey: 'node.statusrelay',
+    minWidth: 30,
+    align: 'center',
+    format: (isrelay, row) =>
+      <TableToggleButton
+        which='relay'
+        isOn={isrelay}
+        node={row}
+        createText={`${i18n.t('node.createrelay')} : ${row.name}`}
+        removeText={`${i18n.t('node.removerelay')} : ${row.name}`}
+        SignalIcon={<AltRoute />}
+        withHistory
+      />
   },
   {
     id: 'lastcheckin',

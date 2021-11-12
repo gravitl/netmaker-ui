@@ -72,7 +72,8 @@ export const AccessKeyCreate: React.FC = () => {
         createAccessKey.request({
           netid,
           newAccessKey: {
-              ...data
+              name: data.name || '',
+              uses: data.uses || 0,
           }
         })
       )

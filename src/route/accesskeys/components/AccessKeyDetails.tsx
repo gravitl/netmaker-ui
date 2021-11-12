@@ -1,11 +1,12 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
-import { Grid, IconButton, Tooltip } from '@mui/material';
+import { Grid, IconButton, TextField, Tooltip } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import { useTranslation } from 'react-i18next'
 import { ContentCopy } from '@mui/icons-material';
 import copy from 'copy-to-clipboard';
+import { grey } from '@mui/material/colors';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -61,14 +62,17 @@ export default function AccessKeyDetails(Props: {
                 </Grid>
             </Grid>
             <Grid item xs={12}>
-                <Grid container justifyContent='center' alignItems='center'>
-                    <Grid item xs={12}  style={styles.centerStyle}>
-                    <h5>{t('accesskey.accesskey')}</h5>
+                <Grid container justifyContent='space-evenly' alignItems='center'>
+                    <Grid item xs={3}  style={styles.centerStyle}>
+                        <h3>{t('accesskey.accesskey')}</h3>
                     </Grid>
-                    <Grid item xs={10} style={styles.centerStyle}>
-                        <Typography variant='subtitle1' id="modal-modal-description" sx={{ mt: 2 }}>
-                            {Props.keyValue}
-                        </Typography>
+                    <Grid item xs={7} style={styles.centerStyle}>
+                        <TextField 
+                            fullWidth
+                            maxRows={1}
+                            value={Props.keyValue}
+                            sx={{backgroundColor: grey[100]}}
+                        />
                     </Grid>
                     <Grid item xs={1} style={styles.centerStyle}>
                         <Tooltip title={t('common.copy') as string} placement='top'>
@@ -77,13 +81,16 @@ export default function AccessKeyDetails(Props: {
                             </IconButton>
                         </Tooltip>
                     </Grid>
-                    <Grid item xs={12}  style={styles.centerStyle}>
-                        <h5>{t('accesskey.accessToken')}</h5>
+                    <Grid item xs={3}  style={styles.centerStyle}>
+                        <h3>{t('accesskey.accessToken')}</h3>
                     </Grid>
-                    <Grid item xs={10} style={styles.centeredText}>
-                        <Typography variant='caption' id="modal-modal-description" sx={{ mt: 2 }}>
-                            {Props.accessString}
-                        </Typography>
+                    <Grid item xs={7} style={styles.centeredText}>
+                        <TextField 
+                            maxRows={1}
+                            fullWidth
+                            value={Props.accessString}
+                            sx={{backgroundColor: grey[100]}}
+                        />
                     </Grid>
                     <Grid item xs={1} style={styles.centerStyle}>
                         <Tooltip title={`${t('common.copy')} ${t('accesskey.accessToken')}`} placement='top'>
@@ -92,13 +99,16 @@ export default function AccessKeyDetails(Props: {
                             </IconButton>
                         </Tooltip>
                     </Grid>
-                    <Grid item xs={12}  style={styles.centerStyle}>
-                        <h5>{t('accesskey.installCommand')}</h5>
+                    <Grid item xs={3}  style={styles.centerStyle}>
+                        <h3>{t('accesskey.installCommand')}</h3>
                     </Grid>
-                    <Grid item xs={10} style={styles.centeredText}>
-                        <Typography variant='caption' id="modal-modal-description" sx={{ mt: 2 }}>
-                            {getAgentInstallCommand(Props.accessString)}
-                        </Typography>
+                    <Grid item xs={7} style={styles.centeredText}>
+                        <TextField 
+                            fullWidth
+                            maxRows={1}
+                            value={getAgentInstallCommand(Props.accessString)}
+                            sx={{backgroundColor: grey[100]}}
+                        />
                     </Grid>
                     <Grid item xs={1} style={styles.centerStyle}>
                         <Tooltip title={`${t('common.copy')} ${t('accesskey.installCommand')}`} placement='top'>

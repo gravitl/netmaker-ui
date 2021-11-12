@@ -41,7 +41,7 @@ export default function NodeCard() {
     ];
 
     return (
-        <Card sx={{ minWidth: 275 }} variant='outlined' style={cardStyle}>
+        <Card sx={{ minWidth: 275, backgroundColor: grey[200] }} variant='outlined' style={cardStyle}>
             <CardContent>
                 <Avatar sx={{ bgcolor: grey[900] }} aria-label={t('node.nodes')} >
                     <DeviceHub />
