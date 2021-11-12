@@ -70,3 +70,12 @@ export interface UpdateUser {
   }
   Response: User
 }
+
+export interface UpdateUserNetworks {
+  Request: {
+    username: string
+    isadmin: boolean
+    networks: Array<string>
+  }
+  Response: UpdateUserNetworks['Request']
+}

@@ -6,6 +6,7 @@ import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 import { NmLink } from '~components/index'
 import { UserTable } from './components/UserTable'
 import { UserCreate } from './create/UserCreate'
+import { UserEdit } from './userId/UserId'
 
 export const Users: React.FC = () => {
   const { path } = useRouteMatch()
@@ -39,7 +40,8 @@ export const Users: React.FC = () => {
         <Route path={`${path}/create`}>
           <UserCreate />
         </Route>
-        <Route path={`${path}/:networkId`}>
+        <Route path={`${path}/:username`}>
+          <UserEdit />
         </Route>
       </Switch>
     </Container>

@@ -12,6 +12,7 @@ import {
   createUser,
   deleteUser,
   updateUser,
+  updateUserNetworks,
 } from './actions'
 import { authSelectors } from '~store/selectors'
 import { getHistory } from '../router/selectors'
@@ -160,6 +161,27 @@ function* handleUpdateUserRequest(
   }
 }
 
+function* handleUpdateUserNetworksRequest(
+  { payload }: ReturnType<typeof updateUserNetworks['request']>
+) {
+  try {
+    const response: AxiosResponse = yield apiRequestWithAuthSaga(
+      'put',
+      `/users/networks/${payload.username}`,
+      payload,
+      {
+        headers: {
+          'Content-type': 'application/json',
+        },
+      }
+    )
+    console.log(response.data)
+    yield put(updateUserNetworks['success'](payload))
+  } catch (e: unknown) {
+    yield put(updateUserNetworks['failure'](e as Error))
+  }
+}
+
 function* handleIsLoggedIn() {
   const isLoggedIn: boolean = yield select(authSelectors.getLoggedIn)
 
@@ -182,6 +204,7 @@ export function* saga() {
     takeEvery(getType(createUser['request']), handleCreateUserRequest),
     takeEvery(getType(deleteUser['request']), handleDeleteUserRequest),
     takeEvery(getType(updateUser['request']), handleUpdateUserRequest),
+    takeEvery(getType(updateUserNetworks['request']), handleUpdateUserNetworksRequest),
     call(handleHasAdminRequest, hasAdmin.request()),
     call(handleIsLoggedIn),
   ])

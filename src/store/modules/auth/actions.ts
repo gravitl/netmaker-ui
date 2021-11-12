@@ -8,6 +8,7 @@ import {
   HasAdmin,
   Login,
   UpdateUser,
+  UpdateUserNetworks,
   User,
 } from './types'
 
@@ -62,3 +63,9 @@ export const updateUser = createAsyncAction(
   'api_updateUser_Success',
   'api_updateUser_Failure'
 )<UpdateUser['Request'], UpdateUser['Response'], Error>()
+
+export const updateUserNetworks = createAsyncAction(
+  'api_updateUserNetworks_Request',
+  'api_updateUserNetworks_Success',
+  'api_updateUserNetworks_Failure'
+)<UpdateUserNetworks['Request'], UpdateUserNetworks['Response'], Error>()

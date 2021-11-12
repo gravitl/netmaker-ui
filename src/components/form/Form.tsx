@@ -82,7 +82,7 @@ ref: React.ForwardedRef<FormRef<T>>) {
         <br />
         <Grid container justifyContent="space-around" alignItems="center">
           <Grid item xs={8}>
-            <Button {...submitProps} onClick={handleSubmit(onSubmit)}>
+            <Button {...submitProps} disabled={disabled} onClick={handleSubmit(onSubmit)}>
               {submitText ? submitText : t('common.submit')}
             </Button>
           </Grid>

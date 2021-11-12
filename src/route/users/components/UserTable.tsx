@@ -15,7 +15,7 @@ const columns: TableColumns<User> = [
     labelKey: 'users.name',
     minWidth: 170,
     sortable: true,
-    format: (value) => <NmLink to={`/users/${value}`}>{value}</NmLink>,
+    format: (username) => <NmLink to={`/users/${username}`}>{username}</NmLink>,
   },
   {
     id: 'isAdmin',
