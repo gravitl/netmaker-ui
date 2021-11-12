@@ -121,9 +121,16 @@ export interface DeleteExternalClientPayload {
   Response: void
 }
 
+export interface DeleteEgressNodePayload {
+  Request: {
+    netid: string
+    nodeMac: string
+  }
+  Response: NodePayload
+}
+
 export interface CreateEgressNodePayload {
   Request: {
-    token: string
     netid: string
     nodeid: string
     payload: {

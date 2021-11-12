@@ -236,6 +236,14 @@ export const en: LanguageResource = {
       failure: {
         egress: 'Failed to create Egress Gateway.'
       }
+    },
+    delete: {
+      success: {
+        egress: 'Succesfully removed Egress Gateway!'
+      },
+      failure: {
+        egress: 'Failed to remove Egress Gateway.'
+      }
     }
   }
 }

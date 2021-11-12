@@ -1,6 +1,6 @@
 import { produce } from 'immer'
 import { createReducer } from 'typesafe-actions'
-import { deleteNode, getNodes, updateNode } from './actions'
+import { createEgressNode, deleteEgressNode, deleteNode, getNodes, updateNode } from './actions'
 import { Node } from './types'
 import { nodePayloadToNode } from './utils'
 
@@ -45,3 +45,24 @@ export const reducer = createReducer({
       }
     })
   )
+  .handleAction(createEgressNode['success'], (state, action) => 
+    produce(state, (draftState) => {
+      const index = draftState.nodes.findIndex(
+        node => node.id === action.payload.id
+      )
+      if (~index) {
+        draftState.nodes[index] = nodePayloadToNode(action.payload)
+      }
+    })
+  )
+  .handleAction(deleteEgressNode['success'], (state, action) => 
+    produce(state, (draftState) => {
+      const index = draftState.nodes.findIndex(
+        node => node.id === action.payload.id
+      )
+      if (~index) {
+        draftState.nodes[index] = nodePayloadToNode(action.payload)
+      }
+    })
+  )
+  

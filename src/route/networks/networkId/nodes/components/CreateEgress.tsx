@@ -95,7 +95,6 @@ export function CreateEgress() {
             newRanges[i] = newRanges[i].trim()
         }
         dispatch(createEgressNode.request({
-            token: '',
             netid: networkId,
             nodeid: nodeMac,
             payload: {

@@ -232,6 +232,14 @@ export interface LanguageResource {
       failure: {
         egress: string
       }
+    },
+    delete: {
+      success: {
+        egress: string
+      },
+      failure: {
+        egress: string
+      }
     }
   }
 }

@@ -3,6 +3,7 @@ import {
   createEgressNode,
   createExternalClient,
   createIngressNode,
+  deleteEgressNode,
   deleteExternalClient,
   deleteIngressNode,
   deleteNode,
@@ -272,8 +273,6 @@ function* handleCreateEgressNodeRequest(
       },
     })
 
-    console.log(action.payload)
-
     const response: AxiosResponse<NodePayload> = yield apiRequestWithAuthSaga(
       'post',
       `/nodes/${action.payload.netid}/${action.payload.nodeid}/creategateway`,
@@ -281,11 +280,41 @@ function* handleCreateEgressNodeRequest(
       {}
     )
 
-    console.log(response.data)
-
     yield put(createEgressNode['success'](response.data))
   } catch (e: unknown) {
     yield put(createEgressNode['failure'](e as Error))
+  }
+}
+
+function* handleDeleteEgressNodeRequest(
+  action: ReturnType<typeof deleteEgressNode['request']>
+) {
+  try {
+    yield fork(generatorToastSaga, {
+      success: deleteEgressNode['success'],
+      error: deleteEgressNode['failure'],
+      params: {
+        pending: i18n.t('common.pending', {
+          nodeName: action.payload.nodeMac,
+        }),
+        success: i18n.t('toast.delete.success.egress', {
+          nodeName: action.payload.nodeMac,
+        }),
+        error: i18n.t('toast.delete.failure.egress', {
+          nodeName: action.payload.nodeMac,
+        }),
+      },
+    })
+
+    const response: AxiosResponse<NodePayload> = yield apiRequestWithAuthSaga(
+      'delete',
+      `/nodes/${action.payload.netid}/${action.payload.nodeMac}/deletegateway`,
+      {}
+    )
+
+    yield put(deleteEgressNode['success'](response.data))
+  } catch (e: unknown) {
+    yield put(deleteEgressNode['failure'](e as Error))
   }
 }
 
@@ -324,7 +353,10 @@ export function* saga() {
       getType(createEgressNode['request']),
       handleCreateEgressNodeRequest
     ),
-
+    takeEvery(
+      getType(deleteEgressNode['request']),
+      handleDeleteEgressNodeRequest
+    ),
     handleLoginSuccess(),
   ])
 }

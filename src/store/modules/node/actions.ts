@@ -9,6 +9,7 @@ import {
   CreateExternalClientPayload,
   GetExternalClientsPayload,
   UpdateNodePayload,
+  DeleteEgressNodePayload,
 } from './types'
 
 export const getNodes = createAsyncAction(
@@ -60,6 +61,16 @@ export const createEgressNode = createAsyncAction(
 )<
   CreateEgressNodePayload['Request'],
   CreateEgressNodePayload['Response'],
+  Error
+>()
+
+export const deleteEgressNode = createAsyncAction(
+  'Node_deleteEgressNode_Request',
+  'Node_deleteEgressNode_Success',
+  'Node_deleteEgressNode_Failure'
+)<
+  DeleteEgressNodePayload['Request'],
+  DeleteEgressNodePayload['Response'],
   Error
 >()
 
