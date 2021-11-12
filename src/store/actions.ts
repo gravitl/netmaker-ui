@@ -5,6 +5,7 @@ import { actions as network } from './modules/network'
 import { actions as node } from './modules/node'
 import { actions as server } from './modules/server'
 import { actions as toast } from './modules/toast'
+import { actions as router } from './modules/router'
 
 export const actions = {
   auth,
@@ -12,6 +13,7 @@ export const actions = {
   node,
   server,
   toast,
+  router,
 }
 
 export type RootAction = ActionType<typeof actions>

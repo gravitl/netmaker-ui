@@ -10,6 +10,8 @@ import CustomDrawer from '~components/drawer/CustomDrawer'
 import { Grid } from '@mui/material'
 import { AccessKeys } from './accesskeys/AccessKeys'
 import { ExtClients } from './extclients/ExtClients'
+import { RouterState } from '~store/modules/router/Component'
+import { Users } from './users/Users'
 
 function NoMatch() {
   const location = useLocation()
@@ -54,11 +56,15 @@ function Routes() {
           <PrivateRoute path="/ext-clients">
             <ExtClients />
           </PrivateRoute>
+          <PrivateRoute path="/users" to={{pathname: '/'}} condition={(user) => !!user?.isAdmin}>
+            <Users />
+          </PrivateRoute>
           <Route path="/login" children={<Login />} />
           <Route path="*">
             <NoMatch />
           </Route>
         </Switch>
+        <RouterState />
         {/* Show the modal when a background page is set */}
         {from && <Route path="/login" children={<Login />} />}
       </Grid>
