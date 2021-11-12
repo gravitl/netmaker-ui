@@ -6,6 +6,7 @@ import { USER_KEY } from '../../../config'
 import {
   createAdmin,
   createUser,
+  deleteUser,
   getAllUsers,
   hasAdmin,
   login,
@@ -105,7 +106,7 @@ export const reducer = createReducer({
         isAdmin: user.isadmin,
         name: user.username,
         networks: user.networks,
-        exp: 0
+        exp: 0,
       }))
     })
   )
@@ -115,7 +116,14 @@ export const reducer = createReducer({
         isAdmin: payload.isadmin,
         name: payload.username,
         exp: 0,
-        networks: payload.networks
+        networks: payload.networks,
       })
+    })
+  )
+  .handleAction(deleteUser['success'], (state, { payload }) =>
+    produce(state, (draftState) => {
+      draftState.users = draftState.users.filter(
+        (user) => user.name !== payload.username
+      )
     })
   )
