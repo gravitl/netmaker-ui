@@ -1,32 +1,31 @@
 import React from 'react'
+import { IconButton, Tooltip } from '@mui/material'
 import { NmLink } from '~components/index'
 import { NmTable, TableColumns } from '~components/Table'
 import { Node } from '~modules/node'
 import { useTranslation } from 'react-i18next'
-import { useRouteMatch, useParams, Route, Switch } from 'react-router-dom'
+import { useRouteMatch, useParams, Route, Switch, Link } from 'react-router-dom'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 import { useNodesByNetworkId } from '~util/network'
 import { NodeId } from './nodeId/NodeId'
 import { Chip, Grid, Typography } from '@mui/material'
 import { encode64 } from '~util/fields'
+import { CallMerge, CallSplit, Close, LeakAdd, LeakRemove, MobiledataOff } from '@mui/icons-material'
+import { i18n } from '../../../../i18n/i18n'
+import { CreateEgress } from './components/CreateEgress'
 
 const columns: TableColumns<Node> = [
-  { id: 'id',
-  labelKey: 'node.id',
-  minWidth: 170,
-  sortable: true,
-    format: (value, node) => (
-      <NmLink
-        to={`/networks/${node.network}/nodes/${encodeURIComponent(encode64(value))}`}
-      >
-        {encode64(value)}
-      </NmLink>
-    ), 
-  },
   { id: 'name',
     labelKey: 'node.name',
     minWidth: 100,
     sortable: true,
+    format: (value, node) => (
+      <NmLink
+        to={`/networks/${node.network}/nodes/${encodeURIComponent(encode64(node.id))}`}
+      >
+        {value}
+      </NmLink>
+    ), 
   },
   {
     id: 'address',
@@ -42,10 +41,46 @@ const columns: TableColumns<Node> = [
     format: (value) => <NmLink to={`/networks/${value}`}>{value}</NmLink>,
   },
   {
+    id: 'isegressgateway',
+    labelKey: 'node.statusegress',
+    minWidth: 30,
+    align: 'center',
+    format: (isegress, row) =>
+      <Tooltip placement='top' title={String(!isegress ? i18n.t('node.createegress') : i18n.t('node.removeegress'))}>
+        <IconButton 
+          color={isegress ? 'success' : 'default'} 
+          component={Link}
+          to={`/networks/${row.network}/nodes/${encode64(row.id)}/create-egress`}
+        >
+          {!isegress ? <CallSplit /> : <Close />}
+        </IconButton>
+      </Tooltip>
+  },
+  {
+    id: 'isingressgateway',
+    labelKey: 'node.statusingress',
+    minWidth: 30,
+    align: 'center',
+    format: (isingress) =>
+      <Tooltip placement='top' title={String(!isingress ? i18n.t('node.createingress') : i18n.t('node.removeingress'))}><IconButton color={isingress ? 'success' : 'default'} disabled={isingress}>
+        {!isingress ? <CallMerge /> : <MobiledataOff />}
+      </IconButton></Tooltip>
+  },
+  {
+    id: 'isrelay',
+    labelKey: 'node.statusrelay',
+    minWidth: 30,
+    align: 'center',
+    format: (isrelay) => <>
+      <Tooltip placement='top' title={String(!isrelay ? i18n.t('node.createrelay') : i18n.t('node.removerelay'))}><IconButton color={isrelay ? 'success' : 'default'} disabled={isrelay}>
+        {!isrelay ? <LeakAdd /> : <LeakRemove />}
+      </IconButton></Tooltip></>
+  },
+  {
     id: 'lastcheckin',
     labelKey: 'node.status',
     minWidth: 170,
-    align: 'right',
+    align: 'center',
     format: (lastcheckin) => {
       const time = Date.now() / 1000
       if (time - lastcheckin >= 1800)
@@ -94,7 +129,7 @@ export const NetworkNodes: React.FC = () => {
           getRowId={(row) => row.id}
         />
       </Route>
-      <Route path={`${path}/create`}>{/* <NetworkCreate /> */}</Route>
+      <Route path={`${path}/:nodeId/create-egress`} children={<CreateEgress />} />
       <Route path={`${path}/:nodeId`}>
         <NodeId />
       </Route>

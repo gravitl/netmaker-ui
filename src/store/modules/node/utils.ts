@@ -15,6 +15,8 @@ export const nodeToNodePayload = (node: Node): NodePayload => {
     islocal: node.islocal ? 'yes' : 'no',
     roaming: node.roaming ? 'yes' : 'no',
     ipforwarding: node.ipforwarding ? 'yes' : 'no',
+    isrelay: node.isrelay ? 'yes' : 'no',
+    isrelayed: node.isrelayed ? 'yes' : 'no',
   }
 }
 export const nodePayloadToNode = (node: NodePayload): Node => {
@@ -32,5 +34,7 @@ export const nodePayloadToNode = (node: NodePayload): Node => {
     islocal: node.islocal === 'yes',
     roaming: node.roaming === 'yes',
     ipforwarding: node.ipforwarding === 'yes',
+    isrelay: node.isrelay === 'yes',
+    isrelayed: node.isrelayed === 'yes',
   }
 }

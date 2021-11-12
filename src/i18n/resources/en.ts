@@ -37,6 +37,8 @@ export const en: LanguageResource = {
     users: 'Users',
     dns: 'DNS',
     dashboard: 'Dashboard',
+    createegress: 'Create Egress',
+    createrelay: 'Create Relay',
   },
   common: {
     disabled: 'Disabled',
@@ -76,6 +78,9 @@ export const en: LanguageResource = {
     entry: 'DNS Entry',
     deleteconfirm: 'Are you sure you want to remove this DNS Entry?',
   },
+  error: {
+    notfound: 'Not found'
+  },
   extclient: {
     extclients: "External Clients",
     extclient: "Ext Client",
@@ -113,6 +118,10 @@ export const en: LanguageResource = {
     netid: 'Network Name',
     deleteconfirm: 'Are you sure you want to delete this network?',
   },
+  helper: {
+    egress: 'Enter your network interface name, i.e. "eth0"',
+    egressiface: 'Find your interface on linux with "ip link show"',
+  },
   node: {
     nodes: 'Nodes',
     id: 'Id',
@@ -125,9 +134,10 @@ export const en: LanguageResource = {
     localrange: 'Local Range',
     isingressgateway: 'Is Ingress Gateway',
     isegressgateway: 'Is Egress Gateway',
+    isrelay: 'Is a Relay Server',
     pullchanges: 'Pull Changes',
     dnson: 'Is DNS on',
-    isdualstack: 'Dualstack',
+    isdualstack: 'Dualstack (IPv6 Enabled)',
     ipforwarding: 'Ipforwarding',
     roaming: 'Roaming',
     islocal: 'Is Local',
@@ -158,6 +168,19 @@ export const en: LanguageResource = {
     relayaddrs: 'Relay Addresses (Comma Separated)',
     os: 'Node Operating System',
     status: 'Status',
+    createegress: 'Create Egress Gateway',
+    createingress: 'Create Ingress Gateway',
+    createrelay: 'Make Relay',
+    removeegress: 'Remove Egress Gateway',
+    removeingress: 'Remove Ingress Gateway',
+    removerelay: 'Remove Relay',
+    statusegress: 'Egress Status',
+    statusingress: 'Ingress Status',
+    statusrelay: 'Relay Status',
+    confirmegress: 'Are you sure you want to make an Egress Gateway?',
+    confirmingress: 'Are you sure you want to make an Ingress Gateway?',
+    confirmrelay: 'Are you sure you want to make a Relay Server?',
+    deleteconfirm: 'Are you sure you want to delete this node?',
   },
   login: {
     validation: {
@@ -196,4 +219,23 @@ export const en: LanguageResource = {
       edit: 'Edit User Networks',
     },
   },
+  toast: {
+    pending: 'Request pending',
+    update: {
+      success: {
+        node: 'Node updated successfully!'
+      },
+      failure: {
+        node: 'Node updated failed!'
+      }
+    },
+    create: {
+      success: {
+        egress: 'Succesfully created Egress Gateway!'
+      },
+      failure: {
+        egress: 'Failed to create Egress Gateway.'
+      }
+    }
+  }
 }

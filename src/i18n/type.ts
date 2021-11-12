@@ -35,6 +35,8 @@ export interface LanguageResource {
     users: string
     dns: string
     dashboard: string
+    createegress: string
+    createrelay: string
   }
   common: {
     disabled: string
@@ -74,6 +76,9 @@ export interface LanguageResource {
     entry: string
     deleteconfirm: string
   }
+  error: {
+    notfound: string
+  }
   extclient: {
     extclients: string
     extclient: string
@@ -83,6 +88,10 @@ export interface LanguageResource {
     none: string
     name: string
     deleteconfirm: string
+  }
+  helper: {
+    egress: string
+    egressiface: string
   }
   network: {
     allowmanualsignup: string
@@ -123,6 +132,7 @@ export interface LanguageResource {
     localrange: string
     isingressgateway: string
     isegressgateway: string
+    isrelay: string
     pullchanges: string
     dnson: string
     isdualstack: string
@@ -156,6 +166,19 @@ export interface LanguageResource {
     relayaddrs: string
     os: string
     status: string
+    createegress: string
+    createingress: string
+    createrelay: string
+    removeegress: string
+    removeingress: string
+    removerelay: string
+    statusegress: string
+    statusingress: string
+    statusrelay: string
+    confirmrelay: string
+    confirmingress: string
+    confirmegress: string
+    deleteconfirm: string
   }
   login: {
     validation: {
@@ -190,6 +213,25 @@ export interface LanguageResource {
       create: string
       delete: string
       edit: string
+    }
+  }
+  toast: {
+    pending: string,
+    update: {
+      success: {
+        node: string
+      }
+      failure: {
+        node: string
+      }
+    },
+    create: {
+      success: {
+        egress: string
+      }
+      failure: {
+        egress: string
+      }
     }
   }
 }

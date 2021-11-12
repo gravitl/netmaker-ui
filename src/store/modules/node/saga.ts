@@ -50,22 +50,24 @@ function* handleUpdateNodeRequest(
       success: updateNode['success'],
       error: updateNode['failure'],
       params: {
-        pending: i18n.t('updateNodeToastRequest', {
+        pending: i18n.t('toast.pending', {
           nodeid: action.payload.node.id,
         }),
-        success: i18n.t('updateNodeToastSuccess', {
+        success: i18n.t('toast.update.success.node', {
           nodeid: action.payload.node.id,
         }),
-        error: i18n.t('updateNodeToastError', {
+        error: i18n.t('toast.update.failure.node', {
           nodeid: action.payload.node.id,
         }),
       },
     })
 
+    const newNode = nodeToNodePayload(action.payload.node)
+
     const response: AxiosResponse<NodePayload> = yield apiRequestWithAuthSaga(
       'put',
       `/nodes/${action.payload.netid}/${action.payload.node.id}`,
-      nodeToNodePayload(action.payload.node),
+      newNode,
       {}
     )
 
@@ -97,11 +99,11 @@ function* handleDeleteNodeRequest(
 
     yield apiRequestWithAuthSaga(
       'delete',
-      `/nodes/${action.payload.netid}/${action.payload.nodeid}`,
+      `/nodes/${action.payload.netid}/${action.payload.nodeid.split('###')[0]}`,
       {}
     )
 
-    yield put(deleteNode['success']())
+    yield put(deleteNode['success']({nodeid: action.payload.nodeid}))
   } catch (e: unknown) {
     yield put(deleteNode['failure'](e as Error))
   }
@@ -258,17 +260,19 @@ function* handleCreateEgressNodeRequest(
       success: createEgressNode['success'],
       error: createEgressNode['failure'],
       params: {
-        pending: i18n.t('createEgressNodeToastRequest', {
+        pending: i18n.t('common.pending', {
           nodeName: action.payload.nodeid,
         }),
-        success: i18n.t('createEgressNodeToastSuccess', {
+        success: i18n.t('toast.create.success.egress', {
           nodeName: action.payload.nodeid,
         }),
-        error: i18n.t('createEgressNodeToastError', {
+        error: i18n.t('toast.create.failure.egress', {
           nodeName: action.payload.nodeid,
         }),
       },
     })
+
+    console.log(action.payload)
 
     const response: AxiosResponse<NodePayload> = yield apiRequestWithAuthSaga(
       'post',
@@ -276,6 +280,8 @@ function* handleCreateEgressNodeRequest(
       action.payload.payload,
       {}
     )
+
+    console.log(response.data)
 
     yield put(createEgressNode['success'](response.data))
   } catch (e: unknown) {

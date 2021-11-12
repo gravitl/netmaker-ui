@@ -1,3 +1,4 @@
+import React from 'react'
 import {
   Button,
   Grid,
@@ -6,6 +7,7 @@ import {
   FormControlLabel,
 } from '@mui/material'
 import { useTranslation } from 'react-i18next'
+import { useDispatch } from 'react-redux'
 import {
   useRouteMatch,
   useHistory,
@@ -18,22 +20,46 @@ import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 import { decode64 } from '~util/fields'
 import { useNodeById } from '~util/node'
 import { datePickerConverter } from '~util/unixTime'
+import { NodeEdit } from '../nodeEdit/NodeEdit'
+import { deleteNode } from '~modules/node/actions'
+import CustomDialog from '~components/dialog/CustomDialog'
 
 export const NodeId: React.FC = () => {
   const { path, url } = useRouteMatch()
   const history = useHistory()
   const { t } = useTranslation()
+  const dispatch = useDispatch()
 
-  const { nodeId } = useParams<{ nodeId: string }>()
+  const { networkId, nodeId } = useParams<{ nodeId: string, networkId: string }>()
   const node = useNodeById(decode64(decodeURIComponent(nodeId)))
+  const [open, setOpen] = React.useState(false)
 
   useLinkBreadcrumb({
     link: url,
     title: decodeURIComponent(nodeId),
   })
 
+  const handleClose = () => {
+    setOpen(false)
+  }
+
+  const handleOpen = () => {
+    setOpen(true)
+  }
+ 
+
   if (!node) {
     return <div>Not Found</div>
+  }
+
+  const handleDeleteNode = () => {
+    dispatch(
+      deleteNode.request({
+        netid: node.network,
+        nodeid: node.id,
+      })
+    )
+    history.push(`/${t('breadcrumbs.networks')}/${networkId}/${t('breadcrumbs.nodes')}`)
   }
 
   const rowMargin = {
@@ -44,33 +70,26 @@ export const NodeId: React.FC = () => {
     <Switch>
       <Route path={`${path}/edit`}>
         {/* <NodeEdit node={node} /> */}
-        <Button
-          variant="outlined"
-          onClick={() => {
+        <NodeEdit onCancel={() => {
             history.push(
               url
                 .replace(':networkId', node.network)
                 .replace(':nodeId', node.id)
                 .replace('/edit', '')
             )
-          }}
-        >
-          {t('common.cancel')}
-        </Button>
-        <Button
-          variant="outlined"
-          onClick={() => console.log('removeNetwork(networkData.netid)')}
-        >
-          {t('common.delete')}
-        </Button>
+          }}/>
       </Route>
       <Route exact path={path}>
         <Grid
           container
-          // sx={{
-          //   '& .MuiTextField-root': { m: 1, width: '25ch' },
-          // }}
         >
+          <CustomDialog
+            open={open}
+            handleClose={handleClose}
+            handleAccept={handleDeleteNode}
+            message={t('node.deleteconfirm')}
+            title={`${t('common.delete')} ${node.name}`}
+          />
           <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
             <TextField disabled value={node.address} label={t('node.address')} />
           </Grid>
@@ -139,20 +158,6 @@ export const NodeId: React.FC = () => {
           <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <TextField
             disabled
-            value={node.accesskey}
-            label={t('node.accesskey')}
-          />
-          </Grid>
-          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-          <TextField
-            disabled
-            value={node.interface}
-            label={t('node.interface')}
-          />
-          </Grid>
-          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-          <TextField
-            disabled
             value={datePickerConverter(node.lastmodified)}
             label={t('node.lastmodified')}
           />
@@ -160,22 +165,8 @@ export const NodeId: React.FC = () => {
           <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <TextField
             disabled
-            value={datePickerConverter(node.keyupdatetimestamp)}
-            label={t('node.keyupdatetimestamp')}
-          />
-          </Grid>
-          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-          <TextField
-            disabled
             value={datePickerConverter(node.expdatetime)}
             label={t('node.expdatetime')}
-          />
-          </Grid>
-          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-          <TextField
-            disabled
-            value={datePickerConverter(node.lastpeerupdate)}
-            label={t('node.lastpeerupdate')}
           />
           </Grid>
           <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
@@ -191,9 +182,6 @@ export const NodeId: React.FC = () => {
             value={node.macaddress}
             label={t('node.macaddress')}
           />
-          </Grid>
-          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-          <TextField disabled value={node.network} label={t('node.network')} />
           </Grid>
           <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <TextField
@@ -214,6 +202,9 @@ export const NodeId: React.FC = () => {
           </Grid>
           <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <TextField disabled value={node.mtu} label={t('node.mtu')} />
+          </Grid>
+          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
+          <TextField disabled value={node.network} label={t('node.network')} />
           </Grid>
           <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <FormControlLabel
@@ -252,13 +243,6 @@ export const NodeId: React.FC = () => {
           </Grid>
           <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <FormControlLabel
-            label={t('node.isserver')}
-            control={<SwitchField checked={node.isserver} disabled />}
-            disabled
-          />
-          </Grid>
-          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-          <FormControlLabel
             label={t('node.islocal')}
             control={<SwitchField checked={node.islocal} disabled />}
             disabled
@@ -284,7 +268,7 @@ export const NodeId: React.FC = () => {
             </NmLink>
           </Grid>
           <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-            <Button variant='outlined'>
+            <Button variant='outlined' onClick={handleOpen}>
             {t('common.delete')}
             </Button>
           </Grid>

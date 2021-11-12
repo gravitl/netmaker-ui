@@ -10,13 +10,14 @@ export const NmFormInputSwitch: React.FC<{
   label: string
   disabled?: boolean
   labelPlacement?: FormControlLabelProps['labelPlacement']
-}> = ({ name, label, disabled, labelPlacement }) => {
+  defaultValue?: boolean
+}> = ({ name, label, disabled, labelPlacement, defaultValue }) => {
   const { control, disabled: formDisabled } = useFormControl()
   return (
     <Controller
       name={name}
       control={control}
-      render={({ field: { onChange, value } }) => (
+      render={({ field: { onChange, value = defaultValue } }) => (
         <FormControlLabel
           disabled={formDisabled || disabled}
           labelPlacement={labelPlacement}

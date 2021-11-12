@@ -26,6 +26,9 @@ export interface Node {
   password: string
   network: string
   ispending: string
+  isrelay: boolean
+  isrelayed: boolean
+  relayaddrs: []
   isegressgateway: boolean
   isingressgateway: boolean
   egressgatewayranges: []
@@ -60,6 +63,8 @@ export type NodePayload = Modify<
     islocal: 'yes' | 'no'
     roaming: 'yes' | 'no'
     ipforwarding: 'yes' | 'no'
+    isrelayed: 'yes' | 'no'
+    isrelay: 'yes' | 'no'
   }
 >
 
@@ -131,11 +136,12 @@ export interface CreateEgressNodePayload {
 
 export interface DeleteNodePayload {
   Request: {
-    token: string
     netid: string
     nodeid: string
   }
-  Response: void
+  Response: {
+    nodeid: string
+  }
 }
 
 export interface CreatIngressNodePayload {
