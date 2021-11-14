@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { createSelector } from 'reselect'
 import { RootState } from 'typesafe-actions'
-import { Node } from '~modules/node'
+import { ExternalClient, Node } from '~modules/node'
 import { nodeSelectors } from '~store/selectors'
 
 const nodeByIdPredicate = (id: Node['id']) => (node: Node) => node.id === id
@@ -39,4 +39,8 @@ export const useNode = (name: Node['name']) => {
 
 export const filterIngressGateways = (nodes: Node[]) => {
   return nodes.filter(node => node.ingressgatewayrange)
+}
+
+export const filterExtClientsByNetwork = (clients: ExternalClient[], netid: string) => {
+  return clients.filter(client => client.network === netid)
 }

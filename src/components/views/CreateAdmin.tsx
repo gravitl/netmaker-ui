@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { correctUserNameRegex, correctPasswordRegex } from '../../util/regex'
 import { authSelectors } from '../../store/selectors'
 import { createAdmin } from '../../store/modules/auth/actions'
-import { Redirect, useLocation } from 'react-router'
+import { Redirect } from 'react-router'
 
 const styles = {
   centerText: {

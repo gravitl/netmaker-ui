@@ -9,6 +9,7 @@ import { useNetwork } from '~util/network'
 import { Delete } from '@mui/icons-material'
 import { deleteAccessKey } from '~store/modules/network/actions'
 import CustomDialog from '~components/dialog/CustomDialog'
+import { NetworkSelect } from '~components/NetworkSelect'
 
 export const NetworkAccessKeys: React.FC = () => {
   const listOfNetworks = useSelector(networkSelectors.getNetworks)
@@ -77,11 +78,18 @@ export const NetworkAccessKeys: React.FC = () => {
             />                
         }
         <Grid item xs={12}>
-            <div style={styles.titleStyle}>
-                <Typography variant='h4'>
-                    {`${t('accesskey.viewing')} ${netid}`}
-                </Typography>
-            </div>
+            <Grid container justifyContent='space-between' alignItems='center'>
+                <Grid item xs={6}>
+                    <div style={styles.titleStyle}>
+                        <Typography variant='h4'>
+                            {`${t('accesskey.viewing')} ${netid}`}
+                        </Typography>
+                    </div>
+                </Grid>
+                <Grid item xs={5}>
+                    <NetworkSelect base='access-keys' />
+                </Grid>
+            </Grid>
             <hr />
         </Grid>
         <Grid item xs={10}>

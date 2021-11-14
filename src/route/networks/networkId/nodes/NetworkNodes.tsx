@@ -14,6 +14,7 @@ import { i18n } from '../../../../i18n/i18n'
 import { CreateEgress } from './components/CreateEgress'
 import { TableToggleButton } from './components/TableToggleButton'
 import { CreateRelay } from './components/CreateRelay'
+import { NetworkSelect } from '../../../../components/NetworkSelect'
 
 const columns: TableColumns<Node> = [
   { id: 'name',
@@ -130,9 +131,16 @@ export const NetworkNodes: React.FC = () => {
           alignItems="center"
         >
           <Grid item xs={12}>
-            <Typography variant='h4'>
-              {`${networkId} ${t('node.nodes')}`}
-            </Typography>
+            <Grid container justifyContent='space-between' alignItems='center'>
+              <Grid item xs={4}>
+                <Typography variant='h4'>
+                  {`${networkId} ${t('node.nodes')}`}
+                </Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <NetworkSelect base='networks' extension='nodes'/>
+              </Grid>
+          </Grid>
           </Grid>
         </Grid>
         <NmTable

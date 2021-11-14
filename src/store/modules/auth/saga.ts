@@ -160,7 +160,7 @@ function* handleUpdateUserNetworksRequest(
   { payload }: ReturnType<typeof updateUserNetworks['request']>
 ) {
   try {
-    const response: AxiosResponse = yield apiRequestWithAuthSaga(
+    yield apiRequestWithAuthSaga(
       'put',
       `/users/networks/${payload.username}`,
       payload,
