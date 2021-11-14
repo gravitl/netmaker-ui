@@ -1,7 +1,7 @@
 import { produce } from 'immer'
 import { createReducer } from 'typesafe-actions'
 import { ExternalClient } from '~store/types'
-import { createEgressNode, createIngressNode, createRelayNode, deleteEgressNode, deleteIngressNode, deleteNode, deleteRelayNode, getExternalClientConf, getExternalClients, getNodes, updateNode } from './actions'
+import { clearQr, createEgressNode, createIngressNode, createRelayNode, deleteEgressNode, deleteExternalClient, deleteIngressNode, deleteNode, deleteRelayNode, getExternalClientConf, getExternalClients, getNodes, updateExternalClient, updateNode } from './actions'
 import { Node } from './types'
 import { download, nodePayloadToNode } from './utils'
 
@@ -10,6 +10,7 @@ export const reducer = createReducer({
   isFetching: false as boolean,
   externalClients: [] as Array<ExternalClient>,
   isFetchingClients: false as boolean,
+  qrData: '' as string
 })
   .handleAction(getNodes['request'], (state, _) =>
     produce(state, (draftState) => {
@@ -130,7 +131,28 @@ export const reducer = createReducer({
       if (action.payload.type === 'file') {
         download(`${action.payload.filename}.conf`, action.payload.data)
       } else {
-        console.log('handle QR..')
+        draftState.qrData = 'data:image/png;base64,'+Buffer.from(action.payload.data).toString('base64')
+      }
+    })
+  )
+  .handleAction(deleteExternalClient['success'], (state, action) => 
+    produce(state, (draftState) => {
+      const index = draftState.externalClients.findIndex(client => client.clientid === action.payload.clientid)
+      if (~index) {
+        draftState.externalClients = draftState.externalClients.filter(client => client.clientid !== action.payload.clientid)
+      }
+    })
+  )
+  .handleAction(clearQr, (state, _) => 
+    produce(state, (draftState) => {
+      draftState.qrData = ''
+    })
+  )
+  .handleAction(updateExternalClient['success'], (state, action) => 
+    produce(state, (draftState) => {
+      const index = draftState.externalClients.findIndex(client => client.clientid === action.payload.previousId)
+      if (~index) {
+        draftState.externalClients[index] = action.payload.client
       }
     })
   )

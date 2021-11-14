@@ -92,6 +92,8 @@ export interface LanguageResource {
     download: string
     viewqr: string
     clientid: string
+    qr: string
+    edit: string
   }
   ingress: {
     none: string

@@ -5,15 +5,15 @@ import { useTranslation } from 'react-i18next'
 import { useRouteMatch, useParams, Route, Switch } from 'react-router-dom'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 import { useNodesByNetworkId } from '~util/network'
-import { Grid, IconButton, Tooltip, Typography } from '@mui/material'
+import { Grid, Typography } from '@mui/material'
 import { i18n } from '../../../i18n/i18n'
 import { filterIngressGateways } from '~util/node'
-import { useDispatch, useSelector } from 'react-redux'
-import { Delete, QrCode2 } from '@mui/icons-material'
-import { deleteExternalClient } from '~store/modules/node/actions'
+import { useSelector } from 'react-redux'
 import { ExtClientCreateButton } from './ExtClientCreateButton'
 import { nodeSelectors } from '~store/types'
 import { DownloadExtClientButton } from './DownloadExtClientButton'
+import { DeleteExtClientButton } from './DeleteExtClientButton'
+import { EditExtClientButton } from './EditExtClientButton'
 
 const columns: TableColumns<Node> = [
   {
@@ -43,6 +43,7 @@ const extColumns: TableColumns<ExternalClient> = [
     labelKey: 'extclient.clientid',
     minWidth: 150,
     align: 'center',
+    format: (_, client) => <EditExtClientButton client={client} /> 
   },
   {
     id: 'address',
@@ -51,33 +52,25 @@ const extColumns: TableColumns<ExternalClient> = [
     align: 'center',
   },
   {
-    id: 'publickey',
+    id: 'network',
     labelKey: 'extclient.viewqr',
     minWidth: 50,
     align: 'center',
-    format: (_, client) => <Tooltip title={`${i18n.t('extclient.viewqr')} : ${client.clientid}`} placement='top'>
-      <IconButton>
-        <QrCode2 />
-      </IconButton>
-    </Tooltip>,
+    format: (_, client) => <DownloadExtClientButton type='qr' client={client}/>
   },
   {
-    id: 'publickey',
+    id: 'description',
     labelKey: 'extclient.download',
     minWidth: 50,
     align: 'center',
-    format: (_, client) => <DownloadExtClientButton client={client}/>,
+    format: (_, client) => <DownloadExtClientButton type='file' client={client}/>,
   },
   {
-    id: 'publickey',
+    id: 'lastmodified',
     labelKey: 'common.delete',
     minWidth: 50,
     align: 'center',
-    format: (_, client) => <Tooltip title={`${i18n.t('common.delete')} : ${client.clientid}`} placement='top'>
-      <IconButton>
-        <Delete />
-      </IconButton>
-    </Tooltip>,
+    format: (_, client) => <DeleteExtClientButton client={client} />
   },
 ]
 
@@ -88,7 +81,6 @@ const centerText = {
 export const ExtClientView: React.FC = () => {
   const { path, url } = useRouteMatch()
   const { t } = useTranslation()
-  const dispatch = useDispatch()
   const clients = useSelector(nodeSelectors.getExtClients)
 
   const { netid } = useParams<{ netid: string }>()

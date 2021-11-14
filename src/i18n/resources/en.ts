@@ -93,7 +93,9 @@ export const en: LanguageResource = {
     deleteconfirm: "Are you sure you want to delete this Ext. Client?",
     download: "Download Client Configuration",
     viewqr: "View Configuration QR",
-    clientid: 'Client ID'
+    clientid: 'Client ID',
+    qr: 'QR Code',
+    edit: 'Change Ext Client Name',
   },
   ingress: {
     none: 'No Ingress Gateways Found',

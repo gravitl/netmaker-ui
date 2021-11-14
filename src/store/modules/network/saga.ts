@@ -38,7 +38,6 @@ function* handleGetNetworksRequest() {
   try {
     const response: AxiosResponse<Array<NetworkPayload>> =
       yield apiRequestWithAuthSaga('get', '/networks', {})
-    console.log(response.data)
     yield put(getNetworks['success'](response.data))
   } catch (e: unknown) {
     yield put(getNetworks['failure'](e as Error))

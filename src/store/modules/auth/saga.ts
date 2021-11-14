@@ -26,7 +26,6 @@ function* handleGetAllUsersRequest(
       '/users',
       {}
     )
-    console.log(response.data)
     yield put(getAllUsers['success'](response.data))
   } catch (e: unknown) {
     yield put(getAllUsers['failure'](e as Error))
@@ -171,7 +170,6 @@ function* handleUpdateUserNetworksRequest(
         },
       }
     )
-    console.log(response.data)
     yield put(updateUserNetworks['success'](payload))
   } catch (e: unknown) {
     yield put(updateUserNetworks['failure'](e as Error))

@@ -1,5 +1,5 @@
-import { createAsyncAction } from 'typesafe-actions'
-import { DeleteRelayNodePayload, GetExternalClientConfPayload } from '~store/types'
+import { createAction, createAsyncAction } from 'typesafe-actions'
+import { DeleteRelayNodePayload, GetExternalClientConfPayload, UpdateExternalClientPayload } from '~store/types'
 import {
   DeleteNodePayload,
   CreatIngressNodePayload,
@@ -65,6 +65,18 @@ export const deleteExternalClient = createAsyncAction(
   DeleteExternalClientPayload['Response'],
   Error
 >()
+
+export const updateExternalClient = createAsyncAction(
+  'Node_updateExternalClient_Request',
+  'Node_updateExternalClient_Success',
+  'Node_updateExternalClient_Failure'
+)<
+  UpdateExternalClientPayload['Request'],
+  UpdateExternalClientPayload['Response'],
+  Error
+>()
+
+export const clearQr = createAction('clearQR')<void>()
 
 export const createRelayNode = createAsyncAction(
   'Node_createRelayNode_Request',

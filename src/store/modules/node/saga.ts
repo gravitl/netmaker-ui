@@ -12,6 +12,7 @@ import {
   getExternalClientConf,
   getExternalClients,
   getNodes,
+  updateExternalClient,
   updateNode,
 } from './actions'
 import { login } from '../auth/actions'
@@ -23,7 +24,6 @@ import { generatorToastSaga } from '../toast/saga'
 import { i18n } from '../../../i18n/i18n'
 import { nodeToNodePayload } from './utils'
 import { apiRequestWithAuthSaga } from '../api/saga'
-import { ExtClientConfResponse, GetExternalClientConfPayload } from '~store/types'
 
 function* handleGetNodesRequest(
   action: ReturnType<typeof getNodes['request']>
@@ -266,18 +266,32 @@ function* handleGetExternalClientConfRequest(
   action: ReturnType<typeof getExternalClientConf['request']>
 ) {
   try {
-    const response: AxiosResponse<string> =
-      yield apiRequestWithAuthSaga('get', `/extclients/${action.payload.netid}/${action.payload.clientid}/${action.payload.type}`, 
+    if (action.payload.type === 'file') {
+      const response : AxiosResponse<string> = yield apiRequestWithAuthSaga('get', `/extclients/${action.payload.netid}/${action.payload.clientid}/${action.payload.type}`, 
         {headers: {
-          'authorization': `Bearer ${action.payload.token}`
+          'authorization': `Bearer ${action.payload.token}`,
         }}
       )
-
-    yield put(getExternalClientConf['success']({
-      filename: action.payload.clientid,
-      data: response.data,
-      type: action.payload.type,
-    }))
+      yield put(getExternalClientConf['success']({
+        filename: action.payload.clientid,
+        data: response.data,
+        type: action.payload.type,
+      }))
+    } else {
+      const response : AxiosResponse<string> = yield apiRequestWithAuthSaga('get', `/extclients/${action.payload.netid}/${action.payload.clientid}/${action.payload.type}`, 
+        { 
+          headers: {
+            'authorization': `Bearer ${action.payload.token}`,
+          },
+          responseType: 'arraybuffer'
+        }
+      )
+      yield put(getExternalClientConf['success']({
+        filename: action.payload.clientid,
+        data: response.data,
+        type: action.payload.type,
+      }))
+    }
   } catch (e: unknown) {
     yield put(getExternalClientConf['failure'](e as Error))
   }
@@ -317,6 +331,39 @@ function* handleCreateExternalClientRequest(
   }
 }
 
+function* handleUpdateExternalClientRequest(
+  action: ReturnType<typeof updateExternalClient['request']>
+) {
+  try {
+    yield fork(generatorToastSaga, {
+      success: updateExternalClient['success'],
+      error: updateExternalClient['failure'],
+      params: {
+        pending: i18n.t('common.pending', {
+          nodeName: action.payload.clientName,
+        }),
+        success: i18n.t('toast.update.success.extclient', {
+          nodeName: action.payload.clientName,
+        }),
+        error: i18n.t('toast.update.failure.extclient', {
+          nodeName: action.payload.clientName,
+        }),
+      },
+    })
+
+    const response: AxiosResponse<ExternalClient>  = yield apiRequestWithAuthSaga(
+      'put',
+      `/extclients/${action.payload.netid}/${action.payload.clientName}`,
+      {clientid: action.payload.newClientName},
+      {}
+    )
+
+    yield put(updateExternalClient['success']({ client: response.data, previousId: action.payload.clientName }))
+  } catch (e: unknown) {
+    yield put(updateExternalClient['failure'](e as Error))
+  }
+}
+
 function* handleDeleteExternalClientRequest(
   action: ReturnType<typeof deleteExternalClient['request']>
 ) {
@@ -343,7 +390,7 @@ function* handleDeleteExternalClientRequest(
       {}
     )
 
-    yield put(deleteExternalClient['success']())
+    yield put(deleteExternalClient['success']({clientid: action.payload.clientName}))
   } catch (e: unknown) {
     yield put(deleteExternalClient['failure'](e as Error))
   }
@@ -463,6 +510,10 @@ export function* saga() {
     takeEvery(
       getType(getExternalClientConf['request']),
       handleGetExternalClientConfRequest
+    ),
+    takeEvery(
+      getType(updateExternalClient['request']),
+      handleUpdateExternalClientRequest
     ),
     handleLoginSuccess(),
   ])

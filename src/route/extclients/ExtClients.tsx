@@ -6,6 +6,8 @@ import { useTranslation } from 'react-i18next'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 import { NetworkSelect } from './components/NetworkSelect'
 import { ExtClientView } from './components/ExtClientView'
+import { QrCodeView } from './components/QrCodeView'
+import { ExtClientEdit } from './components/ExtClientEdit'
 
 export const ExtClients: React.FC = () => {
   const { path } = useRouteMatch()
@@ -38,6 +40,12 @@ export const ExtClients: React.FC = () => {
             </Grid>
           </Grid>
           <NetworkSelect />
+        </Route>
+        <Route path={`${path}/:netid/:clientid/qr`}>
+            <QrCodeView />
+        </Route>
+        <Route path={`${path}/:netid/:clientid/edit`}>
+            <ExtClientEdit />
         </Route>
         <Route path={`${path}/:netid`}>
             <ExtClientView />

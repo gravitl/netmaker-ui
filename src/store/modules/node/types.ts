@@ -135,7 +135,21 @@ export interface DeleteExternalClientPayload {
     netid: string
     clientName: string
   }
-  Response: void
+  Response: {
+    clientid: string
+  }
+}
+
+export interface UpdateExternalClientPayload {
+  Request: {
+    netid: string
+    clientName: string
+    newClientName: string
+  }
+  Response: { 
+    previousId: string
+    client: ExternalClient
+  }
 }
 
 export interface DeleteEgressNodePayload {

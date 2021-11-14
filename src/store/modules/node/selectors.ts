@@ -10,3 +10,5 @@ export const isFetchingNodes = createSelector(
 export const getNodes = createSelector(getNodeState, (node) => node.nodes)
 
 export const getExtClients = createSelector(getNodeState, node => node.externalClients)
+
+export const getCurrentQrCode = createSelector(getNodeState, node => node.qrData)
