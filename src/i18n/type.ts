@@ -131,6 +131,7 @@ export interface LanguageResource {
     create: string
     netid: string
     deleteconfirm: string
+    refresh: string
   }
   node: {
     nodes: string
@@ -206,6 +207,7 @@ export interface LanguageResource {
     }
     oauth: {
       login: string
+      failed: string
     }
     admin: {
       create: string
@@ -267,10 +269,12 @@ export interface LanguageResource {
       success: {
         node: string
         extclient: string
+        networkrefresh: string
       }
       failure: {
         node: string
         extclient: string
+        networkrefresh: string
       }
     },
     create: {

@@ -1,4 +1,5 @@
 import { createAsyncAction } from 'typesafe-actions'
+import { RefreshPublicKeysPayload } from '~store/types'
 import {
   CreateNetworkPayload,
   DeleteNetworkPayload,
@@ -66,3 +67,9 @@ export const deleteAccessKey = createAsyncAction(
   DeleteAccessKeyPayload['Response'],
   Error
 >()
+
+export const refreshPublicKeys = createAsyncAction(
+  'network_refreshPublicKeys_Request',
+  'network_refreshPublicKeys_Success',
+  'network_refreshPublicKeys_Failure'
+)<RefreshPublicKeysPayload['Request'], RefreshPublicKeysPayload['Response'], Error>()

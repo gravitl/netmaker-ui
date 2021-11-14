@@ -132,6 +132,8 @@ export const UserEdit: React.FC = () => {
                     sx={{
                       width: '100%',
                       bgcolor: 'background.paper',
+                      overflowY: 'scroll',
+                      maxHeight: '22em',
                     }}
                   >
                     <ListSubheader>{t('users.update.networks')}</ListSubheader>

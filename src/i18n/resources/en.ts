@@ -129,6 +129,7 @@ export const en: LanguageResource = {
     create: 'Create Network',
     netid: 'Network Name',
     deleteconfirm: 'Are you sure you want to delete this network?',
+    refresh: 'Refresh public keys',
   },
   helper: {
     egress: 'Enter your network interface name, i.e. "eth0"',
@@ -210,6 +211,7 @@ export const en: LanguageResource = {
     },
     oauth: {
       login: 'Use OAuth Provider to login.',
+      failed: 'OAuth Login Failed, check if server is configured for OAuth.',
     },
     admin: {
       create: 'Create an Admin',
@@ -251,7 +253,7 @@ export const en: LanguageResource = {
       header: 'Update',
       password: 'Change Password',
       passwordTitle: 'Change Password',
-      passwordSubmit: 'Are yu sure you want to change password?',
+      passwordSubmit: 'Are you sure you want to change password?',
       adminSubmit: 'Update ( Make Admin )',
       submit: 'Update',
       isAdmin: 'Is Admin',
@@ -273,10 +275,12 @@ export const en: LanguageResource = {
       success: {
         node: 'Node updated successfully!',
         extclient: 'Ext Client updated!',
+        networkrefresh: 'Refreshed nodes public keys!',
       },
       failure: {
         node: 'Node updated failed!',
-        extclient: 'Ext Client update failed!'
+        extclient: 'Ext Client update failed!',
+        networkrefresh: 'Failed to refresh nodes public keys!',
       }
     },
     create: {

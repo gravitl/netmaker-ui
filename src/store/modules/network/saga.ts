@@ -14,6 +14,7 @@ import {
   getAccessKeys,
   deleteAccessKey,
   clearMetadata,
+  refreshPublicKeys,
 } from './actions'
 import {
   NetworkPayload,
@@ -69,6 +70,33 @@ function* handleUpdateNetworkRequest(
     yield put(updateNetwork['success'](response.data))
   } catch (e: unknown) {
     yield put(updateNetwork['failure'](e as Error))
+  }
+}
+
+function* handleRefreshPubKeyRequest(
+  action: ReturnType<typeof refreshPublicKeys['request']>
+) {
+  try {
+    yield fork(generatorToastSaga, {
+      success: refreshPublicKeys['success'],
+      error: refreshPublicKeys['failure'],
+      params: {
+        pending: i18n.t('common.pending'),
+        success: `${i18n.t('toast.update.success.networkrefresh')} : ${action.payload.netid}`,
+        error: `${i18n.t('toast.update.failure.networkrefresh')} : ${action.payload.netid}`,
+      },
+    })
+
+    const response: AxiosResponse<NetworkPayload> =
+      yield apiRequestWithAuthSaga(
+        'post',
+        `/networks/${action.payload.netid}/keyupdate`,
+        {},
+        {}
+      )
+    yield put(refreshPublicKeys['success'](response.data))
+  } catch (e: unknown) {
+    yield put(refreshPublicKeys['failure'](e as Error))
   }
 }
 
@@ -227,6 +255,7 @@ export function* saga() {
     ),
     takeEvery(getType(createNetwork['success']), handleGetNetworksRequest),
     takeEvery(getType(deleteNetwork['success']), handleDeleteNetworkSuccess),
+    takeEvery(getType(refreshPublicKeys['request']), handleRefreshPubKeyRequest),
     handleLoginSuccess(),
   ])
 }

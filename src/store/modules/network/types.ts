@@ -116,6 +116,13 @@ export interface GetAccessKeysPayload {
   Response: Array<AccessKey>
 }
 
+export interface RefreshPublicKeysPayload {
+  Request: {
+    netid: string
+  }
+  Response: NetworkPayload
+}
+
 export interface CreateAccessKeyPayload {
   Request: {
     netid: string

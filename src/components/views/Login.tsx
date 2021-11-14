@@ -44,8 +44,9 @@ export default function Login() {
 
   useEffect(() => {
     if (oauth) {
-      setError(t('login.loginFailed'))
+      setError(t('login.oauth.failed'))
       setTriedToLogin(true)
+      return
     }
 
     if (loginParam) {
