@@ -220,7 +220,6 @@ export const en: LanguageResource = {
   },
   users: {
     header: 'Users',
-    create: 'Create User',
     delete: 'Delete User',
     edit: 'Edit User',
     details: 'View User Details',
@@ -229,6 +228,42 @@ export const en: LanguageResource = {
       delete: 'Remove a Network from User',
       edit: 'Edit User Networks',
     },
+    label: {
+      password: 'Password',
+      confirmation: 'Confirm Password',
+      username: 'Username',
+    },
+    validation: {
+      username:
+        'Invalid user name provided. Must be between 3 to 40 alphanumeric characters with "-" or "." or an email address.',
+      password:
+        'Invalid password provided. Must be between 5 to 64 characters with no white space.',
+      confirmation: 'Confirmation password does not match given password.',
+    },
+    table: {
+      name: 'Username',
+      isAdmin: 'Is Admin',
+      networks: 'Networks',
+    },
+    update: {
+      header: 'Update',
+      password: 'Change Password',
+      passwordTitle: 'Change Password',
+      passwordSubmit: 'Are yu sure you want to change password?',
+      adminSubmit: 'Update ( Make Admin )',
+      submit: 'Update',
+      isAdmin: 'Is Admin',
+      networks: 'Select Networks for user',
+      isAdminTitle: 'Create new Admin',
+      createAdmin: 'Are you sure you want to make this user as admin?',
+    },
+    create: {
+      button: 'Create User',
+      isAdmin: "Make Admin",
+      networks: "Networks",
+      createAdmin: "Are you sure you want to create an Admin?",
+      isAdminTitle: "Create new Admin",
+    }
   },
   toast: {
     pending: 'Request pending',

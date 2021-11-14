@@ -216,7 +216,6 @@ export interface LanguageResource {
   }
   users: {
     header: string
-    create: string
     delete: string
     edit: string
     details: string
@@ -224,6 +223,40 @@ export interface LanguageResource {
       create: string
       delete: string
       edit: string
+    }
+    label: {
+      password: string
+      confirmation: string
+      username: string
+    }
+    validation: {
+      username: string
+      password: string
+      confirmation: string
+    }
+    update: {
+      header: string
+      password: string
+      passwordTitle: string
+      passwordSubmit: string
+      adminSubmit: string
+      submit: string
+      isAdmin: string
+      networks: string
+      isAdminTitle: string
+      createAdmin: string
+    }
+    table: {
+      name: string
+      isAdmin: string
+      networks: string
+    }
+    create: {
+      button: string
+      isAdmin: string
+      networks: string
+      createAdmin: string
+      isAdminTitle: string
     }
   }
   toast: {

@@ -15,6 +15,7 @@ export const UserEdit: React.FC = () => {
   const { t } = useTranslation()
   const { username } = useParams<{ username: string }>()
   const { Component: Dialog, setProps: setDialog } = useDialog()
+  const currentUser = useSelector(authSelectors.getUser)
 
   useLinkBreadcrumb({
     title: username,
@@ -77,6 +78,8 @@ export const UserEdit: React.FC = () => {
     [t]
   )
 
+  if(!currentUser?.isAdmin) return null
+
   if (!username) {
     return <div>Not Found</div>
   }
@@ -84,7 +87,7 @@ export const UserEdit: React.FC = () => {
   return (
     <Grid container justifyContent="center" alignItems="center">
       <Grid item xs={12}>
-        <h3>{t('users.update')}</h3>
+        <h3>{t('users.update.header')}</h3>
       </Grid>
       <Grid item xs={12}>
         <NmForm
@@ -92,7 +95,7 @@ export const UserEdit: React.FC = () => {
           initialState={initialState}
           resolver={validation}
           onSubmit={onSubmit}
-          submitText={t(user?.isAdmin ? 'users.updateAdminSubmit' : 'users.updateSubmit')}
+          submitText={t(user?.isAdmin ? 'users.update.adminSubmit' : 'users.update.submit')}
           submitProps={{
             type: 'submit',
             fullWidth: true,

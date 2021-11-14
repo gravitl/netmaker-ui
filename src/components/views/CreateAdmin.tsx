@@ -25,13 +25,13 @@ const styles = {
   },
 } as any
 
-export default function Login() {
+export default function CreateAdmin() {
   const dispatch = useDispatch()
   const { t } = useTranslation()
   const [error, setError] = React.useState('')
   const [triedToCreate, setTriedToCreate] = React.useState(false)
-  const location = useLocation<{ from?: Location }>()
   const isCreating = useSelector(authSelectors.isCreating)
+  const hasAdmin = useSelector(authSelectors.hasAdmin)
 
   const initialAdminForm = { username: '', password: '', confirmation: '' }
 
@@ -81,7 +81,7 @@ export default function Login() {
     [dispatch, setTriedToCreate]
   )
 
-  if (isCreating) return <Redirect to={location.state?.from || '/'} />
+  if (hasAdmin) return <Redirect to={'/'} />
 
   return (
     <Grid container justifyContent="center" alignItems="center">

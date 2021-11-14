@@ -137,23 +137,20 @@ function* handleDeleteUserRequest(
 }
 
 function* handleUpdateUserRequest(
-  action: ReturnType<typeof updateUser['request']>
+  { payload }: ReturnType<typeof updateUser['request']>
 ) {
   try {
     const response: AxiosResponse = yield apiRequestWithAuthSaga(
       'put',
-      `/users/${action.payload.oldUsername}`,
-      {
-        username: action.payload.newUsername,
-        password: action.payload.password,
-      },
+      `/users/${payload.username}`,
+      payload,
       {
         headers: {
           'Content-type': 'application/json',
         },
       }
     )
-    console.log(response.data)
+    
     yield put(updateUser['success'](response.data))
   } catch (e: unknown) {
     yield put(updateUser['failure'](e as Error))

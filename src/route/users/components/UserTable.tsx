@@ -12,21 +12,21 @@ import { deleteUser } from '~store/modules/auth/actions'
 const columns: TableColumns<User> = [
   {
     id: 'name',
-    labelKey: 'users.name',
+    labelKey: 'users.table.name',
     minWidth: 170,
     sortable: true,
     format: (username) => <NmLink to={`/users/${username}`}>{username}</NmLink>,
   },
   {
     id: 'isAdmin',
-    labelKey: 'users.isAdmin',
+    labelKey: 'users.table.isAdmin',
     minWidth: 100,
     sortable: true,
     format: (isAdmin) => (isAdmin ? 'True' : 'False'),
   },
   {
     id: 'networks',
-    labelKey: 'users.networks',
+    labelKey: 'users.table.networks',
     minWidth: 150,
     sortable: false,
     format: (networks, user) => {

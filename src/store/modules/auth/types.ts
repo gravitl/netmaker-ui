@@ -64,8 +64,7 @@ export interface DeleteUser {
 
 export interface UpdateUser {
   Request: {
-    newUsername: string
-    oldUsername: string
+    username: string
     password: string
   }
   Response: User

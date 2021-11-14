@@ -56,7 +56,11 @@ function Routes() {
           <PrivateRoute path="/ext-clients">
             <ExtClients />
           </PrivateRoute>
-          <PrivateRoute path="/users" to={{pathname: '/'}} condition={(user) => !!user?.isAdmin}>
+          <PrivateRoute path="/users" to={{pathname: '/'}} condition={(user) => {
+            if(`/users/${user?.name}` === location.pathname && !!user) 
+              return true
+            return !!user?.isAdmin
+          }}>
             <Users />
           </PrivateRoute>
           <Route path="/login" children={<Login />} />

@@ -147,7 +147,7 @@ export const UserCreate: React.FC = () => {
         </div>
       </Grid>
       <Grid item xs={12}>
-        <h3>{t('users.create')}</h3>
+        <h3>{t('users.create.button')}</h3>
       </Grid>
       <Grid item xs={12}>
         <NmForm
@@ -156,7 +156,7 @@ export const UserCreate: React.FC = () => {
           resolver={createAdminValidation}
           onSubmit={onSubmit}
           onCancel={() => history.goBack()}
-          submitText={t('users.creating')}
+          submitText={t('users.create.button')}
           submitProps={{
             type: 'submit',
             fullWidth: true,
