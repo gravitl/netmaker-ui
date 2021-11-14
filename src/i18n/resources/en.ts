@@ -90,7 +90,16 @@ export const en: LanguageResource = {
     viewing: "Viewing Ext Client",
     none: "No Ext Clients Found",
     name: "Name",
-    deleteconfirm: "Are you sure you want to delete this Ext. Client?"
+    deleteconfirm: "Are you sure you want to delete this Ext. Client?",
+    download: "Download Client Configuration",
+    viewqr: "View Configuration QR",
+    clientid: 'Client ID'
+  },
+  ingress: {
+    none: 'No Ingress Gateways Found',
+    add: 'Add External Client',
+    name: 'Gateway Name',
+    gateways: 'Ingress Gateways',
   },
   network: {
     allowmanualsignup: 'Allow Node Signup Without Keys',
@@ -225,10 +234,12 @@ export const en: LanguageResource = {
     pending: 'Request pending',
     update: {
       success: {
-        node: 'Node updated successfully!'
+        node: 'Node updated successfully!',
+        extclient: 'Ext Client updated!',
       },
       failure: {
-        node: 'Node updated failed!'
+        node: 'Node updated failed!',
+        extclient: 'Ext Client update failed!'
       }
     },
     create: {
@@ -236,13 +247,15 @@ export const en: LanguageResource = {
         accesskey: 'Succesfully created Access Key!',
         egress: 'Succesfully created Egress Gateway!',
         ingress: 'Successfully created Ingress Gateway!',
-        relay: 'Successfully created Relay!'
+        relay: 'Successfully created Relay!',
+        extclient: 'Sucessfully created an Ext Client!', 
       },
       failure: {
         accesskey: 'Failed to create Access Key.',
         egress: 'Failed to create Egress Gateway.',
         ingress: 'Failed to create Ingress Gateway.',
         relay: 'Failed to create Relay.',
+        extclient: 'Failed to create an Ext Client',
       }
     },
     delete: {
@@ -251,12 +264,14 @@ export const en: LanguageResource = {
         egress: 'Succesfully removed Egress Gateway!',
         ingress: 'Successfully removed Ingress Gateway!',
         relay: 'Successfully removed Relay!',
+        extclient: 'Successfully removed Ext Client!'
       },
       failure: {
         accesskey: 'Failed to remove Access Key.',
         egress: 'Failed to remove Egress Gateway.',
         ingress: 'Failed to remove Ingress Gateway.',
         relay: 'Failed to remove Relay.',
+        extclient: 'Failed to remove Ext Client.',
       }
     }
   }

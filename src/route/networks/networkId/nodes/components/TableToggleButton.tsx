@@ -74,7 +74,6 @@ export const TableToggleButton: React.FC<{
   }
 
   const createIngress = () => {
-    console.log('CALLED')
     if (which === 'ingress') {
       dispatch(createIngressNode.request({
         netid: node.network,

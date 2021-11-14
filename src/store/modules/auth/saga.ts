@@ -85,7 +85,6 @@ function* handleCreateAdminRequest(
       action.payload,
       {}
     )
-    console.log(response.data)
     yield put(createAdmin['success'](response.data))
   } catch (e: unknown) {
     yield put(createAdmin['failure'](e as Error))

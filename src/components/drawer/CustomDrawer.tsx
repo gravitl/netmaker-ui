@@ -310,9 +310,8 @@ export default function CustomDrawer() {
           </ListItem>
         </List>
       </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+      <Box component="main" sx={{ flexGrow: 1, p: 3, margin: '1em 0 1em 0' }}>
         <DrawerHeader />
-        <Typography paragraph>Netmaker does a lot.</Typography>
       </Box>
     </Box>
   )

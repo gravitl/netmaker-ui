@@ -1,22 +1,36 @@
 import { produce } from 'immer'
 import { createReducer } from 'typesafe-actions'
-import { createEgressNode, createIngressNode, createRelayNode, deleteEgressNode, deleteIngressNode, deleteNode, deleteRelayNode, getNodes, updateNode } from './actions'
+import { ExternalClient } from '~store/types'
+import { createEgressNode, createIngressNode, createRelayNode, deleteEgressNode, deleteIngressNode, deleteNode, deleteRelayNode, getExternalClientConf, getExternalClients, getNodes, updateNode } from './actions'
 import { Node } from './types'
-import { nodePayloadToNode } from './utils'
+import { download, nodePayloadToNode } from './utils'
 
 export const reducer = createReducer({
   nodes: [] as Array<Node>,
   isFetching: false as boolean,
+  externalClients: [] as Array<ExternalClient>,
+  isFetchingClients: false as boolean,
 })
   .handleAction(getNodes['request'], (state, _) =>
     produce(state, (draftState) => {
       draftState.isFetching = true
     })
   )
+  .handleAction(getExternalClients['request'], (state, _) =>
+    produce(state, (draftState) => {
+      draftState.isFetchingClients = true
+    })
+  )
   .handleAction(getNodes['success'], (state, action) =>
     produce(state, (draftState) => {
       draftState.nodes = action.payload.map(nodePayloadToNode)
       draftState.isFetching = false
+    })
+  )
+  .handleAction(getExternalClients['success'], (state, action) => 
+    produce(state, (draftState) => {
+      draftState.externalClients = action.payload || []
+      draftState.isFetchingClients = false
     })
   )
   .handleAction(getNodes['failure'], (state, _) =>
@@ -102,6 +116,21 @@ export const reducer = createReducer({
       )
       if (~index) {
         draftState.nodes[index] = nodePayloadToNode(action.payload)
+      }
+    })
+  )
+  .handleAction(getExternalClients['failure'], (state, _) => 
+    produce(state, (draftState) => {
+      draftState.externalClients = []
+      draftState.isFetchingClients = false
+    })
+  )
+  .handleAction(getExternalClientConf['success'], (state, action) => 
+    produce(state, (draftState) => {
+      if (action.payload.type === 'file') {
+        download(`${action.payload.filename}.conf`, action.payload.data)
+      } else {
+        console.log('handle QR..')
       }
     })
   )

@@ -5,6 +5,7 @@ import { useRouteMatch, Switch, Route } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 import { NetworkSelect } from './components/NetworkSelect'
+import { ExtClientView } from './components/ExtClientView'
 
 export const ExtClients: React.FC = () => {
   const { path } = useRouteMatch()
@@ -39,7 +40,7 @@ export const ExtClients: React.FC = () => {
           <NetworkSelect />
         </Route>
         <Route path={`${path}/:netid`}>
-            <h3>Create ExtClient</h3>
+            <ExtClientView />
         </Route>
       </Switch>
     </Container>

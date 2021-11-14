@@ -103,9 +103,27 @@ export interface GetExternalClientsPayload {
   Response: null | Array<ExternalClient>
 }
 
+export interface GetExternalClientConfPayload {
+  Request: {
+    clientid: string
+    netid: string
+    token: string
+    type: 'file' | 'qr'
+  }
+  Response: {
+    data: string
+    filename: string
+    type: 'file' | 'qr'
+  }
+}
+
+export interface ExtClientConfResponse {
+  netid: string
+  data: string
+}
+
 export interface CreateExternalClientPayload {
   Request: {
-    token: string
     netid: string
     nodeid: string
   }
@@ -114,7 +132,6 @@ export interface CreateExternalClientPayload {
 
 export interface DeleteExternalClientPayload {
   Request: {
-    token: string
     netid: string
     clientName: string
   }

@@ -89,6 +89,15 @@ export interface LanguageResource {
     none: string
     name: string
     deleteconfirm: string
+    download: string
+    viewqr: string
+    clientid: string
+  }
+  ingress: {
+    none: string
+    add: string
+    name: string
+    gateways: string
   }
   helper: {
     egress: string
@@ -222,9 +231,11 @@ export interface LanguageResource {
     update: {
       success: {
         node: string
+        extclient: string
       }
       failure: {
         node: string
+        extclient: string
       }
     },
     create: {
@@ -233,12 +244,14 @@ export interface LanguageResource {
         egress: string
         ingress: string
         relay: string
+        extclient: string
       }
       failure: {
         accesskey: string
         egress: string
         ingress: string
         relay: string
+        extclient: string
       }
     },
     delete: {
@@ -247,12 +260,14 @@ export interface LanguageResource {
         egress: string
         ingress: string
         relay: string
+        extclient: string
       },
       failure: {
         accesskey: string
         egress: string
         ingress: string
         relay: string
+        extclient: string
       }
     }
   }

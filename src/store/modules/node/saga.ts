@@ -9,6 +9,7 @@ import {
   deleteIngressNode,
   deleteNode,
   deleteRelayNode,
+  getExternalClientConf,
   getExternalClients,
   getNodes,
   updateNode,
@@ -22,6 +23,7 @@ import { generatorToastSaga } from '../toast/saga'
 import { i18n } from '../../../i18n/i18n'
 import { nodeToNodePayload } from './utils'
 import { apiRequestWithAuthSaga } from '../api/saga'
+import { ExtClientConfResponse, GetExternalClientConfPayload } from '~store/types'
 
 function* handleGetNodesRequest(
   action: ReturnType<typeof getNodes['request']>
@@ -41,6 +43,11 @@ function* handleLoginSuccess() {
     yield put(
       getNodes.request({
         token,
+      })
+    )
+    yield put(
+      getExternalClients.request({
+        token: token || '',
       })
     )
 }
@@ -255,6 +262,27 @@ function* handleGetExternalClientRequest(
   }
 }
 
+function* handleGetExternalClientConfRequest(
+  action: ReturnType<typeof getExternalClientConf['request']>
+) {
+  try {
+    const response: AxiosResponse<string> =
+      yield apiRequestWithAuthSaga('get', `/extclients/${action.payload.netid}/${action.payload.clientid}/${action.payload.type}`, 
+        {headers: {
+          'authorization': `Bearer ${action.payload.token}`
+        }}
+      )
+
+    yield put(getExternalClientConf['success']({
+      filename: action.payload.clientid,
+      data: response.data,
+      type: action.payload.type,
+    }))
+  } catch (e: unknown) {
+    yield put(getExternalClientConf['failure'](e as Error))
+  }
+}
+
 function* handleCreateExternalClientRequest(
   action: ReturnType<typeof createExternalClient['request']>
 ) {
@@ -263,13 +291,13 @@ function* handleCreateExternalClientRequest(
       success: createExternalClient['success'],
       error: createExternalClient['failure'],
       params: {
-        pending: i18n.t('createExternalClientToastRequest', {
+        pending: i18n.t('common.pending', {
           nodeid: action.payload.nodeid,
         }),
-        success: i18n.t('createExternalClientToastSuccess', {
+        success: i18n.t('toast.create.success.extclient', {
           nodeid: action.payload.nodeid,
         }),
-        error: i18n.t('createExternalClientToastError', {
+        error: i18n.t('toast.create.failure.extclient', {
           nodeid: action.payload.nodeid,
         }),
       },
@@ -283,6 +311,7 @@ function* handleCreateExternalClientRequest(
     )
 
     yield put(createExternalClient['success'](response.data))
+    yield put(getExternalClients.request({token: ''}))
   } catch (e: unknown) {
     yield put(createExternalClient['failure'](e as Error))
   }
@@ -393,7 +422,6 @@ export function* saga() {
   yield all([
     takeEvery(getType(getNodes['request']), handleGetNodesRequest),
     takeEvery(getType(login['success']), handleLoginSuccess),
-
     takeEvery(getType(updateNode['request']), handleUpdateNodeRequest),
     takeEvery(getType(deleteNode['request']), handleDeleteNodeRequest),
     takeEvery(
@@ -431,6 +459,10 @@ export function* saga() {
     takeEvery(
       getType(deleteRelayNode['request']),
       handleDeleteRelayNodeRequest
+    ),
+    takeEvery(
+      getType(getExternalClientConf['request']),
+      handleGetExternalClientConfRequest
     ),
     handleLoginSuccess(),
   ])

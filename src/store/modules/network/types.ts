@@ -1,3 +1,4 @@
+import { ExternalClient } from '~store/types'
 import { Modify } from '../../../types/react-app-env'
 
 export interface Network {
@@ -16,6 +17,7 @@ export interface Network {
   defaultkeepalive: number
   defaultsaveconfig: boolean
   accesskeys: Array<AccessKey>
+  externalclients: Array<ExternalClient>
   metadata?: Metadata
   allowmanualsignup: boolean
   islocal: boolean

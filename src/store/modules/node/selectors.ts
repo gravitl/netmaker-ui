@@ -1,9 +1,12 @@
 import { createSelector } from 'reselect'
 import { RootState } from '../../reducers'
 
-const getNode = (state: RootState) => state.node
+const getNodeState = (state: RootState) => state.node
+
 export const isFetchingNodes = createSelector(
-  getNode,
+  getNodeState,
   (node) => node.isFetching
 )
-export const getNodes = createSelector(getNode, (node) => node.nodes)
+export const getNodes = createSelector(getNodeState, (node) => node.nodes)
+
+export const getExtClients = createSelector(getNodeState, node => node.externalClients)

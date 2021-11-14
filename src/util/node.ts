@@ -36,3 +36,7 @@ export const useNode = (name: Node['name']) => {
     selectNode(state, name)
   )
 }
+
+export const filterIngressGateways = (nodes: Node[]) => {
+  return nodes.filter(node => node.ingressgatewayrange)
+}
