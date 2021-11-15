@@ -1,5 +1,5 @@
 import { createAsyncAction } from 'typesafe-actions'
-import { RefreshPublicKeysPayload } from '~store/types'
+import { DeleteDNSEntryPayload, GetDnsEntriesPayload, RefreshPublicKeysPayload } from '~store/types'
 import {
   CreateNetworkPayload,
   DeleteNetworkPayload,
@@ -9,6 +9,7 @@ import {
   GetAccessKeysPayload,
   DeleteAccessKeyPayload,
   IndexNetworkPayload,
+  CreateDNSEntryPayload,
 } from './types'
 
 export const clearMetadata = createAsyncAction(
@@ -57,6 +58,24 @@ export const getAccessKeys = createAsyncAction(
   'network_getAccessKeys_Success',
   'network_getAccessKeys_Failure'
 )<GetAccessKeysPayload['Request'], GetAccessKeysPayload['Response'], Error>()
+
+export const getDnsEntries = createAsyncAction(
+  'network_getDnsEntries_Request',
+  'network_getDnsEntries_Success',
+  'network_getDnsEntries_Failure'
+)<GetDnsEntriesPayload['Request'], GetDnsEntriesPayload['Response'], Error>()
+
+export const createDnsEntry = createAsyncAction(
+  'network_createDnsEntry_Request',
+  'network_createDnsEntry_Success',
+  'network_createDnsEntry_Failure'
+)<CreateDNSEntryPayload['Request'], CreateDNSEntryPayload['Response'], Error>()
+
+export const deleteDnsEntry = createAsyncAction(
+  'network_deleteDnsEntry_Request',
+  'network_deleteDnsEntry_Success',
+  'network_deleteDnsEntry_Failure'
+)<DeleteDNSEntryPayload['Request'], DeleteDNSEntryPayload['Response'], Error>()
 
 export const deleteAccessKey = createAsyncAction(
   'network_deleteAccessKey_Request',

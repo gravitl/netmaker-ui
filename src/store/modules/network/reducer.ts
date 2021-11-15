@@ -1,5 +1,6 @@
 import { produce } from 'immer'
 import { createReducer } from 'typesafe-actions'
+import { DNS } from '~store/types'
 import {
   deleteNetwork,
   getNetworks,
@@ -8,6 +9,9 @@ import {
   createAccessKey,
   clearMetadata,
   refreshPublicKeys,
+  getDnsEntries,
+  createDnsEntry,
+  deleteDnsEntry,
 } from './actions'
 import { Network } from './types'
 import { networkPayloadToNetwork } from './utils'
@@ -15,6 +19,7 @@ import { networkPayloadToNetwork } from './utils'
 export const reducer = createReducer({
   networks: [] as Array<Network>,
   isFetching: false as boolean,
+  dnsEntries: [] as Array<DNS>,
 })
   .handleAction(getNetworks['request'], (state, _) =>
     produce(state, (draftState) => {
@@ -101,6 +106,24 @@ export const reducer = createReducer({
           ...draftState.networks[index],
           ...networkPayloadToNetwork(action.payload),
         }
+      }
+    })
+  )
+  .handleAction(getDnsEntries['success'], (state, action) =>
+    produce(state, (draftState) => {
+      draftState.dnsEntries = action.payload
+    })
+  )
+  .handleAction(createDnsEntry['success'], (state, action) =>
+    produce(state, (draftState) => {
+      draftState.dnsEntries.push(action.payload)
+    })
+  )
+  .handleAction(deleteDnsEntry['success'], (state, action) => 
+    produce(state, (draftState) => {
+      const index = draftState.dnsEntries.findIndex(entry => entry.name === action.payload.domain)
+      if (~index) {
+        draftState.dnsEntries = draftState.dnsEntries.filter(entry => entry.name !== action.payload.domain)
       }
     })
   )

@@ -78,6 +78,13 @@ export const en: LanguageResource = {
     none: 'No Entries Found',
     entry: 'DNS Entry',
     deleteconfirm: 'Are you sure you want to remove this DNS Entry?',
+    title: 'DNS',
+    disabled: 'DNS is disabled',
+    default: 'Default DNS Entries',
+    custom: 'Custom DNS Entries',
+    address: 'IP Address',
+    name: 'DNS Name',
+    nodeaddress: 'Node Address'
   },
   error: {
     notfound: 'Not found'

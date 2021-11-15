@@ -10,6 +10,7 @@ import { Delete } from '@mui/icons-material'
 import { deleteAccessKey } from '~store/modules/network/actions'
 import CustomDialog from '~components/dialog/CustomDialog'
 import { NetworkSelect } from '~components/NetworkSelect'
+import { NmLink } from '~components/Link'
 
 export const NetworkAccessKeys: React.FC = () => {
   const listOfNetworks = useSelector(networkSelectors.getNetworks)
@@ -111,7 +112,9 @@ export const NetworkAccessKeys: React.FC = () => {
                         <Grid item xs={12}>
                         {network?.accesskeys.map(accesskey => <Grid container key={accesskey.name} style={styles.buttonMargin}>
                             <Grid item xs={5}>
-                                {accesskey.name}
+                                <NmLink variant='text' to={`/access-keys/${network?.netid}/details/${accesskey.name}`}>
+                                    {accesskey.name}
+                                </NmLink>
                             </Grid>
                             <Grid item xs={5}>
                                 {accesskey.uses}

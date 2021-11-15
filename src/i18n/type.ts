@@ -76,6 +76,13 @@ export interface LanguageResource {
     none: string
     entry: string
     deleteconfirm: string
+    title: string
+    disabled: string
+    default: string
+    custom: string
+    address: string
+    name: string
+    nodeaddress: string
   }
   error: {
     notfound: string

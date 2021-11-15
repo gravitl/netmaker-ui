@@ -15,16 +15,23 @@ import {
   deleteAccessKey,
   clearMetadata,
   refreshPublicKeys,
+  getDnsEntries,
+  createDnsEntry,
+  deleteDnsEntry,
 } from './actions'
 import {
   NetworkPayload,
   GetAccessKeysPayload,
 } from './types'
 import { apiRequestWithAuthSaga } from '../api/saga'
+import { DNS } from '~store/types'
 
 function* handleLoginSuccess() {
   const token: ReturnType<typeof getToken> = yield select(getToken)
-  if (token) yield put(getNetworks.request())
+  if (token) { 
+    yield put(getNetworks.request())
+    yield put(getDnsEntries.request())
+  }
 }
 
 function* handleClearMetadata(
@@ -42,6 +49,71 @@ function* handleGetNetworksRequest() {
     yield put(getNetworks['success'](response.data))
   } catch (e: unknown) {
     yield put(getNetworks['failure'](e as Error))
+  }
+}
+
+function* handleGetDnsRequest(
+) {
+  try {
+    const response: AxiosResponse<Array<DNS>> =
+      yield apiRequestWithAuthSaga('get', `/dns`, {})
+    yield put(getDnsEntries['success'](response.data))
+  } catch (e: unknown) {
+    yield put(getDnsEntries['failure'](e as Error))
+  }
+}
+
+function* handleCreateDNSRequest(
+  action: ReturnType<typeof createDnsEntry['request']>
+) {
+  try {
+    yield fork(generatorToastSaga, {
+      success: createDnsEntry['success'],
+      error: createDnsEntry['failure'],
+      params: {
+        pending: i18n.t('common.pending'),
+        success: i18n.t('toast.create.success.dns'),
+        error: i18n.t('toast.create.failure.dns'),
+      },
+    })
+
+    const response: AxiosResponse<DNS> =
+      yield apiRequestWithAuthSaga(
+        'post',
+        `/dns/${action.payload.network}`,
+        action.payload,
+        {}
+      )
+
+    yield put(createDnsEntry['success'](response.data))
+  } catch (e: unknown) {
+    yield put(createDnsEntry['failure'](e as Error))
+  }
+}
+
+function* handleDeleteDNSRequest(
+  action: ReturnType<typeof deleteDnsEntry['request']>
+) {
+  try {
+    yield fork(generatorToastSaga, {
+      success: deleteDnsEntry['success'],
+      error: deleteDnsEntry['failure'],
+      params: {
+        pending: i18n.t('common.pending'),
+        success: i18n.t('toast.delete.success.dns'),
+        error: i18n.t('toast.delete.failure.dns'),
+      },
+    })
+
+    yield apiRequestWithAuthSaga(
+      'delete',
+      `/dns/${action.payload.netid}/${action.payload.domain}`,
+      {}
+    )
+
+    yield put(deleteDnsEntry['success']({domain: action.payload.domain}))
+  } catch (e: unknown) {
+    yield put(deleteDnsEntry['failure'](e as Error))
   }
 }
 
@@ -256,6 +328,9 @@ export function* saga() {
     takeEvery(getType(createNetwork['success']), handleGetNetworksRequest),
     takeEvery(getType(deleteNetwork['success']), handleDeleteNetworkSuccess),
     takeEvery(getType(refreshPublicKeys['request']), handleRefreshPubKeyRequest),
+    takeEvery(getType(getDnsEntries['request']), handleGetDnsRequest),
+    takeEvery(getType(createDnsEntry['request']), handleCreateDNSRequest),
+    takeEvery(getType(deleteDnsEntry['request']), handleDeleteDNSRequest),
     handleLoginSuccess(),
   ])
 }

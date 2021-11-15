@@ -15,6 +15,9 @@ import { CreateEgress } from './components/CreateEgress'
 import { TableToggleButton } from './components/TableToggleButton'
 import { CreateRelay } from './components/CreateRelay'
 import { NetworkSelect } from '../../../../components/NetworkSelect'
+import { useDispatch, useSelector } from 'react-redux'
+import { authSelectors } from '~store/selectors'
+import { getNodes } from '~store/modules/node/actions'
 
 const columns: TableColumns<Node> = [
   { id: 'name',
@@ -108,14 +111,24 @@ const columns: TableColumns<Node> = [
 export const NetworkNodes: React.FC = () => {
   const { path, url } = useRouteMatch()
   const { t } = useTranslation()
-
+  const token = useSelector(authSelectors.getToken)
   const { networkId } = useParams<{ networkId: string }>()
   const listOfNodes = useNodesByNetworkId(networkId)
+  const dispatch = useDispatch()
 
   useLinkBreadcrumb({
     link: url,
     title: t('breadcrumbs.nodes'),
   })
+
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      if (token) {
+        dispatch(getNodes.request({token}))
+      }
+    }, 10000)
+    return () => clearInterval(interval)
+  }, [dispatch, token])
 
   if (!listOfNodes) {
     return <div>Not Found</div>

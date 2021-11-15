@@ -4,6 +4,7 @@ import { nodeSelectors } from '~store/selectors'
 import { NmLink } from '~components/index'
 import { useTranslation } from 'react-i18next'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
+import { useDispatch } from 'react-redux'
 import { Node } from '~modules/node'
 import { NmTable, TableColumns } from '~components/Table'
 import { Chip } from '@mui/material'
@@ -11,6 +12,8 @@ import { encode64 } from '~util/fields'
 import { TableToggleButton } from '../../networks/networkId/nodes/components/TableToggleButton'
 import { AltRoute, CallMerge, CallSplit } from '@mui/icons-material'
 import { i18n } from '../../../i18n/i18n'
+import { getNodes } from '~store/modules/node/actions'
+import { authSelectors } from '~store/selectors'
 
 const columns: TableColumns<Node> = [
   { id: 'name',
@@ -104,10 +107,22 @@ const columns: TableColumns<Node> = [
 export const NodeTable: React.FC = () => {
   const { t } = useTranslation()
   const listOfNodes = useSelector(nodeSelectors.getNodes)
+  const dispatch = useDispatch()
+  const token = useSelector(authSelectors.getToken)
 
   useLinkBreadcrumb({
     title: t('breadcrumbs.nodes'),
   })
+
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      if (token) {
+        dispatch(getNodes.request({token}))
+      }
+    }, 10000)
+    return () => clearInterval(interval)
+  }, [dispatch, token])
+
 
   return (
     <NmTable columns={columns} rows={listOfNodes} getRowId={(row) => row.id} />

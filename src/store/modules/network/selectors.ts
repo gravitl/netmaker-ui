@@ -10,3 +10,8 @@ export const getNetworks = createSelector(
   getNetwork,
   (network) => network.networks
 )
+
+export const getDnsEntries = createSelector(
+  getNetwork,
+  network => network.dnsEntries
+)

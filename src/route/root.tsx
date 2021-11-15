@@ -12,6 +12,7 @@ import { AccessKeys } from './accesskeys/AccessKeys'
 import { ExtClients } from './extclients/ExtClients'
 import { RouterState } from '~store/modules/router/Component'
 import { Users } from './users/Users'
+import { DNS } from './dns/DNS'
 
 function NoMatch() {
   const location = useLocation()
@@ -55,6 +56,9 @@ function Routes() {
           </PrivateRoute>
           <PrivateRoute path="/ext-clients">
             <ExtClients />
+          </PrivateRoute>
+          <PrivateRoute path="/dns">
+            <DNS />
           </PrivateRoute>
           <PrivateRoute path="/users" to={{pathname: '/'}} condition={(user) => {
             if(`/users/${user?.name}` === location.pathname && !!user) 

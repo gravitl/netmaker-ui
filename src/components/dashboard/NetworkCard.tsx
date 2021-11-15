@@ -5,7 +5,6 @@ import Avatar from '@mui/material/Avatar';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import SpeedDial from '@mui/material/SpeedDial';
-import SpeedDialIcon from '@mui/material/SpeedDialIcon';
 import SpeedDialAction from '@mui/material/SpeedDialAction';
 import PreviewIcon from '@mui/icons-material/Preview';
 import CreateIcon from '@mui/icons-material/AddBox';
@@ -14,7 +13,7 @@ import { grey } from '@mui/material/colors';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { useTranslation } from 'react-i18next'
-import { Wifi } from '@mui/icons-material';
+import { KeyboardArrowRight, Wifi } from '@mui/icons-material';
 
 const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
     '&.MuiSpeedDial-directionRight': {
@@ -61,7 +60,7 @@ export default function NetworkCard() {
             <CardActions>
                 <StyledSpeedDial
                 ariaLabel={`${t('common.manage')} ${t('network.networks')}`}
-                icon={<SpeedDialIcon />}
+                icon={<KeyboardArrowRight />}
                 direction={"right"}
                 >
                 {actions.map((action) => (

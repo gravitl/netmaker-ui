@@ -1,18 +1,19 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
+import Avatar from '@mui/material/Avatar';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import SpeedDial from '@mui/material/SpeedDial';
 import SpeedDialAction from '@mui/material/SpeedDialAction';
 import PreviewIcon from '@mui/icons-material/Preview';
+import CreateIcon from '@mui/icons-material/AddBox';
 import { grey } from '@mui/material/colors';
-import Avatar from '@mui/material/Avatar';
 
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { useTranslation } from 'react-i18next'
-import { KeyboardArrowRight, Language } from '@mui/icons-material';
+import { KeyboardArrowRight, People as UsersIcon } from '@mui/icons-material';
 
 const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
     '&.MuiSpeedDial-directionRight': {
@@ -21,9 +22,9 @@ const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
     },
 }));
 
-export default function NodeCard() {
+export default function NetworkCard() {
     const { t } = useTranslation()
-    
+
     const cardStyle = {
         marginBottom: '1em',
         marginTop: '1em',
@@ -35,29 +36,30 @@ export default function NodeCard() {
         alignItems: 'center',
         flexDirection: 'column',
     } as any
-
+    
     const actions = [
-        { icon: <Link to='/dns' ><PreviewIcon /></Link>, name: t('common.view')},
+        { icon: <Link color='primary' to='/users' ><PreviewIcon /></Link>, name: t('common.view')},
+        { icon: <Link color='primary' to='/users/create'><CreateIcon /></Link>, name: t('common.create')},
     ];
 
     return (
         <Card sx={{ minWidth: 275, backgroundColor: grey[200] }} variant='outlined' style={cardStyle}>
             <CardContent>
-                <Avatar sx={{ bgcolor: grey[900] }} aria-label={t('breadcrumbs.dns')} >
-                    <Language />
+                <Avatar sx={{ bgcolor: grey[900] }} aria-label={t('users.header')} >
+                    <UsersIcon />
                 </Avatar>
                 <div style={cardContentStyle}>
                     <Typography variant="h5" component="div">
-                    {t('breadcrumbs.dns')}
+                    {t('users.header')}
                     </Typography>
                     <Typography variant="body2">
-                        {`${t('common.manage')} ${t('breadcrumbs.dns')}`}
+                    {`${t('common.manage')} ${t('users.header')}`}
                     </Typography>
                 </div>
             </CardContent>
             <CardActions>
                 <StyledSpeedDial
-                ariaLabel={`${t('common.manage')} ${t('breadcrumbds.dns')}`}
+                ariaLabel={`${t('common.manage')} ${t('user.header')}`}
                 icon={<KeyboardArrowRight />}
                 direction={"right"}
                 >
@@ -70,6 +72,16 @@ export default function NodeCard() {
                     />
                 ))}
                 </StyledSpeedDial>
+                {/* <Tooltip title={t('common.view') as string} placement='top'>
+                    <IconButton component={Link} to='/users' color='primary'>
+                        <PreviewIcon />
+                    </IconButton>
+                </Tooltip>
+                <Tooltip title={t('common.create') as string} placement='top'>
+                    <IconButton component={Link} to='/users/create' color='primary'>
+                        <CreateIcon />
+                    </IconButton>
+                </Tooltip> */}
             </CardActions>
         </Card>
     );

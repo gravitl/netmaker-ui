@@ -1,20 +1,21 @@
 import { Container, Grid, Typography } from '@mui/material'
 import React from 'react'
 import { useRouteMatch, Switch, Route } from 'react-router-dom'
-// import { NetworkCreate } from './create/NetworkCreate'
 import { useTranslation } from 'react-i18next'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
-import { AccessKeySelect } from './components/AccessKeySelect'
-import { NetworkAccessKeys } from './components/NetworkAccessKeys'
-import { AccessKeyCreate } from './components/AccessKeyCreate'
-import { AccessKeyView } from './components/AccessKeyView'
+import { NetworkSelect } from '~components/NetworkSelect'
+import { useSelector } from 'react-redux'
+import { serverSelectors } from '~store/types'
+import { DNSView } from './components/DNSView'
+import { DNSEntryCreate } from './components/DNSCreate'
 
-export const AccessKeys: React.FC = () => {
+export const DNS: React.FC = () => {
   const { path } = useRouteMatch()
   const { t } = useTranslation()
+  const hasDNS = useSelector(serverSelectors.getServerConfig).DNSMode
 
   useLinkBreadcrumb({
-    title: t('breadcrumbs.accessKeys'),
+    title: t('breadcrumbs.dns'),
   })
 
   const titleStyle = {
@@ -34,21 +35,18 @@ export const AccessKeys: React.FC = () => {
             <Grid item xs={5}>
             <div style={titleStyle}>
                 <Typography variant='h4'>
-                    {t('accesskey.accesskeys')}
+                    {hasDNS ? t('dns.title') : t('dns.disabled')}
                 </Typography>
             </div>
             </Grid>
           </Grid>
-          <AccessKeySelect />
-        </Route>
-        <Route path={`${path}/:netid/details/:keyname`}>
-            <AccessKeyView />
+          <NetworkSelect base='dns' />
         </Route>
         <Route path={`${path}/:netid/create`}>
-            <AccessKeyCreate />
+            <DNSEntryCreate />
         </Route>
         <Route path={`${path}/:netid`}>
-            <NetworkAccessKeys />
+            <DNSView />
         </Route>
       </Switch>
     </Container>

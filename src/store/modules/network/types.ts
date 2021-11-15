@@ -102,6 +102,12 @@ export interface Metadata {
   accessString?: string
 }
 
+export interface DNS {
+  address: string
+  network: string
+  name: string
+}
+
 export interface AccessKey {
   name: string
   value: string
@@ -114,6 +120,26 @@ export interface GetAccessKeysPayload {
     netid: string
   }
   Response: Array<AccessKey>
+}
+
+export interface GetDnsEntriesPayload {
+  Request: void
+  Response: Array<DNS>
+}
+
+export interface CreateDNSEntryPayload {
+  Request: DNS
+  Response: DNS
+}
+
+export interface DeleteDNSEntryPayload {
+  Request: {
+    domain: string
+    netid: string
+  }
+  Response: {
+    domain: string
+  }
 }
 
 export interface RefreshPublicKeysPayload {
