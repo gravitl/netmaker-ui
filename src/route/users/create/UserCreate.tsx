@@ -1,12 +1,7 @@
 import React, { useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-  CircularProgress,
-  Grid,
-  List,
-  ListSubheader,
-} from '@mui/material'
+import { CircularProgress, Grid, List, ListSubheader } from '@mui/material'
 import { makeStyles, createStyles } from '@mui/styles'
 import {
   NmForm,
@@ -80,25 +75,25 @@ export const UserCreate: React.FC = () => {
 
   const onSubmit = useCallback(
     (data: CreateUser) => {
-      const create = () => dispatch(
-        createUser.request({
-          username: data.username,
-          password: data.password,
-          isadmin: data.isadmin,
-          networks: data.networks
-            .filter((network) => network.checked)
-            .map((network) => network.netid),
-        })
-      )
+      const create = () =>
+        dispatch(
+          createUser.request({
+            username: data.username,
+            password: data.password,
+            isadmin: data.isadmin,
+            networks: data.networks
+              .filter((network) => network.checked)
+              .map((network) => network.netid),
+          })
+        )
 
-      if(data.isadmin) {
+      if (data.isadmin) {
         setDialog({
           message: t('users.create.createAdmin'),
           onSubmit: create,
-          title: t('users.create.isAdminTitle')
+          title: t('users.create.isAdminTitle'),
         })
-      } 
-      else {
+      } else {
         create()
       }
     },

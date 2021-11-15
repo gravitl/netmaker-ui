@@ -18,7 +18,7 @@ export const AccessKeys: React.FC = () => {
   })
 
   const titleStyle = {
-    textAlign: 'center'
+    textAlign: 'center',
   } as any
 
   return (
@@ -32,23 +32,23 @@ export const AccessKeys: React.FC = () => {
             alignItems="center"
           >
             <Grid item xs={5}>
-            <div style={titleStyle}>
-                <Typography variant='h4'>
-                    {t('accesskey.accesskeys')}
+              <div style={titleStyle}>
+                <Typography variant="h4">
+                  {t('accesskey.accesskeys')}
                 </Typography>
-            </div>
+              </div>
             </Grid>
           </Grid>
           <AccessKeySelect />
         </Route>
         <Route path={`${path}/:netid/details/:keyname`}>
-            <AccessKeyView />
+          <AccessKeyView />
         </Route>
         <Route path={`${path}/:netid/create`}>
-            <AccessKeyCreate />
+          <AccessKeyCreate />
         </Route>
         <Route path={`${path}/:netid`}>
-            <NetworkAccessKeys />
+          <NetworkAccessKeys />
         </Route>
       </Switch>
     </Container>

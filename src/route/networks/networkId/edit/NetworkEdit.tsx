@@ -1,22 +1,34 @@
 import React from 'react'
-import { Grid } from '@mui/material'
+import { Grid, Typography } from '@mui/material'
 import { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
-import { FormRef, NmForm, NmFormInputSwitch, NmFormInputText } from '~components/form'
+import {
+  FormRef,
+  NmForm,
+  NmFormInputSwitch,
+  NmFormInputText,
+} from '~components/form'
 import { updateNetwork } from '~modules/network/actions'
 import { Network } from '~modules/network/types'
 import { networkToNetworkPayload } from '~modules/network/utils'
+import { useRouteMatch } from 'react-router'
+import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 
 export const NetworkEdit: React.FC<{
   network: Network
   onCancel: () => void
 }> = ({ network, onCancel }) => {
   const { t } = useTranslation()
-
+  const { url } = useRouteMatch()
   const dispatch = useDispatch()
 
   const formRef = React.createRef<FormRef<Network>>()
+
+  useLinkBreadcrumb({
+    link: url,
+    title: t('common.edit'),
+  })
 
   const onSubmit = useCallback(
     (data: Network) => {
@@ -47,6 +59,13 @@ export const NetworkEdit: React.FC<{
       ref={formRef}
     >
       <Grid container justifyContent="space-around" alignItems="center">
+        <Grid item xs={12}>
+          <div style={{ textAlign: 'center', margin: '1em 0 1em 0' }}>
+            <Typography variant="h5">
+              {`${t('network.details')} : ${network.displayname}`}
+            </Typography>
+          </div>
+        </Grid>
         <Grid item xs={12} sm={4} md={3}>
           <NmFormInputText
             name={'addressrange'}

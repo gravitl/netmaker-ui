@@ -7,7 +7,10 @@ import { datePickerConverter } from '../../../util/unixTime'
 import { NmTable, TableColumns } from '../../../components/Table'
 import { Autorenew, Delete } from '@mui/icons-material'
 import { useTranslation } from 'react-i18next'
-import { deleteNetwork, refreshPublicKeys } from '../../../store/modules/network/actions'
+import {
+  deleteNetwork,
+  refreshPublicKeys,
+} from '../../../store/modules/network/actions'
 import CustomDialog from '~components/dialog/CustomDialog'
 
 const columns: TableColumns<Network> = [
@@ -73,7 +76,7 @@ export const NetworkTable: React.FC = () => {
   const handlePubKeyRefresh = (network: Network) => {
     dispatch(
       refreshPublicKeys.request({
-        netid: network.netid
+        netid: network.netid,
       })
     )
   }
@@ -85,13 +88,13 @@ export const NetworkTable: React.FC = () => {
         rows={listOfNetworks}
         getRowId={(row) => row.netid}
         actions={[
-          row => ({
+          (row) => ({
             tooltip: `${t('network.refresh')} : ${row.displayname}`,
             disabled: false,
             icon: <Autorenew />,
             onClick: () => {
               handlePubKeyRefresh(row)
-            }
+            },
           }),
           (row) => ({
             tooltip: t('common.delete'),

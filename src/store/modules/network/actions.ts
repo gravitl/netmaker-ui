@@ -1,5 +1,9 @@
-import { createAsyncAction } from 'typesafe-actions'
-import { DeleteDNSEntryPayload, GetDnsEntriesPayload, RefreshPublicKeysPayload } from '~store/types'
+import { createAsyncAction, createAction } from 'typesafe-actions'
+import {
+  DeleteDNSEntryPayload,
+  GetDnsEntriesPayload,
+  RefreshPublicKeysPayload,
+} from '~store/types'
 import {
   CreateNetworkPayload,
   DeleteNetworkPayload,
@@ -8,16 +12,12 @@ import {
   CreateAccessKeyPayload,
   GetAccessKeysPayload,
   DeleteAccessKeyPayload,
-  IndexNetworkPayload,
   CreateDNSEntryPayload,
+  TempKey,
 } from './types'
 
-export const clearMetadata = createAsyncAction(
-  'network_clearMetadata_Request',
-  'network_clearMetadata_Success',
-  'network_clearMetadata_Failure'
-
-)<IndexNetworkPayload['Request'], IndexNetworkPayload['Response'], Error>()
+export const clearTempKey = createAction('clearTempKey')<void>()
+export const setTempKey = createAction('setTempKey')<TempKey>()
 
 export const getNetworks = createAsyncAction(
   'network_getNetworks_Request',
@@ -91,4 +91,8 @@ export const refreshPublicKeys = createAsyncAction(
   'network_refreshPublicKeys_Request',
   'network_refreshPublicKeys_Success',
   'network_refreshPublicKeys_Failure'
-)<RefreshPublicKeysPayload['Request'], RefreshPublicKeysPayload['Response'], Error>()
+)<
+  RefreshPublicKeysPayload['Request'],
+  RefreshPublicKeysPayload['Response'],
+  Error
+>()

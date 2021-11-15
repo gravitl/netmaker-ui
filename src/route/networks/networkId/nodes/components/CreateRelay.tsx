@@ -55,7 +55,8 @@ const styles = {
 export function CreateRelay() {
   const history = useHistory()
   const { t } = useTranslation()
-  const { networkId, nodeId } = useParams<{ networkId: string, nodeId: string }>()
+  const { networkId, nodeId } =
+    useParams<{ networkId: string; nodeId: string }>()
   const { url } = useRouteMatch()
   const node = useNodeById(decode64(nodeId))
   const dispatch = useDispatch()
@@ -69,38 +70,41 @@ export function CreateRelay() {
   })
 
   interface RelayData {
-      ranges: string
+    ranges: string
   }
 
   const initialState: RelayData = {
-    ranges: ''  
+    ranges: '',
   }
 
   const onSubmit = useCallback(
-      (data: RelayData) => {
-        const newRanges = data.ranges.split(',')
-        for (let i = 0; i < newRanges.length; i++) {
-            newRanges[i] = newRanges[i].trim()
-        }
-        dispatch(createRelayNode.request({
-            netid: networkId,
-            nodeid: nodeId,
-            nodemac: nodeMac,
-            payload: {
-                ranges: newRanges,
-            }
-        }))
-        history.goBack()
-      }, [dispatch, networkId, nodeMac, nodeId, history]
+    (data: RelayData) => {
+      const newRanges = data.ranges.split(',')
+      for (let i = 0; i < newRanges.length; i++) {
+        newRanges[i] = newRanges[i].trim()
+      }
+      dispatch(
+        createRelayNode.request({
+          netid: networkId,
+          nodeid: nodeId,
+          nodemac: nodeMac,
+          payload: {
+            ranges: newRanges,
+          },
+        })
+      )
+      history.goBack()
+    },
+    [dispatch, networkId, nodeMac, nodeId, history]
   )
 
   if (!node || !nodes) {
-      return <h2>{t('error.notfound')}</h2>
+    return <h2>{t('error.notfound')}</h2>
   }
 
   for (let i = 0; i < nodes.length; i++) {
     if (nodes) {
-      const data = {name: nodes[i].name, address: nodes[i].address }
+      const data = { name: nodes[i].name, address: nodes[i].address }
       nodeNames.push(data)
     }
   }
@@ -108,7 +112,10 @@ export function CreateRelay() {
   const formRef = React.createRef<FormRef<RelayData>>()
 
   const updateRanges = (value: string) => {
-    formRef.current?.reset({...formRef.current?.values, ranges: value}, { keepDefaultValues: true})
+    formRef.current?.reset(
+      { ...formRef.current?.values, ranges: value },
+      { keepDefaultValues: true }
+    )
   }
 
   return (
@@ -120,39 +127,49 @@ export function CreateRelay() {
       }}
     >
       <Box style={styles.modal}>
-          <NmForm
-            initialState={initialState}
-            onSubmit={onSubmit}
-            submitProps={{
-                fullWidth: true,
-                variant: 'contained'
-            }}
-            submitText={t('common.create')}
-            sx={{margin: '2em 0 2em 0'}}
-            ref={formRef}
+        <NmForm
+          initialState={initialState}
+          onSubmit={onSubmit}
+          submitProps={{
+            fullWidth: true,
+            variant: 'contained',
+          }}
+          submitText={t('common.create')}
+          sx={{ margin: '2em 0 2em 0' }}
+          ref={formRef}
+        >
+          <Grid
+            container
+            justifyContent="space-around"
+            alignItems="center"
+            sx={{ margin: '1em 0 1em 0' }}
           >
-            <Grid container justifyContent='space-around' alignItems='center' sx={{margin: '1em 0 1em 0'}}>
-                <Grid item xs={12} sm={8} sx={{textAlign: 'center', margin: '1em 0 1em 0'}}>
-                    <Typography variant='h4'>
-                        {`${t('node.createrelay')} : ${node.name}`}
-                    </Typography>
-                </Grid>
-                <Grid item xs={12} sm={5}>
-                    <NmFormInputText 
-                        multiline 
-                        minRows={2} 
-                        fullWidth 
-                        disabled
-                        name={'ranges'} 
-                        label={t('node.relayaddrs')} 
-                        sx={{height: '100%', margin: '1em 0 1em 0'}} 
-                    />
-                </Grid>
-                <Grid item xs={12} sm={5}>
-                    <RelaySelect names={nodeNames} onSelect={updateRanges} />
-                </Grid>
+            <Grid
+              item
+              xs={12}
+              sm={8}
+              sx={{ textAlign: 'center', margin: '1em 0 1em 0' }}
+            >
+              <Typography variant="h4">
+                {`${t('node.createrelay')} : ${node.name}`}
+              </Typography>
             </Grid>
-          </NmForm>
+            <Grid item xs={12} sm={5}>
+              <NmFormInputText
+                multiline
+                minRows={2}
+                fullWidth
+                disabled
+                name={'ranges'}
+                label={t('node.relayaddrs')}
+                sx={{ height: '100%', margin: '1em 0 1em 0' }}
+              />
+            </Grid>
+            <Grid item xs={12} sm={5}>
+              <RelaySelect names={nodeNames} onSelect={updateRanges} />
+            </Grid>
+          </Grid>
+        </NmForm>
       </Box>
     </Modal>
   )

@@ -31,12 +31,12 @@ const columns: TableColumns<Node> = [
     align: 'center',
   },
   {
-      id: 'id',
-      label: i18n.t('ingress.add'),
-      minWidth: 50,
-      align: 'center',
-      format: (_, node) => <ExtClientCreateButton node={node}/>,
-  }
+    id: 'id',
+    label: i18n.t('ingress.add'),
+    minWidth: 50,
+    align: 'center',
+    format: (_, node) => <ExtClientCreateButton node={node} />,
+  },
 ]
 
 const extColumns: TableColumns<ExternalClient> = [
@@ -46,7 +46,7 @@ const extColumns: TableColumns<ExternalClient> = [
     minWidth: 150,
     align: 'center',
     sortable: true,
-    format: (_, client) => <EditExtClientButton client={client} /> 
+    format: (_, client) => <EditExtClientButton client={client} />,
   },
   {
     id: 'address',
@@ -60,26 +60,30 @@ const extColumns: TableColumns<ExternalClient> = [
     labelKey: 'extclient.viewqr',
     minWidth: 50,
     align: 'center',
-    format: (_, client) => <DownloadExtClientButton type='qr' client={client}/>
+    format: (_, client) => (
+      <DownloadExtClientButton type="qr" client={client} />
+    ),
   },
   {
     id: 'description',
     labelKey: 'extclient.download',
     minWidth: 50,
     align: 'center',
-    format: (_, client) => <DownloadExtClientButton type='file' client={client}/>,
+    format: (_, client) => (
+      <DownloadExtClientButton type="file" client={client} />
+    ),
   },
   {
     id: 'lastmodified',
     labelKey: 'common.delete',
     minWidth: 50,
     align: 'center',
-    format: (_, client) => <DeleteExtClientButton client={client} />
+    format: (_, client) => <DeleteExtClientButton client={client} />,
   },
 ]
 
 const centerText = {
-    textAlign: 'center'
+  textAlign: 'center',
 }
 
 export const ExtClientView: React.FC = () => {
@@ -103,19 +107,23 @@ export const ExtClientView: React.FC = () => {
   const gateways = filterIngressGateways(listOfNodes)
 
   if (!gateways.length) {
-      return <Grid
-      container
-      direction="row"
-      justifyContent="space-between"
-      alignItems="flex-start"
-    >
-      <Grid item xs={12} sx={{margin: '0.5em 0em 1em 0em'}}>
-        <NetworkSelect base='ext-clients' />
+    return (
+      <Grid
+        container
+        direction="row"
+        justifyContent="space-between"
+        alignItems="flex-start"
+      >
+        <Grid item xs={12} sx={{ margin: '0.5em 0em 1em 0em' }}>
+          <NetworkSelect base="ext-clients" />
+        </Grid>
+        <Grid item xs={12} sx={{ margin: '0.5em 0em 1em 0em' }}>
+          <div style={centerText as any}>
+            <h3>{t('ingress.none')}</h3>
+          </div>
+        </Grid>
       </Grid>
-      <Grid item xs={12} sx={{margin: '0.5em 0em 1em 0em'}}>
-        <div style={centerText as any}><h3>{t('ingress.none')}</h3></div>
-      </Grid>
-    </Grid>
+    )
   }
 
   return (
@@ -127,31 +135,43 @@ export const ExtClientView: React.FC = () => {
           justifyContent="space-between"
           alignItems="flex-start"
         >
-          <Grid item xs={12} sx={{margin: '0.5em 0em 1em 0em'}}>
-            <NetworkSelect base='ext-clients' />
+          <Grid item xs={12} sx={{ margin: '0.5em 0em 1em 0em' }}>
+            <NetworkSelect base="ext-clients" />
           </Grid>
-          <Grid item xs={12} sm={12} md={4} sx={{margin: '0.5em 0.5em 0.5em 0.5em'}}>
+          <Grid
+            item
+            xs={12}
+            sm={12}
+            md={4}
+            sx={{ margin: '0.5em 0.5em 0.5em 0.5em' }}
+          >
             <div style={centerText as any}>
-              <Typography variant='h4' sx={{marginBottom: '1em'}}>
-              {`${netid} ${t('ingress.gateways')}`}
+              <Typography variant="h4" sx={{ marginBottom: '1em' }}>
+                {`${netid} ${t('ingress.gateways')}`}
               </Typography>
             </div>
             <NmTable
-                columns={columns}
-                rows={gateways}
-                getRowId={(row) => row.id}
+              columns={columns}
+              rows={gateways}
+              getRowId={(row) => row.id}
             />
           </Grid>
-          <Grid item xs={12} sm={12} md={7} sx={{margin: '0.5em 0.5em 0.5em 0.5em'}}>
+          <Grid
+            item
+            xs={12}
+            sm={12}
+            md={7}
+            sx={{ margin: '0.5em 0.5em 0.5em 0.5em' }}
+          >
             <div style={centerText as any}>
-              <Typography variant='h4' sx={{marginBottom: '1em'}}>
+              <Typography variant="h4" sx={{ marginBottom: '1em' }}>
                 {t('extclient.extclients')}
               </Typography>
             </div>
             <NmTable
               columns={extColumns}
               rows={clients}
-              getRowId={row => row.clientid}
+              getRowId={(row) => row.clientid}
             />
           </Grid>
         </Grid>

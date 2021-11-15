@@ -24,14 +24,13 @@ i18n
     // you can use the i18n.changeLanguage function to change the language manually: https://www.i18next.com/overview/api#changelanguage
     // if you're using a language detector, do not define the lng option
     saveMissing: true,
-    missingKeyHandler: (lngs,
-      ns,
-      key,
-      fallbackValue) => {
-      (window as any).missingTranslations = produce<{}, any>((window as any).missingTranslations, (draftState) => {
-        draftState[`${key}`] = fallbackValue
-
-      })
+    missingKeyHandler: (lngs, ns, key, fallbackValue) => {
+      ;(window as any).missingTranslations = produce<{}, any>(
+        (window as any).missingTranslations,
+        (draftState) => {
+          draftState[`${key}`] = fallbackValue
+        }
+      )
     },
     interpolation: {
       escapeValue: false, // react already safes from xss

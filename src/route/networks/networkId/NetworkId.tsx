@@ -4,6 +4,7 @@ import {
   TextField,
   Switch as SwitchField,
   FormControlLabel,
+  Typography,
 } from '@mui/material'
 import { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -21,7 +22,6 @@ import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 import { deleteNetwork } from '~modules/network/actions'
 import { NetworkEdit } from './edit/NetworkEdit'
 import { AccessKeys } from './accesskeys/AccessKeys'
-import { NetworkModifiedStats } from './components/NetworkModifiedStats'
 import { NetworkNodes } from './nodes/NetworkNodes'
 import { useNetwork } from '~util/network'
 
@@ -69,7 +69,7 @@ export const NetworkId: React.FC = () => {
           <NetworkNodes />
         </Route>
         <Route path={`${path}/edit`}>
-          <NetworkModifiedStats netid={networkId} />
+          {/* <NetworkModifiedStats netid={networkId} /> */}
           <NetworkEdit
             network={network}
             onCancel={() => {
@@ -80,7 +80,11 @@ export const NetworkId: React.FC = () => {
           />
         </Route>
         <Route exact path={path}>
-          <NetworkModifiedStats netid={networkId} />
+          <div style={{ textAlign: 'center', margin: '1em 0 1em 0' }}>
+            <Typography variant="h5">
+              {`${t('network.details')} : ${networkId}`}
+            </Typography>
+          </div>
           <Grid
             container
             sx={{
@@ -207,7 +211,7 @@ export const NetworkId: React.FC = () => {
             container
             justifyContent="space-evenly"
             alignItems="flex-end"
-            style={{ marginBottom: '2em', marginTop: '2em'}}
+            style={{ marginBottom: '2em', marginTop: '2em' }}
           >
             <Grid item xs={6} sm={3}>
               <NmLink to={`${url}/edit`} variant="outlined">

@@ -113,13 +113,14 @@ export const useLinkBreadcrumb = (crumb: Modify<Crumb, { link?: string }>) => {
   const { add } = useContext(BreadcrumbContext)
   const { url } = useRouteMatch()
 
-  const areCrumbsEqual = (a: Modify<Crumb, { link?: string }> | undefined, b: Modify<Crumb, { link?: string }>) => {
+  const areCrumbsEqual = (
+    a: Modify<Crumb, { link?: string }> | undefined,
+    b: Modify<Crumb, { link?: string }>
+  ) => {
     if (!a || !b) return JSON.stringify(a) === JSON.stringify(b)
-    return a.link === b.link &&
-      a.title === b.title &&
-      a.prefix === b.prefix
+    return a.link === b.link && a.title === b.title && a.prefix === b.prefix
   }
-  const previousCrumb = usePrevious({...crumb})
+  const previousCrumb = usePrevious({ ...crumb })
 
   React.useEffect(() => {
     const areEqual = areCrumbsEqual(previousCrumb, crumb)
@@ -131,9 +132,9 @@ export const useLinkBreadcrumb = (crumb: Modify<Crumb, { link?: string }>) => {
 }
 
 const usePrevious = (value: Modify<Crumb, { link?: string }>) => {
-  const ref = React.useRef<Modify<Crumb, { link?: string }>>();
+  const ref = React.useRef<Modify<Crumb, { link?: string }>>()
   React.useEffect(() => {
-    ref.current = value;
-  });
-  return ref.current;
-};
+    ref.current = value
+  })
+  return ref.current
+}

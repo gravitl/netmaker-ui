@@ -24,6 +24,7 @@ export const reducer = createReducer({
   hasAdmin: false,
   isCreating: false,
   users: [] as User[],
+  networkError: false,
 })
   .handleAction(setUser, (state, action) =>
     produce(state, (draftState) => {
@@ -39,6 +40,7 @@ export const reducer = createReducer({
     produce(state, (draftState) => {
       draftState.token = action.payload.token
       draftState.isLoggingIn = false
+      draftState.networkError = false
       const decoded: {
         IsAdmin: boolean
         UserName: string
@@ -93,11 +95,15 @@ export const reducer = createReducer({
     produce(state, (draftState) => {
       draftState.hasAdmin = true
       draftState.isCreating = false
+      draftState.networkError = false
     })
   )
-  .handleAction(createAdmin['failure'], (state, _) =>
+  .handleAction(createAdmin['failure'], (state, action) =>
     produce(state, (draftState) => {
       draftState.isCreating = false
+      if (action.payload.message.includes('Network Error')) {
+        draftState.networkError = true
+      }
     })
   )
   .handleAction(getAllUsers['success'], (state, action) =>

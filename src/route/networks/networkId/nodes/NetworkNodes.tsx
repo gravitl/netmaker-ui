@@ -7,9 +7,9 @@ import { useRouteMatch, useParams, Route, Switch } from 'react-router-dom'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 import { useNodesByNetworkId } from '~util/network'
 import { NodeId } from './nodeId/NodeId'
-import { Chip, Grid, Typography } from '@mui/material'
+import { Chip, Grid, IconButton, Tooltip, Typography } from '@mui/material'
 import { encode64 } from '~util/fields'
-import { AltRoute, CallMerge, CallSplit } from '@mui/icons-material'
+import { AltRoute, CallMerge, CallSplit, Sync } from '@mui/icons-material'
 import { i18n } from '../../../../i18n/i18n'
 import { CreateEgress } from './components/CreateEgress'
 import { TableToggleButton } from './components/TableToggleButton'
@@ -20,17 +20,20 @@ import { authSelectors } from '~store/selectors'
 import { getNodes } from '~store/modules/node/actions'
 
 const columns: TableColumns<Node> = [
-  { id: 'name',
+  {
+    id: 'name',
     labelKey: 'node.name',
     minWidth: 100,
     sortable: true,
     format: (value, node) => (
       <NmLink
-        to={`/networks/${node.network}/nodes/${encodeURIComponent(encode64(node.id))}`}
+        to={`/networks/${node.network}/nodes/${encodeURIComponent(
+          encode64(node.id)
+        )}`}
       >
         {value}
       </NmLink>
-    ), 
+    ),
   },
   {
     id: 'address',
@@ -50,40 +53,42 @@ const columns: TableColumns<Node> = [
     labelKey: 'node.statusegress',
     minWidth: 30,
     align: 'center',
-    format: (isegress, row) =>
-    <TableToggleButton 
-      which='egress'
-      isOn={isegress}
-      node={row}
-      createText={`${i18n.t('node.createegress')} : ${row.name}`}
-      removeText={`${i18n.t('node.removeegress')} : ${row.name}`}
-      SignalIcon={<CallSplit />}
-      withHistory
-    />
+    format: (isegress, row) => (
+      <TableToggleButton
+        which="egress"
+        isOn={isegress}
+        node={row}
+        createText={`${i18n.t('node.createegress')} : ${row.name}`}
+        removeText={`${i18n.t('node.removeegress')} : ${row.name}`}
+        SignalIcon={<CallSplit />}
+        withHistory
+      />
+    ),
   },
   {
     id: 'isingressgateway',
     labelKey: 'node.statusingress',
     minWidth: 30,
     align: 'center',
-    format: (isingress, row) =>
-    <TableToggleButton 
-      which='ingress'
-      isOn={isingress}
-      node={row}
-      createText={`${i18n.t('node.createingress')} : ${row.name}`}
-      removeText={`${i18n.t('node.removeingress')} : ${row.name}`}
-      SignalIcon={<CallMerge />}
-    />
+    format: (isingress, row) => (
+      <TableToggleButton
+        which="ingress"
+        isOn={isingress}
+        node={row}
+        createText={`${i18n.t('node.createingress')} : ${row.name}`}
+        removeText={`${i18n.t('node.removeingress')} : ${row.name}`}
+        SignalIcon={<CallMerge />}
+      />
+    ),
   },
   {
     id: 'isrelay',
     labelKey: 'node.statusrelay',
     minWidth: 30,
     align: 'center',
-    format: (isrelay, row) =>
-      <TableToggleButton 
-        which='relay'
+    format: (isrelay, row) => (
+      <TableToggleButton
+        which="relay"
         isOn={isrelay}
         node={row}
         createText={`${i18n.t('node.createrelay')} : ${row.name}`}
@@ -91,6 +96,7 @@ const columns: TableColumns<Node> = [
         SignalIcon={<AltRoute />}
         withHistory
       />
+    ),
   },
   {
     id: 'lastcheckin',
@@ -121,12 +127,18 @@ export const NetworkNodes: React.FC = () => {
     title: t('breadcrumbs.nodes'),
   })
 
+  const syncNodes = () => {
+    if (token) {
+      dispatch(getNodes.request({ token }))
+    }
+  }
+
   React.useEffect(() => {
     const interval = setInterval(() => {
       if (token) {
-        dispatch(getNodes.request({token}))
+        dispatch(getNodes.request({ token }))
       }
-    }, 10000)
+    }, 5000)
     return () => clearInterval(interval)
   }, [dispatch, token])
 
@@ -144,16 +156,27 @@ export const NetworkNodes: React.FC = () => {
           alignItems="center"
         >
           <Grid item xs={12}>
-            <Grid container justifyContent='space-between' alignItems='center'>
+            <Grid container justifyContent="space-between" alignItems="center">
               <Grid item xs={4}>
-                <Typography variant='h4'>
+                <Typography variant="h4">
                   {`${networkId} ${t('node.nodes')}`}
                 </Typography>
               </Grid>
               <Grid item xs={6}>
-                <NetworkSelect base='networks' extension='nodes'/>
+                <Grid container justifyContent="center" alignItems="center">
+                  <Grid item xs={8}>
+                    <NetworkSelect base="networks" extension="nodes" />
+                  </Grid>
+                  <Grid item xs={3}>
+                    <Tooltip title={t('node.sync') as string} placement="top">
+                      <IconButton color="primary" onClick={syncNodes}>
+                        <Sync />
+                      </IconButton>
+                    </Tooltip>
+                  </Grid>
+                </Grid>
               </Grid>
-          </Grid>
+            </Grid>
           </Grid>
         </Grid>
         <NmTable
@@ -162,7 +185,10 @@ export const NetworkNodes: React.FC = () => {
           getRowId={(row) => row.id}
         />
       </Route>
-      <Route path={`${path}/:nodeId/create-egress`} children={<CreateEgress />} />
+      <Route
+        path={`${path}/:nodeId/create-egress`}
+        children={<CreateEgress />}
+      />
       <Route path={`${path}/:nodeId/create-relay`} children={<CreateRelay />} />
       <Route path={`${path}/:nodeId`}>
         <NodeId />

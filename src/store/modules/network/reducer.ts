@@ -7,11 +7,12 @@ import {
   updateNetwork,
   deleteAccessKey,
   createAccessKey,
-  clearMetadata,
+  clearTempKey,
   refreshPublicKeys,
   getDnsEntries,
   createDnsEntry,
   deleteDnsEntry,
+  setTempKey,
 } from './actions'
 import { Network } from './types'
 import { networkPayloadToNetwork } from './utils'
@@ -20,6 +21,10 @@ export const reducer = createReducer({
   networks: [] as Array<Network>,
   isFetching: false as boolean,
   dnsEntries: [] as Array<DNS>,
+  tempkey: {
+    accessString: '',
+    value: '',
+  },
 })
   .handleAction(getNetworks['request'], (state, _) =>
     produce(state, (draftState) => {
@@ -72,34 +77,35 @@ export const reducer = createReducer({
       }
     })
   )
-  .handleAction(createAccessKey['success'], (state, action) => 
+  .handleAction(createAccessKey['success'], (state, action) =>
     produce(state, (draftState) => {
       const index = draftState.networks.findIndex(
         (network) => network.netid === action.payload.netid
       )
       if (~index) {
         draftState.networks[index].accesskeys.push(action.payload.newAccessKey)
-        draftState.networks[index].metadata = {
+        draftState.tempkey = {
           accessString: action.payload.newAccessKey.accessstring,
-          value: action.payload.newAccessKey.value
+          value: action.payload.newAccessKey.value,
         }
       }
     })
   )
-  .handleAction(clearMetadata['success'], (state, action) => 
+  .handleAction(clearTempKey, (state, _) =>
     produce(state, (draftState) => {
-      const index = draftState.networks.findIndex(
-        (network) => network.netid === action.payload.netid
-      )
-      if (~index) {
-        draftState.networks[index].metadata = undefined
-      }
+      draftState.tempkey.accessString = ''
+      draftState.tempkey.value = ''
+    })
+  )
+  .handleAction(setTempKey, (state, action) =>
+    produce(state, (draftState) => {
+      draftState.tempkey = { ...action.payload }
     })
   )
   .handleAction(refreshPublicKeys['success'], (state, action) =>
     produce(state, (draftState) => {
       const index = draftState.networks.findIndex(
-        network => network.netid === action.payload.netid
+        (network) => network.netid === action.payload.netid
       )
       if (~index) {
         draftState.networks[index] = {
@@ -119,11 +125,15 @@ export const reducer = createReducer({
       draftState.dnsEntries.push(action.payload)
     })
   )
-  .handleAction(deleteDnsEntry['success'], (state, action) => 
+  .handleAction(deleteDnsEntry['success'], (state, action) =>
     produce(state, (draftState) => {
-      const index = draftState.dnsEntries.findIndex(entry => entry.name === action.payload.domain)
+      const index = draftState.dnsEntries.findIndex(
+        (entry) => entry.name === action.payload.domain
+      )
       if (~index) {
-        draftState.dnsEntries = draftState.dnsEntries.filter(entry => entry.name !== action.payload.domain)
+        draftState.dnsEntries = draftState.dnsEntries.filter(
+          (entry) => entry.name !== action.payload.domain
+        )
       }
     })
   )

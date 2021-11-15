@@ -3,6 +3,9 @@ import { NodePayload, Node } from '.'
 export const nodeToNodePayload = (node: Node): NodePayload => {
   return {
     ...node,
+    mtu: Number(node.mtu),
+    persistentkeepalive: Number(node.persistentkeepalive),
+    listenport: Number(node.listenport),
     saveconfig: node.saveconfig ? 'yes' : 'no',
     isegressgateway: node.isegressgateway ? 'yes' : 'no',
     isingressgateway: node.isingressgateway ? 'yes' : 'no',
@@ -22,6 +25,9 @@ export const nodeToNodePayload = (node: Node): NodePayload => {
 export const nodePayloadToNode = (node: NodePayload): Node => {
   return {
     ...node,
+    mtu: Number(node.mtu),
+    persistentkeepalive: Number(node.persistentkeepalive),
+    listenport: Number(node.listenport),
     saveconfig: node.saveconfig === 'yes',
     isegressgateway: node.isegressgateway === 'yes',
     isingressgateway: node.isingressgateway === 'yes',
@@ -40,14 +46,17 @@ export const nodePayloadToNode = (node: NodePayload): Node => {
 }
 
 export function download(filename: string, text: string) {
-  var element = document.createElement('a');
-  element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
-  element.setAttribute('download', filename);
+  var element = document.createElement('a')
+  element.setAttribute(
+    'href',
+    'data:text/plain;charset=utf-8,' + encodeURIComponent(text)
+  )
+  element.setAttribute('download', filename)
 
-  element.style.display = 'none';
-  document.body.appendChild(element);
+  element.style.display = 'none'
+  document.body.appendChild(element)
 
-  element.click();
+  element.click()
 
-  document.body.removeChild(element);
+  document.body.removeChild(element)
 }

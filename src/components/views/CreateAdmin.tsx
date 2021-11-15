@@ -23,6 +23,9 @@ const styles = {
     display: 'flex',
     textAlign: 'center',
   },
+  margin: {
+    marginBottom: '1em',
+  },
 } as any
 
 export default function CreateAdmin() {
@@ -32,10 +35,15 @@ export default function CreateAdmin() {
   const [triedToCreate, setTriedToCreate] = React.useState(false)
   const isCreating = useSelector(authSelectors.isCreating)
   const hasAdmin = useSelector(authSelectors.hasAdmin)
+  const hasNetworkError = useSelector(authSelectors.hasNetworkError)
 
   const initialAdminForm = { username: '', password: '', confirmation: '' }
 
   useEffect(() => {
+    if (hasNetworkError) {
+      setError(t('error.network'))
+    }
+
     if (!triedToCreate) {
       return
     }
@@ -43,7 +51,7 @@ export default function CreateAdmin() {
     if (isCreating) {
       setError('')
     }
-  }, [isCreating, triedToCreate, setError, t])
+  }, [isCreating, triedToCreate, setError, t, hasNetworkError])
 
   const createAdminValidation = useMemo(
     () =>
@@ -84,9 +92,14 @@ export default function CreateAdmin() {
   if (hasAdmin) return <Redirect to={'/'} />
 
   return (
-    <Grid container justifyContent="center" alignItems="center">
+    <Grid
+      container
+      justifyContent="center"
+      alignItems="center"
+      style={styles.margin}
+    >
       <Grid item xs={12}>
-        <div style={styles.center}>
+        <div style={styles.centerText}>
           {error && (
             <Typography variant="h5" color="error">
               {error}
@@ -103,7 +116,6 @@ export default function CreateAdmin() {
           initialState={initialAdminForm}
           resolver={createAdminValidation}
           onSubmit={createSubmit}
-          onCancel={() => {}}
           submitText={t('login.admin.creating')}
           showOauth
           submitProps={{
@@ -116,7 +128,7 @@ export default function CreateAdmin() {
           disabled={isCreating}
         >
           <Grid container justifyContent="space-around" alignItems="center">
-            <Grid item sm={12} md={5}>
+            <Grid item sm={12} md={10}>
               <NmFormInputText
                 name={'username'}
                 label={t('login.label.username')}
@@ -128,7 +140,7 @@ export default function CreateAdmin() {
                 autoFocus
               />
             </Grid>
-            <Grid item sm={12} md={5}>
+            <Grid item sm={12} md={10}>
               <NmFormInputText
                 name={'password'}
                 label={t('login.label.password')}
@@ -142,7 +154,7 @@ export default function CreateAdmin() {
                 autoComplete="false"
               />
             </Grid>
-            <Grid item sm={12} md={5}>
+            <Grid item sm={12} md={10}>
               <NmFormInputText
                 name={'confirmation'}
                 label={t('login.label.confirmation')}

@@ -4,15 +4,15 @@ import { RouterAction } from './types'
 const RouterActionPrefix = `router`
 
 export const routerPush = createAction(
-  `${RouterActionPrefix}/PUSH`,
+  `${RouterActionPrefix}/PUSH`
 )<RouterAction>()
 
 export const routerPop = createAction(
-  `${RouterActionPrefix}/POP`,
+  `${RouterActionPrefix}/POP`
 )<RouterAction>()
 
 export const routerReplace = createAction(
-  `${RouterActionPrefix}/REPLACE`,
+  `${RouterActionPrefix}/REPLACE`
 )<RouterAction>()
 
 export const routerActions = {

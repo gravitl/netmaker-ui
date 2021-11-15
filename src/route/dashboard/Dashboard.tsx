@@ -12,7 +12,6 @@ import UserCard from '~components/dashboard/UserCard'
 import { useSelector } from 'react-redux'
 import { authSelectors } from '~store/types'
 
-
 export const Dashboard: React.FC = () => {
   const { path } = useRouteMatch()
   const { t } = useTranslation()
@@ -20,8 +19,8 @@ export const Dashboard: React.FC = () => {
 
   const styles = {
     title: {
-      textAlign: 'center'
-    }
+      textAlign: 'center',
+    },
   } as any
 
   useLinkBreadcrumb({
@@ -40,9 +39,7 @@ export const Dashboard: React.FC = () => {
           >
             <Grid item xs={12}>
               <div style={styles.title}>
-                <Typography variant='h4'>
-                  {t('dashboard.title')}
-                </Typography>
+                <Typography variant="h4">{t('dashboard.title')}</Typography>
               </div>
             </Grid>
             <Grid item xs={12} sm={6} md={5}>
@@ -60,11 +57,11 @@ export const Dashboard: React.FC = () => {
             <Grid item xs={12} sm={6} md={5}>
               <DNSCard />
             </Grid>
-            {user?.isAdmin && 
-            <Grid item xs={12} sm={6} md={5}>
-              <UserCard />
-            </Grid>
-            }
+            {user?.isAdmin && (
+              <Grid item xs={12} sm={6} md={5}>
+                <UserCard />
+              </Grid>
+            )}
           </Grid>
         </Route>
       </Switch>

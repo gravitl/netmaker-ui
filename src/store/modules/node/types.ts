@@ -146,7 +146,7 @@ export interface UpdateExternalClientPayload {
     clientName: string
     newClientName: string
   }
-  Response: { 
+  Response: {
     previousId: string
     client: ExternalClient
   }
@@ -192,7 +192,6 @@ export interface DeleteRelayNodePayload {
   }
   Response: NodePayload
 }
-
 
 export interface DeleteNodePayload {
   Request: {

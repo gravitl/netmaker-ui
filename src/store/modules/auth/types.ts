@@ -50,7 +50,7 @@ export interface CreateUser {
     isadmin: boolean
     networks: Array<string>
   }
-  Response: Omit<CreateUser["Request"], 'password'>
+  Response: Omit<CreateUser['Request'], 'password'>
 }
 
 export interface DeleteUser {

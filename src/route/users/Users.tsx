@@ -7,7 +7,7 @@ import { NmLink } from '~components/index'
 import { UserTable } from './components/UserTable'
 import { UserCreate } from './create/UserCreate'
 import { UserEdit } from './userId/UserEdit'
-import { UserChangePassword } from './userId/UserChangePassword' 
+import { UserChangePassword } from './userId/UserChangePassword'
 
 export const Users: React.FC = () => {
   const { path } = useRouteMatch()
@@ -31,7 +31,7 @@ export const Users: React.FC = () => {
               <h2>{t('users.header')}</h2>
             </Grid>
             <Grid item>
-              <NmLink variant='contained' to={{ pathname: '/users/create' }}>
+              <NmLink variant="contained" to={{ pathname: '/users/create' }}>
                 {t('users.create.button')}
               </NmLink>
             </Grid>

@@ -13,16 +13,16 @@ export const en: LanguageResource = {
     users: 'Users',
   },
   accesskey: {
-    accesskeys: "Access Keys",
-    accesskey: "Access Key",
-    create: "Create an Access Key",
-    delete: "Delete Access Key",
-    viewing: "Viewing Access Keys for",
-    usesremaining: "Uses Remaining",
-    none: "No Access Keys Found",
-    name: "Name",
-    uses: "Uses",
-    deleteconfirm: "Are you sure you want to delete this access key?",
+    accesskeys: 'Access Keys',
+    accesskey: 'Access Key',
+    create: 'Create an Access Key',
+    delete: 'Delete Access Key',
+    viewing: 'Viewing Access Keys for',
+    usesremaining: 'Uses Remaining',
+    none: 'No Access Keys Found',
+    name: 'Name',
+    uses: 'Uses',
+    deleteconfirm: 'Are you sure you want to delete this access key?',
     details: 'Viewing your New Access Key Details',
     accessToken: 'Access Token',
     installCommand: 'Agent Install Command',
@@ -62,7 +62,7 @@ export const en: LanguageResource = {
     selectall: 'Select All',
   },
   dashboard: {
-    title: "Netmaker Dashboard"
+    title: 'Netmaker Dashboard',
   },
   dialog: {
     title: 'Please confirm',
@@ -84,22 +84,23 @@ export const en: LanguageResource = {
     custom: 'Custom DNS Entries',
     address: 'IP Address',
     name: 'DNS Name',
-    nodeaddress: 'Node Address'
+    nodeaddress: 'Node Address',
   },
   error: {
-    notfound: 'Not found'
+    notfound: 'Not found',
+    network: 'Could not reach server',
   },
   extclient: {
-    extclients: "External Clients",
-    extclient: "Ext Client",
-    create: "Create Ext Client",
-    delete: "Delete Ext Client",
-    viewing: "Viewing Ext Client",
-    none: "No Ext Clients Found",
-    name: "Name",
-    deleteconfirm: "Are you sure you want to delete this Ext. Client?",
-    download: "Download Client Configuration",
-    viewqr: "View Configuration QR",
+    extclients: 'External Clients',
+    extclient: 'Ext Client',
+    create: 'Create Ext Client',
+    delete: 'Delete Ext Client',
+    viewing: 'Viewing Ext Client',
+    none: 'No Ext Clients Found',
+    name: 'Name',
+    deleteconfirm: 'Are you sure you want to delete this Ext. Client?',
+    download: 'Download Client Configuration',
+    viewqr: 'View Configuration QR',
     clientid: 'Client ID',
     qr: 'QR Code',
     edit: 'Change Ext Client Name',
@@ -137,6 +138,7 @@ export const en: LanguageResource = {
     netid: 'Network Name',
     deleteconfirm: 'Are you sure you want to delete this network?',
     refresh: 'Refresh public keys',
+    details: 'Network Details',
   },
   helper: {
     egress: 'Enter your network interface name, i.e. "eth0"',
@@ -202,6 +204,8 @@ export const en: LanguageResource = {
     confirmrelay: 'Are you sure you want to make a Relay Server?',
     deleteconfirm: 'Are you sure you want to delete this node?',
     choose: 'Select Node(s)',
+    details: 'Node Details',
+    sync: 'Sync Nodes with Server',
   },
   login: {
     validation: {
@@ -270,11 +274,11 @@ export const en: LanguageResource = {
     },
     create: {
       button: 'Create User',
-      isAdmin: "Make Admin",
-      networks: "Networks",
-      createAdmin: "Are you sure you want to create an Admin?",
-      isAdminTitle: "Create new Admin",
-    }
+      isAdmin: 'Make Admin',
+      networks: 'Networks',
+      createAdmin: 'Are you sure you want to create an Admin?',
+      isAdminTitle: 'Create new Admin',
+    },
   },
   toast: {
     pending: 'Request pending',
@@ -288,7 +292,7 @@ export const en: LanguageResource = {
         node: 'Node updated failed!',
         extclient: 'Ext Client update failed!',
         networkrefresh: 'Failed to refresh nodes public keys!',
-      }
+      },
     },
     create: {
       success: {
@@ -296,7 +300,8 @@ export const en: LanguageResource = {
         egress: 'Succesfully created Egress Gateway!',
         ingress: 'Successfully created Ingress Gateway!',
         relay: 'Successfully created Relay!',
-        extclient: 'Sucessfully created an Ext Client!', 
+        extclient: 'Sucessfully created an Ext Client!',
+        dns: 'Successfully created DNS Entry!',
       },
       failure: {
         accesskey: 'Failed to create Access Key.',
@@ -304,7 +309,8 @@ export const en: LanguageResource = {
         ingress: 'Failed to create Ingress Gateway.',
         relay: 'Failed to create Relay.',
         extclient: 'Failed to create an Ext Client',
-      }
+        dns: 'Failed to create the DNS Entry.',
+      },
     },
     delete: {
       success: {
@@ -312,7 +318,8 @@ export const en: LanguageResource = {
         egress: 'Succesfully removed Egress Gateway!',
         ingress: 'Successfully removed Ingress Gateway!',
         relay: 'Successfully removed Relay!',
-        extclient: 'Successfully removed Ext Client!'
+        extclient: 'Successfully removed Ext Client!',
+        dns: 'Successfully removed the DNS Entry!',
       },
       failure: {
         accesskey: 'Failed to remove Access Key.',
@@ -320,7 +327,8 @@ export const en: LanguageResource = {
         ingress: 'Failed to remove Ingress Gateway.',
         relay: 'Failed to remove Relay.',
         extclient: 'Failed to remove Ext Client.',
-      }
-    }
-  }
+        dns: 'Failed to remove the DNS Entry.',
+      },
+    },
+  },
 }

@@ -1,7 +1,22 @@
 import { produce } from 'immer'
 import { createReducer } from 'typesafe-actions'
 import { ExternalClient } from '~store/types'
-import { clearQr, createEgressNode, createIngressNode, createRelayNode, deleteEgressNode, deleteExternalClient, deleteIngressNode, deleteNode, deleteRelayNode, getExternalClientConf, getExternalClients, getNodes, updateExternalClient, updateNode } from './actions'
+import {
+  clearQr,
+  createEgressNode,
+  createIngressNode,
+  createRelayNode,
+  deleteEgressNode,
+  deleteExternalClient,
+  deleteIngressNode,
+  deleteNode,
+  deleteRelayNode,
+  getExternalClientConf,
+  getExternalClients,
+  getNodes,
+  updateExternalClient,
+  updateNode,
+} from './actions'
 import { Node } from './types'
 import { download, nodePayloadToNode } from './utils'
 
@@ -10,7 +25,7 @@ export const reducer = createReducer({
   isFetching: false as boolean,
   externalClients: [] as Array<ExternalClient>,
   isFetchingClients: false as boolean,
-  qrData: '' as string
+  qrData: '' as string,
 })
   .handleAction(getNodes['request'], (state, _) =>
     produce(state, (draftState) => {
@@ -28,7 +43,7 @@ export const reducer = createReducer({
       draftState.isFetching = false
     })
   )
-  .handleAction(getExternalClients['success'], (state, action) => 
+  .handleAction(getExternalClients['success'], (state, action) =>
     produce(state, (draftState) => {
       draftState.externalClients = action.payload || []
       draftState.isFetchingClients = false
@@ -40,50 +55,52 @@ export const reducer = createReducer({
       draftState.isFetching = false
     })
   )
-  .handleAction(updateNode['success'], (state, action) => 
+  .handleAction(updateNode['success'], (state, action) =>
     produce(state, (draftState) => {
       const index = draftState.nodes.findIndex(
-        node => node.id === action.payload.id
+        (node) => node.id === action.payload.id
       )
       if (~index) {
         draftState.nodes[index] = nodePayloadToNode(action.payload)
       }
     })
   )
-  .handleAction(deleteNode['success'], (state, action) => 
+  .handleAction(deleteNode['success'], (state, action) =>
     produce(state, (draftState) => {
       const index = draftState.nodes.findIndex(
-        node => node.id === action.payload.nodeid
+        (node) => node.id === action.payload.nodeid
       )
       if (~index) {
-        draftState.nodes = draftState.nodes.filter(node => node.id !== action.payload.nodeid)
+        draftState.nodes = draftState.nodes.filter(
+          (node) => node.id !== action.payload.nodeid
+        )
       }
     })
   )
-  .handleAction(createEgressNode['success'], (state, action) => 
+  .handleAction(createEgressNode['success'], (state, action) =>
     produce(state, (draftState) => {
       const index = draftState.nodes.findIndex(
-        node => node.id === action.payload.id
-      )
-      if (~index) {
-        draftState.nodes[index] = nodePayloadToNode(action.payload)
-      }
-    })
-  )
-  .handleAction(deleteEgressNode['success'], (state, action) => 
-    produce(state, (draftState) => {
-      const index = draftState.nodes.findIndex(
-        node => node.id === action.payload.id
+        (node) => node.id === action.payload.id
       )
       if (~index) {
         draftState.nodes[index] = nodePayloadToNode(action.payload)
       }
     })
   )
-  .handleAction(createIngressNode['success'], (state, action) => 
+  .handleAction(deleteEgressNode['success'], (state, action) =>
     produce(state, (draftState) => {
       const index = draftState.nodes.findIndex(
-        node => node.id === action.payload.id
+        (node) => node.id === action.payload.id
+      )
+      if (~index) {
+        draftState.nodes[index] = nodePayloadToNode(action.payload)
+      }
+    })
+  )
+  .handleAction(createIngressNode['success'], (state, action) =>
+    produce(state, (draftState) => {
+      const index = draftState.nodes.findIndex(
+        (node) => node.id === action.payload.id
       )
       if (~index) {
         draftState.nodes[index] = nodePayloadToNode(action.payload)
@@ -93,7 +110,7 @@ export const reducer = createReducer({
   .handleAction(deleteIngressNode['success'], (state, action) =>
     produce(state, (draftState) => {
       const index = draftState.nodes.findIndex(
-        node => node.id === action.payload.id
+        (node) => node.id === action.payload.id
       )
       if (~index) {
         draftState.nodes[index] = nodePayloadToNode(action.payload)
@@ -103,7 +120,7 @@ export const reducer = createReducer({
   .handleAction(createRelayNode['success'], (state, action) =>
     produce(state, (draftState) => {
       const index = draftState.nodes.findIndex(
-        node => node.id === action.payload.id
+        (node) => node.id === action.payload.id
       )
       if (~index) {
         draftState.nodes[index] = nodePayloadToNode(action.payload)
@@ -113,47 +130,54 @@ export const reducer = createReducer({
   .handleAction(deleteRelayNode['success'], (state, action) =>
     produce(state, (draftState) => {
       const index = draftState.nodes.findIndex(
-        node => node.id === action.payload.id
+        (node) => node.id === action.payload.id
       )
       if (~index) {
         draftState.nodes[index] = nodePayloadToNode(action.payload)
       }
     })
   )
-  .handleAction(getExternalClients['failure'], (state, _) => 
+  .handleAction(getExternalClients['failure'], (state, _) =>
     produce(state, (draftState) => {
       draftState.externalClients = []
       draftState.isFetchingClients = false
     })
   )
-  .handleAction(getExternalClientConf['success'], (state, action) => 
+  .handleAction(getExternalClientConf['success'], (state, action) =>
     produce(state, (draftState) => {
       if (action.payload.type === 'file') {
         download(`${action.payload.filename}.conf`, action.payload.data)
       } else {
-        draftState.qrData = 'data:image/png;base64,'+Buffer.from(action.payload.data).toString('base64')
+        draftState.qrData =
+          'data:image/png;base64,' +
+          Buffer.from(action.payload.data).toString('base64')
       }
     })
   )
-  .handleAction(deleteExternalClient['success'], (state, action) => 
+  .handleAction(deleteExternalClient['success'], (state, action) =>
     produce(state, (draftState) => {
-      const index = draftState.externalClients.findIndex(client => client.clientid === action.payload.clientid)
+      const index = draftState.externalClients.findIndex(
+        (client) => client.clientid === action.payload.clientid
+      )
       if (~index) {
-        draftState.externalClients = draftState.externalClients.filter(client => client.clientid !== action.payload.clientid)
+        draftState.externalClients = draftState.externalClients.filter(
+          (client) => client.clientid !== action.payload.clientid
+        )
       }
     })
   )
-  .handleAction(clearQr, (state, _) => 
+  .handleAction(clearQr, (state, _) =>
     produce(state, (draftState) => {
       draftState.qrData = ''
     })
   )
-  .handleAction(updateExternalClient['success'], (state, action) => 
+  .handleAction(updateExternalClient['success'], (state, action) =>
     produce(state, (draftState) => {
-      const index = draftState.externalClients.findIndex(client => client.clientid === action.payload.previousId)
+      const index = draftState.externalClients.findIndex(
+        (client) => client.clientid === action.payload.previousId
+      )
       if (~index) {
         draftState.externalClients[index] = action.payload.client
       }
     })
   )
-  

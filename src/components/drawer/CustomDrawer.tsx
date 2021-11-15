@@ -104,7 +104,10 @@ const styles = {
   logo: {
     objectFit: 'cover',
     height: 70,
-  } as React.DetailedHTMLProps<React.ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement>["style"],
+  } as React.DetailedHTMLProps<
+    React.ImgHTMLAttributes<HTMLImageElement>,
+    HTMLImageElement
+  >['style'],
   headerLogo: {
     width: '50%',
     height: 100,

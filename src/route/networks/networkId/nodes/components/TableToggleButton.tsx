@@ -3,44 +3,50 @@ import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { IconButton, Tooltip } from '@mui/material'
 import { Block, Check } from '@mui/icons-material'
-import { deleteIngressNode, deleteEgressNode, createIngressNode, deleteRelayNode } from '~modules/node/actions'
+import {
+  deleteIngressNode,
+  deleteEgressNode,
+  createIngressNode,
+  deleteRelayNode,
+} from '~modules/node/actions'
 import { Node } from '~store/types'
 import { encode64 } from '~util/fields'
 import { Link } from 'react-router-dom'
 import CustomDialog from '~components/dialog/CustomDialog'
 
 const hoverRedStyle = {
-    ':hover': {
-      color: 'red'
-    }
+  ':hover': {
+    color: 'red',
+  },
 }
 
 const hoverBlueStyle = {
   ':hover': {
-    color: '#3f51b5'
-  }
+    color: '#3f51b5',
+  },
 }
 
 export const TableToggleButton: React.FC<{
-  which: 'egress' | 'ingress' | 'relay',
-  isOn: boolean,
+  which: 'egress' | 'ingress' | 'relay'
+  isOn: boolean
   node: Node
-  createText: string,
-  removeText: string,
-  SignalIcon: ReactNode,
-  children?: ReactNode,
-  withHistory?: boolean,
+  createText: string
+  removeText: string
+  SignalIcon: ReactNode
+  children?: ReactNode
+  withHistory?: boolean
 }> = ({
-    which,
-    node,
-    isOn,
-    createText,
-    removeText,
-    SignalIcon,
-    withHistory, }) => {
+  which,
+  node,
+  isOn,
+  createText,
+  removeText,
+  SignalIcon,
+  withHistory,
+}) => {
   const dispatch = useDispatch()
-  const [ hovering, setHovering ] = React.useState(false)
-  const [ open, setOpen ] = React.useState(false)
+  const [hovering, setHovering] = React.useState(false)
+  const [open, setOpen] = React.useState(false)
   const { t } = useTranslation()
 
   const handleHoverEnter = () => setHovering(true)
@@ -50,69 +56,83 @@ export const TableToggleButton: React.FC<{
   const handleClose = () => setOpen(false)
 
   const removeAction = (which: string) => {
-    switch(which) {
+    switch (which) {
       case 'egress':
-        dispatch(deleteEgressNode.request({
-          netid: node.network,
-          nodeMac: node.macaddress,
-        }))
+        dispatch(
+          deleteEgressNode.request({
+            netid: node.network,
+            nodeMac: node.macaddress,
+          })
+        )
         break
       case 'ingress':
-        dispatch(deleteIngressNode.request({
-          netid: node.network,
-          nodeid: node.macaddress,
-        }))
+        dispatch(
+          deleteIngressNode.request({
+            netid: node.network,
+            nodeid: node.macaddress,
+          })
+        )
         break
       case 'relay':
-        dispatch(deleteRelayNode.request({
-          netid: node.network,
-          nodeid: node.id,
-          nodemac: node.macaddress,
-        }))
+        dispatch(
+          deleteRelayNode.request({
+            netid: node.network,
+            nodeid: node.id,
+            nodemac: node.macaddress,
+          })
+        )
         break
     }
   }
 
   const createIngress = () => {
     if (which === 'ingress') {
-      dispatch(createIngressNode.request({
-        netid: node.network,
-        nodeid: node.id,
-        nodemac: node.macaddress,
-      }))
+      dispatch(
+        createIngressNode.request({
+          netid: node.network,
+          nodeid: node.id,
+          nodemac: node.macaddress,
+        })
+      )
     }
   }
 
-  return (<>
+  return (
+    <>
       <CustomDialog
-          open={open}
-          handleClose={handleClose}
-          handleAccept={() => isOn ? removeAction(which) : createIngress()}
-          message={isOn ? removeText : createText}
-          title={`${isOn ? t('common.delete') : t('common.create')} ${which}`}
-        />
-    <Tooltip placement='top' title={String(!isOn ? createText : removeText)}>
-      {withHistory && !isOn? 
-        <IconButton
-          color={isOn ? 'success' : 'default'} 
-          sx={isOn ? hoverRedStyle : hoverBlueStyle}
-          component={Link}
-          onClick={!isOn ? () => {} : handleOpen}
-          to={`/networks/${node.network}/nodes/${encode64(node.id)}/create-${which}`}
-          onMouseEnter={handleHoverEnter}
-          onMouseLeave={handleHoverLeave}
-        >
-          {!isOn ? SignalIcon : hovering ? <Block /> : <Check />}
-        </IconButton> :
-        <IconButton
-          color={isOn ? 'success' : 'default'} 
-          sx={isOn ? hoverRedStyle : hoverBlueStyle}
-          onClick={handleOpen}
-          onMouseEnter={handleHoverEnter}
-          onMouseLeave={handleHoverLeave}
-        >
-          {!isOn ? SignalIcon : hovering ? <Block /> : <Check />}
-        </IconButton>}
+        open={open}
+        handleClose={handleClose}
+        handleAccept={() => (isOn ? removeAction(which) : createIngress())}
+        message={isOn ? removeText : createText}
+        title={`${isOn ? t('common.delete') : t('common.create')} ${which}`}
+      />
+      <Tooltip placement="top" title={String(!isOn ? createText : removeText)}>
+        {withHistory && !isOn ? (
+          <IconButton
+            color={isOn ? 'success' : 'default'}
+            sx={isOn ? hoverRedStyle : hoverBlueStyle}
+            component={Link}
+            onClick={!isOn ? () => {} : handleOpen}
+            to={`/networks/${node.network}/nodes/${encode64(
+              node.id
+            )}/create-${which}`}
+            onMouseEnter={handleHoverEnter}
+            onMouseLeave={handleHoverLeave}
+          >
+            {!isOn ? SignalIcon : hovering ? <Block /> : <Check />}
+          </IconButton>
+        ) : (
+          <IconButton
+            color={isOn ? 'success' : 'default'}
+            sx={isOn ? hoverRedStyle : hoverBlueStyle}
+            onClick={handleOpen}
+            onMouseEnter={handleHoverEnter}
+            onMouseLeave={handleHoverLeave}
+          >
+            {!isOn ? SignalIcon : hovering ? <Block /> : <Check />}
+          </IconButton>
+        )}
       </Tooltip>
-  </>)
+    </>
+  )
 }

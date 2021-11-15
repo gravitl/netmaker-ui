@@ -3,7 +3,14 @@ import { Grid, List, ListItem, ListSubheader } from '@mui/material'
 import { useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { FormRef, NmForm, NmFormInputCheckbox, NmFormInputText, NmFormList, validate } from '~components/form'
+import {
+  FormRef,
+  NmForm,
+  NmFormInputCheckbox,
+  NmFormInputText,
+  NmFormList,
+  validate,
+} from '~components/form'
 import { updateUserNetworks } from '~modules/auth/actions'
 import { useParams } from 'react-router-dom'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
@@ -20,45 +27,46 @@ export const UserEdit: React.FC = () => {
   useLinkBreadcrumb({
     title: username,
   })
-  
+
   const dispatch = useDispatch()
 
-  const user = useSelector(authSelectors.getUsers).find(u => u.name === username)
+  const user = useSelector(authSelectors.getUsers).find(
+    (u) => u.name === username
+  )
   const networks = useSelector(networkSelectors.getNetworks)
 
   const initialState = {
     username: user?.name || '',
     isadmin: !!user?.isAdmin,
 
-    networks: networks.map(network => ({
+    networks: networks.map((network) => ({
       checked: !!user?.networks?.includes(network.netid),
-      netid: network.netid
+      netid: network.netid,
     })),
   }
-
 
   const formRef = React.createRef<FormRef<typeof initialState>>()
 
   const onSubmit = useCallback(
     (data: typeof initialState) => {
-      const create = () => dispatch(
-        updateUserNetworks.request({
-          username: data.username,
-          isadmin: data.isadmin,
-          networks: data.networks
-            .filter((network) => network.checked)
-            .map((network) => network.netid),
-        })
-      )
+      const create = () =>
+        dispatch(
+          updateUserNetworks.request({
+            username: data.username,
+            isadmin: data.isadmin,
+            networks: data.networks
+              .filter((network) => network.checked)
+              .map((network) => network.netid),
+          })
+        )
 
-      if(data.isadmin) {
+      if (data.isadmin) {
         setDialog({
           message: t('users.update.createAdmin'),
           onSubmit: create,
-          title: t('users.update.isAdminTitle')
+          title: t('users.update.isAdminTitle'),
         })
-      } 
-      else {
+      } else {
         create()
       }
     },
@@ -78,7 +86,7 @@ export const UserEdit: React.FC = () => {
     [t]
   )
 
-  if(!currentUser?.isAdmin) return null
+  if (!currentUser?.isAdmin) return null
 
   if (!username) {
     return <div>Not Found</div>
@@ -95,7 +103,9 @@ export const UserEdit: React.FC = () => {
           initialState={initialState}
           resolver={validation}
           onSubmit={onSubmit}
-          submitText={t(user?.isAdmin ? 'users.update.adminSubmit' : 'users.update.submit')}
+          submitText={t(
+            user?.isAdmin ? 'users.update.adminSubmit' : 'users.update.submit'
+          )}
           submitProps={{
             type: 'submit',
             fullWidth: true,

@@ -10,7 +10,7 @@ export const NetworkSelect: React.FC = () => {
   const listOfNetworks = useSelector(networkSelectors.getNetworks)
   const networkNames = []
   if (listOfNetworks) {
-    for(let i = 0; i < listOfNetworks.length; i++) {
+    for (let i = 0; i < listOfNetworks.length; i++) {
       networkNames.push(listOfNetworks[i].netid)
     }
   }
@@ -19,20 +19,17 @@ export const NetworkSelect: React.FC = () => {
   const history = useHistory()
 
   const centerStyle = {
-    textAlign: 'center'
+    textAlign: 'center',
   } as any
 
   return (
-    <Grid container justifyContent='center' alignItems='center'>
+    <Grid container justifyContent="center" alignItems="center">
       <Grid item xs={6} style={centerStyle}>
         <CustomSelect
           placeholder={`${t('common.select')} ${t('network.network')}`}
           onSelect={(selected) => {
-              history.push(
-                `${path}/${selected}`
-              )
-            }
-          }
+            history.push(`${path}/${selected}`)
+          }}
           items={networkNames}
         />
       </Grid>

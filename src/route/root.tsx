@@ -60,11 +60,15 @@ function Routes() {
           <PrivateRoute path="/dns">
             <DNS />
           </PrivateRoute>
-          <PrivateRoute path="/users" to={{pathname: '/'}} condition={(user) => {
-            if(`/users/${user?.name}` === location.pathname && !!user) 
-              return true
-            return !!user?.isAdmin
-          }}>
+          <PrivateRoute
+            path="/users"
+            to={{ pathname: '/' }}
+            condition={(user) => {
+              if (`/users/${user?.name}` === location.pathname && !!user)
+                return true
+              return !!user?.isAdmin
+            }}
+          >
             <Users />
           </PrivateRoute>
           <Route path="/login" children={<Login />} />

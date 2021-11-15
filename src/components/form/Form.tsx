@@ -42,22 +42,24 @@ export interface FormRef<T> {
   values: UnpackNestedValue<T>
 }
 
-export const NmForm = React.forwardRef(function NmFormInternal<T>({
-  initialState,
-  disabled,
-  showReset,
-  submitText,
-  resetText,
-  children,
-  onSubmit,
-  submitProps,
-  resetProps,
-  showOauth,
-  resolver,
-  onCancel,
-  ...boxProps
-}: FormProps<T>,
-ref: React.ForwardedRef<FormRef<T>>) {
+export const NmForm = React.forwardRef(function NmFormInternal<T>(
+  {
+    initialState,
+    disabled,
+    showReset,
+    submitText,
+    resetText,
+    children,
+    onSubmit,
+    submitProps,
+    resetProps,
+    showOauth,
+    resolver,
+    onCancel,
+    ...boxProps
+  }: FormProps<T>,
+  ref: React.ForwardedRef<FormRef<T>>
+) {
   const { handleSubmit, reset, control, getValues } = useForm<T>({
     defaultValues: initialState,
     resolver,
@@ -65,7 +67,7 @@ ref: React.ForwardedRef<FormRef<T>>) {
 
   React.useImperativeHandle(ref, () => ({
     reset,
-    values: getValues()
+    values: getValues(),
   }))
 
   const { t } = useTranslation()
@@ -82,7 +84,11 @@ ref: React.ForwardedRef<FormRef<T>>) {
         <br />
         <Grid container justifyContent="space-around" alignItems="center">
           <Grid item xs={8}>
-            <Button {...submitProps} disabled={disabled} onClick={handleSubmit(onSubmit)}>
+            <Button
+              {...submitProps}
+              disabled={disabled}
+              onClick={handleSubmit(onSubmit)}
+            >
               {submitText ? submitText : t('common.submit')}
             </Button>
           </Grid>

@@ -10,12 +10,9 @@ interface PrivateRouteProps extends RouteProps {
   to?: LocationDescriptor
 }
 
-export const PrivateRoute: React.FC<React.PropsWithChildren<PrivateRouteProps>> = ({
-  children,
-  condition,
-  to,
-  ...rest
-}) => {
+export const PrivateRoute: React.FC<
+  React.PropsWithChildren<PrivateRouteProps>
+> = ({ children, condition, to, ...rest }) => {
   const isLoggedIn = useSelector(authSelectors.getLoggedIn)
   const user = useSelector(authSelectors.getUser)
   const showRoute = condition ? condition(user) : isLoggedIn
@@ -27,10 +24,14 @@ export const PrivateRoute: React.FC<React.PropsWithChildren<PrivateRouteProps>> 
           children
         ) : (
           <Redirect
-            to={to ? to : {
-              pathname: '/login',
-              state: { from: location },
-            }}
+            to={
+              to
+                ? to
+                : {
+                    pathname: '/login',
+                    state: { from: location },
+                  }
+            }
           />
         )
       }}

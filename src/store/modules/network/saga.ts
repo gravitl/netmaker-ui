@@ -13,33 +13,21 @@ import {
   createAccessKey,
   getAccessKeys,
   deleteAccessKey,
-  clearMetadata,
   refreshPublicKeys,
   getDnsEntries,
   createDnsEntry,
   deleteDnsEntry,
 } from './actions'
-import {
-  NetworkPayload,
-  GetAccessKeysPayload,
-} from './types'
+import { NetworkPayload, GetAccessKeysPayload } from './types'
 import { apiRequestWithAuthSaga } from '../api/saga'
 import { DNS } from '~store/types'
 
 function* handleLoginSuccess() {
   const token: ReturnType<typeof getToken> = yield select(getToken)
-  if (token) { 
+  if (token) {
     yield put(getNetworks.request())
     yield put(getDnsEntries.request())
   }
-}
-
-function* handleClearMetadata(
-  action: ReturnType<typeof clearMetadata['request']>
-) {
-  const netid = action.payload.netid
-  if (netid) yield put(clearMetadata['success']({netid}))
-  else yield put(clearMetadata['failure'](Error('could not clear metadata')))
 }
 
 function* handleGetNetworksRequest() {
@@ -52,11 +40,13 @@ function* handleGetNetworksRequest() {
   }
 }
 
-function* handleGetDnsRequest(
-) {
+function* handleGetDnsRequest() {
   try {
-    const response: AxiosResponse<Array<DNS>> =
-      yield apiRequestWithAuthSaga('get', `/dns`, {})
+    const response: AxiosResponse<Array<DNS>> = yield apiRequestWithAuthSaga(
+      'get',
+      `/dns`,
+      {}
+    )
     yield put(getDnsEntries['success'](response.data))
   } catch (e: unknown) {
     yield put(getDnsEntries['failure'](e as Error))
@@ -77,13 +67,12 @@ function* handleCreateDNSRequest(
       },
     })
 
-    const response: AxiosResponse<DNS> =
-      yield apiRequestWithAuthSaga(
-        'post',
-        `/dns/${action.payload.network}`,
-        action.payload,
-        {}
-      )
+    const response: AxiosResponse<DNS> = yield apiRequestWithAuthSaga(
+      'post',
+      `/dns/${action.payload.network}`,
+      action.payload,
+      {}
+    )
 
     yield put(createDnsEntry['success'](response.data))
   } catch (e: unknown) {
@@ -111,7 +100,7 @@ function* handleDeleteDNSRequest(
       {}
     )
 
-    yield put(deleteDnsEntry['success']({domain: action.payload.domain}))
+    yield put(deleteDnsEntry['success']({ domain: action.payload.domain }))
   } catch (e: unknown) {
     yield put(deleteDnsEntry['failure'](e as Error))
   }
@@ -154,8 +143,12 @@ function* handleRefreshPubKeyRequest(
       error: refreshPublicKeys['failure'],
       params: {
         pending: i18n.t('common.pending'),
-        success: `${i18n.t('toast.update.success.networkrefresh')} : ${action.payload.netid}`,
-        error: `${i18n.t('toast.update.failure.networkrefresh')} : ${action.payload.netid}`,
+        success: `${i18n.t('toast.update.success.networkrefresh')} : ${
+          action.payload.netid
+        }`,
+        error: `${i18n.t('toast.update.failure.networkrefresh')} : ${
+          action.payload.netid
+        }`,
       },
     })
 
@@ -275,24 +268,27 @@ function* handleCreateAccessKeyRequest(
         pending: i18n.t('common.pending'),
         success: i18n.t('toast.create.success.accesskey'),
         error: (error) =>
-          `${i18n.t('toast.create.failure.accesskey')}\n${error.response.data.Message}`,
+          `${i18n.t('toast.create.failure.accesskey')}\n${
+            error.response.data.Message
+          }`,
       },
     })
 
     action.payload.newAccessKey.uses = Number(action.payload.newAccessKey.uses)
 
-    const response: AxiosResponse =
-      yield apiRequestWithAuthSaga(
-        'post',
-        `/networks/${action.payload.netid}/keys`,
-        action.payload.newAccessKey,
-        {}
-      )
-    
-    yield put(createAccessKey['success']({
-      netid: action.payload.netid,
-      newAccessKey: response.data
-    }))
+    const response: AxiosResponse = yield apiRequestWithAuthSaga(
+      'post',
+      `/networks/${action.payload.netid}/keys`,
+      action.payload.newAccessKey,
+      {}
+    )
+
+    yield put(
+      createAccessKey['success']({
+        netid: action.payload.netid,
+        newAccessKey: response.data,
+      })
+    )
   } catch (e: unknown) {
     yield put(createAccessKey['failure'](e as Error))
   }
@@ -311,7 +307,6 @@ function* handleDeleteNetworkSuccess(
 export function* saga() {
   yield all([
     takeEvery(getType(login['success']), handleLoginSuccess),
-    takeEvery(getType(clearMetadata['request']), handleClearMetadata),
     takeEvery(getType(getNetworks['request']), handleGetNetworksRequest),
     takeEvery(getType(updateNetwork['request']), handleUpdateNetworkRequest),
     takeEvery(getType(deleteNetwork['request']), handleDeleteNetworkRequest),
@@ -327,7 +322,10 @@ export function* saga() {
     ),
     takeEvery(getType(createNetwork['success']), handleGetNetworksRequest),
     takeEvery(getType(deleteNetwork['success']), handleDeleteNetworkSuccess),
-    takeEvery(getType(refreshPublicKeys['request']), handleRefreshPubKeyRequest),
+    takeEvery(
+      getType(refreshPublicKeys['request']),
+      handleRefreshPubKeyRequest
+    ),
     takeEvery(getType(getDnsEntries['request']), handleGetDnsRequest),
     takeEvery(getType(createDnsEntry['request']), handleCreateDNSRequest),
     takeEvery(getType(deleteDnsEntry['request']), handleDeleteDNSRequest),

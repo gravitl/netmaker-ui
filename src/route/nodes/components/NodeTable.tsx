@@ -16,17 +16,20 @@ import { getNodes } from '~store/modules/node/actions'
 import { authSelectors } from '~store/selectors'
 
 const columns: TableColumns<Node> = [
-  { id: 'name',
+  {
+    id: 'name',
     labelKey: 'node.name',
     minWidth: 100,
     sortable: true,
     format: (value, node) => (
       <NmLink
-        to={`/networks/${node.network}/nodes/${encodeURIComponent(encode64(node.id))}`}
+        to={`/networks/${node.network}/nodes/${encodeURIComponent(
+          encode64(node.id)
+        )}`}
       >
         {value}
       </NmLink>
-    ), 
+    ),
   },
   {
     id: 'address',
@@ -46,40 +49,42 @@ const columns: TableColumns<Node> = [
     labelKey: 'node.statusegress',
     minWidth: 30,
     align: 'center',
-    format: (isegress, row) =>
-    <TableToggleButton 
-      which='egress'
-      isOn={isegress}
-      node={row}
-      createText={`${i18n.t('node.createegress')} : ${row.name}`}
-      removeText={`${i18n.t('node.removeegress')} : ${row.name}`}
-      SignalIcon={<CallSplit />}
-      withHistory
-    />
+    format: (isegress, row) => (
+      <TableToggleButton
+        which="egress"
+        isOn={isegress}
+        node={row}
+        createText={`${i18n.t('node.createegress')} : ${row.name}`}
+        removeText={`${i18n.t('node.removeegress')} : ${row.name}`}
+        SignalIcon={<CallSplit />}
+        withHistory
+      />
+    ),
   },
   {
     id: 'isingressgateway',
     labelKey: 'node.statusingress',
     minWidth: 30,
     align: 'center',
-    format: (isingress, row) =>
-    <TableToggleButton 
-      which='ingress'
-      isOn={isingress}
-      node={row}
-      createText={`${i18n.t('node.createingress')} : ${row.name}`}
-      removeText={`${i18n.t('node.removeingress')} : ${row.name}`}
-      SignalIcon={<CallMerge />}
-    />
+    format: (isingress, row) => (
+      <TableToggleButton
+        which="ingress"
+        isOn={isingress}
+        node={row}
+        createText={`${i18n.t('node.createingress')} : ${row.name}`}
+        removeText={`${i18n.t('node.removeingress')} : ${row.name}`}
+        SignalIcon={<CallMerge />}
+      />
+    ),
   },
   {
     id: 'isrelay',
     labelKey: 'node.statusrelay',
     minWidth: 30,
     align: 'center',
-    format: (isrelay, row) =>
+    format: (isrelay, row) => (
       <TableToggleButton
-        which='relay'
+        which="relay"
         isOn={isrelay}
         node={row}
         createText={`${i18n.t('node.createrelay')} : ${row.name}`}
@@ -87,6 +92,7 @@ const columns: TableColumns<Node> = [
         SignalIcon={<AltRoute />}
         withHistory
       />
+    ),
   },
   {
     id: 'lastcheckin',
@@ -117,12 +123,11 @@ export const NodeTable: React.FC = () => {
   React.useEffect(() => {
     const interval = setInterval(() => {
       if (token) {
-        dispatch(getNodes.request({token}))
+        dispatch(getNodes.request({ token }))
       }
     }, 10000)
     return () => clearInterval(interval)
   }, [dispatch, token])
-
 
   return (
     <NmTable columns={columns} rows={listOfNodes} getRowId={(row) => row.id} />

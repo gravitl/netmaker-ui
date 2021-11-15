@@ -18,7 +18,6 @@ export interface Network {
   defaultsaveconfig: boolean
   accesskeys: Array<AccessKey>
   externalclients: Array<ExternalClient>
-  metadata?: Metadata
   allowmanualsignup: boolean
   islocal: boolean
   isdualstack: boolean
@@ -76,12 +75,8 @@ export interface DeleteNetworkPayload {
 }
 
 export interface IndexNetworkPayload {
-  Request: {
-    netid: string
-  }
-  Response: {
-    netid: string
-  }
+  Request: void
+  Response: void
 }
 
 export interface CreateNetworkPayload {
@@ -97,9 +92,9 @@ export interface CreateNetworkPayload {
   Response: void
 }
 
-export interface Metadata {
-  value?: string
-  accessString?: string
+export interface TempKey {
+  value: string
+  accessString: string
 }
 
 export interface DNS {
@@ -158,7 +153,7 @@ export interface CreateAccessKeyPayload {
     }
   }
   Response: {
-    netid: string 
+    netid: string
     newAccessKey: AccessKey
   }
 }

@@ -30,17 +30,17 @@ const columns: TableColumns<User> = [
     minWidth: 150,
     sortable: false,
     format: (networks, user) => {
-      if (user.isAdmin && (!networks || !networks.length))
-        return <span>*</span>
+      if (user.isAdmin && (!networks || !networks.length)) return <span>*</span>
       return (
-      <span>
-        {networks?.map((network) => (
-          <NmLink key={network} to={`/networks/${network}`}>
-            {network}
-          </NmLink>
-        ))}
-      </span>
-    )},
+        <span>
+          {networks?.map((network) => (
+            <NmLink key={network} to={`/networks/${network}`}>
+              {network}
+            </NmLink>
+          ))}
+        </span>
+      )
+    },
   },
 ]
 
@@ -52,7 +52,10 @@ export const UserTable: React.FC = () => {
 
   return (
     <>
-      <NmTable columns={columns} rows={users} getRowId={(row) => row.name} 
+      <NmTable
+        columns={columns}
+        rows={users}
+        getRowId={(row) => row.name}
         actions={[
           (row) => ({
             tooltip: t('common.delete'),
@@ -62,14 +65,18 @@ export const UserTable: React.FC = () => {
               setProps({
                 message: t('users.delete'),
                 title: t('users.deleteTitle'),
-                onSubmit: () => dispatch(deleteUser.request({
-                  username: row.name
-                }))
+                onSubmit: () =>
+                  dispatch(
+                    deleteUser.request({
+                      username: row.name,
+                    })
+                  ),
               })
             },
           }),
-        ]}/>
-        <Dialog />
+        ]}
+      />
+      <Dialog />
     </>
   )
 }

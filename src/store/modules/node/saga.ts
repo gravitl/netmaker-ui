@@ -45,11 +45,11 @@ function* handleLoginSuccess() {
         token,
       })
     )
-    yield put(
-      getExternalClients.request({
-        token: token || '',
-      })
-    )
+  yield put(
+    getExternalClients.request({
+      token: token || '',
+    })
+  )
 }
 
 function* handleUpdateNodeRequest(
@@ -113,7 +113,7 @@ function* handleDeleteNodeRequest(
       {}
     )
 
-    yield put(deleteNode['success']({nodeid: action.payload.nodeid}))
+    yield put(deleteNode['success']({ nodeid: action.payload.nodeid }))
   } catch (e: unknown) {
     yield put(deleteNode['failure'](e as Error))
   }
@@ -142,7 +142,7 @@ function* handleCreateRelayNodeRequest(
     const response: AxiosResponse<NodePayload> = yield apiRequestWithAuthSaga(
       'post',
       `/nodes/${action.payload.netid}/${action.payload.nodemac}/createrelay`,
-      {relayaddrs: action.payload.payload.ranges},
+      { relayaddrs: action.payload.payload.ranges },
       {}
     )
 
@@ -267,30 +267,40 @@ function* handleGetExternalClientConfRequest(
 ) {
   try {
     if (action.payload.type === 'file') {
-      const response : AxiosResponse<string> = yield apiRequestWithAuthSaga('get', `/extclients/${action.payload.netid}/${action.payload.clientid}/${action.payload.type}`, 
-        {headers: {
-          'authorization': `Bearer ${action.payload.token}`,
-        }}
-      )
-      yield put(getExternalClientConf['success']({
-        filename: action.payload.clientid,
-        data: response.data,
-        type: action.payload.type,
-      }))
-    } else {
-      const response : AxiosResponse<string> = yield apiRequestWithAuthSaga('get', `/extclients/${action.payload.netid}/${action.payload.clientid}/${action.payload.type}`, 
-        { 
+      const response: AxiosResponse<string> = yield apiRequestWithAuthSaga(
+        'get',
+        `/extclients/${action.payload.netid}/${action.payload.clientid}/${action.payload.type}`,
+        {
           headers: {
-            'authorization': `Bearer ${action.payload.token}`,
+            authorization: `Bearer ${action.payload.token}`,
           },
-          responseType: 'arraybuffer'
         }
       )
-      yield put(getExternalClientConf['success']({
-        filename: action.payload.clientid,
-        data: response.data,
-        type: action.payload.type,
-      }))
+      yield put(
+        getExternalClientConf['success']({
+          filename: action.payload.clientid,
+          data: response.data,
+          type: action.payload.type,
+        })
+      )
+    } else {
+      const response: AxiosResponse<string> = yield apiRequestWithAuthSaga(
+        'get',
+        `/extclients/${action.payload.netid}/${action.payload.clientid}/${action.payload.type}`,
+        {
+          headers: {
+            authorization: `Bearer ${action.payload.token}`,
+          },
+          responseType: 'arraybuffer',
+        }
+      )
+      yield put(
+        getExternalClientConf['success']({
+          filename: action.payload.clientid,
+          data: response.data,
+          type: action.payload.type,
+        })
+      )
     }
   } catch (e: unknown) {
     yield put(getExternalClientConf['failure'](e as Error))
@@ -325,7 +335,7 @@ function* handleCreateExternalClientRequest(
     )
 
     yield put(createExternalClient['success'](response.data))
-    yield put(getExternalClients.request({token: ''}))
+    yield put(getExternalClients.request({ token: '' }))
   } catch (e: unknown) {
     yield put(createExternalClient['failure'](e as Error))
   }
@@ -351,14 +361,20 @@ function* handleUpdateExternalClientRequest(
       },
     })
 
-    const response: AxiosResponse<ExternalClient>  = yield apiRequestWithAuthSaga(
-      'put',
-      `/extclients/${action.payload.netid}/${action.payload.clientName}`,
-      {clientid: action.payload.newClientName},
-      {}
-    )
+    const response: AxiosResponse<ExternalClient> =
+      yield apiRequestWithAuthSaga(
+        'put',
+        `/extclients/${action.payload.netid}/${action.payload.clientName}`,
+        { clientid: action.payload.newClientName },
+        {}
+      )
 
-    yield put(updateExternalClient['success']({ client: response.data, previousId: action.payload.clientName }))
+    yield put(
+      updateExternalClient['success']({
+        client: response.data,
+        previousId: action.payload.clientName,
+      })
+    )
   } catch (e: unknown) {
     yield put(updateExternalClient['failure'](e as Error))
   }
@@ -390,7 +406,9 @@ function* handleDeleteExternalClientRequest(
       {}
     )
 
-    yield put(deleteExternalClient['success']({clientid: action.payload.clientName}))
+    yield put(
+      deleteExternalClient['success']({ clientid: action.payload.clientName })
+    )
   } catch (e: unknown) {
     yield put(deleteExternalClient['failure'](e as Error))
   }

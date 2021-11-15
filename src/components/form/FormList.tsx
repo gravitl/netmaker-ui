@@ -12,9 +12,11 @@ export function NmFormList<Row extends {}>({
   disabled?: boolean
   labelPlacement?: FormControlLabelProps['labelPlacement']
   children: (
-    fields: Array<Modify<Row, { id: string; getFieldName: (path: string) => string }>>,
+    fields: Array<
+      Modify<Row, { id: string; getFieldName: (path: string) => string }>
+    >,
     disabled: boolean
-  ) => JSX.Element 
+  ) => JSX.Element
 }) {
   const { control, disabled: formDisabled } = useFormControl()
   const { fields } = useFieldArray({
@@ -23,10 +25,13 @@ export function NmFormList<Row extends {}>({
   })
 
   return children(
-        fields.map((field, index) => ({
+    fields.map(
+      (field, index) =>
+        ({
           ...field,
           getFieldName: (path: string) => `${name}.${index}.${path}`,
-        } as any)),
-        formDisabled || !!disabled
-      )
+        } as any)
+    ),
+    formDisabled || !!disabled
+  )
 }

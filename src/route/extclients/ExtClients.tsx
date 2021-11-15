@@ -18,7 +18,7 @@ export const ExtClients: React.FC = () => {
   })
 
   const titleStyle = {
-    textAlign: 'center'
+    textAlign: 'center',
   } as any
 
   return (
@@ -32,23 +32,23 @@ export const ExtClients: React.FC = () => {
             alignItems="center"
           >
             <Grid item xs={5}>
-            <div style={titleStyle}>
-                <Typography variant='h4'>
-                    {t('extclient.extclients')}
+              <div style={titleStyle}>
+                <Typography variant="h4">
+                  {t('extclient.extclients')}
                 </Typography>
-            </div>
+              </div>
             </Grid>
           </Grid>
           <NetworkSelect />
         </Route>
         <Route path={`${path}/:netid/:clientid/qr`}>
-            <QrCodeView />
+          <QrCodeView />
         </Route>
         <Route path={`${path}/:netid/:clientid/edit`}>
-            <ExtClientEdit />
+          <ExtClientEdit />
         </Route>
         <Route path={`${path}/:netid`}>
-            <ExtClientView />
+          <ExtClientView />
         </Route>
       </Switch>
     </Container>

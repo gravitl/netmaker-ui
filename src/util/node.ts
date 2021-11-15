@@ -8,7 +8,8 @@ import { DNS } from '~store/types'
 
 const nodeByIdPredicate = (id: Node['id']) => (node: Node) => node.id === id
 
-const nodeByNamePredicate = (name: Node['name']) => (node: Node) => node.name === name
+const nodeByNamePredicate = (name: Node['name']) => (node: Node) =>
+  node.name === name
 
 const makeSelectNodeByID = () =>
   createSelector(
@@ -39,15 +40,26 @@ export const useNode = (name: Node['name']) => {
 }
 
 export const filterIngressGateways = (nodes: Node[]) => {
-  return nodes.filter(node => node.ingressgatewayrange)
+  return nodes.filter((node) => node.ingressgatewayrange)
 }
 
-export const filterExtClientsByNetwork = (clients: ExternalClient[], netid: string) => {
-  return clients.filter(client => client.network === netid)
+export const filterExtClientsByNetwork = (
+  clients: ExternalClient[],
+  netid: string
+) => {
+  return clients.filter((client) => client.network === netid)
 }
 
-export const filterCustomDNSByNetwork = (nodes: Node[], dnsEntries: DNS[], netid: string) => {
-  const networkDnsEntries = dnsEntries.filter(entry => entry.network === netid)
+export const filterCustomDNSByNetwork = (
+  nodes: Node[],
+  dnsEntries: DNS[],
+  netid: string
+) => {
+  const networkDnsEntries = dnsEntries.filter(
+    (entry) => entry.network === netid
+  )
   // get rid of all node named entries
-  return networkDnsEntries.filter(entry => !nodes.find(node => node.name === entry.name))
+  return networkDnsEntries.filter(
+    (entry) => !nodes.find((node) => node.name === entry.name)
+  )
 }

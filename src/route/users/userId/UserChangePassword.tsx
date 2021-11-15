@@ -31,13 +31,14 @@ export const UserChangePassword: React.FC = () => {
     (data: typeof initialState) => {
       setDialog({
         message: t('users.update.password'),
-        onSubmit: () => dispatch(
-          updateUser.request({
-            username: data.username,
-            password: data.password,
-          })
-        ),
-        title: t('users.update.passwordTitle')
+        onSubmit: () =>
+          dispatch(
+            updateUser.request({
+              username: data.username,
+              password: data.password,
+            })
+          ),
+        title: t('users.update.passwordTitle'),
       })
     },
     [dispatch, t, setDialog]
@@ -70,8 +71,7 @@ export const UserChangePassword: React.FC = () => {
     [t]
   )
 
-  if (username !== user?.name) 
-      return null
+  if (username !== user?.name) return null
 
   if (!username) {
     return <div>Not Found</div>

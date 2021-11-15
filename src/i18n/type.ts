@@ -86,6 +86,7 @@ export interface LanguageResource {
   }
   error: {
     notfound: string
+    network: string
   }
   extclient: {
     extclients: string
@@ -139,6 +140,7 @@ export interface LanguageResource {
     netid: string
     deleteconfirm: string
     refresh: string
+    details: string
   }
   node: {
     nodes: string
@@ -200,6 +202,8 @@ export interface LanguageResource {
     confirmegress: string
     deleteconfirm: string
     choose: string
+    details: string
+    sync: string
   }
   login: {
     validation: {
@@ -271,7 +275,7 @@ export interface LanguageResource {
     }
   }
   toast: {
-    pending: string,
+    pending: string
     update: {
       success: {
         node: string
@@ -283,7 +287,7 @@ export interface LanguageResource {
         extclient: string
         networkrefresh: string
       }
-    },
+    }
     create: {
       success: {
         accesskey: string
@@ -291,6 +295,7 @@ export interface LanguageResource {
         ingress: string
         relay: string
         extclient: string
+        dns: string
       }
       failure: {
         accesskey: string
@@ -298,8 +303,9 @@ export interface LanguageResource {
         ingress: string
         relay: string
         extclient: string
+        dns: string
       }
-    },
+    }
     delete: {
       success: {
         accesskey: string
@@ -307,13 +313,15 @@ export interface LanguageResource {
         ingress: string
         relay: string
         extclient: string
-      },
+        dns: string
+      }
       failure: {
         accesskey: string
         egress: string
         ingress: string
         relay: string
         extclient: string
+        dns: string
       }
     }
   }

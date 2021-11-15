@@ -6,13 +6,18 @@ import { useRouteMatch } from 'react-router'
 import { NmLink } from '~components/Link'
 
 export const EditExtClientButton: React.FC<{
-    client: ExternalClient
-  }> = ({ client }) => {
-    const { url } = useRouteMatch()
+  client: ExternalClient
+}> = ({ client }) => {
+  const { url } = useRouteMatch()
 
-    return <Tooltip title={`${i18n.t('common.edit')} : ${client.clientid}`} placement='top'>
-      <NmLink to={`${url}/${client.clientid}/edit`} variant='text'>
+  return (
+    <Tooltip
+      title={`${i18n.t('common.edit')} : ${client.clientid}`}
+      placement="top"
+    >
+      <NmLink to={`${url}/${client.clientid}/edit`} variant="text">
         {client.clientid}
       </NmLink>
     </Tooltip>
+  )
 }

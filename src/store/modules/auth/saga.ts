@@ -128,16 +128,16 @@ function* handleDeleteUserRequest(
       `/users/${action.payload.username}`,
       {}
     )
-    
+
     yield put(deleteUser['success'](action.payload))
   } catch (e: unknown) {
     yield put(deleteUser['failure'](e as Error))
   }
 }
 
-function* handleUpdateUserRequest(
-  { payload }: ReturnType<typeof updateUser['request']>
-) {
+function* handleUpdateUserRequest({
+  payload,
+}: ReturnType<typeof updateUser['request']>) {
   try {
     const response: AxiosResponse = yield apiRequestWithAuthSaga(
       'put',
@@ -149,16 +149,16 @@ function* handleUpdateUserRequest(
         },
       }
     )
-    
+
     yield put(updateUser['success'](response.data))
   } catch (e: unknown) {
     yield put(updateUser['failure'](e as Error))
   }
 }
 
-function* handleUpdateUserNetworksRequest(
-  { payload }: ReturnType<typeof updateUserNetworks['request']>
-) {
+function* handleUpdateUserNetworksRequest({
+  payload,
+}: ReturnType<typeof updateUserNetworks['request']>) {
   try {
     yield apiRequestWithAuthSaga(
       'put',
@@ -179,11 +179,13 @@ function* handleUpdateUserNetworksRequest(
 function* handleIsLoggedIn() {
   const isLoggedIn: boolean = yield select(authSelectors.getLoggedIn)
 
-  if(isLoggedIn) {
+  if (isLoggedIn) {
     const token: string = yield select(authSelectors.getToken)
-    yield put(login.success({
-      token
-    }))
+    yield put(
+      login.success({
+        token,
+      })
+    )
   }
 }
 
@@ -198,7 +200,10 @@ export function* saga() {
     takeEvery(getType(createUser['request']), handleCreateUserRequest),
     takeEvery(getType(deleteUser['request']), handleDeleteUserRequest),
     takeEvery(getType(updateUser['request']), handleUpdateUserRequest),
-    takeEvery(getType(updateUserNetworks['request']), handleUpdateUserNetworksRequest),
+    takeEvery(
+      getType(updateUserNetworks['request']),
+      handleUpdateUserNetworksRequest
+    ),
     call(handleHasAdminRequest, hasAdmin.request()),
     call(handleIsLoggedIn),
   ])

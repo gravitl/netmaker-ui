@@ -13,5 +13,10 @@ export const getNetworks = createSelector(
 
 export const getDnsEntries = createSelector(
   getNetwork,
-  network => network.dnsEntries
+  (network) => network.dnsEntries
+)
+
+export const getTempKey = createSelector(
+  getNetwork,
+  (network) => network.tempkey
 )

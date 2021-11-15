@@ -1,75 +1,86 @@
-import * as React from 'react';
-import { Link } from 'react-router-dom';
-import { styled } from '@mui/material/styles';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import SpeedDial from '@mui/material/SpeedDial';
-import Avatar from '@mui/material/Avatar';
-import SpeedDialAction from '@mui/material/SpeedDialAction';
-import PreviewIcon from '@mui/icons-material/Preview';
-import { grey } from '@mui/material/colors';
-import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
+import * as React from 'react'
+import { Link } from 'react-router-dom'
+import { styled } from '@mui/material/styles'
+import Card from '@mui/material/Card'
+import CardActions from '@mui/material/CardActions'
+import SpeedDial from '@mui/material/SpeedDial'
+import Avatar from '@mui/material/Avatar'
+import SpeedDialAction from '@mui/material/SpeedDialAction'
+import PreviewIcon from '@mui/icons-material/Preview'
+import { grey } from '@mui/material/colors'
+import CardContent from '@mui/material/CardContent'
+import Typography from '@mui/material/Typography'
 import { useTranslation } from 'react-i18next'
-import { DeviceHub, KeyboardArrowRight } from '@mui/icons-material';
+import { DeviceHub, KeyboardArrowRight } from '@mui/icons-material'
 
 const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
-    '&.MuiSpeedDial-directionRight': {
-      top: theme.spacing(2),
-      left: theme.spacing(2),
-    },
-}));
+  '&.MuiSpeedDial-directionRight': {
+    top: theme.spacing(2),
+    left: theme.spacing(2),
+  },
+}))
 
 export default function NodeCard() {
-    const { t } = useTranslation()
-    
-    const cardStyle = {
-        marginBottom: '1em',
-        marginTop: '1em',
-    }
+  const { t } = useTranslation()
 
-    const cardContentStyle = {
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        flexDirection: 'column',
-    } as any
+  const cardStyle = {
+    marginBottom: '1em',
+    marginTop: '1em',
+  }
 
-    const actions = [
-        { icon: <Link to='/nodes' ><PreviewIcon /></Link>, name: t('common.view')},
-    ];
+  const cardContentStyle = {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'column',
+  } as any
 
-    return (
-        <Card sx={{ minWidth: 275, backgroundColor: grey[200] }} variant='outlined' style={cardStyle}>
-            <CardContent>
-                <Avatar sx={{ bgcolor: grey[900] }} aria-label={t('node.nodes')} >
-                    <DeviceHub />
-                </Avatar>
-                <div style={cardContentStyle}>
-                    <Typography variant="h5" component="div">
-                    {t('node.nodes')}
-                    </Typography>
-                    <Typography variant="body2">
-                        {`${t('common.manage')} ${t('node.nodes')}`}
-                    </Typography>
-                </div>
-            </CardContent>
-            <CardActions>
-                <StyledSpeedDial
-                ariaLabel={`${t('common.manage')} ${t('node.nodes')}`}
-                icon={<KeyboardArrowRight />}
-                direction={"right"}
-                >
-                {actions.map((action) => (
-                    <SpeedDialAction
-                    color='primary'
-                    key={action.name}
-                    icon={action.icon}
-                    tooltipTitle={action.name}
-                    />
-                ))}
-                </StyledSpeedDial>
-            </CardActions>
-        </Card>
-    );
+  const actions = [
+    {
+      icon: (
+        <Link to="/nodes">
+          <PreviewIcon />
+        </Link>
+      ),
+      name: t('common.view'),
+    },
+  ]
+
+  return (
+    <Card
+      sx={{ minWidth: 275, backgroundColor: grey[200] }}
+      variant="outlined"
+      style={cardStyle}
+    >
+      <CardContent>
+        <Avatar sx={{ bgcolor: grey[900] }} aria-label={t('node.nodes')}>
+          <DeviceHub />
+        </Avatar>
+        <div style={cardContentStyle}>
+          <Typography variant="h5" component="div">
+            {t('node.nodes')}
+          </Typography>
+          <Typography variant="body2">
+            {`${t('common.manage')} ${t('node.nodes')}`}
+          </Typography>
+        </div>
+      </CardContent>
+      <CardActions>
+        <StyledSpeedDial
+          ariaLabel={`${t('common.manage')} ${t('node.nodes')}`}
+          icon={<KeyboardArrowRight />}
+          direction={'right'}
+        >
+          {actions.map((action) => (
+            <SpeedDialAction
+              color="primary"
+              key={action.name}
+              icon={action.icon}
+              tooltipTitle={action.name}
+            />
+          ))}
+        </StyledSpeedDial>
+      </CardActions>
+    </Card>
+  )
 }

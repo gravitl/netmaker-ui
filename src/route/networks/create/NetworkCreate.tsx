@@ -33,15 +33,17 @@ const initialState: CreateNetwork = {
   defaultudpholepunch: false,
 }
 
-const useStyles = makeStyles(() => createStyles({
-  center: {
-    textAlign: 'center'
-  },
-  rowMargin: {
-    marginTop: '1em',
-    marginBottom: '1em',
-  },
-}))
+const useStyles = makeStyles(() =>
+  createStyles({
+    center: {
+      textAlign: 'center',
+    },
+    rowMargin: {
+      marginTop: '1em',
+      marginBottom: '1em',
+    },
+  })
+)
 
 export const NetworkCreate: React.FC = () => {
   const { t } = useTranslation()
@@ -79,9 +81,13 @@ export const NetworkCreate: React.FC = () => {
       submitText={t('network.create')}
       ref={formRef}
     >
-      <Grid container justifyContent='space-around' alignItems='center'>
+      <Grid container justifyContent="space-around" alignItems="center">
         <Grid item xs={12} sm={12} md={4} className={classes.rowMargin}>
-          <NmFormInputText fullWidth name={'netid'} label={t('network.netid')} />
+          <NmFormInputText
+            fullWidth
+            name={'netid'}
+            label={t('network.netid')}
+          />
         </Grid>
         <Grid item xs={12} sm={12} md={4} className={classes.rowMargin}>
           <NmFormInputText
@@ -91,25 +97,37 @@ export const NetworkCreate: React.FC = () => {
           />
         </Grid>
         <Grid item xs={12} sm={12} md={2} className={classes.rowMargin}>
-          <Button onClick={() => {
-              formRef.current?.reset({...formRef.current?.values, netid: randomNetworkName(), addressrange: randomCIDR()}, { keepDefaultValues: true})
+          <Button
+            onClick={() => {
+              formRef.current?.reset(
+                {
+                  ...formRef.current?.values,
+                  netid: randomNetworkName(),
+                  addressrange: randomCIDR(),
+                },
+                { keepDefaultValues: true }
+              )
             }}
-              variant='outlined'
-            >
-              {t('common.autofill')}
+            variant="outlined"
+          >
+            {t('common.autofill')}
           </Button>
         </Grid>
         <Grid item xs={12} className={classes.center + ' ' + classes.rowMargin}>
           <NmFormInputSwitch
             name={'defaultudpholepunch'}
             label={t('network.defaultudpholepunch')}
-          /> 
+          />
         </Grid>
         <Grid item xs={12} sm={12} md={5} className={classes.rowMargin}>
           <NmFormInputSwitch name={'islocal'} label={t('network.islocal')} />
         </Grid>
         <Grid item xs={12} sm={12} md={5} className={classes.rowMargin}>
-          <NmFormInputText fullWidth name={'localrange'} label={t('network.localrange')} />
+          <NmFormInputText
+            fullWidth
+            name={'localrange'}
+            label={t('network.localrange')}
+          />
         </Grid>
         <Grid item xs={12} sm={12} md={5} className={classes.rowMargin}>
           <NmFormInputSwitch
