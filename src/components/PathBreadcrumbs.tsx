@@ -109,32 +109,27 @@ export const PathBreadcrumbs: React.FC<Crumb> = ({ title, link }) => {
   )
 }
 
-export const useLinkBreadcrumb = (crumb: Modify<Crumb, { link?: string }>) => {
+type CrumbWithOptionalLink = Modify<Crumb, { link?: string }>
+
+export const useLinkBreadcrumb = (crumb: CrumbWithOptionalLink) => {
   const { add } = useContext(BreadcrumbContext)
   const { url } = useRouteMatch()
 
-  const areCrumbsEqual = (
-    a: Modify<Crumb, { link?: string }> | undefined,
-    b: Modify<Crumb, { link?: string }>
-  ) => {
-    if (!a || !b) return JSON.stringify(a) === JSON.stringify(b)
-    return a.link === b.link && a.title === b.title && a.prefix === b.prefix
+  const oldCrumb = React.useRef<CrumbWithOptionalLink>()
+
+  if (
+    !oldCrumb.current ||
+    !(
+      crumb.link === oldCrumb.current?.link &&
+      crumb.title === oldCrumb.current.title &&
+      crumb.prefix === oldCrumb.current?.prefix
+    )
+  ) {
+    oldCrumb.current = crumb
   }
-  const previousCrumb = usePrevious({ ...crumb })
 
   React.useEffect(() => {
-    const areEqual = areCrumbsEqual(previousCrumb, crumb)
-    if (!areEqual) {
-      return add({ link: url, ...crumb })
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-}
-
-const usePrevious = (value: Modify<Crumb, { link?: string }>) => {
-  const ref = React.useRef<Modify<Crumb, { link?: string }>>()
-  React.useEffect(() => {
-    ref.current = value
-  })
-  return ref.current
+    return add({ link: url, ...oldCrumb.current! })
+    // eslint-disable-next-line
+  }, [oldCrumb.current])
 }
