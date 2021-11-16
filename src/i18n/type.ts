@@ -109,6 +109,7 @@ export interface LanguageResource {
     add: string
     name: string
     gateways: string
+    clients: string
   }
   helper: {
     egress: string

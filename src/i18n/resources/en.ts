@@ -110,7 +110,9 @@ export const en: LanguageResource = {
     none: 'No Ingress Gateways Found',
     add: 'Add External Client',
     name: 'Gateway Name',
-    gateways: 'Ingress Gateways',
+    gateways: 'Gateways',
+    clients: 'Clients',
+
   },
   network: {
     allowmanualsignup: 'Allow Node Signup Without Keys',

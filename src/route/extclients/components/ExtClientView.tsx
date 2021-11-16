@@ -165,7 +165,7 @@ export const ExtClientView: React.FC = () => {
           >
             <div style={centerText as any}>
               <Typography variant="h4" sx={{ marginBottom: '1em' }}>
-                {t('extclient.extclients')}
+                {t('ingress.clients')}
               </Typography>
             </div>
             <NmTable

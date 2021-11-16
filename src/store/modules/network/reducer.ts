@@ -13,6 +13,7 @@ import {
   createDnsEntry,
   deleteDnsEntry,
   setTempKey,
+  setCurrentNetwork,
 } from './actions'
 import { Network } from './types'
 import { networkPayloadToNetwork } from './utils'
@@ -25,6 +26,7 @@ export const reducer = createReducer({
     accessString: '',
     value: '',
   },
+  currentNetwork: ''
 })
   .handleAction(getNetworks['request'], (state, _) =>
     produce(state, (draftState) => {
@@ -101,6 +103,11 @@ export const reducer = createReducer({
   .handleAction(setTempKey, (state, action) =>
     produce(state, (draftState) => {
       draftState.tempkey = { ...action.payload }
+    })
+  )
+  .handleAction(setCurrentNetwork, (state, action) =>
+    produce(state, (draftState) => {
+      draftState.currentNetwork = action.payload
     })
   )
   .handleAction(refreshPublicKeys['success'], (state, action) =>

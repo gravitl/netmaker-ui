@@ -1,15 +1,17 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { networkSelectors } from '../store/selectors'
 import { useTranslation } from 'react-i18next'
 import CustomSelect from '~components/select/CustomSelect'
 import { Grid } from '@mui/material'
+import { setCurrentNetwork } from '~store/modules/network/actions'
 
 export const NetworkSelect: React.FC<{
   base: 'networks' | 'ext-clients' | 'access-keys' | 'dns'
   extension?: string
 }> = ({ base, extension }) => {
+  const dispatch = useDispatch()
   const listOfNetworks = useSelector(networkSelectors.getNetworks)
   const networkNames = []
   if (listOfNetworks) {
@@ -19,6 +21,10 @@ export const NetworkSelect: React.FC<{
   }
   const { t } = useTranslation()
   const history = useHistory()
+
+  const handleCurrentNetChange = (newCurrentNetid : string) => {
+    dispatch(setCurrentNetwork(newCurrentNetid))
+  }
 
   return (
     <Grid container justifyContent="center" alignItems="center">
@@ -32,6 +38,7 @@ export const NetworkSelect: React.FC<{
         <CustomSelect
           placeholder={`${t('common.select')} ${t('network.network')}`}
           onSelect={(selected) => {
+            handleCurrentNetChange(selected)
             history.push(
               `/${base}/${selected}${extension ? `/${extension}` : ''}`
             )
