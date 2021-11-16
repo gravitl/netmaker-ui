@@ -41,7 +41,7 @@ export default function AccessKeyDetails(Props: {
   } as any
 
   const getAgentInstallCommand = (accessToken: string) => {
-    return `curl -sfL https://raw.githubusercontent.com/gravitl/netmaker/develop/scripts/netclient-install.sh | KEY=${accessToken} sh -`
+    return `curl -sfL https://raw.githubusercontent.com/gravitl/netmaker/master/scripts/netclient-install.sh | KEY=${accessToken} sh -`
   }
 
   return (
