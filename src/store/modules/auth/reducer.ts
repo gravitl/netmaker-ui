@@ -12,6 +12,8 @@ import {
   login,
   logout,
   setUser,
+  updateUser,
+  updateUserNetworks,
 } from './actions'
 import { LocalStorageUserKeyValue, User } from './types'
 
@@ -133,3 +135,24 @@ export const reducer = createReducer({
       )
     })
   )
+  .handleAction(updateUserNetworks['success'], (state, { payload }) =>
+    produce(state, (draftState) => {
+      const index = draftState.users.findIndex(user => user.name === payload.username)
+      if (~index) {
+        draftState.users[index] = {
+          name: payload.username,
+          isAdmin: payload.isadmin,
+          networks: payload.networks,
+          exp: draftState.users[index].exp
+        }
+      }
+    })
+  )
+  .handleAction(updateUser['success'], (state, { payload }) =>
+  produce(state, (draftState) => {
+    const index = draftState.users.findIndex(user => user.name === payload.name)
+    if (~index) {
+      draftState.users[index] = payload
+    }
+  })
+)

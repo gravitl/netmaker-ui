@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios'
-import { all, call, put, select, takeEvery } from 'redux-saga/effects'
+import { all, call, put, select, takeEvery, fork } from 'redux-saga/effects'
 import { getType } from 'typesafe-actions'
 import { User } from './types'
 import { apiRequestWithAuthSaga, apiRequestSaga } from '../api/saga'
@@ -16,6 +16,8 @@ import {
 } from './actions'
 import { authSelectors } from '~store/selectors'
 import { getHistory } from '../router/selectors'
+import { generatorToastSaga } from '../toast/saga'
+import { i18n } from '../../../i18n/i18n'
 
 function* handleGetAllUsersRequest(
   action: ReturnType<typeof getAllUsers['request']>
@@ -43,6 +45,15 @@ function* handleGetUserRequest(action: ReturnType<typeof getUser['request']>) {
 
 function* handleLoginRequest(action: ReturnType<typeof login['request']>) {
   try {
+    yield fork(generatorToastSaga, {
+      success: login['success'],
+      error: login['failure'],
+      params: {
+        pending: i18n.t('common.pending'),
+        success: `${i18n.t('toast.login.success')} : ${action.payload.username}`,
+        error: `${i18n.t('toast.login.failure')} : ${action.payload.username}`,
+      },
+    })
     const response: AxiosResponse = yield apiRequestSaga(
       'post',
       '/users/adm/authenticate',
@@ -78,6 +89,15 @@ function* handleCreateAdminRequest(
   action: ReturnType<typeof createAdmin['request']>
 ) {
   try {
+    yield fork(generatorToastSaga, {
+      success: createAdmin['success'],
+      error: createAdmin['failure'],
+      params: {
+        pending: i18n.t('common.pending'),
+        success: `${i18n.t('toast.create.success.admin')} : ${action.payload.username}`,
+        error: `${i18n.t('toast.create.failure.admin')} : ${action.payload.username}`,
+      },
+    })
     const response: AxiosResponse = yield apiRequestSaga(
       'post',
       '/users/adm/createadmin',
@@ -94,6 +114,15 @@ function* handleCreateUserRequest(
   action: ReturnType<typeof createUser['request']>
 ) {
   try {
+    yield fork(generatorToastSaga, {
+      success: createUser['success'],
+      error: createUser['failure'],
+      params: {
+        pending: i18n.t('common.pending'),
+        success: `${i18n.t('toast.create.success.user')} : ${action.payload.username}`,
+        error: `${i18n.t('toast.create.failure.user')} : ${action.payload.username}`,
+      },
+    })
     const response: AxiosResponse = yield apiRequestWithAuthSaga(
       'post',
       `/users/${action.payload.username}`,
@@ -123,6 +152,15 @@ function* handleDeleteUserRequest(
   action: ReturnType<typeof deleteUser['request']>
 ) {
   try {
+    yield fork(generatorToastSaga, {
+      success: deleteUser['success'],
+      error: deleteUser['failure'],
+      params: {
+        pending: i18n.t('common.pending'),
+        success: `${i18n.t('toast.delete.success.user')} : ${action.payload.username}`,
+        error: `${i18n.t('toast.delete.failure.user')} : ${action.payload.username}`,
+      },
+    })
     yield apiRequestWithAuthSaga(
       'delete',
       `/users/${action.payload.username}`,
@@ -139,6 +177,15 @@ function* handleUpdateUserRequest({
   payload,
 }: ReturnType<typeof updateUser['request']>) {
   try {
+    yield fork(generatorToastSaga, {
+      success: updateUser['success'],
+      error: updateUser['failure'],
+      params: {
+        pending: i18n.t('common.pending'),
+        success: `${i18n.t('toast.update.success.user')} : ${payload.username}`,
+        error: `${i18n.t('toast.update.failure.user')} : ${payload.username}`,
+      },
+    })
     const response: AxiosResponse = yield apiRequestWithAuthSaga(
       'put',
       `/users/${payload.username}`,
@@ -160,6 +207,16 @@ function* handleUpdateUserNetworksRequest({
   payload,
 }: ReturnType<typeof updateUserNetworks['request']>) {
   try {
+    yield fork(generatorToastSaga, {
+      success: updateUserNetworks['success'],
+      error: updateUserNetworks['failure'],
+      params: {
+        pending: i18n.t('common.pending'),
+        success: `${i18n.t('toast.update.success.user')} : ${payload.username}`,
+        error: `${i18n.t('toast.update.failure.user')} : ${payload.username}`,
+      },
+    })
+    console.log('HELLO')
     yield apiRequestWithAuthSaga(
       'put',
       `/users/networks/${payload.username}`,

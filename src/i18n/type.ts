@@ -281,11 +281,13 @@ export interface LanguageResource {
         node: string
         extclient: string
         networkrefresh: string
+        user: string
       }
       failure: {
         node: string
         extclient: string
         networkrefresh: string
+        user: string
       }
     }
     create: {
@@ -296,6 +298,8 @@ export interface LanguageResource {
         relay: string
         extclient: string
         dns: string
+        user: string
+        admin: string
       }
       failure: {
         accesskey: string
@@ -304,6 +308,8 @@ export interface LanguageResource {
         relay: string
         extclient: string
         dns: string
+        user: string
+        admin: string
       }
     }
     delete: {
@@ -314,6 +320,7 @@ export interface LanguageResource {
         relay: string
         extclient: string
         dns: string
+        user: string
       }
       failure: {
         accesskey: string
@@ -322,7 +329,12 @@ export interface LanguageResource {
         relay: string
         extclient: string
         dns: string
+        user: string
       }
+    }
+    login: {
+      success: string
+      failure: string
     }
   }
 }

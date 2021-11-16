@@ -287,11 +287,13 @@ export const en: LanguageResource = {
         node: 'Node updated successfully!',
         extclient: 'Ext Client updated!',
         networkrefresh: 'Refreshed nodes public keys!',
+        user: 'User Updated!',
       },
       failure: {
         node: 'Node updated failed!',
         extclient: 'Ext Client update failed!',
         networkrefresh: 'Failed to refresh nodes public keys!',
+        user: 'Failed to update user!',
       },
     },
     create: {
@@ -302,6 +304,8 @@ export const en: LanguageResource = {
         relay: 'Successfully created Relay!',
         extclient: 'Sucessfully created an Ext Client!',
         dns: 'Successfully created DNS Entry!',
+        user: 'Successfully created User!',
+        admin: 'Successfully created new Admin!',
       },
       failure: {
         accesskey: 'Failed to create Access Key.',
@@ -310,6 +314,8 @@ export const en: LanguageResource = {
         relay: 'Failed to create Relay.',
         extclient: 'Failed to create an Ext Client',
         dns: 'Failed to create the DNS Entry.',
+        user: 'Failed to create new User.',
+        admin: 'Failed to create Admin.',
       },
     },
     delete: {
@@ -320,6 +326,7 @@ export const en: LanguageResource = {
         relay: 'Successfully removed Relay!',
         extclient: 'Successfully removed Ext Client!',
         dns: 'Successfully removed the DNS Entry!',
+        user: 'Successfully deleted User!',
       },
       failure: {
         accesskey: 'Failed to remove Access Key.',
@@ -328,7 +335,12 @@ export const en: LanguageResource = {
         relay: 'Failed to remove Relay.',
         extclient: 'Failed to remove Ext Client.',
         dns: 'Failed to remove the DNS Entry.',
+        user: 'Failed to remove User.'
       },
     },
+    login: {
+      success: 'Logged in successfully',
+      failure: 'Failed to login',
+    }
   },
 }
