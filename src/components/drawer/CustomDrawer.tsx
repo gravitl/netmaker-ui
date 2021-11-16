@@ -34,7 +34,6 @@ import { useLocation, useRouteMatch, Link } from 'react-router-dom'
 import { authSelectors, serverSelectors } from '../../store/selectors'
 import { logout } from '../../store/modules/auth/actions'
 import { NmLink } from '../../components/Link'
-
 import { UI_VERSION } from '../../config'
 import Logo from '../../netmaker.png'
 
@@ -103,7 +102,11 @@ const styles = {
   },
   logo: {
     objectFit: 'cover',
-    height: 70,
+    // height: 70,
+    maxWidth: '50%',
+    height: 'auto',
+    width: 'auto',
+    minWidth: '8em',
   } as React.DetailedHTMLProps<
     React.ImgHTMLAttributes<HTMLImageElement>,
     HTMLImageElement
@@ -113,7 +116,7 @@ const styles = {
     height: 100,
     margin: '0 auto',
     display: 'flex',
-    justifyContent: 'center',
+    justifyContent: 'space-around',
     alignItems: 'center',
   },
   central: {
