@@ -1,4 +1,4 @@
-import { Container, Grid, Typography } from '@mui/material'
+import { Container, Grid } from '@mui/material'
 import React from 'react'
 import { useRouteMatch, Switch, Route } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
@@ -17,12 +17,6 @@ export const Dashboard: React.FC = () => {
   const { t } = useTranslation()
   const user = useSelector(authSelectors.getUser)
 
-  const styles = {
-    title: {
-      textAlign: 'center',
-    },
-  } as any
-
   useLinkBreadcrumb({
     title: t('breadcrumbs.dashboard'),
   })
@@ -37,11 +31,6 @@ export const Dashboard: React.FC = () => {
             justifyContent="space-around"
             alignItems="center"
           >
-            <Grid item xs={12}>
-              <div style={styles.title}>
-                <Typography variant="h4">{t('dashboard.title')}</Typography>
-              </div>
-            </Grid>
             <Grid item xs={12} sm={6} md={5}>
               <NetworkCard />
             </Grid>

@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { useRouteMatch, useParams } from 'react-router-dom'
+import { useRouteMatch, useParams, useHistory } from 'react-router-dom'
 import { networkSelectors } from '../../../store/selectors'
 import { useTranslation } from 'react-i18next'
 import { Grid, Typography } from '@mui/material'
@@ -21,6 +21,7 @@ export const AccessKeyCreate: React.FC = () => {
       networkNames.push(listOfNetworks[i].netid)
     }
   }
+  const history = useHistory()
   const { netid } = useParams<{ netid: string }>()
   const { url } = useRouteMatch()
   const { t } = useTranslation()
@@ -40,7 +41,8 @@ export const AccessKeyCreate: React.FC = () => {
   const handleClose = useCallback(() => {
     dispatch(clearTempKey())
     setModalOpen(false)
-  }, [dispatch])
+    history.goBack()
+  }, [dispatch, history])
 
   if (tempKey.accessString && tempKey.value && !modalOpen) {
     handleOpen()

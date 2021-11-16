@@ -9,11 +9,14 @@ import SpeedDialAction from '@mui/material/SpeedDialAction'
 import PreviewIcon from '@mui/icons-material/Preview'
 import CreateIcon from '@mui/icons-material/AddBox'
 import { grey } from '@mui/material/colors'
+import { useSelector } from 'react-redux'
+import { authSelectors } from '~store/types'
 
 import CardContent from '@mui/material/CardContent'
 import Typography from '@mui/material/Typography'
 import { useTranslation } from 'react-i18next'
 import { KeyboardArrowRight, People as UsersIcon } from '@mui/icons-material'
+import { Button, Grid } from '@mui/material'
 
 const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
   '&.MuiSpeedDial-directionRight': {
@@ -24,10 +27,14 @@ const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
 
 export default function NetworkCard() {
   const { t } = useTranslation()
+  const users = useSelector(authSelectors.getUsers)
+  const userCount = users.length
 
   const cardStyle = {
     marginBottom: '1em',
     marginTop: '1em',
+    height: '100%',
+    width: '100%',
   }
 
   const cardContentStyle = {
@@ -57,6 +64,7 @@ export default function NetworkCard() {
   ]
 
   return (
+    <Button component={Link} to={'/users'} color={'inherit'} fullWidth style={{textTransform: 'none'}}>
     <Card
       sx={{ minWidth: 275, backgroundColor: grey[200] }}
       variant="outlined"
@@ -76,31 +84,34 @@ export default function NetworkCard() {
         </div>
       </CardContent>
       <CardActions>
-        <StyledSpeedDial
-          ariaLabel={`${t('common.manage')} ${t('user.header')}`}
-          icon={<KeyboardArrowRight />}
-          direction={'right'}
-        >
-          {actions.map((action) => (
-            <SpeedDialAction
-              color="primary"
-              key={action.name}
-              icon={action.icon}
-              tooltipTitle={action.name}
-            />
-          ))}
-        </StyledSpeedDial>
-        {/* <Tooltip title={t('common.view') as string} placement='top'>
-                    <IconButton component={Link} to='/users' color='primary'>
-                        <PreviewIcon />
-                    </IconButton>
-                </Tooltip>
-                <Tooltip title={t('common.create') as string} placement='top'>
-                    <IconButton component={Link} to='/users/create' color='primary'>
-                        <CreateIcon />
-                    </IconButton>
-                </Tooltip> */}
+        <Grid container justifyContent='space-around' alignItems='center'>
+          <Grid item xs={10}>
+            <StyledSpeedDial
+              ariaLabel={`${t('common.manage')} ${t('user.header')}`}
+              icon={<KeyboardArrowRight />}
+              direction={'right'}
+            >
+            {actions.map((action) => (
+              <SpeedDialAction
+                color="primary"
+                key={action.name}
+                icon={action.icon}
+                tooltipTitle={action.name}
+              />
+            ))}
+          </StyledSpeedDial>
+          </Grid>
+          <Grid item xs={1}>
+            <Avatar
+              sx={{ bgcolor: grey[900] }}
+              aria-label={t('common.count')}
+            >
+                {userCount}
+            </Avatar>
+          </Grid>
+        </Grid>
       </CardActions>
     </Card>
+    </Button>
   )
 }

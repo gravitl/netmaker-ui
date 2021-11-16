@@ -189,6 +189,7 @@ export default function CustomDrawer() {
   const { t } = useTranslation()
   const theme = useTheme()
   const [open, setOpen] = React.useState(false)
+  const [clickOpen, setClickOpen] = React.useState(false)
 
   const handleDrawerOpen = () => {
     setOpen(true)
@@ -198,19 +199,28 @@ export default function CustomDrawer() {
     setOpen(false)
   }
 
+  const handleClickOpen = () => {
+    setClickOpen(true)
+  }
+
+  const handleClickClose = () => {
+    setClickOpen(false)
+    setOpen(false)
+  }
+
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar position="fixed" open={open}>
+      <AppBar position="fixed" open={open || clickOpen}>
         <Toolbar>
           <IconButton
             color="inherit"
             aria-label="open drawer"
-            onClick={handleDrawerOpen}
+            onClick={handleClickOpen}
             edge="start"
             sx={{
               marginRight: '36px',
-              ...(open && { display: 'none' }),
+              ...((open || clickOpen) && { display: 'none' }),
             }}
           >
             <MenuIcon />
@@ -229,10 +239,10 @@ export default function CustomDrawer() {
           <PathBreadcrumbs link="/" title={t('breadcrumbs.home')} />
         </div>
       </AppBar>
-      <Drawer variant="permanent" open={open}>
+      <Drawer variant="permanent" open={open || clickOpen} onMouseEnter={handleDrawerOpen} onMouseLeave={handleDrawerClose}>
         <Toolbar />
         <DrawerHeader>
-          <IconButton onClick={handleDrawerClose}>
+          <IconButton onClick={handleClickClose}>
             {theme.direction === 'rtl' ? (
               <ChevronRightIcon />
             ) : (

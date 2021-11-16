@@ -55,7 +55,7 @@ export default function AccessKeyDetails(Props: {
         <Box sx={style}>
           <Grid container justifyContent="center" alignItems="center">
             <Grid item xs={12} style={styles.centerStyle}>
-              <Typography id="modal-modal-title" variant="h6" component="h2">
+              <Typography id="modal-modal-title" variant="h6">
                 {Props.title}
               </Typography>
               <hr />

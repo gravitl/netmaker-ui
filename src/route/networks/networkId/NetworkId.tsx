@@ -59,6 +59,15 @@ export const NetworkId: React.FC = () => {
     return <div>Not Found</div>
   }
 
+  const buttonStyle = {
+    width: '100%',
+    margin: '4px',
+    height: '100%',
+    flex: '1',
+    inlineSize: '1em', 
+    overflow: 'hidden',
+  } as any
+
   return (
     <>
       <Switch>
@@ -81,14 +90,54 @@ export const NetworkId: React.FC = () => {
         </Route>
         <Route exact path={path}>
           <div style={{ textAlign: 'center', margin: '1em 0 1em 0' }}>
-            <Typography variant="h5">
+            <Typography variant="h5" style={{overflowWrap: 'break-word'}}>
               {`${t('network.details')} : ${networkId}`}
             </Typography>
           </div>
           <Grid
             container
+            justifyContent="flex-start"
+            alignItems="center"
+            style={{ marginBottom: '2em', marginTop: '2em' }}
+          >
+            <Grid item xs={12} sm={12} md={12}>
+              <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', margin: '0.5em 0 0.5em 0'}}>
+                <NmLink to={`${url}/edit`} variant="outlined" fullWidth style={buttonStyle}>
+                  {t('common.edit')}
+                </NmLink>
+                <NmLink to={`${url}/nodes`} variant="outlined" fullWidth style={buttonStyle}>
+                  {`${t('node.nodes')}`}
+                </NmLink>
+                <NmLink to={`/access-keys/${networkId}`} variant="outlined" fullWidth style={buttonStyle}>
+                  {t('header.accessKeys')}
+                </NmLink>
+                <Button
+                  variant="outlined"
+                  onClick={() => deleteNetworkCallback()}
+                  fullWidth
+                  color='warning'
+                  style={buttonStyle}
+                >
+                  {t('common.delete')}
+                </Button>
+              </div>
+            </Grid>
+            <Grid item xs={12} sm={2}>
+              <div style={{textAlign: 'center', margin: '0.5em 0 0.5em 0'}}>
+                
+              </div>
+            </Grid>
+            <Grid item xs={12} sm={2}>
+            <div style={{textAlign: 'center', margin: '0.5em 0 0.5em 0'}}>
+                
+              </div>
+            </Grid>
+          </Grid>
+          <Grid
+            container
             sx={{
-              '& .MuiTextField-root': { m: 1, width: '25ch' },
+              '& .MuiTextField-root': { margin: '4px' },
+              marginBottom: '2em',
             }}
             justifyContent="space-around"
             alignItems="center"
@@ -164,13 +213,15 @@ export const NetworkId: React.FC = () => {
                 label={t('network.defaultextclientdns')}
               />
             </Grid>
-            <Grid item xs={12} sm={6} md={4}>
+            <Grid item xs={12} sm={6} md={3}>
               <TextField
                 disabled
                 value={network.defaultmtu}
                 label={t('network.defaultmtu')}
                 type="number"
               />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
               <FormControlLabel
@@ -205,36 +256,6 @@ export const NetworkId: React.FC = () => {
                 }
                 disabled
               />
-            </Grid>
-          </Grid>
-          <Grid
-            container
-            justifyContent="space-evenly"
-            alignItems="flex-end"
-            style={{ marginBottom: '2em', marginTop: '2em' }}
-          >
-            <Grid item xs={6} sm={3}>
-              <NmLink to={`${url}/edit`} variant="outlined">
-                {t('common.edit')}
-              </NmLink>
-            </Grid>
-            <Grid item xs={6} sm={3}>
-              <NmLink to={`${url}/nodes`} variant="outlined">
-                {`${t('node.nodes')}`}
-              </NmLink>
-            </Grid>
-            <Grid item xs={6} sm={3}>
-              <NmLink to={`/access-keys/${networkId}`} variant="outlined">
-                {t('header.accessKeys')}
-              </NmLink>
-            </Grid>
-            <Grid item xs={6} sm={3}>
-              <Button
-                variant="outlined"
-                onClick={() => deleteNetworkCallback()}
-              >
-                {t('common.delete')}
-              </Button>
             </Grid>
           </Grid>
         </Route>

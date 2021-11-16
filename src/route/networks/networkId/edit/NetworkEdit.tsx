@@ -51,7 +51,11 @@ export const NetworkEdit: React.FC<{
       onSubmit={onSubmit}
       onCancel={onCancel}
       submitProps={{
-        variant: 'outlined',
+        variant: 'contained',
+        fullWidth: true,
+        style: {
+          width: '50%'
+        }
       }}
       sx={{
         '& .MuiTextField-root': { m: 1, width: '25ch' },
@@ -128,12 +132,14 @@ export const NetworkEdit: React.FC<{
             label={t('network.defaultextclientdns')}
           />
         </Grid>
-        <Grid item xs={12} sm={4} md={4}>
+        <Grid item xs={12} sm={4} md={3}>
           <NmFormInputText
             name={'defaultmtu'}
             label={t('network.defaultmtu')}
             type="number"
           />
+        </Grid>
+        <Grid item xs={12} sm={4} md={3}>
         </Grid>
         <Grid item xs={12} sm={4} md={3}>
           <NmFormInputSwitch

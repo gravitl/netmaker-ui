@@ -100,6 +100,20 @@ export const NodeId: React.FC = () => {
               </Typography>
             </div>
           </Grid>
+          <Grid item xs={6} sm={6} md={6} sx={rowMargin}>
+            <div style={{display: 'flex', alignItems: 'space-between', justifyContent: 'center'}}>
+              <NmLink to={`${url}/edit`} variant="outlined" style={{width: '50%', margin: '4px'}}>
+                {t('common.edit')}
+              </NmLink>
+              <Button variant="outlined" color='warning' style={{width: '50%', margin: '4px'}} onClick={handleOpen}>
+                {t('common.delete')}
+              </Button>
+            </div>
+          </Grid>
+          <Grid item xs={6} sm={3} sx={rowMargin}>
+          </Grid>
+          <Grid item xs={6} sm={3} sx={rowMargin}>
+          </Grid>
           <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
             <TextField
               disabled
@@ -283,16 +297,6 @@ export const NodeId: React.FC = () => {
               control={<SwitchField checked={node.ipforwarding} disabled />}
               disabled
             />
-          </Grid>
-          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-            <NmLink to={`${url}/edit`} variant="outlined">
-              {t('common.edit')}
-            </NmLink>
-          </Grid>
-          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-            <Button variant="outlined" onClick={handleOpen}>
-              {t('common.delete')}
-            </Button>
           </Grid>
         </Grid>
       </Route>

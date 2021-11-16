@@ -125,7 +125,7 @@ export const NodeTable: React.FC = () => {
       if (token) {
         dispatch(getNodes.request({ token }))
       }
-    }, 10000)
+    }, 5000)
     return () => clearInterval(interval)
   }, [dispatch, token])
 

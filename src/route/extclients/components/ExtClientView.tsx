@@ -57,7 +57,7 @@ const extColumns: TableColumns<ExternalClient> = [
   },
   {
     id: 'network',
-    labelKey: 'extclient.viewqr',
+    labelKey: 'extclient.qr',
     minWidth: 50,
     align: 'center',
     format: (_, client) => (

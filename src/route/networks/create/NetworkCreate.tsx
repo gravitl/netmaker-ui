@@ -104,6 +104,7 @@ export const NetworkCreate: React.FC = () => {
                   ...formRef.current?.values,
                   netid: randomNetworkName(),
                   addressrange: randomCIDR(),
+                  defaultudpholepunch: true,
                 },
                 { keepDefaultValues: true }
               )

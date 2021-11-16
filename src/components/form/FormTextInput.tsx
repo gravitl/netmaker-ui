@@ -6,11 +6,12 @@ import { useFormControl } from './internal/formContext'
 export const NmFormInputText: React.FC<
   Omit<
     TextFieldProps,
-    'name' | 'onChange' | 'value' | 'error' | 'helperText'
+    'name' | 'onChange' | 'value' | 'error' | 'helperText' | 'rightAlign'
   > & {
     name: string
+    rightAlign?: boolean
   }
-> = ({ name, disabled, ...textfieldProps }) => {
+> = ({ name, disabled, rightAlign, ...textfieldProps }) => {
   const { control, disabled: formDisabled } = useFormControl()
 
   return (
@@ -25,6 +26,11 @@ export const NmFormInputText: React.FC<
           value={value}
           error={!!error}
           helperText={error?.message}
+          inputProps={rightAlign ? {
+            style: {
+              textAlign: "right"
+            }
+          }: {}}
         />
       )}
     />

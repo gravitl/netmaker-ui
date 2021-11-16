@@ -75,6 +75,11 @@ export const DNSEntryCreate: React.FC<{}> = () => {
     center: {
       textAlign: 'center',
     },
+    leftAlign: {
+      display: 'flex',
+      justifyContent: 'flex-start',
+      alignItems: 'center',
+    },
     max: {
       width: '75%',
     },
@@ -112,22 +117,28 @@ export const DNSEntryCreate: React.FC<{}> = () => {
               submitText={t('common.create')}
               ref={formRef}
             >
-              <Grid container justifyContent="space-around" alignItems="center">
-                <Grid item xs={5}>
-                  <NmFormInputText
-                    name="name"
-                    defaultValue={''}
-                    label={t('dns.name')}
-                    variant="outlined"
-                    margin="normal"
-                    required
-                    fullWidth
-                    autoComplete="false"
-                    autoFocus
-                    color="primary"
-                  />
+              <Grid container justifyContent="center" alignItems="center">
+                <Grid item xs={10}>
+                  <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                    <NmFormInputText
+                      name="name"
+                      defaultValue={''}
+                      label={t('dns.name')}
+                      variant="outlined"
+                      margin="normal"
+                      required
+                      rightAlign
+                      autoComplete="false"
+                      autoFocus
+                      style={{width: '70%'}}
+                      color="primary"
+                    />
+                    <Typography variant='h6' style={{paddingTop: '4px', marginLeft: '8px'}}>
+                      {' '}.{netid}
+                    </Typography>
+                  </div>
                 </Grid>
-                <Grid item xs={5}>
+                <Grid item xs={4}>
                   <NmFormInputText
                     name="address"
                     label={t('dns.address')}

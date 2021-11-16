@@ -58,6 +58,7 @@ export interface LanguageResource {
     name: string
     copy: string
     selectall: string
+    count: string
   }
   dashboard: {
     title: string

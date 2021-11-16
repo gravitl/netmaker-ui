@@ -33,7 +33,7 @@ export const ExtClients: React.FC = () => {
           >
             <Grid item xs={5}>
               <div style={titleStyle}>
-                <Typography variant="h4">
+                <Typography variant="h5">
                   {t('extclient.extclients')}
                 </Typography>
               </div>

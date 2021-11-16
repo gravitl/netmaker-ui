@@ -388,13 +388,13 @@ function* handleDeleteExternalClientRequest(
       success: deleteExternalClient['success'],
       error: deleteExternalClient['failure'],
       params: {
-        pending: i18n.t('deleteExternalClientToastRequest', {
+        pending: i18n.t('common.pending', {
           nodeName: action.payload.clientName,
         }),
-        success: i18n.t('deleteExternalClientToastSuccess', {
+        success: i18n.t('toast.delete.success.extclient', {
           nodeName: action.payload.clientName,
         }),
-        error: i18n.t('deleteExternalClientToastError', {
+        error: i18n.t('toast.delete.success.extclient', {
           nodeName: action.payload.clientName,
         }),
       },

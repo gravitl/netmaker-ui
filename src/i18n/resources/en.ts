@@ -60,6 +60,7 @@ export const en: LanguageResource = {
     name: 'Name',
     copy: 'Copy',
     selectall: 'Select All',
+    count: 'Count',
   },
   dashboard: {
     title: 'Netmaker Dashboard',
