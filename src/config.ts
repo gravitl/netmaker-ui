@@ -4,6 +4,8 @@ import { version } from '../package.json'
 export const BACKEND_URL =
   (window as any).REACT_APP_BACKEND || 'http://localhost:8081'
 
+export const DEBUG = BACKEND_URL.includes('localhost')
+
 // == set UI version here ==
 export const UI_VERSION = version
 
