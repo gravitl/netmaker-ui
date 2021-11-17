@@ -30,7 +30,7 @@ export default function AccessKeyCard() {
   const networks = useSelector(networkSelectors.getNetworks)
   let accessKeyCount = 0
   for (let i = 0; i < networks.length; i++) {
-    accessKeyCount += networks[i].accesskeys.length
+    if (!!networks[i].accesskeys) accessKeyCount += networks[i].accesskeys.length
   }
 
   const cardStyle = {

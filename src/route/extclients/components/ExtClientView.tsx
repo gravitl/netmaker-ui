@@ -92,7 +92,6 @@ export const ExtClientView: React.FC = () => {
   const extClients = useSelector(nodeSelectors.getExtClients)
   const { netid } = useParams<{ netid: string }>()
   const clients = filterExtClientsByNetwork(extClients, netid)
-  console.log(clients)
   const listOfNodes = useNodesByNetworkId(netid)
 
   useLinkBreadcrumb({

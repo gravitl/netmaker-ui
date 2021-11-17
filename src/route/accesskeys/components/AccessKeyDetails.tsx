@@ -5,6 +5,8 @@ import Typography from '@mui/material/Typography'
 import Modal from '@mui/material/Modal'
 import { useTranslation } from 'react-i18next'
 import { ContentCopy } from '@mui/icons-material'
+import { useSelector } from 'react-redux'
+import { serverSelectors } from '~store/types'
 import copy from 'copy-to-clipboard'
 import { grey } from '@mui/material/colors'
 
@@ -29,6 +31,7 @@ export default function AccessKeyDetails(Props: {
   open: boolean
 }) {
   const { t } = useTranslation()
+  const version = useSelector(serverSelectors.getServerConfig).Version || 'latest'
 
   const styles = {
     centerStyle: {
@@ -41,7 +44,15 @@ export default function AccessKeyDetails(Props: {
   } as any
 
   const getAgentInstallCommand = (accessToken: string) => {
-    return `curl -sfL https://raw.githubusercontent.com/gravitl/netmaker/master/scripts/netclient-install.sh | KEY=${accessToken} sh -`
+    return `curl -sfL https://raw.githubusercontent.com/gravitl/netmaker/master/scripts/netclient-install.sh | VERSION=v${version} KEY=${accessToken} sh -`
+  }
+
+  const getDockerRunCommand = (accessToken: string) => {
+    return `docker run -d --network host  --privileged -e TOKEN={${accessToken}} -v /etc/netclient:/etc/netclient --name netclient netclient/netclient:v${version}`
+  }
+
+  const getWindowsRunCommand = (accessToken: string) => {
+    return `. { iwr -useb  https://raw.githubusercontent.com/gravitl/netmaker/master/scripts/netclient-install.ps1 } | iex; Netclient-Install -version "v${version}" -token "${accessToken}"`
   }
 
   return (
@@ -55,10 +66,9 @@ export default function AccessKeyDetails(Props: {
         <Box sx={style}>
           <Grid container justifyContent="center" alignItems="center">
             <Grid item xs={12} style={styles.centerStyle}>
-              <Typography id="modal-modal-title" variant="h6">
+              <Typography id="modal-modal-title" variant="h5" style={{marginBottom: '0.5em'}}>
                 {Props.title}
               </Typography>
-              <hr />
             </Grid>
           </Grid>
           <Grid item xs={12}>
@@ -102,6 +112,11 @@ export default function AccessKeyDetails(Props: {
                   </IconButton>
                 </Tooltip>
               </Grid>
+              <Grid item xs={12} style={styles.centerStyle}>
+                <Typography id="modal-modal-title" variant="h6" style={{marginBottom: '0.5em', marginTop: '0.5em'}}>
+                  {t('accesskey.clientinstall')}
+                </Typography>
+              </Grid>
               <Grid item xs={3} style={styles.centerStyle}>
                 <h3>{t('accesskey.installCommand')}</h3>
               </Grid>
@@ -121,6 +136,56 @@ export default function AccessKeyDetails(Props: {
                   <IconButton
                     onClick={() =>
                       copy(getAgentInstallCommand(Props.accessString))
+                    }
+                  >
+                    <ContentCopy />
+                  </IconButton>
+                </Tooltip>
+              </Grid>
+              <Grid item xs={3} style={styles.centerStyle}>
+                <h3>{t('accesskey.dockerrun')}</h3>
+              </Grid>
+              <Grid item xs={7} style={styles.centeredText}>
+                <TextField
+                  fullWidth
+                  maxRows={1}
+                  value={getDockerRunCommand(Props.accessString)}
+                  sx={{ backgroundColor: grey[100] }}
+                />
+              </Grid>
+              <Grid item xs={1} style={styles.centerStyle}>
+                <Tooltip
+                  title={`${t('common.copy')} ${t('accesskey.dockerrun')}`}
+                  placement="top"
+                >
+                  <IconButton
+                    onClick={() =>
+                      copy(getDockerRunCommand(Props.accessString))
+                    }
+                  >
+                    <ContentCopy />
+                  </IconButton>
+                </Tooltip>
+              </Grid>
+              <Grid item xs={3} style={styles.centerStyle}>
+              <h3>{t('accesskey.windows')}</h3>
+              </Grid>
+              <Grid item xs={7} style={styles.centeredText}>
+                <TextField
+                  fullWidth
+                  maxRows={1}
+                  value={getWindowsRunCommand(Props.accessString)}
+                  sx={{ backgroundColor: grey[100] }}
+                />
+              </Grid>
+              <Grid item xs={1} style={styles.centerStyle}>
+                <Tooltip
+                  title={`${t('common.copy')} ${t('accesskey.windows')}`}
+                  placement="top"
+                >
+                  <IconButton
+                    onClick={() =>
+                      copy(getWindowsRunCommand(Props.accessString))
                     }
                   >
                     <ContentCopy />

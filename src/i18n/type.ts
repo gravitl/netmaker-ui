@@ -24,6 +24,9 @@ export interface LanguageResource {
     details: string
     accessToken: string
     installCommand: string
+    dockerrun: string
+    windows: string
+    clientinstall: string
   }
   breadcrumbs: {
     home: string
@@ -88,6 +91,7 @@ export interface LanguageResource {
   error: {
     notfound: string
     network: string
+    tokenexpire: string
   }
   extclient: {
     extclients: string

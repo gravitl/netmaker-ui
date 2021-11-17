@@ -25,7 +25,10 @@ export const en: LanguageResource = {
     deleteconfirm: 'Are you sure you want to delete this access key?',
     details: 'Viewing your New Access Key Details',
     accessToken: 'Access Token',
-    installCommand: 'Agent Install Command',
+    installCommand: 'Linux, FreeBSD, Mac',
+    dockerrun: 'Docker',
+    windows: 'Windows (PowerShell Admin)',
+    clientinstall: 'Client Install Commands'
   },
   breadcrumbs: {
     home: 'Home',
@@ -90,6 +93,7 @@ export const en: LanguageResource = {
   error: {
     notfound: 'Not found',
     network: 'Could not reach server',
+    tokenexpire: 'Token has expired',
   },
   extclient: {
     extclients: 'External Clients',

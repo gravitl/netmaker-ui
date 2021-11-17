@@ -216,7 +216,6 @@ function* handleUpdateUserNetworksRequest({
         error: `${i18n.t('toast.update.failure.user')} : ${payload.username}`,
       },
     })
-    console.log('HELLO')
     yield apiRequestWithAuthSaga(
       'put',
       `/users/networks/${payload.username}`,

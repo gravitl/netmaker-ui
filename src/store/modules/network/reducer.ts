@@ -37,6 +37,11 @@ export const reducer = createReducer({
     produce(state, (draftState) => {
       draftState.networks = action.payload.map(networkPayloadToNetwork)
       draftState.networks = draftState.networks.sort((a, b) => a.displayname.localeCompare(b.displayname))
+      for (let i = 0; i < draftState.networks.length; i++) {
+        if (!!!draftState.networks[i].accesskeys) {
+          draftState.networks[i].accesskeys = []
+        }
+      }
       draftState.isFetching = false
     })
   )

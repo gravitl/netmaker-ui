@@ -39,8 +39,6 @@ export const DNSEntryCreate: React.FC<{}> = () => {
     address: '',
   }
 
-  // const handleSubmit = () => console.log('blah')
-
   const handleSubmit = useCallback(
     (data: CreateDNS) => {
       dispatch(
