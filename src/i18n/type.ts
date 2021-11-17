@@ -118,6 +118,8 @@ export interface LanguageResource {
   helper: {
     egress: string
     egressiface: string
+    udpholepunching: string
+    islocal: string
   }
   network: {
     allowmanualsignup: string

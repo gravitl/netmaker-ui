@@ -150,6 +150,8 @@ export const en: LanguageResource = {
   helper: {
     egress: 'Enter your network interface name, i.e. "eth0"',
     egressiface: 'Find your interface on linux with "ip link show"',
+    udpholepunching: 'This can enhance connectivity in cases where NAT may block communication.',
+    islocal: 'Use if server is on same network (LAN) as you'
   },
   node: {
     nodes: 'Nodes',

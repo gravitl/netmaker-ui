@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
-import { Button, Grid } from '@mui/material'
+import { Button, Grid, Tooltip } from '@mui/material'
 import { makeStyles, createStyles } from '@mui/styles'
 import {
   FormRef,
@@ -49,6 +49,8 @@ export const NetworkCreate: React.FC = () => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const classes = useStyles()
+  const [ viewLocal, setViewLocal ] = React.useState(false)
+  const [ viewDual, setViewDual ] = React.useState(false)
 
   const onSubmit = useCallback(
     (data: CreateNetwork) => {
@@ -70,7 +72,16 @@ export const NetworkCreate: React.FC = () => {
     title: t('common.create'),
   })
 
+  const handleViewDual = () => {
+    setViewDual(!viewDual)
+  }
+
+  const handleViewLocal = () => {
+    setViewLocal(!viewLocal)
+  }
+
   return (
+    <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
     <NmForm
       initialState={initialState}
       onSubmit={onSubmit}
@@ -81,22 +92,8 @@ export const NetworkCreate: React.FC = () => {
       submitText={t('network.create')}
       ref={formRef}
     >
-      <Grid container justifyContent="space-around" alignItems="center">
-        <Grid item xs={12} sm={12} md={4} className={classes.rowMargin}>
-          <NmFormInputText
-            fullWidth
-            name={'netid'}
-            label={t('network.netid')}
-          />
-        </Grid>
-        <Grid item xs={12} sm={12} md={4} className={classes.rowMargin}>
-          <NmFormInputText
-            fullWidth
-            name={'addressrange'}
-            label={t('network.addressrange')}
-          />
-        </Grid>
-        <Grid item xs={12} sm={12} md={2} className={classes.rowMargin}>
+      <Grid container justifyContent="center" alignItems="center">
+        <Grid item xs={12} sm={6} md={7} className={classes.center + ' ' + classes.rowMargin}>
           <Button
             onClick={() => {
               formRef.current?.reset(
@@ -109,41 +106,64 @@ export const NetworkCreate: React.FC = () => {
                 { keepDefaultValues: true }
               )
             }}
+            style={{width: '33%'}}
             variant="outlined"
           >
             {t('common.autofill')}
           </Button>
         </Grid>
-        <Grid item xs={12} className={classes.center + ' ' + classes.rowMargin}>
-          <NmFormInputSwitch
-            name={'defaultudpholepunch'}
-            label={t('network.defaultudpholepunch')}
-          />
-        </Grid>
-        <Grid item xs={12} sm={12} md={5} className={classes.rowMargin}>
-          <NmFormInputSwitch name={'islocal'} label={t('network.islocal')} />
-        </Grid>
-        <Grid item xs={12} sm={12} md={5} className={classes.rowMargin}>
+        <Grid item xs={12} sm={12} md={7} className={classes.center + ' ' + classes.rowMargin}>
           <NmFormInputText
-            fullWidth
-            name={'localrange'}
-            label={t('network.localrange')}
+            style={{width: '90%'}}
+            name={'netid'}
+            label={t('network.netid')}
           />
         </Grid>
-        <Grid item xs={12} sm={12} md={5} className={classes.rowMargin}>
-          <NmFormInputSwitch
-            name={'isdualstack'}
-            label={t('network.isdualstack')}
-          />
-        </Grid>
-        <Grid item xs={12} sm={12} md={5} className={classes.rowMargin}>
+        <Grid item xs={12} sm={12} md={7} className={classes.center + ' ' + classes.rowMargin}>
           <NmFormInputText
-            fullWidth
-            name={'addressrange6'}
-            label={t('network.addressrange6')}
+            style={{width: '90%'}}
+            name={'addressrange'}
+            label={t('network.addressrange')}
           />
+        </Grid>
+        <Grid item xs={12} sm={10} md={10} className={classes.center + ' ' + classes.rowMargin} style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+          <Tooltip title={t('helper.udpholepunching') as string} placement='top'>
+            <div>
+              <NmFormInputSwitch name={'defaultudpholepunch'} label={t('network.defaultudpholepunch')} />
+            </div>
+          </Tooltip>
+        </Grid>
+        <Grid item xs={12} sm={12} md={10} className={classes.center + ' ' + classes.rowMargin} style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+          <Tooltip title={t('helper.islocal') as string} placement='top'>
+            <div onClick={handleViewLocal}>
+              <NmFormInputSwitch name={'islocal'} label={t('network.islocal')}/>
+            </div>
+          </Tooltip>
+          {viewLocal &&
+            <NmFormInputText
+              style={{width: '60%'}}
+              name={'localrange'}
+              label={t('network.localrange')}
+            />
+          }
+        </Grid>
+        <Grid item xs={12} sm={12} md={10} className={classes.rowMargin} style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+          <div  onClick={handleViewDual}>
+            <NmFormInputSwitch
+              name={'isdualstack'}
+              label={t('network.isdualstack')}
+            />
+          </div>
+          {viewDual &&
+            <NmFormInputText
+              style={{width: '60%'}}
+              name={'addressrange6'}
+              label={t('network.addressrange6')}
+            />
+          }
         </Grid>
       </Grid>
     </NmForm>
+    </div>
   )
 }
