@@ -48,7 +48,7 @@ export default function AccessKeyDetails(Props: {
   }
 
   const getDockerRunCommand = (accessToken: string) => {
-    return `docker run -d --network host  --privileged -e TOKEN={${accessToken}} -v /etc/netclient:/etc/netclient --name netclient netclient/netclient:v${version}`
+    return `docker run -d --network host  --privileged -e TOKEN={${accessToken}} -v /etc/netclient:/etc/netclient --name netclient gravitl/netclient:v${version}`
   }
 
   const getWindowsRunCommand = (accessToken: string) => {
