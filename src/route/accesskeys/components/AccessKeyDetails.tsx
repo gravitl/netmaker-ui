@@ -55,6 +55,10 @@ export default function AccessKeyDetails(Props: {
     return `. { iwr -useb  https://raw.githubusercontent.com/gravitl/netmaker/master/scripts/netclient-install.ps1 } | iex; Netclient-Install -version "v${version}" -token "${accessToken}"`
   }
 
+  const getManualCommand = (accessToken: string) => {
+    return `./netclient join -t ${accessToken}`
+  }
+
   return (
     <div>
       <Modal
@@ -186,6 +190,31 @@ export default function AccessKeyDetails(Props: {
                   <IconButton
                     onClick={() =>
                       copy(getWindowsRunCommand(Props.accessString))
+                    }
+                  >
+                    <ContentCopy />
+                  </IconButton>
+                </Tooltip>
+              </Grid>
+              <Grid item xs={3} style={styles.centerStyle}>
+              <h3>{t('accesskey.manual')}</h3>
+              </Grid>
+              <Grid item xs={7} style={styles.centeredText}>
+                <TextField
+                  fullWidth
+                  maxRows={1}
+                  value={getManualCommand(Props.accessString)}
+                  sx={{ backgroundColor: grey[100] }}
+                />
+              </Grid>
+              <Grid item xs={1} style={styles.centerStyle}>
+                <Tooltip
+                  title={`${t('common.copy')} ${t('accesskey.manual')}`}
+                  placement="top"
+                >
+                  <IconButton
+                    onClick={() =>
+                      copy(getManualCommand(Props.accessString))
                     }
                   >
                     <ContentCopy />

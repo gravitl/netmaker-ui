@@ -28,7 +28,8 @@ export const en: LanguageResource = {
     installCommand: 'Linux, FreeBSD, Mac',
     dockerrun: 'Docker',
     windows: 'Windows (PowerShell Admin)',
-    clientinstall: 'Client Install Commands'
+    clientinstall: 'Client Install Commands',
+    manual: 'Manual Install',
   },
   breadcrumbs: {
     home: 'Home',

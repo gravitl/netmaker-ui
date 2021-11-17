@@ -28,7 +28,7 @@ const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
 export default function NodeCard() {
   const { t } = useTranslation()
   const dnsEntries = useSelector(networkSelectors.getDnsEntries)
-  const dnsCount = dnsEntries.length
+  const dnsCount = !!dnsEntries ? dnsEntries.length : 0
 
   const cardStyle = {
     marginBottom: '1em',
