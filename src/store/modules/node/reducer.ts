@@ -39,8 +39,13 @@ export const reducer = createReducer({
   )
   .handleAction(getNodes['success'], (state, action) =>
     produce(state, (draftState) => {
-      draftState.nodes = action.payload.map(nodePayloadToNode)
-      draftState.nodes = draftState.nodes.sort((a, b) => a.name.localeCompare(b.name))
+      if (!!action.payload && action.payload.length) {
+        draftState.nodes = action.payload.map(nodePayloadToNode)
+        draftState.nodes = draftState.nodes.sort((a, b) => a.name.localeCompare(b.name))
+      } else {
+        draftState.nodes = []
+      }
+     
       draftState.isFetching = false
     })
   )

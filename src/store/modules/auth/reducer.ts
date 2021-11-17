@@ -110,12 +110,16 @@ export const reducer = createReducer({
   )
   .handleAction(getAllUsers['success'], (state, action) =>
     produce(state, (draftState) => {
-      draftState.users = action.payload.map((user: any) => ({
-        isAdmin: user.isadmin,
-        name: user.username,
-        networks: user.networks,
-        exp: 0,
-      }))
+      if (!!action.payload && action.payload.length) {
+        draftState.users = action.payload.map((user: any) => ({
+          isAdmin: user.isadmin,
+          name: user.username,
+          networks: user.networks,
+          exp: 0,
+        }))
+      } else {
+        draftState.users = []
+      }
     })
   )
   .handleAction(createUser['success'], (state, { payload }) =>

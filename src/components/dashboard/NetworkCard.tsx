@@ -28,7 +28,7 @@ const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
 export default function NetworkCard() {
   const { t } = useTranslation()
   const networks = useSelector(networkSelectors.getNetworks)
-  const networkCount = networks.length
+  const networkCount = !!networks ? networks.length : 0
 
   const cardStyle = {
     marginBottom: '1em',
