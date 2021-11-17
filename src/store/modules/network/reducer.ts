@@ -35,8 +35,12 @@ export const reducer = createReducer({
   )
   .handleAction(getNetworks['success'], (state, action) =>
     produce(state, (draftState) => {
-      draftState.networks = action.payload.map(networkPayloadToNetwork)
-      draftState.networks = draftState.networks.sort((a, b) => a.displayname.localeCompare(b.displayname))
+      if (!!action.payload && action.payload.length) {
+        draftState.networks = action.payload.map(networkPayloadToNetwork)
+        draftState.networks = draftState.networks.sort((a, b) => a.displayname.localeCompare(b.displayname))
+      } else {
+        draftState.networks = []
+      }
       for (let i = 0; i < draftState.networks.length; i++) {
         if (!!!draftState.networks[i].accesskeys) {
           draftState.networks[i].accesskeys = []
