@@ -242,6 +242,7 @@ export interface LanguageResource {
     delete: string
     edit: string
     details: string
+    deleteTitle: string
     networks: {
       create: string
       delete: string

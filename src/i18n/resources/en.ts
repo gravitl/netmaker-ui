@@ -247,6 +247,7 @@ export const en: LanguageResource = {
     delete: 'Delete User',
     edit: 'Edit User',
     details: 'View User Details',
+    deleteTitle: 'Are you sure you want to delete this user?',
     networks: {
       create: 'Add a Network to User',
       delete: 'Remove a Network from User',
