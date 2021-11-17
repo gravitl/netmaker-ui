@@ -33,11 +33,33 @@ export const NodeEdit: React.FC<{
 
   const onSubmit = useCallback(
     (data: Node) => {
+      const node = {
+        ...data
+      }
+      if(typeof data.relayaddrs === 'string') {
+        const newRelayAddrs = String(data.relayaddrs).split(',')
+        for (let i = 0; i < newRelayAddrs.length; i++) {
+          newRelayAddrs[i] = newRelayAddrs[i].trim()
+        }
+        if (newRelayAddrs.length) {
+          node.relayaddrs = newRelayAddrs as []
+        }
+      }
+      if (typeof data.egressgatewayranges === 'string') {
+        const newEgressRanges = String(data.egressgatewayranges).split(',')
+        for (let i = 0; i < newEgressRanges.length; i++) {
+          newEgressRanges[i] = newEgressRanges[i].trim()
+        }
+        if (newEgressRanges.length) {
+          node.egressgatewayranges = newEgressRanges as []
+        }
+      }
+
       dispatch(
         updateNode.request({
           token: '',
           netid: networkId,
-          node: { ...data },
+          node,
         })
       )
     },
@@ -149,10 +171,12 @@ export const NodeEdit: React.FC<{
         </Grid>
         <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <NmFormInputText
-            defaultValue={datePickerConverter(node.lastmodified)}
-            label={t('node.lastmodified')}
-            name={'lastmodified'}
-            disabled
+            disabled={!node.isrelay}
+            defaultValue={
+              node.relayaddrs ? node.relayaddrs.join(',') : ''
+            }
+            label={t('node.relayaddrs')}
+            name={'relayaddrs'}
           />
         </Grid>
         <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
@@ -274,7 +298,7 @@ export const NodeEdit: React.FC<{
             label={t('node.ipforwarding')}
             name={'ipforwarding'}
             defaultValue={node.ipforwarding}
-          />
+          />            
         </Grid>
       </Grid>
     </NmForm>

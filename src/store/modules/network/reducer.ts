@@ -130,7 +130,7 @@ export const reducer = createReducer({
   )
   .handleAction(getDnsEntries['success'], (state, action) =>
     produce(state, (draftState) => {
-      draftState.dnsEntries = action.payload
+      draftState.dnsEntries = !!action.payload ? action.payload : []
     })
   )
   .handleAction(createDnsEntry['success'], (state, action) =>

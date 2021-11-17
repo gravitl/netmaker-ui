@@ -118,6 +118,7 @@ export const TableToggleButton: React.FC<{
             )}/create-${which}`}
             onMouseEnter={handleHoverEnter}
             onMouseLeave={handleHoverLeave}
+            disabled={which === 'relay' && node.isrelayed}
           >
             {!isOn ? SignalIcon : hovering ? <Block /> : <Check />}
           </IconButton>

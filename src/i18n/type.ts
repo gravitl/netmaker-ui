@@ -27,6 +27,7 @@ export interface LanguageResource {
     dockerrun: string
     windows: string
     clientinstall: string
+    manual: string
   }
   breadcrumbs: {
     home: string
