@@ -8,7 +8,7 @@ import { useNodesByNetworkId } from '~util/network'
 import { Button, Grid, Typography } from '@mui/material'
 import { filterCustomDNSByNetwork } from '~util/node'
 import { useSelector } from 'react-redux'
-import { DNS, networkSelectors } from '~store/types'
+import { DNS, networkSelectors, serverSelectors } from '~store/types'
 import { NetworkSelect } from '~components/NetworkSelect'
 import { useDispatch } from 'react-redux'
 import { deleteDnsEntry } from '~store/modules/network/actions'
@@ -69,6 +69,7 @@ export const DNSView: React.FC = () => {
   const { netid } = useParams<{ netid: string }>()
   const nodes = useNodesByNetworkId(netid)
   const currentEntries = useSelector(networkSelectors.getDnsEntries)
+  const serverConfig = useSelector(serverSelectors.getServerConfig)
   const [selected, setSelected] = React.useState('')
   const dispatch = useDispatch()
   // const entries =
@@ -95,7 +96,9 @@ export const DNSView: React.FC = () => {
         alignItems="flex-start"
       >
         <Grid item xs={12} sx={{ margin: '0.5em 0em 1em 0em' }}>
-          <NetworkSelect base="dns" />
+          {serverConfig.DNSMode &&
+            <NetworkSelect base="dns" />
+          }
         </Grid>
         <Grid item xs={12} sx={{ margin: '0.5em 0em 1em 0em' }}>
           <div style={centerText as any}>
@@ -133,7 +136,10 @@ export const DNSView: React.FC = () => {
           alignItems="flex-start"
         >
           <Grid item xs={12} sx={{ margin: '0.5em 0em 1em 0em' }}>
-            <NetworkSelect base="dns" />
+            {serverConfig.DNSMode &&
+              <NetworkSelect base="dns" />
+            }
+            {console.log(serverConfig.DNSMode)}
           </Grid>
           <Grid
             item

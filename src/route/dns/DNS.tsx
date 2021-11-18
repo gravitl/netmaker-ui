@@ -40,7 +40,9 @@ export const DNS: React.FC = () => {
               </div>
             </Grid>
           </Grid>
-          <NetworkSelect base="dns" />
+          {hasDNS &&
+            <NetworkSelect base="dns" />
+          }
         </Route>
         <Route path={`${path}/:netid/create`}>
           <DNSEntryCreate />

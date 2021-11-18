@@ -331,6 +331,7 @@ export interface LanguageResource {
         extclient: string
         dns: string
         user: string
+        node: string
       }
       failure: {
         accesskey: string
@@ -340,6 +341,7 @@ export interface LanguageResource {
         extclient: string
         dns: string
         user: string
+        node: string
       }
     }
     login: {
