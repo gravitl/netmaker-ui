@@ -95,13 +95,13 @@ function* handleDeleteNodeRequest(
       success: deleteNode['success'],
       error: deleteNode['failure'],
       params: {
-        pending: i18n.t('deleteNodeToastRequest', {
+        pending: i18n.t('common.pending', {
           nodeid: action.payload.nodeid,
         }),
-        success: i18n.t('deleteNodeToastSuccess', {
+        success: i18n.t('toast.delete.success.node', {
           nodeid: action.payload.nodeid,
         }),
-        error: i18n.t('deleteNodeToastError', {
+        error: i18n.t('toast.delete.failure.node', {
           nodeid: action.payload.nodeid,
         }),
       },

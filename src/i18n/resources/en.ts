@@ -338,6 +338,7 @@ export const en: LanguageResource = {
         extclient: 'Successfully removed Ext Client!',
         dns: 'Successfully removed the DNS Entry!',
         user: 'Successfully deleted User!',
+        node: 'Successfully deleted Node!',
       },
       failure: {
         accesskey: 'Failed to remove Access Key.',
@@ -346,7 +347,8 @@ export const en: LanguageResource = {
         relay: 'Failed to remove Relay.',
         extclient: 'Failed to remove Ext Client.',
         dns: 'Failed to remove the DNS Entry.',
-        user: 'Failed to remove User.'
+        user: 'Failed to remove User.',
+        node: 'Failed to remove Node.',
       },
     },
     login: {

@@ -10,7 +10,7 @@ import PreviewIcon from '@mui/icons-material/Preview'
 import { grey } from '@mui/material/colors'
 import Avatar from '@mui/material/Avatar'
 import { useSelector } from 'react-redux'
-import { networkSelectors } from '~store/types'
+import { networkSelectors, serverSelectors } from '~store/types'
 
 import CardContent from '@mui/material/CardContent'
 import Typography from '@mui/material/Typography'
@@ -28,7 +28,8 @@ const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
 export default function NodeCard() {
   const { t } = useTranslation()
   const dnsEntries = useSelector(networkSelectors.getDnsEntries)
-  const dnsCount = !!dnsEntries ? dnsEntries.length : 0
+  const hasDNS = useSelector(serverSelectors.getServerConfig).DNSMode
+  const dnsCount = !!dnsEntries && hasDNS ? dnsEntries.length : 0
 
   const cardStyle = {
     marginBottom: '1em',
