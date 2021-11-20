@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux'
 import { updateNode } from '~modules/node/actions'
 import { NmForm, NmFormInputSwitch, NmFormInputText } from '~components/form'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
-import { decode64 } from '~util/fields'
+import { decode64, getCommaSeparatedArray } from '~util/fields'
 import { useNodeById } from '~util/node'
 import { Node } from '~store/modules/node/types'
 import { datePickerConverter } from '~util/unixTime'
@@ -37,21 +37,21 @@ export const NodeEdit: React.FC<{
         ...data
       }
       if(typeof data.relayaddrs === 'string') {
-        const newRelayAddrs = String(data.relayaddrs).split(',')
-        for (let i = 0; i < newRelayAddrs.length; i++) {
-          newRelayAddrs[i] = newRelayAddrs[i].trim()
-        }
+        const newRelayAddrs = getCommaSeparatedArray(String(data.relayaddrs))
         if (newRelayAddrs.length) {
-          node.relayaddrs = newRelayAddrs as []
+          node.relayaddrs = newRelayAddrs
         }
       }
       if (typeof data.egressgatewayranges === 'string') {
-        const newEgressRanges = String(data.egressgatewayranges).split(',')
-        for (let i = 0; i < newEgressRanges.length; i++) {
-          newEgressRanges[i] = newEgressRanges[i].trim()
-        }
+        const newEgressRanges = getCommaSeparatedArray(String(data.egressgatewayranges))
         if (newEgressRanges.length) {
-          node.egressgatewayranges = newEgressRanges as []
+          node.egressgatewayranges = newEgressRanges
+        }
+      }
+      if (typeof data.allowedips === 'string') {
+        const newAllowedIps = getCommaSeparatedArray(String(data.allowedips))
+        if (newAllowedIps.length) {
+          node.allowedips = newAllowedIps
         }
       }
 

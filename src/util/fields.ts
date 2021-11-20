@@ -35,3 +35,11 @@ export const decode64 = (str: string): string =>
   Buffer.from(str, 'base64').toString('binary')
 export const encode64 = (str: string): string =>
   Buffer.from(str, 'binary').toString('base64')
+
+export const getCommaSeparatedArray = (values: string) => {
+  const newArray = values.split(',')
+  for (let i = 0; i < newArray.length; i++) {
+    newArray[i] = newArray[i].trim()
+  }
+  return newArray as []
+}
