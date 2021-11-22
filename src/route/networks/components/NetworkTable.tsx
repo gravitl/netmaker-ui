@@ -1,6 +1,5 @@
 import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { networkSelectors } from '../../../store/selectors'
+import { useDispatch } from 'react-redux'
 import { NmLink } from '../../../components'
 import { Network } from '../../../store/modules/network'
 import { datePickerConverter } from '../../../util/unixTime'
@@ -49,23 +48,33 @@ const columns: TableColumns<Network> = [
   },
 ]
 
-export const NetworkTable: React.FC = () => {
-  const listOfNetworks = useSelector(networkSelectors.getNetworks)
+export const NetworkTable: React.FC<{networks: Network[]}> = ({networks}) => {
+  // const networks = useSelector(networkSelectors.getNetworks)
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const [open, setOpen] = React.useState(false)
   const [selectedNet, setSelectedNet] = React.useState('')
+  const [refresh, setRefresh] = React.useState(false)
 
   const handleClose = () => {
     setOpen(false)
   }
 
-  const handleOpen = (selected: string) => {
+  const handleOpen = (selected: string, toRefresh: boolean) => {
     setSelectedNet(selected)
+    setRefresh(toRefresh)
     setOpen(true)
   }
 
-  const handleDeleteNetwork = () => {
+  const handleAccept = () => {
+    if (refresh) {
+      handlePubKeyRefresh(selectedNet)
+    } else {
+      handleDeleteNetwork(selectedNet)
+    }
+  }
+
+  const handleDeleteNetwork = (network: string) => {
     dispatch(
       deleteNetwork.request({
         netid: selectedNet,
@@ -73,10 +82,10 @@ export const NetworkTable: React.FC = () => {
     )
   }
 
-  const handlePubKeyRefresh = (network: Network) => {
+  const handlePubKeyRefresh = (network: string) => {
     dispatch(
       refreshPublicKeys.request({
-        netid: network.netid,
+        netid: network,
       })
     )
   }
@@ -85,7 +94,7 @@ export const NetworkTable: React.FC = () => {
     <>
       <NmTable
         columns={columns}
-        rows={listOfNetworks}
+        rows={networks}
         getRowId={(row) => row.netid}
         actions={[
           (row) => ({
@@ -93,7 +102,7 @@ export const NetworkTable: React.FC = () => {
             disabled: false,
             icon: <Autorenew />,
             onClick: () => {
-              handlePubKeyRefresh(row)
+              handleOpen(row.netid, true)
             },
           }),
           (row) => ({
@@ -101,7 +110,7 @@ export const NetworkTable: React.FC = () => {
             disabled: false,
             icon: <Delete />,
             onClick: () => {
-              handleOpen(row.netid)
+              handleOpen(row.netid, false)
             },
           }),
         ]}
@@ -110,9 +119,9 @@ export const NetworkTable: React.FC = () => {
         <CustomDialog
           open={open}
           handleClose={handleClose}
-          handleAccept={handleDeleteNetwork}
-          message={t('network.deleteconfirm')}
-          title={`${t('common.delete')} ${selectedNet}`}
+          handleAccept={handleAccept}
+          message={refresh ? t('network.refreshconfirm') : t('network.deleteconfirm')}
+          title={`${refresh ? t('network.refresh') : t('common.delete')} ${selectedNet}`}
         />
       )}
     </>

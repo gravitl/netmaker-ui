@@ -63,6 +63,7 @@ export interface LanguageResource {
     copy: string
     selectall: string
     count: string
+    search: string
   }
   dashboard: {
     title: string
@@ -150,6 +151,7 @@ export interface LanguageResource {
     deleteconfirm: string
     refresh: string
     details: string
+    refreshconfirm: string
   }
   node: {
     nodes: string

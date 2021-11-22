@@ -1,6 +1,5 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { nodeSelectors } from '~store/selectors'
 import { NmLink } from '~components/index'
 import { useTranslation } from 'react-i18next'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
@@ -110,9 +109,8 @@ const columns: TableColumns<Node> = [
   },
 ]
 
-export const NodeTable: React.FC = () => {
+export const NodeTable: React.FC<{nodes: Node[]}> = ({nodes}) => {
   const { t } = useTranslation()
-  const listOfNodes = useSelector(nodeSelectors.getNodes)
   const dispatch = useDispatch()
   const token = useSelector(authSelectors.getToken)
 
@@ -130,6 +128,6 @@ export const NodeTable: React.FC = () => {
   }, [dispatch, token])
 
   return (
-    <NmTable columns={columns} rows={listOfNodes} getRowId={(row) => row.id} />
+    <NmTable columns={columns} rows={nodes} getRowId={(row) => row.id} />
   )
 }

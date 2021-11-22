@@ -65,6 +65,7 @@ export const en: LanguageResource = {
     copy: 'Copy',
     selectall: 'Select All',
     count: 'Count',
+    search: 'Search',
   },
   dashboard: {
     title: 'Netmaker Dashboard',
@@ -147,6 +148,7 @@ export const en: LanguageResource = {
     deleteconfirm: 'Are you sure you want to delete this network?',
     refresh: 'Refresh public keys',
     details: 'Network Details',
+    refreshconfirm: 'Are you sure you want to reset the public & private key pairs of all nodes on the network?'
   },
   helper: {
     egress: 'Enter your network interface name, i.e. "eth0"',
