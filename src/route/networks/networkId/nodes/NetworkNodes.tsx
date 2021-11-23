@@ -7,9 +7,9 @@ import { useRouteMatch, useParams, Route, Switch } from 'react-router-dom'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 import { useNodesByNetworkId } from '~util/network'
 import { NodeId } from './nodeId/NodeId'
-import { Chip, Grid, IconButton, Tooltip, Typography } from '@mui/material'
+import { Chip, Grid, IconButton, InputAdornment, TextField, Tooltip, Typography } from '@mui/material'
 import { encode64 } from '~util/fields'
-import { AltRoute, CallMerge, CallSplit, Sync } from '@mui/icons-material'
+import { AltRoute, CallMerge, CallSplit, Search, Sync } from '@mui/icons-material'
 import { i18n } from '../../../../i18n/i18n'
 import { CreateEgress } from './components/CreateEgress'
 import { TableToggleButton } from './components/TableToggleButton'
@@ -119,7 +119,8 @@ export const NetworkNodes: React.FC = () => {
   const { t } = useTranslation()
   const token = useSelector(authSelectors.getToken)
   const { networkId } = useParams<{ networkId: string }>()
-  const listOfNodes = useNodesByNetworkId(networkId)
+  const listOfNodes = useNodesByNetworkId(networkId) || []
+  const [ filterNodes, setFilterNodes ] = React.useState(listOfNodes)
   const dispatch = useDispatch()
 
   useLinkBreadcrumb({
@@ -146,6 +147,15 @@ export const NetworkNodes: React.FC = () => {
     return <div>Not Found</div>
   }
 
+  const handleFilter = (event: {target: {value: string}}) => {
+    const { value } = event.target
+    if (!!!value.trim()) {
+      setFilterNodes(listOfNodes)
+    } else {
+      setFilterNodes(listOfNodes.filter(node => node.name.includes(event.target.value)))
+    }
+  }
+
   return (
     <Switch>
       <Route exact path={path}>
@@ -164,10 +174,23 @@ export const NetworkNodes: React.FC = () => {
               </Grid>
               <Grid item xs={6}>
                 <Grid container justifyContent="center" alignItems="center">
-                  <Grid item xs={8}>
-                    <NetworkSelect base="networks" extension="nodes" />
+                  <Grid item xs={4}>
+                  <TextField
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position='start'>
+                          <Search />
+                        </InputAdornment>
+                      ),
+                    }}
+                    label={`${t('common.search')} ${t('node.nodes')}`} 
+                    onChange={handleFilter} 
+                  />
                   </Grid>
-                  <Grid item xs={3}>
+                  <Grid item xs={7}>
+                    <NetworkSelect base="networks" extension="nodes" selectAll />
+                  </Grid>
+                  <Grid item xs={1}>
                     <Tooltip title={t('node.sync') as string} placement="top">
                       <IconButton color="primary" onClick={syncNodes}>
                         <Sync />
@@ -181,7 +204,7 @@ export const NetworkNodes: React.FC = () => {
         </Grid>
         <NmTable
           columns={columns}
-          rows={listOfNodes}
+          rows={filterNodes.length ? filterNodes : listOfNodes}
           getRowId={(row) => row.id}
         />
       </Route>

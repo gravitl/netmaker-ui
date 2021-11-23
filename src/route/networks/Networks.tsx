@@ -1,4 +1,4 @@
-import { Container, Grid } from '@mui/material'
+import { Container, Grid, InputAdornment, TextField } from '@mui/material'
 import React from 'react'
 import { useRouteMatch, Switch, Route } from 'react-router-dom'
 import { NetworkCreate } from './create/NetworkCreate'
@@ -7,14 +7,28 @@ import { useTranslation } from 'react-i18next'
 import { NetworkTable } from './components/NetworkTable'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 import { NmLink } from '~components/index'
+import { useSelector } from 'react-redux'
+import { networkSelectors } from '~store/types'
+import { Search } from '@mui/icons-material'
 
 export const Networks: React.FC = () => {
   const { path } = useRouteMatch()
   const { t } = useTranslation()
+  const listOfNetworks = useSelector(networkSelectors.getNetworks)
+  const [ filterNetworks, setFilterNetworks ] = React.useState(listOfNetworks)
 
   useLinkBreadcrumb({
     title: t('breadcrumbs.networks'),
   })
+
+  const handleFilter = (event: {target: {value: string}}) => {
+    const { value } = event.target
+    if (!!!value.trim()) {
+      setFilterNetworks(listOfNetworks)
+    } else {
+      setFilterNetworks(listOfNetworks.filter(network => network.netid.includes(event.target.value)))
+    }
+  }
 
   return (
     <Container>
@@ -26,16 +40,32 @@ export const Networks: React.FC = () => {
             justifyContent="space-between"
             alignItems="center"
           >
-            <Grid item>
+            <Grid item xs={5}>
               <h2>{t('network.networks')}</h2>
             </Grid>
-            <Grid item>
-              <NmLink variant="contained" to={{ pathname: '/networks/create' }}>
-                {t('network.create')}
-              </NmLink>
+            <Grid item xs={5}>
+              <Grid container justifyContent='space-around' alignItems='center'>
+                <Grid item xs={5}>
+                  <TextField 
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position='start'>
+                          <Search />
+                        </InputAdornment>
+                      ),
+                    }}
+                    label={`${t('common.search')} ${t('network.networks')}`} 
+                    onChange={handleFilter} />
+                </Grid>
+                <Grid item xs={5}>
+                  <NmLink variant="contained" to={{ pathname: '/networks/create' }}>
+                    {t('network.create')}
+                  </NmLink>
+                </Grid>
+              </Grid>
             </Grid>
           </Grid>
-          <NetworkTable />
+          <NetworkTable networks={filterNetworks.length ? filterNetworks : listOfNetworks}/>
         </Route>
         <Route path={`${path}/create`}>
           <NetworkCreate />
