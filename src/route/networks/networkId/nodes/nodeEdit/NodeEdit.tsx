@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import { Grid, Typography } from '@mui/material'
+import { Grid, TextField, Typography } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import { useRouteMatch, useParams } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
@@ -10,6 +10,10 @@ import { decode64, getCommaSeparatedArray } from '~util/fields'
 import { useNodeById } from '~util/node'
 import { Node } from '~store/modules/node/types'
 import { datePickerConverter } from '~util/unixTime'
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import DateTimePicker from '@mui/lab/DateTimePicker';
+
 
 export const NodeEdit: React.FC<{
   onCancel: () => void
@@ -26,6 +30,8 @@ export const NodeEdit: React.FC<{
     link: url,
     title: decodeURIComponent(t('common.edit')),
   })
+
+  const [expTime, setExpTime] = React.useState(0)
 
   const rowMargin = {
     margin: '1em 0 1em 0',
@@ -54,6 +60,9 @@ export const NodeEdit: React.FC<{
           node.allowedips = newAllowedIps
         }
       }
+      if (expTime && expTime !== data.expdatetime) {
+        node.expdatetime = expTime
+      }
 
       dispatch(
         updateNode.request({
@@ -63,7 +72,7 @@ export const NodeEdit: React.FC<{
         })
       )
     },
-    [dispatch, networkId]
+    [dispatch, networkId, expTime]
   )
 
   if (!node) {
@@ -180,16 +189,25 @@ export const NodeEdit: React.FC<{
           />
         </Grid>
         <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-          <NmFormInputText
-            defaultValue={datePickerConverter(node.expdatetime)}
-            label={t('node.expdatetime')}
-            name={'expdatetime'}
-          />
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <DateTimePicker
+              renderInput={(props) => 
+                <TextField fullWidth={false} sx={{maxWidth: '15rem'}} {...props} />
+              }
+              label={t('node.expdatetime')}
+              value={expTime ? datePickerConverter(expTime) : datePickerConverter(node.expdatetime)}
+              onChange={(newValue: string | null) => {
+                if (!!newValue) {
+                  setExpTime(new Date(newValue).getTime() / 1000);
+                }
+              }}
+            />
+          </LocalizationProvider>
         </Grid>
         <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-          <NmFormInputText
+          <TextField
             disabled
-            defaultValue={datePickerConverter(node.lastcheckin)}
+            value={datePickerConverter(node.lastcheckin)}
             label={t('node.lastcheckin')}
             name={'lastcheckin'}
           />
