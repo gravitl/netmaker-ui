@@ -23,10 +23,11 @@ export const Networks: React.FC = () => {
 
   const handleFilter = (event: {target: {value: string}}) => {
     const { value } = event.target
-    if (!!!value.trim()) {
+    const searchTerm = value.trim()
+    if (!!!searchTerm) {
       setFilterNetworks(listOfNetworks)
     } else {
-      setFilterNetworks(listOfNetworks.filter(network => network.netid.includes(event.target.value)))
+      setFilterNetworks(listOfNetworks.filter(network => `${network.netid}${network.displayname}${network.addressrange}`.includes(searchTerm)))
     }
   }
 
