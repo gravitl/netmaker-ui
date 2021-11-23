@@ -25,10 +25,11 @@ export const Nodes: React.FC = () => {
 
   const handleFilter = (event: {target: {value: string}}) => {
     const { value } = event.target
-    if (!!!value.trim()) {
+    const searchTerm = value.trim()
+    if (!!!searchTerm) {
       setFilterNodes(listOfNodes)
     } else {
-      setFilterNodes(listOfNodes.filter(node => node.name.includes(event.target.value)))
+      setFilterNodes(listOfNodes.filter(node => `${node.name}${node.address}${node.network}`.includes(searchTerm)))
     }
   }
 
