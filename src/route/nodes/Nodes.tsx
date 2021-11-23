@@ -69,7 +69,7 @@ export const Nodes: React.FC = () => {
               </Grid>
             </Grid>
           </Grid>
-          <NodeTable nodes={filterNodes.length ? filterNodes : listOfNodes}/>
+          <NodeTable nodes={filterNodes.length && filterNodes.length < listOfNodes.length ? filterNodes : listOfNodes}/>
         </Route>
       </Switch>
     </Container>

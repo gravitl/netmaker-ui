@@ -66,7 +66,7 @@ export const Networks: React.FC = () => {
               </Grid>
             </Grid>
           </Grid>
-          <NetworkTable networks={filterNetworks.length ? filterNetworks : listOfNetworks}/>
+          <NetworkTable networks={filterNetworks.length && filterNetworks.length < listOfNetworks.length ? filterNetworks : listOfNetworks}/>
         </Route>
         <Route path={`${path}/create`}>
           <NetworkCreate />

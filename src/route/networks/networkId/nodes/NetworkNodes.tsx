@@ -205,7 +205,7 @@ export const NetworkNodes: React.FC = () => {
         </Grid>
         <NmTable
           columns={columns}
-          rows={filterNodes.length ? filterNodes : listOfNodes}
+          rows={filterNodes.length && filterNodes.length < listOfNodes.length ? filterNodes : listOfNodes}
           getRowId={(row) => row.id}
         />
       </Route>
