@@ -1,6 +1,6 @@
 import { Container, Grid, Typography } from '@mui/material'
 import React from 'react'
-import { useRouteMatch, Switch, Route, Redirect } from 'react-router-dom'
+import { useRouteMatch, Switch, Route } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 import { NetworkSelect } from '~components/NetworkSelect'
