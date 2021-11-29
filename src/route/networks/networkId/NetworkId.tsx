@@ -22,7 +22,6 @@ import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 import { deleteNetwork } from '~modules/network/actions'
 import { NetworkEdit } from './edit/NetworkEdit'
 import { AccessKeys } from './accesskeys/AccessKeys'
-import { NetworkNodes } from './nodes/NetworkNodes'
 import { useNetwork } from '~util/network'
 
 export const NetworkId: React.FC = () => {
@@ -73,9 +72,6 @@ export const NetworkId: React.FC = () => {
       <Switch>
         <Route path={`${path}/accesskeys`}>
           <AccessKeys />
-        </Route>
-        <Route path={`${path}/nodes`}>
-          <NetworkNodes />
         </Route>
         <Route path={`${path}/edit`}>
           {/* <NetworkModifiedStats netid={netid} /> */}

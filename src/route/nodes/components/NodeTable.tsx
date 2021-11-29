@@ -7,7 +7,7 @@ import { Node } from '~modules/node'
 import { NmTable, TableColumns } from '~components/Table'
 import { Chip } from '@mui/material'
 import { encode64 } from '~util/fields'
-import { TableToggleButton } from '../../networks/networkId/nodes/components/TableToggleButton'
+import { TableToggleButton } from '../netid/components/TableToggleButton'
 import { AltRoute, CallMerge, CallSplit, Delete } from '@mui/icons-material'
 import { i18n } from '../../../i18n/i18n'
 import { deleteNode } from '~store/modules/node/actions'
@@ -21,7 +21,7 @@ const columns: TableColumns<Node> = [
     sortable: true,
     format: (value, node) => (
       <NmLink
-        to={`/networks/${node.network}/nodes/${encodeURIComponent(
+        to={`/nodes/${node.network}/${encodeURIComponent(
           encode64(node.id)
         )}`}
       >
