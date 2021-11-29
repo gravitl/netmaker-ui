@@ -14,20 +14,25 @@ import LocalizationProvider from '@mui/lab/LocalizationProvider'
 
 import Routes from './route/root'
 import { PathBreadcrumbsProvider } from './components/PathBreadcrumbs'
+import { getNodes } from '~store/modules/node/actions'
 
 function App() {
 
   const dispatch = useDispatch()
   const user = useSelector(authSelectors.getUser)
+  const token = useSelector(authSelectors.getToken)
+  const isLoggedIn = useSelector(authSelectors.getLoggedIn)
 
   React.useEffect(() => {
     const interval = setInterval(() => {
-      if (!!user && Date.now() / 1000 > user.exp && !window.location.href.includes('/login')) {
+      if (!isLoggedIn || (!!user && Date.now() / 1000 > user.exp && !window.location.href.includes('/login'))) {
         dispatch(logout())
+      } else if (isLoggedIn && token) {
+        dispatch(getNodes.request({ token }))
       }
     }, 5000)
     return () => clearInterval(interval)
-  }, [dispatch, user])
+  }, [dispatch, user, isLoggedIn, token])
 
   const theme = useCurrentTheme()
 
