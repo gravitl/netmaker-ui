@@ -55,12 +55,12 @@ const styles = {
 export function CreateRelay() {
   const history = useHistory()
   const { t } = useTranslation()
-  const { networkId, nodeId } =
-    useParams<{ networkId: string; nodeId: string }>()
+  const { netid, nodeId } =
+    useParams<{ netid: string; nodeId: string }>()
   const { url } = useRouteMatch()
   const node = useNodeById(decode64(nodeId))
   const dispatch = useDispatch()
-  const nodes = useNodesByNetworkId(networkId)
+  const nodes = useNodesByNetworkId(netid)
   const nodeMac = node?.macaddress as string
   const nodeNames = []
 
@@ -85,7 +85,7 @@ export function CreateRelay() {
       }
       dispatch(
         createRelayNode.request({
-          netid: networkId,
+          netid: netid,
           nodeid: nodeId,
           nodemac: nodeMac,
           payload: {
@@ -95,7 +95,7 @@ export function CreateRelay() {
       )
       history.goBack()
     },
-    [dispatch, networkId, nodeMac, nodeId, history]
+    [dispatch, netid, nodeMac, nodeId, history]
   )
 
   if (!node || !nodes) {

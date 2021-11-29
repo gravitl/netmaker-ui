@@ -114,7 +114,7 @@ export const ExtClientView: React.FC = () => {
         alignItems="flex-start"
       >
         <Grid item xs={12} sx={{ margin: '0.5em 0em 1em 0em' }}>
-          <NetworkSelect base="ext-clients" />
+          <NetworkSelect />
         </Grid>
         <Grid item xs={12} sx={{ margin: '0.5em 0em 1em 0em' }}>
           <div style={centerText as any}>
@@ -135,7 +135,7 @@ export const ExtClientView: React.FC = () => {
           alignItems="flex-start"
         >
           <Grid item xs={12} sx={{ margin: '0.5em 0em 1em 0em' }}>
-            <NetworkSelect base="ext-clients" />
+            <NetworkSelect />
           </Grid>
           <Grid
             item

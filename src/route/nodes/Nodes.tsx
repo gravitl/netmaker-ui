@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next'
 import { NodeTable } from './components/NodeTable'
 import { NetworkSelect } from '../../components/NetworkSelect'
 import { Search, Sync } from '@mui/icons-material'
+import { NetworkNodes } from './netid/NetworkNodes'
 
 export const Nodes: React.FC = () => {
   const { path } = useRouteMatch()
@@ -57,7 +58,7 @@ export const Nodes: React.FC = () => {
                   />
                 </Grid>
                 <Grid item xs={7}>
-                  <NetworkSelect base="networks" extension="nodes" />
+                  <NetworkSelect />
                 </Grid>
                 <Grid item xs={1}>
                   <Tooltip title={t('node.sync') as string} placement="top">
@@ -70,6 +71,10 @@ export const Nodes: React.FC = () => {
             </Grid>
           </Grid>
           <NodeTable nodes={filterNodes.length && filterNodes.length < listOfNodes.length ? filterNodes : listOfNodes}/>
+        </Route>
+
+        <Route path={`${path}/:netid`}>
+          <NetworkNodes />
         </Route>
       </Switch>
     </Container>

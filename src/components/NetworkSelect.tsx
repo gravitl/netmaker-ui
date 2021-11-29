@@ -1,32 +1,20 @@
 import React from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { useHistory } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import { useHistory, useParams } from 'react-router-dom'
 import { networkSelectors } from '../store/selectors'
 import { useTranslation } from 'react-i18next'
 import CustomSelect from '~components/select/CustomSelect'
-import { setCurrentNetwork } from '~store/modules/network/actions'
 
 export const NetworkSelect: React.FC<{
-  base: 'networks' | 'ext-clients' | 'access-keys' | 'dns'
-  extension?: string
   selectAll? : boolean
-}> = ({ base, extension, selectAll }) => {
-  const dispatch = useDispatch()
-  const listOfNetworks = useSelector(networkSelectors.getNetworks)
-  const networkNames = []
-  if (listOfNetworks) {
-    for (let i = 0; i < listOfNetworks.length; i++) {
-      networkNames.push(listOfNetworks[i].netid)
-    }
-  }
+}> = ({ selectAll }) => {
+  const networkNames = useSelector(networkSelectors.getNetworks).map(n => n.netid)
   const { t } = useTranslation()
   const history = useHistory()
-  if (selectAll) {
-    networkNames.push(t('common.selectall'))
-  }
+  const { netid } = useParams<{netid?: string}>()
 
-  const handleCurrentNetChange = (newCurrentNetid : string) => {
-    dispatch(setCurrentNetwork(newCurrentNetid))
+  if (selectAll && !!netid) {
+    networkNames.push(t('common.selectall'))
   }
 
   return (
@@ -34,14 +22,13 @@ export const NetworkSelect: React.FC<{
       <CustomSelect
         placeholder={`${t('common.select')} ${t('network.network')}`}
         onSelect={(selected) => {
-          if (selectAll && selected === t('common.selectall')) {
-            handleCurrentNetChange(selected)
-            history.push('/nodes')
-          } else {
-            handleCurrentNetChange(selected)
-            history.push(
-              `/${base}/${selected}${extension ? `/${extension}` : ''}`
-            )
+          const netIndex = history.location.pathname.indexOf(netid!)
+          if(netid === undefined) {
+            history.push(`${history.location.pathname}/${selected}`)
+          } else if (selectAll && selected === t('common.selectall')) {
+            history.push(history.location.pathname.substr(0, netIndex - 1))
+          } else if(netid !== undefined) {
+            history.push(history.location.pathname.replace(netid!, selected))
           }
         }}
         items={networkNames}

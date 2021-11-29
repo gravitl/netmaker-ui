@@ -10,11 +10,11 @@ import { NodeId } from './nodeId/NodeId'
 import { Chip, Grid, IconButton, InputAdornment, TextField, Tooltip, Typography } from '@mui/material'
 import { encode64 } from '~util/fields'
 import { AltRoute, CallMerge, CallSplit, Delete, Search, Sync } from '@mui/icons-material'
-import { i18n } from '../../../../i18n/i18n'
+import { i18n } from '../../../i18n/i18n'
 import { CreateEgress } from './components/CreateEgress'
 import { TableToggleButton } from './components/TableToggleButton'
 import { CreateRelay } from './components/CreateRelay'
-import { NetworkSelect } from '../../../../components/NetworkSelect'
+import { NetworkSelect } from '../../../components/NetworkSelect'
 import { useDispatch, useSelector } from 'react-redux'
 import { authSelectors } from '~store/selectors'
 import { deleteNode, getNodes } from '~store/modules/node/actions'
@@ -28,7 +28,7 @@ const columns: TableColumns<Node> = [
     sortable: true,
     format: (value, node) => (
       <NmLink
-        to={`/networks/${node.network}/nodes/${encodeURIComponent(
+        to={`/nodes/${node.network}/${encodeURIComponent(
           encode64(node.id)
         )}`}
       >
@@ -119,8 +119,8 @@ export const NetworkNodes: React.FC = () => {
   const { path, url } = useRouteMatch()
   const { t } = useTranslation()
   const token = useSelector(authSelectors.getToken)
-  const { networkId } = useParams<{ networkId: string }>()
-  const listOfNodes = useNodesByNetworkId(networkId) || []
+  const { netid } = useParams<{ netid: string }>()
+  const listOfNodes = useNodesByNetworkId(netid) || []
   const [ filterNodes, setFilterNodes ] = React.useState(listOfNodes)
   const [selected, setSelected] = React.useState({} as Node)
   const dispatch = useDispatch()
@@ -183,7 +183,7 @@ export const NetworkNodes: React.FC = () => {
             <Grid container justifyContent="space-between" alignItems="center">
               <Grid item xs={4}>
                 <Typography variant="h4">
-                  {`${networkId} ${t('node.nodes')}`}
+                  {`${netid} ${t('node.nodes')}`}
                 </Typography>
               </Grid>
               <Grid item xs={6}>
@@ -202,7 +202,7 @@ export const NetworkNodes: React.FC = () => {
                   />
                   </Grid>
                   <Grid item xs={7}>
-                    <NetworkSelect base="networks" extension="nodes" selectAll />
+                    <NetworkSelect selectAll />
                   </Grid>
                   <Grid item xs={1}>
                     <Tooltip title={t('node.sync') as string} placement="top">
