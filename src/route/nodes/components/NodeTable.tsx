@@ -1,5 +1,4 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
 import { NmLink } from '~components/index'
 import { useTranslation } from 'react-i18next'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
@@ -9,10 +8,10 @@ import { NmTable, TableColumns } from '~components/Table'
 import { Chip } from '@mui/material'
 import { encode64 } from '~util/fields'
 import { TableToggleButton } from '../../networks/networkId/nodes/components/TableToggleButton'
-import { AltRoute, CallMerge, CallSplit } from '@mui/icons-material'
+import { AltRoute, CallMerge, CallSplit, Delete } from '@mui/icons-material'
 import { i18n } from '../../../i18n/i18n'
-import { getNodes } from '~store/modules/node/actions'
-import { authSelectors } from '~store/selectors'
+import { deleteNode } from '~store/modules/node/actions'
+import CustomizedDialogs from '~components/dialog/CustomDialog'
 
 const columns: TableColumns<Node> = [
   {
@@ -96,8 +95,8 @@ const columns: TableColumns<Node> = [
   {
     id: 'lastcheckin',
     labelKey: 'node.status',
-    minWidth: 170,
-    align: 'right',
+    minWidth: 130,
+    align: 'center',
     format: (lastcheckin) => {
       const time = Date.now() / 1000
       if (time - lastcheckin >= 1800)
@@ -112,22 +111,55 @@ const columns: TableColumns<Node> = [
 export const NodeTable: React.FC<{nodes: Node[]}> = ({nodes}) => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
-  const token = useSelector(authSelectors.getToken)
+  const [selected, setSelected] = React.useState({} as Node)
 
   useLinkBreadcrumb({
     title: t('breadcrumbs.nodes'),
   })
 
-  React.useEffect(() => {
-    const interval = setInterval(() => {
-      if (token) {
-        dispatch(getNodes.request({ token }))
-      }
-    }, 5000)
-    return () => clearInterval(interval)
-  }, [dispatch, token])
+  const handleClose = () => {
+    setSelected({} as Node)
+  }
+
+  const handleOpen = (node: Node) => {
+    setSelected(node)
+  }
+
+  const handleDeleteNode = () => {
+    if (!!selected.name) {
+      dispatch(
+        deleteNode.request({
+          netid: selected.network,
+          nodeid: selected.id,
+        })
+      )
+      handleClose()
+    }
+  }
 
   return (
-    <NmTable columns={columns} rows={nodes} getRowId={(row) => row.id} />
+    <div>
+    <NmTable 
+      columns={columns} 
+      rows={nodes} 
+      getRowId={(row) => row.id} 
+      actions={[(row) => ({
+        tooltip: t('common.delete'),
+        disabled: false,
+        icon: <Delete />,
+        onClick: () => {
+          handleOpen(row)
+        },
+      }),
+      ]}
+    />
+    <CustomizedDialogs
+      open={!!selected.name}
+      handleClose={handleClose}
+      handleAccept={handleDeleteNode}
+      message={t('node.deleteconfirm')}
+      title={`${t('common.delete')} ${selected.name}`}
+    />
+    </div>
   )
 }

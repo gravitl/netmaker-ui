@@ -9,7 +9,7 @@ import { useNodesByNetworkId } from '~util/network'
 import { NodeId } from './nodeId/NodeId'
 import { Chip, Grid, IconButton, InputAdornment, TextField, Tooltip, Typography } from '@mui/material'
 import { encode64 } from '~util/fields'
-import { AltRoute, CallMerge, CallSplit, Search, Sync } from '@mui/icons-material'
+import { AltRoute, CallMerge, CallSplit, Delete, Search, Sync } from '@mui/icons-material'
 import { i18n } from '../../../../i18n/i18n'
 import { CreateEgress } from './components/CreateEgress'
 import { TableToggleButton } from './components/TableToggleButton'
@@ -17,7 +17,8 @@ import { CreateRelay } from './components/CreateRelay'
 import { NetworkSelect } from '../../../../components/NetworkSelect'
 import { useDispatch, useSelector } from 'react-redux'
 import { authSelectors } from '~store/selectors'
-import { getNodes } from '~store/modules/node/actions'
+import { deleteNode, getNodes } from '~store/modules/node/actions'
+import CustomizedDialogs from '~components/dialog/CustomDialog'
 
 const columns: TableColumns<Node> = [
   {
@@ -121,6 +122,7 @@ export const NetworkNodes: React.FC = () => {
   const { networkId } = useParams<{ networkId: string }>()
   const listOfNodes = useNodesByNetworkId(networkId) || []
   const [ filterNodes, setFilterNodes ] = React.useState(listOfNodes)
+  const [selected, setSelected] = React.useState({} as Node)
   const dispatch = useDispatch()
 
   useLinkBreadcrumb({
@@ -134,15 +136,6 @@ export const NetworkNodes: React.FC = () => {
     }
   }
 
-  React.useEffect(() => {
-    const interval = setInterval(() => {
-      if (token) {
-        dispatch(getNodes.request({ token }))
-      }
-    }, 5000)
-    return () => clearInterval(interval)
-  }, [dispatch, token])
-
   if (!listOfNodes) {
     return <div>Not Found</div>
   }
@@ -154,6 +147,26 @@ export const NetworkNodes: React.FC = () => {
       setFilterNodes(listOfNodes)
     } else {
       setFilterNodes(listOfNodes.filter(node => `${node.name}${node.address}${node.network}`.includes(searchTerm)))
+    }
+  }
+
+  const handleClose = () => {
+    setSelected({} as Node)
+  }
+
+  const handleOpen = (node: Node) => {
+    setSelected(node)
+  }
+
+  const handleDeleteNode = () => {
+    if (!!selected.name) {
+      dispatch(
+        deleteNode.request({
+          netid: selected.network,
+          nodeid: selected.id,
+        })
+      )
+      handleClose()
     }
   }
 
@@ -206,7 +219,23 @@ export const NetworkNodes: React.FC = () => {
         <NmTable
           columns={columns}
           rows={filterNodes.length && filterNodes.length < listOfNodes.length ? filterNodes : listOfNodes}
+          actions={[(row) => ({
+            tooltip: t('common.delete'),
+            disabled: false,
+            icon: <Delete />,
+            onClick: () => {
+              handleOpen(row)
+            },
+          }),
+          ]}
           getRowId={(row) => row.id}
+        />
+        <CustomizedDialogs
+          open={!!selected.name}
+          handleClose={handleClose}
+          handleAccept={handleDeleteNode}
+          message={t('node.deleteconfirm')}
+          title={`${t('common.delete')} ${selected.name}`}
         />
       </Route>
       <Route

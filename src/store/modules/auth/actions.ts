@@ -14,6 +14,8 @@ import {
 
 export const setUser = createAction('setUser')<User>()
 
+export const setAuthError = createAction('setAuthError')<boolean>()
+
 export const logout = createAction('logout')<void>()
 
 export const getAllUsers = createAsyncAction(

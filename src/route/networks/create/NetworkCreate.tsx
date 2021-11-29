@@ -12,6 +12,7 @@ import {
 import { useLinkBreadcrumb } from '../../../components/PathBreadcrumbs'
 import { createNetwork } from '../../../store/modules/network/actions'
 import { randomNetworkName, randomCIDR } from '~util/fields'
+import { useHistory } from 'react-router'
 
 interface CreateNetwork {
   addressrange: string
@@ -48,6 +49,7 @@ const useStyles = makeStyles(() =>
 export const NetworkCreate: React.FC = () => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
+  const history = useHistory()
   const classes = useStyles()
   const [ viewLocal, setViewLocal ] = React.useState(false)
   const [ viewDual, setViewDual ] = React.useState(false)
@@ -62,8 +64,9 @@ export const NetworkCreate: React.FC = () => {
           defaultudpholepunch: data.defaultudpholepunch ? 'yes' : 'no',
         })
       )
+      history.goBack()
     },
-    [dispatch]
+    [dispatch, history]
   )
 
   const formRef = React.createRef<FormRef<CreateNetwork>>()
