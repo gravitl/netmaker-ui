@@ -119,8 +119,8 @@ export const NetworkNodes: React.FC = () => {
   const { path, url } = useRouteMatch()
   const { t } = useTranslation()
   const token = useSelector(authSelectors.getToken)
-  const { networkId } = useParams<{ networkId: string }>()
-  const listOfNodes = useNodesByNetworkId(networkId) || []
+  const { netid } = useParams<{ netid: string }>()
+  const listOfNodes = useNodesByNetworkId(netid) || []
   const [ filterNodes, setFilterNodes ] = React.useState(listOfNodes)
   const [selected, setSelected] = React.useState({} as Node)
   const dispatch = useDispatch()
@@ -183,7 +183,7 @@ export const NetworkNodes: React.FC = () => {
             <Grid container justifyContent="space-between" alignItems="center">
               <Grid item xs={4}>
                 <Typography variant="h4">
-                  {`${networkId} ${t('node.nodes')}`}
+                  {`${netid} ${t('node.nodes')}`}
                 </Typography>
               </Grid>
               <Grid item xs={6}>

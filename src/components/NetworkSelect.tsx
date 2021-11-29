@@ -26,7 +26,7 @@ export const NetworkSelect: React.FC<{
           if(netid === undefined) {
             history.push(`${history.location.pathname}/${selected}`)
           } else if (selectAll && selected === t('common.selectall')) {
-            history.push(history.location.pathname.substr(0, netIndex))
+            history.push(history.location.pathname.substr(0, netIndex - 1))
           } else if(netid !== undefined) {
             history.push(history.location.pathname.replace(netid!, selected))
           }

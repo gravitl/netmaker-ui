@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next'
 import { NodeTable } from './components/NodeTable'
 import { NetworkSelect } from '../../components/NetworkSelect'
 import { Search, Sync } from '@mui/icons-material'
+import { NetworkNodes } from '../networks/networkId/nodes/NetworkNodes'
 
 export const Nodes: React.FC = () => {
   const { path } = useRouteMatch()
@@ -70,6 +71,10 @@ export const Nodes: React.FC = () => {
             </Grid>
           </Grid>
           <NodeTable nodes={filterNodes.length && filterNodes.length < listOfNodes.length ? filterNodes : listOfNodes}/>
+        </Route>
+
+        <Route path={`${path}/:netid`}>
+          <NetworkNodes />
         </Route>
       </Switch>
     </Container>

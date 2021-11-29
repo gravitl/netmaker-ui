@@ -72,8 +72,8 @@ export const AccessKeys: React.FC = () => {
 
   const classes = useStyles()
 
-  const { networkId } = useParams<{ networkId: string }>()
-  const network = useNetwork(networkId)
+  const { netid } = useParams<{ netid: string }>()
+  const network = useNetwork(netid)
 
   useLinkBreadcrumb({
     link: url,

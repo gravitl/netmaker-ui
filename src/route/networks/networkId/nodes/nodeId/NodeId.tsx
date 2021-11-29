@@ -31,8 +31,8 @@ export const NodeId: React.FC = () => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
 
-  const { networkId, nodeId } =
-    useParams<{ nodeId: string; networkId: string }>()
+  const { netid, nodeId } =
+    useParams<{ nodeId: string; netid: string }>()
   const node = useNodeById(decode64(decodeURIComponent(nodeId)))
   const [open, setOpen] = React.useState(false)
 
@@ -61,7 +61,7 @@ export const NodeId: React.FC = () => {
       })
     )
     history.push(
-      `/${t('breadcrumbs.networks')}/${networkId}/${t('breadcrumbs.nodes')}`
+      `/${t('breadcrumbs.networks')}/${netid}/${t('breadcrumbs.nodes')}`
     )
   }
 
@@ -77,7 +77,7 @@ export const NodeId: React.FC = () => {
           onCancel={() => {
             history.push(
               url
-                .replace(':networkId', node.network)
+                .replace(':netid', node.network)
                 .replace(':nodeId', node.id)
                 .replace('/edit', '')
             )

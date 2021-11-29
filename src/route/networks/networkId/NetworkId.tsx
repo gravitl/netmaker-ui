@@ -30,12 +30,12 @@ export const NetworkId: React.FC = () => {
   const history = useHistory()
   const { t } = useTranslation()
 
-  const { networkId } = useParams<{ networkId: string }>()
-  const network = useNetwork(networkId)
+  const { netid } = useParams<{ netid: string }>()
+  const network = useNetwork(netid)
 
   useLinkBreadcrumb({
     link: url,
-    title: networkId,
+    title: netid,
   })
 
   const { Component, setProps } = useDialog()
@@ -78,12 +78,12 @@ export const NetworkId: React.FC = () => {
           <NetworkNodes />
         </Route>
         <Route path={`${path}/edit`}>
-          {/* <NetworkModifiedStats netid={networkId} /> */}
+          {/* <NetworkModifiedStats netid={netid} /> */}
           <NetworkEdit
             network={network}
             onCancel={() => {
               history.push(
-                url.replace(':networkId', network.netid).replace('/edit', '')
+                url.replace(':netid', network.netid).replace('/edit', '')
               )
             }}
           />
@@ -91,7 +91,7 @@ export const NetworkId: React.FC = () => {
         <Route exact path={path}>
           <div style={{ textAlign: 'center', margin: '1em 0 1em 0' }}>
             <Typography variant="h5" style={{overflowWrap: 'break-word'}}>
-              {`${t('network.details')} : ${networkId}`}
+              {`${t('network.details')} : ${netid}`}
             </Typography>
           </div>
           <Grid
@@ -105,10 +105,10 @@ export const NetworkId: React.FC = () => {
                 <NmLink to={`${url}/edit`} variant="outlined" fullWidth style={buttonStyle}>
                   {t('common.edit')}
                 </NmLink>
-                <NmLink to={`${url}/nodes`} variant="outlined" fullWidth style={buttonStyle}>
+                <NmLink to={`/nodes/${netid}`} variant="outlined" fullWidth style={buttonStyle}>
                   {`${t('node.nodes')}`}
                 </NmLink>
-                <NmLink to={`/access-keys/${networkId}`} variant="outlined" fullWidth style={buttonStyle}>
+                <NmLink to={`/access-keys/${netid}`} variant="outlined" fullWidth style={buttonStyle}>
                   {t('header.accessKeys')}
                 </NmLink>
                 <Button

@@ -71,7 +71,7 @@ export const Networks: React.FC = () => {
         <Route path={`${path}/create`}>
           <NetworkCreate />
         </Route>
-        <Route path={`${path}/:networkId`}>
+        <Route path={`${path}/:netid`}>
           <NetworkId />
         </Route>
       </Switch>

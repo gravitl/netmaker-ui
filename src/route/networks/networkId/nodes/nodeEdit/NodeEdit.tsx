@@ -22,7 +22,7 @@ export const NodeEdit: React.FC<{
   const { t } = useTranslation()
   const dispatch = useDispatch()
 
-  const { networkId } = useParams<{ networkId: string }>()
+  const { netid } = useParams<{ netid: string }>()
   const { nodeId } = useParams<{ nodeId: string }>()
   const node = useNodeById(decode64(decodeURIComponent(nodeId)))
 
@@ -67,12 +67,12 @@ export const NodeEdit: React.FC<{
       dispatch(
         updateNode.request({
           token: '',
-          netid: networkId,
+          netid: netid,
           node,
         })
       )
     },
-    [dispatch, networkId, expTime]
+    [dispatch, netid, expTime]
   )
 
   if (!node) {

@@ -75,8 +75,8 @@ function HelperText(props: { text: string; focusText: string }) {
 export function CreateEgress() {
   const history = useHistory()
   const { t } = useTranslation()
-  const { networkId, nodeId } =
-    useParams<{ networkId: string; nodeId: string }>()
+  const { netid, nodeId } =
+    useParams<{ netid: string; nodeId: string }>()
   const { url } = useRouteMatch()
   const node = useNodeById(decode64(nodeId))
   const dispatch = useDispatch()
@@ -105,7 +105,7 @@ export function CreateEgress() {
       }
       dispatch(
         createEgressNode.request({
-          netid: networkId,
+          netid: netid,
           nodeid: nodeMac,
           payload: {
             ranges: newRanges,
@@ -115,7 +115,7 @@ export function CreateEgress() {
       )
       history.goBack()
     },
-    [dispatch, networkId, nodeMac, history]
+    [dispatch, netid, nodeMac, history]
   )
 
   if (!node) {
