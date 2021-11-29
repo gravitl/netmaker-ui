@@ -28,7 +28,7 @@ const columns: TableColumns<Node> = [
     sortable: true,
     format: (value, node) => (
       <NmLink
-        to={`/networks/${node.network}/nodes/${encodeURIComponent(
+        to={`/nodes/${node.network}/${encodeURIComponent(
           encode64(node.id)
         )}`}
       >
