@@ -57,7 +57,7 @@ export const Nodes: React.FC = () => {
                   />
                 </Grid>
                 <Grid item xs={7}>
-                  <NetworkSelect base="networks" extension="nodes" />
+                  <NetworkSelect />
                 </Grid>
                 <Grid item xs={1}>
                   <Tooltip title={t('node.sync') as string} placement="top">

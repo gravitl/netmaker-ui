@@ -31,7 +31,7 @@ import { useTranslation } from 'react-i18next'
 import { ListItemButton } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useRouteMatch, Link } from 'react-router-dom'
-import { authSelectors, serverSelectors, /*networkSelectors*/ } from '../../store/selectors'
+import { authSelectors, serverSelectors } from '../../store/selectors'
 import { logout } from '../../store/modules/auth/actions'
 import { NmLink } from '../../components/Link'
 import { UI_VERSION } from '../../config'
@@ -184,13 +184,16 @@ export default function CustomDrawer() {
   const user = useSelector(authSelectors.getUser)
   const serverConfig = useSelector(serverSelectors.getServerConfig)
   const isLoggedIn = useSelector(authSelectors.getLoggedIn)
-  // const currentNetwork = useSelector(networkSelectors.getCurrentNetwork)
   const dispatch = useDispatch()
 
   const { t } = useTranslation()
   const theme = useTheme()
   const [open, setOpen] = React.useState(false)
   const [clickOpen, setClickOpen] = React.useState(false)
+
+  const location = useLocation()
+  const parts = location.pathname.split('/')
+  const netid = parts.length > 2 ? parts[2] : false
 
   const handleDrawerOpen = () => {
     setOpen(true)
@@ -256,10 +259,10 @@ export default function CustomDrawer() {
           {[
             { text: 'Dashboard', icon: <Dashboard />, link: '/' },
             { text: 'Networks', icon: <Wifi />, link: '/networks'},
-            { text: 'Nodes', icon: <DeviceHub />, link: '/nodes' },
-            { text: 'Access Keys', icon: <VpnKey />, link: '/access-keys' },
-            { text: 'Ext. Clients', icon: <Devices />, link: '/ext-clients' },
-            { text: 'DNS', icon: <Language />, link: '/dns' },
+            { text: 'Nodes', icon: <DeviceHub />, link: `/nodes${!!netid ? `/${netid}` : ''}` },
+            { text: 'Access Keys', icon: <VpnKey />, link: `/access-keys${!!netid ? `/${netid}` : ''}` },
+            { text: 'Ext. Clients', icon: <Devices />, link: `/ext-clients${!!netid ? `/${netid}` : ''}` },
+            { text: 'DNS', icon: <Language />, link: `/dns${!!netid ? `/${netid}` : ''}` },
           ].map((item) => (
             <ListItemButton component={Link} to={item.link} key={item.text}>
               <ListItemIcon>{item.icon}</ListItemIcon>

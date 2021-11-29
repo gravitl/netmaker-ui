@@ -7,13 +7,8 @@ import CustomSelect from '~components/select/CustomSelect'
 import { Grid } from '@mui/material'
 
 export const AccessKeySelect: React.FC = () => {
-  const listOfNetworks = useSelector(networkSelectors.getNetworks)
-  const networkNames = []
-  if (listOfNetworks) {
-    for (let i = 0; i < listOfNetworks.length; i++) {
-      networkNames.push(listOfNetworks[i].netid)
-    }
-  }
+  const networkNames = useSelector(networkSelectors.getNetworks).map(net => net.netid)
+  
   const { path } = useRouteMatch()
   const { t } = useTranslation()
   const history = useHistory()

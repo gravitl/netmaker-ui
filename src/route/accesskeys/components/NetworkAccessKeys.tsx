@@ -88,7 +88,7 @@ export const NetworkAccessKeys: React.FC = () => {
             </div>
           </Grid>
           <Grid item xs={5}>
-            <NetworkSelect base="access-keys" />
+            <NetworkSelect />
           </Grid>
         </Grid>
         <hr />

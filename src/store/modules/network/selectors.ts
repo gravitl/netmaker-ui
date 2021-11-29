@@ -20,8 +20,3 @@ export const getTempKey = createSelector(
   getNetwork,
   (network) => network.tempkey
 )
-
-export const getCurrentNetwork = createSelector(
-  getNetwork,
-  (network) => network.currentNetwork
-)

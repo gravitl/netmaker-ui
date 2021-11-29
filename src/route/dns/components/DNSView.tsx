@@ -97,7 +97,7 @@ export const DNSView: React.FC = () => {
       >
         <Grid item xs={12} sx={{ margin: '0.5em 0em 1em 0em' }}>
           {serverConfig.DNSMode &&
-            <NetworkSelect base="dns" />
+            <NetworkSelect />
           }
         </Grid>
         <Grid item xs={12} sx={{ margin: '0.5em 0em 1em 0em' }}>
@@ -137,7 +137,7 @@ export const DNSView: React.FC = () => {
         >
           <Grid item xs={12} sx={{ margin: '0.5em 0em 1em 0em' }}>
             {serverConfig.DNSMode &&
-              <NetworkSelect base="dns" />
+              <NetworkSelect />
             }
             {console.log(serverConfig.DNSMode)}
           </Grid>

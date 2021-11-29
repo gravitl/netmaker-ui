@@ -1,6 +1,6 @@
 import { Container, Grid, Typography } from '@mui/material'
 import React from 'react'
-import { useRouteMatch, Switch, Route } from 'react-router-dom'
+import { useRouteMatch, Switch, Route, Redirect } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 import { NetworkSelect } from '~components/NetworkSelect'
@@ -41,13 +41,19 @@ export const DNS: React.FC = () => {
             </Grid>
           </Grid>
           {hasDNS &&
-            <NetworkSelect base="dns" />
+            <NetworkSelect />
           }
         </Route>
         <Route path={`${path}/:netid/create`}>
+          {!hasDNS &&
+            <Redirect to={path} />
+          }
           <DNSEntryCreate />
         </Route>
         <Route path={`${path}/:netid`}>
+          {!hasDNS &&
+            <Redirect to={path} />
+          }
           <DNSView />
         </Route>
       </Switch>

@@ -18,7 +18,6 @@ import {
 
 export const clearTempKey = createAction('clearTempKey')<void>()
 export const setTempKey = createAction('setTempKey')<TempKey>()
-export const setCurrentNetwork = createAction('setCurrentNetwork')<string>()
 
 export const getNetworks = createAsyncAction(
   'network_getNetworks_Request',
