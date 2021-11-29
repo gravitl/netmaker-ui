@@ -95,7 +95,7 @@ export const en: LanguageResource = {
   error: {
     notfound: 'Not found',
     network: 'Could not reach server',
-    tokenexpire: 'Token has expired',
+    tokenexpire: 'Session has expired',
   },
   extclient: {
     extclients: 'External Clients',

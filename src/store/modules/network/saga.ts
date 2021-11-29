@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios'
-import { all, fork, put, select, takeEvery } from 'redux-saga/effects'
+import { all, fork, put, select, takeEvery, call } from 'redux-saga/effects'
 import { getType } from 'typesafe-actions'
 import { login } from '../auth/actions'
 import { getToken } from '../auth/selectors'
@@ -208,6 +208,7 @@ function* handleCreateNetworkRequest(
     })
 
     yield apiRequestWithAuthSaga('post', '/networks', action.payload, {})
+    yield call(handleGetNetworksRequest)
 
     yield put(createNetwork['success']())
   } catch (e: unknown) {

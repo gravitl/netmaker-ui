@@ -11,6 +11,7 @@ import {
   hasAdmin,
   login,
   logout,
+  setAuthError,
   setUser,
   updateUser,
   updateUserNetworks,
@@ -27,6 +28,7 @@ export const reducer = createReducer({
   isCreating: false,
   users: [] as User[],
   networkError: false,
+  authError: false,
 })
   .handleAction(setUser, (state, action) =>
     produce(state, (draftState) => {
@@ -55,6 +57,7 @@ export const reducer = createReducer({
         networks: decoded.Networks,
         exp: decoded.exp,
       }
+      draftState.authError = false
       ls.set<LocalStorageUserKeyValue>(USER_KEY, {
         token: action.payload.token,
         user: draftState.user,
@@ -72,6 +75,10 @@ export const reducer = createReducer({
   )
   .handleAction(logout, (state, _) =>
     produce(state, (draftState) => {
+      if (!!draftState.user && Date.now() / 1000 > draftState.user.exp) {
+        draftState.authError = true
+      }
+
       draftState.user = undefined
       draftState.token = undefined
 
@@ -158,5 +165,10 @@ export const reducer = createReducer({
     if (~index) {
       draftState.users[index] = payload
     }
+  })
+)
+.handleAction(setAuthError, (state, { payload }) =>
+  produce(state, (draftState) => {
+    draftState.authError = payload
   })
 )

@@ -30,6 +30,7 @@ export default function Login() {
   const dispatch = useDispatch()
   const isLogginIn = useSelector(authSelectors.isLogginIn)
   const isLoggedIn = useSelector(authSelectors.getLoggedIn)
+  const authError = useSelector(authSelectors.getAuthError)
   const { t } = useTranslation()
   const [error, setError] = React.useState('')
   const [triedToLogin, setTriedToLogin] = React.useState(false)
@@ -46,6 +47,11 @@ export default function Login() {
     if (oauth) {
       setError(t('login.oauth.failed'))
       setTriedToLogin(true)
+      return
+    }
+
+    if (authError) {
+      setError(t('error.tokenexpire'))
       return
     }
 
@@ -71,6 +77,7 @@ export default function Login() {
     dispatch,
     setError,
     t,
+    authError,
   ])
 
   const loginValidation = useMemo(
@@ -107,7 +114,7 @@ export default function Login() {
   return (
     <Grid container justifyContent="center" alignItems="center">
       <Grid item xs={12}>
-        <div style={styles.center}>
+        <div style={styles.centerText}>
           {error && (
             <Typography variant="h5" color="error">
               {error}
