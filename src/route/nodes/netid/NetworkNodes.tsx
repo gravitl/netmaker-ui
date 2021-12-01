@@ -31,6 +31,7 @@ const columns: TableColumns<Node> = [
         to={`/nodes/${node.network}/${encodeURIComponent(
           encode64(node.id)
         )}`}
+        sx={{textTransform: 'none'}}
       >
         {value}
       </NmLink>
@@ -47,7 +48,7 @@ const columns: TableColumns<Node> = [
     labelKey: 'node.network',
     minWidth: 170,
     align: 'right',
-    format: (value) => <NmLink to={`/networks/${value}`}>{value}</NmLink>,
+    format: (value) => <NmLink sx={{textTransform: 'none'}} to={`/networks/${value}`}>{value}</NmLink>,
   },
   {
     id: 'isegressgateway',

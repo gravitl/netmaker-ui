@@ -18,7 +18,7 @@ const columns: TableColumns<Network> = [
     label: 'NetId',
     minWidth: 170,
     sortable: true,
-    format: (value) => <NmLink to={`/networks/${value}`}>{value}</NmLink>,
+    format: (value) => <NmLink sx={{textTransform: 'none'}} to={`/networks/${value}`}>{value}</NmLink>,
   },
   {
     id: 'displayname',
