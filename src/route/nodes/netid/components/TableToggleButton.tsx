@@ -113,7 +113,7 @@ export const TableToggleButton: React.FC<{
             sx={isOn ? hoverRedStyle : hoverBlueStyle}
             component={Link}
             onClick={!isOn ? () => {} : handleOpen}
-            to={`/networks/${node.network}/nodes/${encode64(
+            to={`/nodes/${node.network}/${encode64(
               node.id
             )}/create-${which}`}
             onMouseEnter={handleHoverEnter}
