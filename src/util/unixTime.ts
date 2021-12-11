@@ -31,7 +31,7 @@ export const datePickerConverter = (UNIX_timestamp: number) => {
   const month =
     months[a.getMonth()] < 10
       ? '0' + months[a.getMonth()]
-      : a.getMonth() + months[a.getMonth()]
+      : months[a.getMonth()]
   const date = a.getDate() < 10 ? '0' + a.getDate() : a.getDate()
   const hour = a.getHours() < 10 ? '0' + a.getHours() : a.getHours()
   const min = a.getMinutes() < 10 ? '0' + a.getMinutes() : a.getMinutes()

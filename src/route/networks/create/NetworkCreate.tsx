@@ -10,7 +10,7 @@ import {
   NmFormInputText,
 } from '../../../components/form'
 import { useLinkBreadcrumb } from '../../../components/PathBreadcrumbs'
-import { createNetwork } from '../../../store/modules/network/actions'
+import { createNetwork, getNetworks } from '../../../store/modules/network/actions'
 import { randomNetworkName, randomCIDR } from '~util/fields'
 import { useHistory } from 'react-router'
 
@@ -63,6 +63,9 @@ export const NetworkCreate: React.FC = () => {
           isdualstack: data.isdualstack ? 'yes' : 'no',
           defaultudpholepunch: data.defaultudpholepunch ? 'yes' : 'no',
         })
+      )
+      dispatch(
+        getNetworks.request()
       )
       history.goBack()
     },

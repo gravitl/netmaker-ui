@@ -15,7 +15,7 @@ export const EditExtClientButton: React.FC<{
       title={`${i18n.t('common.edit')} : ${client.clientid}`}
       placement="top"
     >
-      <NmLink to={`${url}/${client.clientid}/edit`} variant="text">
+      <NmLink to={`${url}/${client.clientid}/edit`} variant="text" sx={{textTransform: 'none'}}>
         {client.clientid}
       </NmLink>
     </Tooltip>
