@@ -139,7 +139,6 @@ export const DNSView: React.FC = () => {
             {serverConfig.DNSMode &&
               <NetworkSelect />
             }
-            {console.log(serverConfig.DNSMode)}
           </Grid>
           <Grid
             item
