@@ -8,7 +8,7 @@ import {
   Typography,
 } from '@mui/material'
 import { useTranslation } from 'react-i18next'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import {
   useRouteMatch,
   useHistory,
@@ -22,8 +22,10 @@ import { decode64 } from '~util/fields'
 import { useNodeById } from '~util/node'
 import { datePickerConverter } from '~util/unixTime'
 import { NodeEdit } from '../nodeEdit/NodeEdit'
-import { deleteNode } from '~modules/node/actions'
+import { approveNode, deleteNode } from '~modules/node/actions'
 import CustomDialog from '~components/dialog/CustomDialog'
+import { useNetwork } from '~util/network'
+import { authSelectors } from '~store/selectors'
 
 export const NodeId: React.FC = () => {
   const { path, url } = useRouteMatch()
@@ -34,7 +36,10 @@ export const NodeId: React.FC = () => {
   const { netid, nodeId } =
     useParams<{ nodeId: string; netid: string }>()
   const node = useNodeById(decode64(decodeURIComponent(nodeId)))
+  const network = useNetwork(netid)
+  const user = useSelector(authSelectors.getUser)
   const [open, setOpen] = React.useState(false)
+  const [approveOpen, setApproveOpen] = React.useState(false)
 
   useLinkBreadcrumb({
     link: url,
@@ -49,7 +54,10 @@ export const NodeId: React.FC = () => {
     setOpen(true)
   }
 
-  if (!node) {
+  const handleApproveOpen = () => setApproveOpen(true)
+  const handleApproveClose = () => setApproveOpen(false)
+
+  if (!node || !network) {
     return <div>Not Found</div>
   }
 
@@ -62,6 +70,15 @@ export const NodeId: React.FC = () => {
     )
     history.push(
       `/${t('breadcrumbs.networks')}/${netid}/${t('breadcrumbs.nodes')}`
+    )
+  }
+
+  const handleApproveNode = () => {
+    dispatch(
+      approveNode.request({
+        netid: node.network,
+        nodeid: node.id,
+      })
     )
   }
 
@@ -93,10 +110,17 @@ export const NodeId: React.FC = () => {
             message={t('node.deleteconfirm')}
             title={`${t('common.delete')} ${node.name}`}
           />
+          <CustomDialog
+            open={approveOpen}
+            handleClose={handleApproveClose}
+            handleAccept={handleApproveNode}
+            message={t('node.approveconfirm')}
+            title={`${t('node.approve')} ${node.name}`}
+          />
           <Grid item xs={12}>
             <div style={{ textAlign: 'center', margin: '1em 0 1em 0' }}>
               <Typography variant="h5">
-                {`${t('node.details')} : ${node.name}`}
+                {`${t('node.details')} : ${node.name}${node.ispending === 'yes' ? ` (${t('common.pending')})` : ''}`}
               </Typography>
             </div>
           </Grid>
@@ -108,6 +132,11 @@ export const NodeId: React.FC = () => {
               <Button variant="outlined" color='warning' style={{width: '50%', margin: '4px'}} onClick={handleOpen}>
                 {t('common.delete')}
               </Button>
+              {network.allowmanualsignup && node.ispending === 'yes' && user?.isAdmin ?
+                <Button variant="outlined" color='secondary' style={{width: '50%', margin: '4px'}} onClick={handleApproveOpen}>
+                  {t('node.approve')}
+                </Button>
+              : null}
             </div>
           </Grid>
           <Grid item xs={6} sm={3} sx={rowMargin}>

@@ -128,6 +128,12 @@ export const deleteNode = createAsyncAction(
   'Node_deleteNode_Failure'
 )<DeleteNodePayload['Request'], DeleteNodePayload['Response'], Error>()
 
+export const approveNode = createAsyncAction(
+  'Node_approveNode_Request',
+  'Node_approveNode_Success',
+  'Node_approveNode_Failure'
+)<DeleteNodePayload['Request'], DeleteNodePayload['Response'], Error>()
+
 export const createIngressNode = createAsyncAction(
   'Node_createIngressNode_Request',
   'Node_createIngressNode_Success',

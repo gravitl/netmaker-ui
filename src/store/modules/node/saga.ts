@@ -1,5 +1,6 @@
 import { all, fork, put, select, takeEvery } from 'redux-saga/effects'
 import {
+  approveNode,
   createEgressNode,
   createExternalClient,
   createIngressNode,
@@ -119,6 +120,39 @@ function* handleDeleteNodeRequest(
   }
 }
 
+function* handleApproveNodeRequest(
+  action: ReturnType<typeof approveNode['request']>
+) {
+  try {
+    yield fork(generatorToastSaga, {
+      success: approveNode['success'],
+      error: approveNode['failure'],
+      params: {
+        pending: i18n.t('common.pending', {
+          nodeid: action.payload.nodeid,
+        }),
+        success: i18n.t('toast.update.success.approve', {
+          nodeid: action.payload.nodeid,
+        }),
+        error: i18n.t('toast.update.failure.approve', {
+          nodeid: action.payload.nodeid,
+        }),
+      },
+    })
+
+    yield apiRequestWithAuthSaga(
+      'post',
+      `/nodes/${action.payload.netid}/${action.payload.nodeid.split('###')[0]}/approve`,
+      {},
+      {}
+    )
+
+    yield put(approveNode['success']({ nodeid: action.payload.nodeid }))
+  } catch (e: unknown) {
+    yield put(approveNode['failure'](e as Error))
+  }
+}
+
 function* handleCreateRelayNodeRequest(
   action: ReturnType<typeof createRelayNode['request']>
 ) {
@@ -163,10 +197,10 @@ function* handleDeleteRelayNodeRequest(
         pending: i18n.t('common.pending', {
           nodeid: action.payload.nodeid,
         }),
-        success: i18n.t('toast.delete.success.ingress', {
+        success: i18n.t('toast.delete.success.relay', {
           nodeid: action.payload.nodeid,
         }),
-        error: i18n.t('toast.delete.failure.ingress', {
+        error: i18n.t('toast.delete.failure.relay', {
           nodeid: action.payload.nodeid,
         }),
       },
@@ -532,6 +566,10 @@ export function* saga() {
     takeEvery(
       getType(updateExternalClient['request']),
       handleUpdateExternalClientRequest
+    ),
+    takeEvery(
+      getType(approveNode['request']),
+      handleApproveNodeRequest
     ),
     handleLoginSuccess(),
   ])

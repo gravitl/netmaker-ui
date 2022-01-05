@@ -26,7 +26,7 @@ const columns: TableColumns<Node> = [
         )}`}
         sx={{textTransform: 'none'}}
       >
-        {value}
+        {value}{`${node.ispending === 'yes' ? ` (${i18n.t('common.pending')})` : ''}`}
       </NmLink>
     ),
   },
