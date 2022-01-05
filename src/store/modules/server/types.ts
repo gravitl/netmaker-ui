@@ -22,6 +22,7 @@ export interface ServerConfig {
   SQLConn: string // ""
   Verbosity: number // 0
   Version: string // "v0.7.3"
+  RCE: boolean // "on"
 }
 export interface GetServerConfigPayload {
   Request: {
@@ -51,5 +52,6 @@ export interface GetServerConfigPayload {
     SQLConn: string
     Verbosity: number
     Version: string
+    RCE: string
   }
 }

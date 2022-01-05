@@ -2,12 +2,13 @@ import React, { useCallback } from 'react'
 import { Grid, TextField, Typography } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import { useRouteMatch, useParams } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { updateNode } from '~modules/node/actions'
 import { NmForm, NmFormInputSwitch, NmFormInputText } from '~components/form'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 import { decode64, getCommaSeparatedArray } from '~util/fields'
 import { useNodeById } from '~util/node'
+import { serverSelectors } from '~store/selectors'
 import { Node } from '~store/modules/node/types'
 import { datePickerConverter } from '~util/unixTime'
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
@@ -22,6 +23,7 @@ export const NodeEdit: React.FC<{
   const { t } = useTranslation()
   const dispatch = useDispatch()
 
+  const serverConfig = useSelector(serverSelectors.getServerConfig)
   const { netid } = useParams<{ netid: string }>()
   const { nodeId } = useParams<{ nodeId: string }>()
   const node = useNodeById(decode64(decodeURIComponent(nodeId)))
@@ -155,6 +157,7 @@ export const NodeEdit: React.FC<{
             defaultValue={node.postup}
             name={'postup'}
             label={t('node.postup')}
+            disabled={!serverConfig.RCE}
           />
         </Grid>
         <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
@@ -162,6 +165,7 @@ export const NodeEdit: React.FC<{
             defaultValue={node.postdown}
             label={t('node.postdown')}
             name={'postdown'}
+            disabled={!serverConfig.RCE}
           />
         </Grid>
         <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
