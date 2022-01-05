@@ -64,6 +64,7 @@ export interface LanguageResource {
     selectall: string
     count: string
     search: string
+    pending: string
   }
   dashboard: {
     title: string
@@ -215,6 +216,9 @@ export interface LanguageResource {
     choose: string
     details: string
     sync: string
+    pendingApproval: string
+    approve: string
+    approveconfirm: string
   }
   login: {
     validation: {
@@ -294,12 +298,14 @@ export interface LanguageResource {
         extclient: string
         networkrefresh: string
         user: string
+        approve: string
       }
       failure: {
         node: string
         extclient: string
         networkrefresh: string
         user: string
+        approve: string
       }
     }
     create: {

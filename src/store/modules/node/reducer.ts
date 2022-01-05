@@ -2,6 +2,7 @@ import { produce } from 'immer'
 import { createReducer } from 'typesafe-actions'
 import { ExternalClient } from '~store/types'
 import {
+  approveNode,
   clearQr,
   createEgressNode,
   createIngressNode,
@@ -80,6 +81,16 @@ export const reducer = createReducer({
         draftState.nodes = draftState.nodes.filter(
           (node) => node.id !== action.payload.nodeid
         )
+      }
+    })
+  )
+  .handleAction(approveNode['success'], (state, action) =>
+    produce(state, (draftState) => {
+      const index = draftState.nodes.findIndex(
+        (node) => node.id === action.payload.nodeid
+      )
+      if (~index) {
+        draftState.nodes[index].ispending = 'no'
       }
     })
   )

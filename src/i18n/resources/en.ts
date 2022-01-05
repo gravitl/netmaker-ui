@@ -66,6 +66,7 @@ export const en: LanguageResource = {
     selectall: 'Select All',
     count: 'Count',
     search: 'Search',
+    pending: 'pending',
   },
   dashboard: {
     title: 'Netmaker Dashboard',
@@ -218,6 +219,9 @@ export const en: LanguageResource = {
     choose: 'Select Node(s)',
     details: 'Node Details',
     sync: 'Sync Nodes with Server',
+    pendingApproval: 'pending approval',
+    approve: 'Approve',
+    approveconfirm: "Are you sure you want to grant access to this node?"
   },
   login: {
     validation: {
@@ -301,12 +305,14 @@ export const en: LanguageResource = {
         extclient: 'Ext Client updated!',
         networkrefresh: 'Refreshed nodes public keys!',
         user: 'User Updated!',
+        approve: 'Node Approved!',
       },
       failure: {
         node: 'Node updated failed!',
         extclient: 'Ext Client update failed!',
         networkrefresh: 'Failed to refresh nodes public keys!',
         user: 'Failed to update user!',
+        approve: 'Failed to approve node!'
       },
     },
     create: {

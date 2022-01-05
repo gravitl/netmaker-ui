@@ -5,7 +5,7 @@ import { Node } from '~modules/node'
 import { useTranslation } from 'react-i18next'
 import { useRouteMatch, useParams, Route, Switch } from 'react-router-dom'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
-import { useNodesByNetworkId } from '~util/network'
+import { useNetwork, useNodesByNetworkId } from '~util/network'
 import { NodeId } from './nodeId/NodeId'
 import { Chip, Grid, IconButton, InputAdornment, TextField, Tooltip, Typography } from '@mui/material'
 import { encode64 } from '~util/fields'
@@ -33,7 +33,7 @@ const columns: TableColumns<Node> = [
         )}`}
         sx={{textTransform: 'none'}}
       >
-        {value}
+        {value}{`${node.ispending === 'yes' ? ` (${i18n.t('common.pending')})` : ''}`}
       </NmLink>
     ),
   },
@@ -121,6 +121,7 @@ export const NetworkNodes: React.FC = () => {
   const { t } = useTranslation()
   const token = useSelector(authSelectors.getToken)
   const { netid } = useParams<{ netid: string }>()
+  const network = useNetwork(netid)
   const listOfNodes = useNodesByNetworkId(netid) || []
   const [ filterNodes, setFilterNodes ] = React.useState(listOfNodes)
   const [selected, setSelected] = React.useState({} as Node)
@@ -137,7 +138,7 @@ export const NetworkNodes: React.FC = () => {
     }
   }
 
-  if (!listOfNodes) {
+  if (!listOfNodes || !!!network) {
     return <div>Not Found</div>
   }
 
@@ -221,13 +222,13 @@ export const NetworkNodes: React.FC = () => {
           columns={columns}
           rows={filterNodes.length && filterNodes.length < listOfNodes.length ? filterNodes : listOfNodes}
           actions={[(row) => ({
-            tooltip: t('common.delete'),
-            disabled: false,
-            icon: <Delete />,
-            onClick: () => {
-              handleOpen(row)
-            },
-          }),
+              tooltip: t('common.delete'),
+              disabled: false,
+              icon: <Delete />,
+              onClick: () => {
+                handleOpen(row)
+              },
+            }),
           ]}
           getRowId={(row) => row.id}
         />
