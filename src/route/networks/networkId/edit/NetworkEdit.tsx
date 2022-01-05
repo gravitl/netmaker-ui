@@ -2,7 +2,7 @@ import React from 'react'
 import { Grid, Typography } from '@mui/material'
 import { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import {
   FormRef,
   NmForm,
@@ -14,6 +14,7 @@ import { Network } from '~modules/network/types'
 import { networkToNetworkPayload } from '~modules/network/utils'
 import { useRouteMatch } from 'react-router'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
+import { serverSelectors } from '~store/selectors'
 
 export const NetworkEdit: React.FC<{
   network: Network
@@ -22,6 +23,7 @@ export const NetworkEdit: React.FC<{
   const { t } = useTranslation()
   const { url } = useRouteMatch()
   const dispatch = useDispatch()
+  const serverConfig = useSelector(serverSelectors.getServerConfig)
 
   const formRef = React.createRef<FormRef<Network>>()
 
@@ -111,12 +113,14 @@ export const NetworkEdit: React.FC<{
           <NmFormInputText
             name={'defaultpostup'}
             label={t('network.defaultpostup')}
+            disabled={!serverConfig.RCE}
           />
         </Grid>
         <Grid item xs={12} sm={4} md={3}>
           <NmFormInputText
             name={'defaultpostdown'}
             label={t('network.defaultpostdown')}
+            disabled={!serverConfig.RCE}
           />
         </Grid>
         <Grid item xs={12} sm={4} md={3}>
