@@ -8,7 +8,6 @@ import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 import { useNetwork, useNodesByNetworkId } from '~util/network'
 import { NodeId } from './nodeId/NodeId'
 import { Chip, Grid, IconButton, InputAdornment, TextField, Tooltip, Typography } from '@mui/material'
-import { encode64 } from '~util/fields'
 import { AltRoute, CallMerge, CallSplit, Delete, Search, Sync } from '@mui/icons-material'
 import { i18n } from '../../../i18n/i18n'
 import { CreateEgress } from './components/CreateEgress'
@@ -29,7 +28,7 @@ const columns: TableColumns<Node> = [
     format: (value, node) => (
       <NmLink
         to={`/nodes/${node.network}/${encodeURIComponent(
-          encode64(node.id)
+          node.id
         )}`}
         sx={{textTransform: 'none'}}
       >

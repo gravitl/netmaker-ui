@@ -10,7 +10,6 @@ import {
   deleteRelayNode,
 } from '~modules/node/actions'
 import { Node } from '~store/types'
-import { encode64 } from '~util/fields'
 import { Link } from 'react-router-dom'
 import CustomDialog from '~components/dialog/CustomDialog'
 
@@ -111,9 +110,7 @@ export const TableToggleButton: React.FC<{
             sx={isOn ? hoverRedStyle : hoverBlueStyle}
             component={Link}
             onClick={!isOn ? () => {} : handleOpen}
-            to={`/nodes/${node.network}/${encode64(
-              node.id
-            )}/create-${which}`}
+            to={`/nodes/${node.network}/${node.id}/create-${which}`}
             onMouseEnter={handleHoverEnter}
             onMouseLeave={handleHoverLeave}
             disabled={which === 'relay' && node.isrelayed}

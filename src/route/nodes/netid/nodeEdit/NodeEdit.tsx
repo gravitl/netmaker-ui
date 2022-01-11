@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { updateNode } from '~modules/node/actions'
 import { NmForm, NmFormInputSwitch, NmFormInputText } from '~components/form'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
-import { decode64, getCommaSeparatedArray } from '~util/fields'
+import { getCommaSeparatedArray } from '~util/fields'
 import { useNodeById } from '~util/node'
 import { serverSelectors } from '~store/selectors'
 import { Node } from '~store/modules/node/types'
@@ -26,7 +26,7 @@ export const NodeEdit: React.FC<{
   const serverConfig = useSelector(serverSelectors.getServerConfig)
   const { netid } = useParams<{ netid: string }>()
   const { nodeId } = useParams<{ nodeId: string }>()
-  const node = useNodeById(decode64(decodeURIComponent(nodeId)))
+  const node = useNodeById(decodeURIComponent(nodeId))
 
   useLinkBreadcrumb({
     link: url,

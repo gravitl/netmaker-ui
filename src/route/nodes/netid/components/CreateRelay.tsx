@@ -8,7 +8,6 @@ import { useDispatch } from 'react-redux'
 import { createRelayNode } from '~modules/node/actions'
 import { useNodeById } from '~util/node'
 import { useNodesByNetworkId } from '~util/network'
-import { decode64 } from '~util/fields'
 import { FormRef, NmForm, NmFormInputText } from '~components/form'
 import RelaySelect from './RelaySelect'
 
@@ -58,10 +57,9 @@ export function CreateRelay() {
   const { netid, nodeId } =
     useParams<{ netid: string; nodeId: string }>()
   const { url } = useRouteMatch()
-  const node = useNodeById(decode64(nodeId))
+  const node = useNodeById(nodeId)
   const dispatch = useDispatch()
   const nodes = useNodesByNetworkId(netid)
-  const nodeMac = node?.macaddress as string
   const nodeNames = []
 
   useLinkBreadcrumb({
@@ -87,7 +85,6 @@ export function CreateRelay() {
         createRelayNode.request({
           netid: netid,
           nodeid: nodeId,
-          nodemac: nodeMac,
           payload: {
             ranges: newRanges,
           },
@@ -95,7 +92,7 @@ export function CreateRelay() {
       )
       history.goBack()
     },
-    [dispatch, netid, nodeMac, nodeId, history]
+    [dispatch, netid, nodeId, history]
   )
 
   if (!node || !nodes) {
