@@ -155,7 +155,7 @@ export interface UpdateExternalClientPayload {
 export interface DeleteEgressNodePayload {
   Request: {
     netid: string
-    nodeMac: string
+    nodeid: string
   }
   Response: NodePayload
 }
@@ -176,7 +176,6 @@ export interface CreateRelayNodePayload {
   Request: {
     netid: string
     nodeid: string
-    nodemac: string
     payload: {
       ranges: Array<string>
     }
@@ -188,7 +187,6 @@ export interface DeleteRelayNodePayload {
   Request: {
     netid: string
     nodeid: string
-    nodemac: string
   }
   Response: NodePayload
 }
@@ -206,7 +204,6 @@ export interface DeleteNodePayload {
 export interface CreatIngressNodePayload {
   Request: {
     netid: string
-    nodemac: string
     nodeid: string
   }
   Response: NodePayload

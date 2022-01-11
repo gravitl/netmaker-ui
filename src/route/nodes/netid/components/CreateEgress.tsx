@@ -80,7 +80,6 @@ export function CreateEgress() {
   const { url } = useRouteMatch()
   const node = useNodeById(decode64(nodeId))
   const dispatch = useDispatch()
-  const nodeMac = node?.macaddress as string
 
   useLinkBreadcrumb({
     link: url,
@@ -106,7 +105,7 @@ export function CreateEgress() {
       dispatch(
         createEgressNode.request({
           netid: netid,
-          nodeid: nodeMac,
+          nodeid: nodeId,
           payload: {
             ranges: newRanges,
             interface: data.iface,
@@ -115,7 +114,7 @@ export function CreateEgress() {
       )
       history.goBack()
     },
-    [dispatch, netid, nodeMac, history]
+    [dispatch, netid, nodeId, history]
   )
 
   if (!node) {

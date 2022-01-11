@@ -61,7 +61,7 @@ export const TableToggleButton: React.FC<{
         dispatch(
           deleteEgressNode.request({
             netid: node.network,
-            nodeMac: node.macaddress,
+            nodeid: node.id,
           })
         )
         break
@@ -69,7 +69,7 @@ export const TableToggleButton: React.FC<{
         dispatch(
           deleteIngressNode.request({
             netid: node.network,
-            nodeid: node.macaddress,
+            nodeid: node.id,
           })
         )
         break
@@ -78,7 +78,6 @@ export const TableToggleButton: React.FC<{
           deleteRelayNode.request({
             netid: node.network,
             nodeid: node.id,
-            nodemac: node.macaddress,
           })
         )
         break
@@ -91,7 +90,6 @@ export const TableToggleButton: React.FC<{
         createIngressNode.request({
           netid: node.network,
           nodeid: node.id,
-          nodemac: node.macaddress,
         })
       )
     }
