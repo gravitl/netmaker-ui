@@ -15,7 +15,6 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { createEgressNode } from '~modules/node/actions'
 import { useNodeById } from '~util/node'
-import { decode64 } from '~util/fields'
 import { NmForm, NmFormInputText } from '~components/form'
 
 const styles = {
@@ -78,9 +77,8 @@ export function CreateEgress() {
   const { netid, nodeId } =
     useParams<{ netid: string; nodeId: string }>()
   const { url } = useRouteMatch()
-  const node = useNodeById(decode64(nodeId))
+  const node = useNodeById(nodeId)
   const dispatch = useDispatch()
-  const nodeMac = node?.macaddress as string
 
   useLinkBreadcrumb({
     link: url,
@@ -106,7 +104,7 @@ export function CreateEgress() {
       dispatch(
         createEgressNode.request({
           netid: netid,
-          nodeid: nodeMac,
+          nodeid: nodeId,
           payload: {
             ranges: newRanges,
             interface: data.iface,
@@ -115,7 +113,7 @@ export function CreateEgress() {
       )
       history.goBack()
     },
-    [dispatch, netid, nodeMac, history]
+    [dispatch, netid, nodeId, history]
   )
 
   if (!node) {

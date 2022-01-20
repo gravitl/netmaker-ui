@@ -31,10 +31,10 @@ export const randomNetworkName = () =>
 
 export const copy = (text: string) => navigator.clipboard.writeText(text)
 
-export const decode64 = (str: string): string =>
-  Buffer.from(str, 'base64').toString('binary')
-export const encode64 = (str: string): string =>
-  Buffer.from(str, 'binary').toString('base64')
+// export const decode64 = (str: string): string =>
+//   Buffer.from(str, 'base64').toString('binary')
+// export const encode64 = (str: string): string =>
+//   Buffer.from(str, 'binary').toString('base64')
 
 export const getCommaSeparatedArray = (values: string) => {
   const newArray = values.split(',')

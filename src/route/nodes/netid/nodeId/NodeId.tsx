@@ -18,7 +18,6 @@ import {
 } from 'react-router-dom'
 import { NmLink } from '~components/index'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
-import { decode64 } from '~util/fields'
 import { useNodeById } from '~util/node'
 import { datePickerConverter } from '~util/unixTime'
 import { NodeEdit } from '../nodeEdit/NodeEdit'
@@ -35,7 +34,7 @@ export const NodeId: React.FC = () => {
 
   const { netid, nodeId } =
     useParams<{ nodeId: string; netid: string }>()
-  const node = useNodeById(decode64(decodeURIComponent(nodeId)))
+  const node = useNodeById(decodeURIComponent(nodeId))
   const network = useNetwork(netid)
   const user = useSelector(authSelectors.getUser)
   const [open, setOpen] = React.useState(false)

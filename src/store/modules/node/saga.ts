@@ -162,20 +162,20 @@ function* handleCreateRelayNodeRequest(
       error: createRelayNode['failure'],
       params: {
         pending: i18n.t('common.pending', {
-          nodeid: action.payload.nodemac,
+          nodeid: action.payload.nodeid,
         }),
         success: i18n.t('toast.create.success.relay', {
-          nodeid: action.payload.nodemac,
+          nodeid: action.payload.nodeid,
         }),
         error: i18n.t('toast.create.failure.relay', {
-          nodeid: action.payload.nodemac,
+          nodeid: action.payload.nodeid,
         }),
       },
     })
 
     const response: AxiosResponse<NodePayload> = yield apiRequestWithAuthSaga(
       'post',
-      `/nodes/${action.payload.netid}/${action.payload.nodemac}/createrelay`,
+      `/nodes/${action.payload.netid}/${action.payload.nodeid}/createrelay`,
       { relayaddrs: action.payload.payload.ranges },
       {}
     )
@@ -208,7 +208,7 @@ function* handleDeleteRelayNodeRequest(
 
     const response: AxiosResponse<NodePayload> = yield apiRequestWithAuthSaga(
       'delete',
-      `/nodes/${action.payload.netid}/${action.payload.nodemac}/deleterelay`,
+      `/nodes/${action.payload.netid}/${action.payload.nodeid}/deleterelay`,
       {}
     )
 
@@ -227,20 +227,20 @@ function* handleCreateIngressNodeRequest(
       error: createIngressNode['failure'],
       params: {
         pending: i18n.t('common.pending', {
-          nodeid: action.payload.nodemac,
+          nodeid: action.payload.nodeid,
         }),
         success: i18n.t('toast.create.success.ingress', {
-          nodeid: action.payload.nodemac,
+          nodeid: action.payload.nodeid,
         }),
         error: i18n.t('toast.create.failure.ingress', {
-          nodeid: action.payload.nodemac,
+          nodeid: action.payload.nodeid,
         }),
       },
     })
 
     const response: AxiosResponse<NodePayload> = yield apiRequestWithAuthSaga(
       'post',
-      `/nodes/${action.payload.netid}/${action.payload.nodemac}/createingress`,
+      `/nodes/${action.payload.netid}/${action.payload.nodeid}/createingress`,
       {},
       {}
     )
@@ -490,20 +490,20 @@ function* handleDeleteEgressNodeRequest(
       error: deleteEgressNode['failure'],
       params: {
         pending: i18n.t('common.pending', {
-          nodeName: action.payload.nodeMac,
+          nodeName: action.payload.nodeid,
         }),
         success: i18n.t('toast.delete.success.egress', {
-          nodeName: action.payload.nodeMac,
+          nodeName: action.payload.nodeid,
         }),
         error: i18n.t('toast.delete.failure.egress', {
-          nodeName: action.payload.nodeMac,
+          nodeName: action.payload.nodeid,
         }),
       },
     })
 
     const response: AxiosResponse<NodePayload> = yield apiRequestWithAuthSaga(
       'delete',
-      `/nodes/${action.payload.netid}/${action.payload.nodeMac}/deletegateway`,
+      `/nodes/${action.payload.netid}/${action.payload.nodeid}/deletegateway`,
       {}
     )
 

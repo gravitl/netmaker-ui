@@ -132,7 +132,7 @@ export const reducer = createReducer({
       if (~index) {
         draftState.nodes[index] = nodePayloadToNode(action.payload)
         draftState.externalClients = draftState.externalClients.filter(client =>  
-          !(client.ingressgatewayid === draftState.nodes[index].macaddress && 
+          !(client.ingressgatewayid === draftState.nodes[index].id && 
             client.network === draftState.nodes[index].network)
         )
       }
