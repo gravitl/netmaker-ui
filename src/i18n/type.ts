@@ -41,6 +41,7 @@ export interface LanguageResource {
     dashboard: string
     createegress: string
     createrelay: string
+    graphs: string
   }
   common: {
     disabled: string
@@ -153,6 +154,8 @@ export interface LanguageResource {
     refresh: string
     details: string
     refreshconfirm: string
+    graphs: string
+    graphview: string
   }
   node: {
     nodes: string
@@ -219,6 +222,7 @@ export interface LanguageResource {
     pendingApproval: string
     approve: string
     approveconfirm: string
+    none: string
   }
   login: {
     validation: {

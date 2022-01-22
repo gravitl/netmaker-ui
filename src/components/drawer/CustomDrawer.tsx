@@ -36,6 +36,7 @@ import { logout } from '../../store/modules/auth/actions'
 import { NmLink } from '../../components/Link'
 import { UI_VERSION } from '../../config'
 import Logo from '../../netmaker.png'
+import { AccountTree } from '@mui/icons-material'
 
 const drawerWidth = 240
 
@@ -263,6 +264,7 @@ export default function CustomDrawer() {
             { text: 'Access Keys', icon: <VpnKey />, link: `/access-keys${!!netid ? `/${netid}` : ''}` },
             { text: 'Ext. Clients', icon: <Devices />, link: `/ext-clients${!!netid ? `/${netid}` : ''}` },
             { text: 'DNS', icon: <Language />, link: `/dns${!!netid ? `/${netid}` : ''}` },
+            { text: 'Graphs', icon: <AccountTree />, link: `/graphs${!!netid ? `/${netid}` : ''}` },
           ].map((item) => (
             <ListItemButton component={Link} to={item.link} key={item.text}>
               <ListItemIcon>{item.icon}</ListItemIcon>
