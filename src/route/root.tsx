@@ -13,6 +13,7 @@ import { ExtClients } from './extclients/ExtClients'
 import { RouterState } from '~store/modules/router/Component'
 import { Users } from './users/Users'
 import { DNS } from './dns/DNS'
+import { Graphs } from './graph/Graphs'
 
 function NoMatch() {
   const location = useLocation()
@@ -59,6 +60,9 @@ function Routes() {
           </PrivateRoute>
           <PrivateRoute path="/dns">
             <DNS />
+          </PrivateRoute>
+          <PrivateRoute path="/graphs">
+            <Graphs />
           </PrivateRoute>
           <PrivateRoute
             path="/users"

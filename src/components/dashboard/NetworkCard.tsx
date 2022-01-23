@@ -15,7 +15,7 @@ import { networkSelectors } from '~store/selectors'
 import CardContent from '@mui/material/CardContent'
 import Typography from '@mui/material/Typography'
 import { useTranslation } from 'react-i18next'
-import { KeyboardArrowRight, Wifi } from '@mui/icons-material'
+import { AccountTree, KeyboardArrowRight, Wifi } from '@mui/icons-material'
 import { Button, Grid } from '@mui/material'
 
 const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
@@ -60,6 +60,14 @@ export default function NetworkCard() {
         </Link>
       ),
       name: t('common.create'),
+    },
+    {
+      icon: (
+        <Link color="primary" to="/graphs">
+          <AccountTree />
+        </Link>
+      ),
+      name: t('breadcrumbs.graphs'),
     },
   ]
 

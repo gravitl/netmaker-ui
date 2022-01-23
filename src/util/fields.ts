@@ -43,3 +43,16 @@ export const getCommaSeparatedArray = (values: string) => {
   }
   return newArray as []
 }
+
+// Returns level of health of a node
+// 2 - unhealthy
+// 1 - warning
+// 0 - healthy
+export const isNodeHealthy = (lastCheckinTime: number) => {
+  const time = Date.now() / 1000
+  if (time - lastCheckinTime >= 1800)
+    return 2
+  if (time - lastCheckinTime >= 300)
+    return 1
+  return 0
+}
