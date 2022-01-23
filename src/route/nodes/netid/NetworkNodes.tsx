@@ -190,7 +190,7 @@ export const NetworkNodes: React.FC = () => {
               <Grid item xs={8}>
                 <Grid container justifyContent="center" alignItems="center">
                   <Grid item xs={1}>
-                    <Tooltip title={`${t('network.graph')}`} placement='top'>
+                    <Tooltip title={`${t('network.graph')}`} placement='top' aria-label='view node graph'>
                       <IconButton component={Link} to={`/graphs/${netid}`}>
                         <AccountTree />
                       </IconButton>
