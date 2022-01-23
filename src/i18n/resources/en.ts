@@ -68,6 +68,8 @@ export const en: LanguageResource = {
     count: 'Count',
     search: 'Search',
     pending: 'pending',
+    cidr: 'Address Range (CIDR)',
+    type: 'Type',
   },
   dashboard: {
     title: 'Netmaker Dashboard',
@@ -226,6 +228,8 @@ export const en: LanguageResource = {
     approve: 'Approve',
     approveconfirm: "Are you sure you want to grant access to this node?",
     none: "No nodes found",
+    isingressegress: 'Is Egress and Ingress',
+    isrelayed: 'Being Relayed',
   },
   login: {
     validation: {

@@ -66,6 +66,8 @@ export interface LanguageResource {
     count: string
     search: string
     pending: string
+    cidr: string
+    type: string
   }
   dashboard: {
     title: string
@@ -223,6 +225,8 @@ export interface LanguageResource {
     approve: string
     approveconfirm: string
     none: string
+    isingressegress: string
+    isrelayed: string
   }
   login: {
     validation: {

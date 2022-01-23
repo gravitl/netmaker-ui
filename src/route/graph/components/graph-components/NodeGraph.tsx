@@ -19,6 +19,11 @@ interface IJSONData {
     from: string
     to: string
   }[]
+  nodeTypes: { 
+    type: ('normal' | '1&e' | 'ingress' | 'egress' | 'relay' | 'relayed' | 'extclient' | 'cidr'),
+    id: string,
+    name: string
+  }[]
 }
 
 interface IGraphHoverState {
@@ -29,9 +34,14 @@ interface IGraphHoverState {
 interface ICustomGraphProps {
   data: IJSONData;
   handleViewNode: (viewNode: Node) => void;
+  handleViewAlt: (viewAlt: {
+    id: string
+    name: string
+    type: 'extclient' | 'cidr' 
+  }) => void
 }
 
-const NodeGraph: React.FC<ICustomGraphProps> = ({ data, handleViewNode }) => {
+const NodeGraph: React.FC<ICustomGraphProps> = ({ data, handleViewNode, handleViewAlt }) => {
   // const networks = useSelector(networkSelectors.getNetworks)
   const sigma = useSigma();
   const registerEvents = useRegisterEvents();
@@ -43,17 +53,32 @@ const NodeGraph: React.FC<ICustomGraphProps> = ({ data, handleViewNode }) => {
     hoverNeighbours: undefined
   });
 
+  const decideColor = (type: ('normal' | '1&e' | 'ingress' | 'egress' | 'relay' | 'relayed' | 'extclient' | 'cidr')) => {
+    switch(type) {
+      case 'normal': return "#2b00ff"
+      case '1&e': return '#d9ffa3'
+      case 'egress': return '#6bdbb6'
+      case 'ingress': return '#ebde34'
+      case 'extclient': return '#26ffff'
+      case 'relay': return '#a552ff'
+      case 'relayed': return '#639cbf'
+      case 'cidr': return '#6fa397'
+    }
+  }
+
   useEffect(() => {
     const graph = new Graph()
-    const { nodes, edges } = data
+    const { nodeTypes, edges } = data
 
-    for (let i = 0; i < nodes.length; i++) {
+    for (let i = 0; i < nodeTypes.length; i++) {
         // Create all nodes
-        graph.addNode(nodes[i].id, {
-          nodeType: "company",
-          label: nodes[i].name,
-          size: 20,
-          color: "#2b00ff",
+        graph.addNode(nodeTypes[i].id, {
+          nodeType: "image",
+          label: nodeTypes[i].name,
+          // type: 'image',
+          size: nodeTypes[i].type === 'cidr' || nodeTypes[i].type === 'extclient' ? 15 : 20,
+          color: decideColor(nodeTypes[i].type),
+          url: './icons/up.png',
         })
     }
     // Create All Edges
@@ -92,9 +117,21 @@ const NodeGraph: React.FC<ICustomGraphProps> = ({ data, handleViewNode }) => {
           hoverNeighbours: undefined
         });
       },
-      clickNode: ({ node }) => handleViewNode(data.nodes.filter(n => n.id === node)[0])
+      clickNode: ({ node }) => { 
+        const filtered = data.nodeTypes.filter(n => n.id === node)  
+        if (filtered[0].type === 'cidr' || filtered[0].type === 'extclient') {
+          handleViewAlt(filtered[0] as {
+            id: string;
+            name: string;
+            type: 'extclient' | 'cidr';
+          })
+        } else {
+          const filteredNode = data.nodes.filter(n => n.id === node)[0]
+          handleViewNode(filteredNode)
+        }
+      }
     });
-  }, [sigma, registerEvents, data, handleViewNode]);
+  }, [sigma, registerEvents, data, handleViewNode, handleViewAlt]);
 
   useEffect(() => {
     setSettings({

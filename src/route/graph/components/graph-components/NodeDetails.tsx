@@ -1,52 +1,45 @@
 import * as React from 'react';
 import Card from '@mui/material/Card';
-import { styled } from '@mui/material/styles';
 import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
 import Avatar from '@mui/material/Avatar';
-import IconButton, { IconButtonProps } from '@mui/material/IconButton';
+import IconButton from '@mui/material/IconButton';
 import { useTranslation } from 'react-i18next';
-import { red, orange, green } from '@mui/material/colors';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { red, orange, green, grey } from '@mui/material/colors';
 import { Node } from '~store/types';
-import { Collapse, List, ListItem, ListItemIcon, ListItemText, Typography } from '@mui/material';
-import { ArrowRightAlt, Close, DeleteForever, Edit } from '@mui/icons-material';
+import { List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
+import { ArrowRightAlt, Circle, Close, DeleteForever, Edit } from '@mui/icons-material';
 
 
 interface NodeDetailsProps {
-    data: Node;
+    data: Node | undefined;
     handleClose: () => void;
+    altData: {
+        id: string
+        name: string
+        type: 'extclient' | 'cidr' 
+    } | undefined
 }
-
-interface ExpandMoreProps extends IconButtonProps {
-    expand: boolean;
-  }
   
-const ExpandMore = styled((props: ExpandMoreProps) => {
-    const { expand, ...other } = props;
-    return <IconButton {...other} />;
-  })(({ theme, expand }) => ({
-    transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
-    marginLeft: 'auto',
-    transition: theme.transitions.create('transform', {
-      duration: theme.transitions.duration.shortest,
-    }),
-}));
-
-const NodeDetails: React.FC<NodeDetailsProps> = ({ data, handleClose }) => {
+const NodeDetails: React.FC<NodeDetailsProps> = ({ data, handleClose, altData }) => {
 
   const { t } = useTranslation()
-  const [expanded, setExpanded] = React.useState(false);
 
-
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
-  };
+  const legendData = [
+      { label: t('node.nodes'), color: '#2b00ff' },
+      { label: t('node.isegressgateway'), color: '#6bdbb6' },
+      { label: t('node.isingressgateway'), color: '#ebde34' },
+      { label: t('node.isingressegress'), color: '#d9ffa3'},
+      { label: t('extclient.extclient'), color: '#26ffff'},
+      { label: t('node.isrelay'), color: '#a552ff' },
+      { label: t('node.isrelayed'), color: '#639cbf'},
+      { label: t('common.cidr'), color: '#6fa397' },
+  ]
 
   return (
-      !!data.id ? 
-    <Card sx={{ width: '100%', height: '100%' }}>
+    !!data && !!data.id ? 
+    <Card sx={{ width: '100%', height: '100%', backgroundColor: '#f0f0f0' }}>
       <CardHeader
         avatar={
           <Avatar sx={{ bgcolor: () => {
@@ -115,36 +108,58 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({ data, handleClose }) => {
         <IconButton aria-label="delete node">
           <DeleteForever />
         </IconButton>
-        <ExpandMore
-          expand={expanded}
-          onClick={handleExpandClick}
-          aria-expanded={expanded}
-          aria-label="show legend"
-        >
-          <ExpandMoreIcon />
-        </ExpandMore>
       </CardActions>
-      <Collapse in={expanded} timeout="auto" unmountOnExit>
+    </Card> : !!altData && !!altData.id ? 
+    <Card sx={{ width: '100%', height: '100%', backgroundColor: '#f0f0f0' }}>
+        <CardHeader
+        avatar={
+            <Avatar sx={{ bgcolor: grey[500]}} aria-label={`${altData.type}-status`}>
+                {altData.name.substring(0, 3)}
+            </Avatar>
+        }
+        action={
+            <IconButton aria-label="close node details" onClick={handleClose}>
+            <Close />
+            </IconButton>
+        }
+        title={altData.name}
+        subheader={altData.type}
+        />
         <CardContent>
-          <Typography paragraph>Legend:</Typography>
+        <List dense>
+            <ListItem>
+                <ListItemIcon>
+                    <ArrowRightAlt />
+                </ListItemIcon>
+                <ListItemText
+                primary={altData.id}
+                secondary={'ID'}
+                />
+            </ListItem>
+            <ListItem>
+                <ListItemIcon>
+                    <ArrowRightAlt />
+                </ListItemIcon>
+                <ListItemText
+                primary={altData.type}
+                secondary={t('common.type')}
+                />
+            </ListItem>
+        </List>
         </CardContent>
-      </Collapse>
     </Card> :
-    <Card sx={{ width: '100%', height: '100%' }}>
-    <CardHeader
-      title={t('common.legend')}
-    />
+    <Card sx={{ width: '100%', height: '100%', backgroundColor: '#f0f0f0' }}>
     <CardContent>
       <List dense>
-          <ListItem>
+          {legendData.map(indicator =>
+          <ListItem key={indicator.label}>
               <ListItemIcon>
-                  <ArrowRightAlt />
+                  <Circle htmlColor={indicator.color}/>
               </ListItemIcon>
               <ListItemText
-              primary={'something'}
-              secondary={'ID'}
+                primary={indicator.label}
               />
-          </ListItem>
+          </ListItem>)}
       </List>
     </CardContent>
   </Card>
