@@ -32,7 +32,7 @@ export const Graphs: React.FC = () => {
             <Grid item xs={5}>
               <div style={titleStyle}>
                 <Typography variant="h5">
-                  {t('networks.graphs')}
+                  {t('network.graphs')}
                 </Typography>
               </div>
             </Grid>

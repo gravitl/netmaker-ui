@@ -3,12 +3,12 @@ import { NmLink } from '~components/index'
 import { NmTable, TableColumns } from '~components/Table'
 import { Node } from '~modules/node'
 import { useTranslation } from 'react-i18next'
-import { useRouteMatch, useParams, Route, Switch } from 'react-router-dom'
+import { useRouteMatch, useParams, Route, Switch, Link } from 'react-router-dom'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 import { useNetwork, useNodesByNetworkId } from '~util/network'
 import { NodeId } from './nodeId/NodeId'
 import { Chip, Grid, IconButton, InputAdornment, TextField, Tooltip, Typography } from '@mui/material'
-import { AltRoute, CallMerge, CallSplit, Delete, Search, Sync } from '@mui/icons-material'
+import { AccountTree, AltRoute, CallMerge, CallSplit, Delete, Search, Sync } from '@mui/icons-material'
 import { i18n } from '../../../i18n/i18n'
 import { CreateEgress } from './components/CreateEgress'
 import { TableToggleButton } from './components/TableToggleButton'
@@ -187,8 +187,15 @@ export const NetworkNodes: React.FC = () => {
                   {`${netid} ${t('node.nodes')}`}
                 </Typography>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={8}>
                 <Grid container justifyContent="center" alignItems="center">
+                  <Grid item xs={1}>
+                    <Tooltip title={`${t('network.graph')}`} placement='top'>
+                      <IconButton component={Link} to={`/graphs/${netid}`}>
+                        <AccountTree />
+                      </IconButton>
+                    </Tooltip>
+                  </Grid>
                   <Grid item xs={4}>
                   <TextField
                     InputProps={{
@@ -202,7 +209,7 @@ export const NetworkNodes: React.FC = () => {
                     onChange={handleFilter} 
                   />
                   </Grid>
-                  <Grid item xs={7}>
+                  <Grid item xs={6}>
                     <NetworkSelect selectAll />
                   </Grid>
                   <Grid item xs={1}>

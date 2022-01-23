@@ -154,7 +154,8 @@ export const en: LanguageResource = {
     details: 'Network Details',
     refreshconfirm: 'Are you sure you want to reset the public & private key pairs of all nodes on the network?',
     graphs: 'Network Graphs',
-    graphview: 'Viewing Network Graph'
+    graphview: 'Viewing Network Graph',
+    graph: 'Graph',
   },
   helper: {
     egress: 'Enter your network interface name, i.e. "eth0"',

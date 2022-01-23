@@ -9,10 +9,11 @@ import { useNodesByNetworkId } from '~util/network'
 import { Node } from '~store/types'
 import NodeGraph from './graph-components/NodeGraph'
 import NodeDetails from './graph-components/NodeDetails'
-import { ControlsContainer, ForceAtlasControl, SearchControl, SigmaContainer, ZoomControl } from "react-sigma-v2";
+import { ControlsContainer, SearchControl, SigmaContainer, ZoomControl, FullScreenControl } from "react-sigma-v2";
 import { filterExtClientsByNetwork } from "~util/node"
 import { nodeSelectors } from '~store/selectors'
 import { AltDataNode, DataNode, Edge } from './graph-components/types'
+import { NetworkSelect } from '~components/NetworkSelect'
 
 export const NetworkGraph: React.FC = () => {
   // const networks = useSelector(networkSelectors.getNetworks)
@@ -57,9 +58,18 @@ export const NetworkGraph: React.FC = () => {
   }
 
   if (!!!listOfNodes || !!!listOfNodes.length) {
-      return <div style={{marginTop: '5em', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-          <h3>{t('node.none')}</h3>
-      </div>
+      return <Grid container justifyContent="space-between" alignItems="center">
+        <Grid item xs={6}>
+          <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+            <Typography variant="h4">
+                {`${netid}, ${t('node.none')}`}
+            </Typography>
+          </div>
+        </Grid>
+        <Grid item xs={5}>
+          <NetworkSelect />
+        </Grid>
+      </Grid>
   }
 
   const data = {
@@ -187,31 +197,38 @@ export const NetworkGraph: React.FC = () => {
   return (
         <Grid container justifyContent='center' alignItems='center'>
             <Grid item xs={12}>
-                <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-                    <Typography variant="h5">
-                    {`${t('network.graphview')}: ${netid}`}
+              {!!selectedNode && (
+                <CustomDialog
+                    open={open}
+                    handleClose={handleClose}
+                    handleAccept={handleAccept}
+                    message={t('hello there')}
+                    title={t('networks.graph')}
+                />
+              )}
+              <Grid container justifyContent="space-between" alignItems="center">
+                <Grid item xs={6}>
+                  <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                    <Typography variant="h4">
+                        {`${t('network.graphview')}: ${netid}`}
                     </Typography>
-                </div>
-                {!!selectedNode && (
-                        <CustomDialog
-                            open={open}
-                            handleClose={handleClose}
-                            handleAccept={handleAccept}
-                            message={t('hello there')}
-                            title={t('networks.graph')}
-                        />
-                  )}
+                  </div>
+                </Grid>
+                <Grid item xs={5}>
+                  <NetworkSelect />
+                </Grid>
+              </Grid>
             </Grid>
             <Grid item xs={12} sm={8}>
               <React.StrictMode>
                 <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: '5em', width: '100%'}}>
                     <SigmaContainer style={{height: '35em', width: '600px'}}>
                       <NodeGraph data={data} handleViewNode={handleSetNode} handleViewAlt={handleSetAlt} />
-                      <ControlsContainer position={"bottom-right"}>
-                        <ZoomControl />
-                        <ForceAtlasControl />
-                      </ControlsContainer>
                       <ControlsContainer position={"top-right"}>
+                        <ZoomControl />
+                        <FullScreenControl />
+                      </ControlsContainer>
+                      <ControlsContainer position={"top-left"}>
                         <SearchControl />
                       </ControlsContainer>
                     </SigmaContainer>

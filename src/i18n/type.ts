@@ -158,6 +158,7 @@ export interface LanguageResource {
     refreshconfirm: string
     graphs: string
     graphview: string
+    graph: string
   }
   node: {
     nodes: string
