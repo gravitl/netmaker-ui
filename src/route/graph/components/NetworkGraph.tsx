@@ -12,6 +12,7 @@ import NodeDetails from './graph-components/NodeDetails'
 import { ControlsContainer, ForceAtlasControl, SearchControl, SigmaContainer, ZoomControl } from "react-sigma-v2";
 import { filterExtClientsByNetwork } from "~util/node"
 import { nodeSelectors } from '~store/selectors'
+import { AltDataNode, DataNode, Edge } from './graph-components/types'
 
 export const NetworkGraph: React.FC = () => {
   // const networks = useSelector(networkSelectors.getNetworks)
@@ -20,11 +21,7 @@ export const NetworkGraph: React.FC = () => {
   const { netid } = useParams<{ netid: string }>()
   const listOfNodes = useNodesByNetworkId(netid)
   const [selectedNode, setSelectedNode] = React.useState({} as Node)
-  const [selectedAltData, setSelectedAltData] = React.useState({} as {
-      id: string
-      name: string
-      type: 'extclient' | 'cidr' 
-  })
+  const [selectedAltData, setSelectedAltData] = React.useState({} as AltDataNode)
   const extClients = useSelector(nodeSelectors.getExtClients)
   const clients = filterExtClientsByNetwork(extClients, netid)
 
@@ -50,21 +47,13 @@ export const NetworkGraph: React.FC = () => {
     setSelectedNode(selected)
   }
 
-  const handleSetAlt = (selected : {
-      id: string
-      name: string
-      type: 'extclient' | 'cidr' 
-  }) => {
+  const handleSetAlt = (selected : AltDataNode) => {
     handleUnsetNode()
     setSelectedAltData(selected)
   }
 
   const handleUnsetNode = () => { setSelectedNode({} as Node) 
-    setSelectedAltData({} as {
-        id: string
-        name: string
-        type: 'extclient' | 'cidr' 
-    })
+    setSelectedAltData({} as AltDataNode)
   }
 
   if (!!!listOfNodes || !!!listOfNodes.length) {
@@ -75,15 +64,8 @@ export const NetworkGraph: React.FC = () => {
 
   const data = {
     nodes: listOfNodes,
-    edges: [] as {
-      from: string
-      to: string
-    }[],
-    nodeTypes: [] as { 
-      type: ('normal' | '1&e' | 'ingress' | 'egress' | 'relay' | 'relayed' | 'extclient' | 'cidr'),
-      id: string,
-      name: string
-    }[],
+    edges: [] as Edge[],
+    nodeTypes: [] as DataNode[],
   }
 
   const extractEgressRanges = (node: Node) => {
@@ -137,8 +119,17 @@ export const NetworkGraph: React.FC = () => {
   for (let i = 0; i < listOfNodes.length; i++) {
       const innerNode = listOfNodes[i]
       if (innerNode.isingressgateway || innerNode.isegressgateway) { // handle adding external cidr(s)
-          if (innerNode.isingressgateway && innerNode.isegressgateway) { // and ext clients
-            data.nodeTypes.push({
+        if (innerNode.isingressgateway && innerNode.isegressgateway && innerNode.isrelay) {
+          data.nodeTypes.push({
+            type: 'i&e&r',
+            id: innerNode.id,
+            name: innerNode.name
+          })
+          extractEgressRanges(innerNode)
+          extractIngressRanges(innerNode)
+          extractRelayedNodes(innerNode)
+        } else if (innerNode.isingressgateway && innerNode.isegressgateway) { // and ext clients
+          data.nodeTypes.push({
             type: '1&e',
             id: innerNode.id,
             name: innerNode.name

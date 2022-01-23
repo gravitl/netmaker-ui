@@ -12,6 +12,8 @@ import {
 } from "react-sigma-v2";
 import forceAtlas2 from "graphology-layout-forceatlas2";
 import "react-sigma-v2/lib/react-sigma-v2.css";
+import { AltDataNode, DataNode } from './types';
+import { getColor } from './util';
 
 interface IJSONData {
   nodes: Node[];
@@ -19,11 +21,7 @@ interface IJSONData {
     from: string
     to: string
   }[]
-  nodeTypes: { 
-    type: ('normal' | '1&e' | 'ingress' | 'egress' | 'relay' | 'relayed' | 'extclient' | 'cidr'),
-    id: string,
-    name: string
-  }[]
+  nodeTypes: DataNode[]
 }
 
 interface IGraphHoverState {
@@ -34,11 +32,7 @@ interface IGraphHoverState {
 interface ICustomGraphProps {
   data: IJSONData;
   handleViewNode: (viewNode: Node) => void;
-  handleViewAlt: (viewAlt: {
-    id: string
-    name: string
-    type: 'extclient' | 'cidr' 
-  }) => void
+  handleViewAlt: (viewAlt: AltDataNode) => void
 }
 
 const NodeGraph: React.FC<ICustomGraphProps> = ({ data, handleViewNode, handleViewAlt }) => {
@@ -53,42 +47,37 @@ const NodeGraph: React.FC<ICustomGraphProps> = ({ data, handleViewNode, handleVi
     hoverNeighbours: undefined
   });
 
-  const decideColor = (type: ('normal' | '1&e' | 'ingress' | 'egress' | 'relay' | 'relayed' | 'extclient' | 'cidr')) => {
-    switch(type) {
-      case 'normal': return "#2b00ff"
-      case '1&e': return '#d9ffa3'
-      case 'egress': return '#6bdbb6'
-      case 'ingress': return '#ebde34'
-      case 'extclient': return '#26ffff'
-      case 'relay': return '#a552ff'
-      case 'relayed': return '#639cbf'
-      case 'cidr': return '#6fa397'
-    }
-  }
-
   useEffect(() => {
     const graph = new Graph()
     const { nodeTypes, edges } = data
 
     for (let i = 0; i < nodeTypes.length; i++) {
         // Create all nodes
-        graph.addNode(nodeTypes[i].id, {
-          nodeType: "image",
-          label: nodeTypes[i].name,
-          // type: 'image',
-          size: nodeTypes[i].type === 'cidr' || nodeTypes[i].type === 'extclient' ? 15 : 20,
-          color: decideColor(nodeTypes[i].type),
-          url: './icons/up.png',
-        })
+        try {
+          graph.addNode(nodeTypes[i].id, {
+            nodeType: "image",
+            label: nodeTypes[i].name,
+            // type: 'image',
+            size: nodeTypes[i].type === 'cidr' || nodeTypes[i].type === 'extclient' ? 15 : 20,
+            color: getColor(nodeTypes[i].type),
+            url: './icons/up.png',
+          })
+        } catch (err) {
+          // ignore repeats
+        }
     }
     // Create All Edges
     for (let i = 0; i < edges.length; i++) {
+      try {
         graph.addEdge(edges[i].from,edges[i].to, {
             weight: Math.floor(Math.random() * 100),
             type: "arrow",
             size: 5,
             label: "connection"
         })
+      } catch (err) {
+        // ignore repeats
+      }
     }
 
     circular.assign(graph);
@@ -107,7 +96,7 @@ const NodeGraph: React.FC<ICustomGraphProps> = ({ data, handleViewNode, handleVi
             .filter((edge) => edge.from === node || edge.to === node)
             .map((edge) => {
               const idToGet = edge.from === node ? edge.to : edge.from;
-              return data.nodes.find((x) => x.id === idToGet)?.id ?? "";
+              return data.nodeTypes.find((x) => x.id === idToGet)?.id ?? "";
             })
         });
       },
@@ -120,11 +109,7 @@ const NodeGraph: React.FC<ICustomGraphProps> = ({ data, handleViewNode, handleVi
       clickNode: ({ node }) => { 
         const filtered = data.nodeTypes.filter(n => n.id === node)  
         if (filtered[0].type === 'cidr' || filtered[0].type === 'extclient') {
-          handleViewAlt(filtered[0] as {
-            id: string;
-            name: string;
-            type: 'extclient' | 'cidr';
-          })
+          handleViewAlt(filtered[0] as AltDataNode)
         } else {
           const filteredNode = data.nodes.filter(n => n.id === node)[0]
           handleViewNode(filteredNode)

@@ -34,6 +34,7 @@ export const TableToggleButton: React.FC<{
   SignalIcon: ReactNode
   children?: ReactNode
   withHistory?: boolean
+  extraLogic?: () => void
 }> = ({
   which,
   node,
@@ -42,6 +43,7 @@ export const TableToggleButton: React.FC<{
   removeText,
   SignalIcon,
   withHistory,
+  extraLogic,
 }) => {
   const dispatch = useDispatch()
   const [hovering, setHovering] = React.useState(false)
@@ -81,6 +83,9 @@ export const TableToggleButton: React.FC<{
         )
         break
     }
+    if (!!extraLogic) {
+      extraLogic()
+    }
   }
 
   const createIngress = () => {
@@ -91,6 +96,9 @@ export const TableToggleButton: React.FC<{
           nodeid: node.id,
         })
       )
+    }
+    if (!!extraLogic) {
+      extraLogic()
     }
   }
 

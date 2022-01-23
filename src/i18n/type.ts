@@ -161,6 +161,7 @@ export interface LanguageResource {
   }
   node: {
     nodes: string
+    node: string
     id: string
     accesskey: string
     lastpeerupdate: string
@@ -226,6 +227,7 @@ export interface LanguageResource {
     approveconfirm: string
     none: string
     isingressegress: string
+    isingressegressrelay: string
     isrelayed: string
   }
   login: {

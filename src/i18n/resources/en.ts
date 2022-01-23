@@ -164,6 +164,7 @@ export const en: LanguageResource = {
   },
   node: {
     nodes: 'Nodes',
+    node: 'Node',
     id: 'Id',
     accesskey: 'Access Key',
     lastpeerupdate: 'Last Peer Update',
@@ -229,6 +230,7 @@ export const en: LanguageResource = {
     approveconfirm: "Are you sure you want to grant access to this node?",
     none: "No nodes found",
     isingressegress: 'Is Egress and Ingress',
+    isingressegressrelay: 'Is Egress, Ingress & Relay',
     isrelayed: 'Being Relayed',
   },
   login: {
