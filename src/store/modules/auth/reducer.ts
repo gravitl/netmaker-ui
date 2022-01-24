@@ -2,7 +2,7 @@ import { produce } from 'immer'
 import jwtDecode from 'jwt-decode'
 import * as ls from 'local-storage'
 import { createReducer } from 'typesafe-actions'
-import { USER_KEY } from '../../../config'
+import { USER_KEY, SETTINGS_KEY } from '../../../config'
 import {
   createAdmin,
   createUser,
@@ -13,10 +13,11 @@ import {
   logout,
   setAuthError,
   setUser,
+  setUserSettings,
   updateUser,
   updateUserNetworks,
 } from './actions'
-import { LocalStorageUserKeyValue, User } from './types'
+import { LocalStorageUserKeyValue, User, LocalSettings, UserSettings } from './types'
 
 const initialValues = ls.get<LocalStorageUserKeyValue | undefined>(USER_KEY)
 
@@ -29,10 +30,28 @@ export const reducer = createReducer({
   users: [] as User[],
   networkError: false,
   authError: false,
+  userSettings: {} as UserSettings
 })
   .handleAction(setUser, (state, action) =>
     produce(state, (draftState) => {
       draftState.user = action.payload
+    })
+  )
+  .handleAction(setUserSettings, (state, action) =>
+    produce(state, (draftState) => {
+      draftState.userSettings = action.payload
+      const localSettings = ls.get<LocalSettings | undefined>(SETTINGS_KEY)
+      if (!!localSettings) {
+        const index = localSettings.userSettings.findIndex(
+          (s) => s.username === action.payload.username
+        )
+        if (~index) {
+          localSettings.userSettings[index] = action.payload
+          ls.set<LocalSettings>(SETTINGS_KEY, localSettings)
+        }
+      } else {
+        ls.set<LocalSettings>(SETTINGS_KEY, { userSettings: [action.payload] })
+      }
     })
   )
   .handleAction(login['request'], (state, action) =>
@@ -62,6 +81,18 @@ export const reducer = createReducer({
         token: action.payload.token,
         user: draftState.user,
       })
+      const userSettings = ls.get<LocalSettings | undefined>(SETTINGS_KEY)
+      if (!!userSettings && !!userSettings.userSettings.length && !!draftState.user) {
+        const settings = userSettings.userSettings.filter(settings => settings.username !== decoded.UserName)[0]
+        draftState.userSettings = !!settings ? settings : { rowsPerPage: 10, username: decoded.UserName}
+      } else {
+        ls.set<LocalSettings>(SETTINGS_KEY, {
+          userSettings: [{
+            rowsPerPage: 10,
+            username: decoded.UserName
+          }]
+        })
+      }
     })
   )
   .handleAction(login['failure'], (state, action) =>

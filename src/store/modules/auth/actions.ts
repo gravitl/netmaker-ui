@@ -1,4 +1,5 @@
 import { createAction, createAsyncAction } from 'typesafe-actions'
+import { UserSettings } from '.'
 import {
   CreateAdmin,
   CreateUser,
@@ -13,6 +14,8 @@ import {
 } from './types'
 
 export const setUser = createAction('setUser')<User>()
+
+export const setUserSettings = createAction('setUserSettings')<UserSettings>()
 
 export const setAuthError = createAction('setAuthError')<boolean>()
 
