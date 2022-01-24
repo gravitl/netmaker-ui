@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import CustomDialog from '~components/dialog/CustomDialog'
 // import { Node } from '~store/types'
-import { useParams } from 'react-router-dom'
+import { useParams, useRouteMatch } from 'react-router-dom'
 import { Grid, Typography } from '@mui/material'
 import { useNodesByNetworkId } from '~util/network'
 import { Node } from '~store/types'
@@ -14,17 +14,24 @@ import { filterExtClientsByNetwork } from "~util/node"
 import { nodeSelectors } from '~store/selectors'
 import { AltDataNode, DataNode, Edge } from './graph-components/types'
 import { NetworkSelect } from '~components/NetworkSelect'
+import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 
 export const NetworkGraph: React.FC = () => {
   // const networks = useSelector(networkSelectors.getNetworks)
   const { t } = useTranslation()
   const [open, setOpen] = React.useState(false)
+  const { url } = useRouteMatch()
   const { netid } = useParams<{ netid: string }>()
   const listOfNodes = useNodesByNetworkId(netid)
   const [selectedNode, setSelectedNode] = React.useState({} as Node)
   const [selectedAltData, setSelectedAltData] = React.useState({} as AltDataNode)
   const extClients = useSelector(nodeSelectors.getExtClients)
   const clients = filterExtClientsByNetwork(extClients, netid)
+
+  useLinkBreadcrumb({
+    link: url,
+    title: netid,
+  })
 
   const handleClose = () => {
     setOpen(false)
