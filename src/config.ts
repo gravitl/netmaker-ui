@@ -11,3 +11,4 @@ export const UI_VERSION = version
 
 // == local storage keys ==
 export const USER_KEY = 'netmaker-user'
+export const SETTINGS_KEY = 'netmaker-settings'
