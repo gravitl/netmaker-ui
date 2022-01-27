@@ -31,15 +31,17 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({ data, handleClose, altData })
   const [open, setOpen] = React.useState(false)
 
   const legendData = [
-      { label: t('node.nodes'), color: '#2b00ff' },
+      { label: `${t('node.state.normal')} ${t('node.node')}`, color: '#2b00ff' },
       { label: t('node.isegressgateway'), color: '#6bdbb6' },
       { label: t('node.isingressgateway'), color: '#ebde34' },
       { label: t('node.isingressegress'), color: '#d9ffa3'},
-      { label: t('extclient.extclient'), color: '#26ffff'},
       { label: t('node.isrelay'), color: '#a552ff' },
       { label: t('node.isrelayed'), color: '#639cbf'},
       { label: t('node.isingressegressrelay'), color: '#f2c7ff' },
+      { label: t('extclient.extclient'), color: '#26ffff'},
       { label: t('common.cidr'), color: '#6fa397' },
+      { label: t('node.state.warning'), color: '#ff9800' },
+      { label: t('node.state.error'), color: '#f44336' },
   ]
 
   var nodeHealth: number

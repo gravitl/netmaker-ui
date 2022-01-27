@@ -230,6 +230,12 @@ export interface LanguageResource {
     isingressegress: string
     isingressegressrelay: string
     isrelayed: string
+    state: {
+      error: string
+      warning: string
+      normal: string
+      healthy: string
+    }
   }
   login: {
     validation: {

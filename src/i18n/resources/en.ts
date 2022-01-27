@@ -233,6 +233,12 @@ export const en: LanguageResource = {
     isingressegress: 'Is Egress and Ingress',
     isingressegressrelay: 'Is Egress, Ingress & Relay',
     isrelayed: 'Being Relayed',
+    state: {
+      error: 'ERROR',
+      warning: 'WARNING',
+      normal: 'Normal',
+      healthy: 'HEALTHY'
+    }
   },
   login: {
     validation: {
