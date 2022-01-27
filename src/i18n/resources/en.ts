@@ -70,6 +70,9 @@ export const en: LanguageResource = {
     pending: 'pending',
     cidr: 'Address Range (CIDR)',
     type: 'Type',
+    max: 'Max',
+    min: 'Min',
+    chars: 'characters',
   },
   dashboard: {
     title: 'Netmaker Dashboard',

@@ -68,6 +68,9 @@ export interface LanguageResource {
     pending: string
     cidr: string
     type: string
+    max: string
+    min: string
+    chars: string
   }
   dashboard: {
     title: string
