@@ -59,7 +59,7 @@ const NodeGraph: React.FC<ICustomGraphProps> = ({ data, handleViewNode, handleVi
             label: nodeTypes[i].name,
             // type: 'image',
             size: nodeTypes[i].type === 'cidr' || nodeTypes[i].type === 'extclient' ? 15 : 20,
-            color: getColor(nodeTypes[i].type),
+            color: getColor(nodeTypes[i].type, nodeTypes[i].lastCheckin),
             url: './icons/up.png',
           })
         } catch (err) {
@@ -73,7 +73,7 @@ const NodeGraph: React.FC<ICustomGraphProps> = ({ data, handleViewNode, handleVi
             weight: Math.floor(Math.random() * 100),
             type: "arrow",
             size: 5,
-            label: "connection"
+            label: "connection",
         })
       } catch (err) {
         // ignore repeats

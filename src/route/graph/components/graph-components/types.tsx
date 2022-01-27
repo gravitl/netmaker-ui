@@ -1,8 +1,9 @@
 // interfaces and types for use in graph-components
 export interface DataNode {
-    type: DataNodeType,
-    id: string,
+    type: DataNodeType
+    id: string
     name: string
+    lastCheckin: number | undefined
 }
 
 export interface AltDataNode {

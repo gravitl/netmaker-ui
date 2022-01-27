@@ -84,7 +84,6 @@ export const reducer = createReducer({
       const userSettings = ls.get<LocalSettings | undefined>(SETTINGS_KEY)
       if (!!userSettings && !!userSettings.userSettings.length && !!draftState.user) {
         const settings = userSettings.userSettings.filter(settings => settings.username === decoded.UserName)[0]
-        console.log(`SETTINGS FOUND: ${settings}`)
         draftState.userSettings = !!settings ? settings : { rowsPerPage: 10, username: decoded.UserName}
       } else {
         ls.set<LocalSettings>(SETTINGS_KEY, {

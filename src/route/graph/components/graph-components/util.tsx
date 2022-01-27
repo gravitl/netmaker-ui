@@ -1,7 +1,14 @@
 import { DataNodeType } from "./types"
+import { isNodeHealthy } from "~util/fields"
 
 // util functions for graph nodes
-export const getColor = (dataType: DataNodeType) => {
+export const getColor = (dataType: DataNodeType, lastcheckin: number | undefined) => {
+    if (!!lastcheckin) {
+        switch(isNodeHealthy(lastcheckin)) {
+            case 1: return "#ff9800"
+            case 2: return "#f44336"
+        }
+    }
     switch(dataType) {
         case 'normal': return "#2b00ff"
         case '1&e': return '#d9ffa3'

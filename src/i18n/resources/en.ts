@@ -70,6 +70,9 @@ export const en: LanguageResource = {
     pending: 'pending',
     cidr: 'Address Range (CIDR)',
     type: 'Type',
+    max: 'Max',
+    min: 'Min',
+    chars: 'characters',
   },
   dashboard: {
     title: 'Netmaker Dashboard',
@@ -122,7 +125,7 @@ export const en: LanguageResource = {
     name: 'Gateway Name',
     gateways: 'Gateways',
     clients: 'Clients',
-
+    view: 'View Attached Clients?',
   },
   network: {
     allowmanualsignup: 'Allow Node Signup Without Keys',
@@ -233,6 +236,12 @@ export const en: LanguageResource = {
     isingressegress: 'Is Egress and Ingress',
     isingressegressrelay: 'Is Egress, Ingress & Relay',
     isrelayed: 'Being Relayed',
+    state: {
+      error: 'ERROR',
+      warning: 'WARNING',
+      normal: 'Normal',
+      healthy: 'HEALTHY'
+    }
   },
   login: {
     validation: {

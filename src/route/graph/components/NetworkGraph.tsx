@@ -91,6 +91,7 @@ export const NetworkGraph: React.FC = () => {
         type: 'cidr',
         id: node.egressgatewayranges[i],
         name: node.egressgatewayranges[i],
+        lastCheckin: undefined,
       })
       data.edges.push({
         from: node.id,
@@ -106,6 +107,7 @@ export const NetworkGraph: React.FC = () => {
           type: 'extclient',
           id: clients[i].clientid,
           name: clients[i].clientid,
+          lastCheckin: undefined,
         })
         data.edges.push({
           from: clients[i].clientid,
@@ -124,6 +126,7 @@ export const NetworkGraph: React.FC = () => {
           type: 'relayed',
           id: currentNode.id,
           name: currentNode.name,
+          lastCheckin: currentNode.lastcheckin,
         })
         data.edges.push({
           from: currentNode.id,
@@ -140,7 +143,8 @@ export const NetworkGraph: React.FC = () => {
           data.nodeTypes.push({
             type: 'i&e&r',
             id: innerNode.id,
-            name: innerNode.name
+            name: innerNode.name,
+            lastCheckin: innerNode.lastcheckin,
           })
           extractEgressRanges(innerNode)
           extractIngressRanges(innerNode)
@@ -149,7 +153,8 @@ export const NetworkGraph: React.FC = () => {
           data.nodeTypes.push({
             type: '1&e',
             id: innerNode.id,
-            name: innerNode.name
+            name: innerNode.name,
+            lastCheckin: innerNode.lastcheckin,
           })
           extractEgressRanges(innerNode)
           extractIngressRanges(innerNode)
@@ -158,14 +163,16 @@ export const NetworkGraph: React.FC = () => {
            data.nodeTypes.push({
              type: 'egress',
              id: innerNode.id,
-             name: innerNode.name
+             name: innerNode.name,
+             lastCheckin: innerNode.lastcheckin,
             }) 
             extractEgressRanges(innerNode)
         } else { // handle adding ext client nodes
           data.nodeTypes.push({
             type: 'ingress',
             id: innerNode.id,
-            name: innerNode.name
+            name: innerNode.name,
+            lastCheckin: innerNode.lastcheckin,
            })
            extractIngressRanges(innerNode)
         }  
@@ -174,7 +181,8 @@ export const NetworkGraph: React.FC = () => {
          data.nodeTypes.push({
           type: 'relay',
           id: innerNode.id,
-          name: innerNode.name
+          name: innerNode.name,
+          lastCheckin: innerNode.lastcheckin,
         })
         extractRelayedNodes(innerNode)
       } else if (innerNode.isrelayed) { // skip edges for relayed nodes
@@ -183,7 +191,8 @@ export const NetworkGraph: React.FC = () => {
         data.nodeTypes.push({
           type: 'normal',
           id: innerNode.id,
-          name: innerNode.name
+          name: innerNode.name,
+          lastCheckin: innerNode.lastcheckin,
          })
       }
 

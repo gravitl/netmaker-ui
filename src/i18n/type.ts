@@ -68,6 +68,9 @@ export interface LanguageResource {
     pending: string
     cidr: string
     type: string
+    max: string
+    min: string
+    chars: string
   }
   dashboard: {
     title: string
@@ -120,6 +123,7 @@ export interface LanguageResource {
     name: string
     gateways: string
     clients: string
+    view: string
   }
   helper: {
     egress: string
@@ -230,6 +234,12 @@ export interface LanguageResource {
     isingressegress: string
     isingressegressrelay: string
     isrelayed: string
+    state: {
+      error: string
+      warning: string
+      normal: string
+      healthy: string
+    }
   }
   login: {
     validation: {
