@@ -122,7 +122,7 @@ export const en: LanguageResource = {
     name: 'Gateway Name',
     gateways: 'Gateways',
     clients: 'Clients',
-
+    view: 'View Attached Clients?',
   },
   network: {
     allowmanualsignup: 'Allow Node Signup Without Keys',

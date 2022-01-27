@@ -120,6 +120,7 @@ export interface LanguageResource {
     name: string
     gateways: string
     clients: string
+    view: string
   }
   helper: {
     egress: string
