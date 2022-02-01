@@ -137,7 +137,7 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({ data, handleClose, altData })
           extraLogic={handleClose}
         />
         <Tooltip title={`${t('common.delete')} ${t('node.node')}`} placement='top'>
-          <IconButton aria-label="delete node" onClick={handleOpenPrompt}>
+          <IconButton disabled={data.isserver} aria-label="delete node" onClick={handleOpenPrompt}>
             <DeleteForever />
           </IconButton>
         </Tooltip>
