@@ -105,6 +105,7 @@ export const NodeEdit: React.FC<{
             name={'address'}
             label={t('node.address')}
             defaultValue={node.address}
+            disabled={node.isserver}
           />
         </Grid>
         <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
@@ -112,7 +113,7 @@ export const NodeEdit: React.FC<{
             defaultValue={node.address6}
             name={'address6'}
             label={t('node.address6')}
-            disabled={!node.isdualstack}
+            disabled={!node.isdualstack || node.isserver}
           />
         </Grid>
         <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
@@ -135,6 +136,7 @@ export const NodeEdit: React.FC<{
             name={'listenport'}
             label={t('node.listenport')}
             type="number"
+            disabled={node.isserver}
           />
         </Grid>
         <Grid item xs={6} sm={4} md={3} sx={rowMargin}>

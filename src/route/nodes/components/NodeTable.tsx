@@ -144,8 +144,8 @@ export const NodeTable: React.FC<{nodes: Node[]}> = ({nodes}) => {
       rows={nodes} 
       getRowId={(row) => row.id} 
       actions={[(row) => ({
-        tooltip: t('common.delete'),
-        disabled: false,
+        tooltip: !row.isserver ? t('common.delete') : t('common.disabled'),
+        disabled: row.isserver,
         icon: <Delete />,
         onClick: () => {
           handleOpen(row)

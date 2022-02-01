@@ -228,8 +228,8 @@ export const NetworkNodes: React.FC = () => {
           columns={columns}
           rows={filterNodes.length && filterNodes.length < listOfNodes.length ? filterNodes : listOfNodes}
           actions={[(row) => ({
-              tooltip: t('common.delete'),
-              disabled: false,
+              tooltip: !row.isserver ? t('common.delete') : t('common.disabled'),
+              disabled: row.isserver,
               icon: <Delete />,
               onClick: () => {
                 handleOpen(row)
