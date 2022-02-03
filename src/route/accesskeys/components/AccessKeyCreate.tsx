@@ -111,7 +111,7 @@ export const AccessKeyCreate: React.FC = () => {
         >
           <Grid container justifyContent="center" alignItems="center">
             <Grid item xs={12} md={6}>
-              <NmFormInputText name={'name'} label={t('accesskey.name')} />
+              <NmFormInputText name={'name'} label={`${t('accesskey.name')} (${t('common.optional')})`} />
             </Grid>
             <Grid item xs={12} md={6}>
               <NmFormInputText

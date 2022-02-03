@@ -3,10 +3,10 @@ import React from 'react'
 import { useRouteMatch, Switch, Route } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
-import { NetworkAccessKeys } from './components/NetworkAccessKeys'
 import { AccessKeyCreate } from './components/AccessKeyCreate'
 import { AccessKeyView } from './components/AccessKeyView'
 import { NetworkSelect } from '~components/NetworkSelect'
+import { AccessKeyTable } from './components/AccessKeyTable'
 
 export const AccessKeys: React.FC = () => {
   const { path } = useRouteMatch()
@@ -47,7 +47,7 @@ export const AccessKeys: React.FC = () => {
           <AccessKeyCreate />
         </Route>
         <Route path={`${path}/:netid`}>
-          <NetworkAccessKeys />
+          <AccessKeyTable />
         </Route>
       </Switch>
     </Container>
