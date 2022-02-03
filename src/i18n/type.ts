@@ -71,6 +71,7 @@ export interface LanguageResource {
     max: string
     min: string
     chars: string
+    optional: string
   }
   dashboard: {
     title: string

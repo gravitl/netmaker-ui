@@ -73,6 +73,7 @@ export const en: LanguageResource = {
     max: 'Max',
     min: 'Min',
     chars: 'characters',
+    optional: 'optional',
   },
   dashboard: {
     title: 'Netmaker Dashboard',
