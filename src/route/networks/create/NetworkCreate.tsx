@@ -67,7 +67,7 @@ export const NetworkCreate: React.FC = () => {
       dispatch(
         getNetworks.request()
       )
-      history.goBack()
+      history.push('/networks')
     },
     [dispatch, history]
   )
