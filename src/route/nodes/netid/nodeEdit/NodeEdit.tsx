@@ -268,61 +268,44 @@ export const NodeEdit: React.FC<{
             name={'mtu'}
           />
         </Grid>
-        <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-          <NmFormInputSwitch
-            label={t('node.saveconfig')}
-            name={'saveconfig'}
-            defaultValue={node.saveconfig}
-          />
-        </Grid>
-        <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-          <NmFormInputSwitch
-            label={t('node.isstatic')}
-            name={'isstatic'}
-            defaultValue={node.isstatic}
-          />
-        </Grid>
-        <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-          <NmFormInputSwitch
-            label={t('node.udpholepunch')}
-            name={'udpholepunch'}
-            defaultValue={node.udpholepunch}
-          />
-        </Grid>
-        <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-          <NmFormInputSwitch
-            label={t('node.dnson')}
-            name={'dnson'}
-            defaultValue={node.dnson}
-          />
-        </Grid>
-        <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-          <NmFormInputSwitch
-            label={t('node.isdualstack')}
-            name={'isdualstack'}
-            defaultValue={node.isdualstack}
-          />
-        </Grid>
-        <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-          <NmFormInputSwitch
-            label={t('node.islocal')}
-            name={'islocal'}
-            defaultValue={node.islocal}
-          />
-        </Grid>
-        <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-          <NmFormInputSwitch
-            label={t('node.roaming')}
-            name={'roaming'}
-            defaultValue={node.roaming}
-          />
-        </Grid>
-        <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-          <NmFormInputSwitch
-            label={t('node.ipforwarding')}
-            name={'ipforwarding'}
-            defaultValue={node.ipforwarding}
-          />            
+        <Grid item xs={12}>
+          <Grid container justifyContent='space-between' alignItems='center'>
+            <Grid item xs={10} sm={5} md={2} sx={rowMargin}>
+              <NmFormInputSwitch
+                label={t('node.isstatic')}
+                name={'isstatic'}
+                defaultValue={node.isstatic}
+              />
+            </Grid>
+            <Grid item xs={10} sm={5} md={2} sx={rowMargin}>
+              <NmFormInputSwitch
+                label={t('node.udpholepunch')}
+                name={'udpholepunch'}
+                defaultValue={node.udpholepunch}
+              />
+            </Grid>
+            <Grid item xs={10} sm={5} md={2} sx={rowMargin}>
+              <NmFormInputSwitch
+                label={t('node.dnson')}
+                name={'dnson'}
+                defaultValue={node.dnson}
+              />
+            </Grid>
+            <Grid item xs={10} sm={5} md={2} sx={rowMargin}>
+              <NmFormInputSwitch
+                label={t('node.isdualstack')}
+                name={'isdualstack'}
+                defaultValue={node.isdualstack}
+              />
+            </Grid>
+            <Grid item xs={10} sm={5} md={2} sx={rowMargin}>
+              <NmFormInputSwitch
+                label={t('node.islocal')}
+                name={'islocal'}
+                defaultValue={node.islocal}
+              />
+            </Grid>
+          </Grid>
         </Grid>
       </Grid>
     </NmForm>

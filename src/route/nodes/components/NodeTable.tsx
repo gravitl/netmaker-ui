@@ -139,27 +139,28 @@ export const NodeTable: React.FC<{nodes: Node[]}> = ({nodes}) => {
 
   return (
     <div>
-    <NmTable 
-      columns={columns} 
-      rows={nodes} 
-      getRowId={(row) => row.id} 
-      actions={[(row) => ({
-        tooltip: !row.isserver ? t('common.delete') : t('common.disabled'),
-        disabled: row.isserver,
-        icon: <Delete />,
-        onClick: () => {
-          handleOpen(row)
-        },
-      }),
-      ]}
-    />
-    <CustomizedDialogs
-      open={!!selected.name}
-      handleClose={handleClose}
-      handleAccept={handleDeleteNode}
-      message={t('node.deleteconfirm')}
-      title={`${t('common.delete')} ${selected.name}`}
-    />
+      <hr />
+      <NmTable 
+        columns={columns} 
+        rows={nodes} 
+        getRowId={(row) => row.id} 
+        actions={[(row) => ({
+          tooltip: !row.isserver ? t('common.delete') : t('common.disabled'),
+          disabled: row.isserver,
+          icon: <Delete />,
+          onClick: () => {
+            handleOpen(row)
+          },
+        }),
+        ]}
+      />
+      <CustomizedDialogs
+        open={!!selected.name}
+        handleClose={handleClose}
+        handleAccept={handleDeleteNode}
+        message={t('node.deleteconfirm')}
+        title={`${t('common.delete')} ${selected.name}`}
+      />
     </div>
   )
 }

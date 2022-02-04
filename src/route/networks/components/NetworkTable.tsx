@@ -92,6 +92,7 @@ export const NetworkTable: React.FC<{networks: Network[]}> = ({networks}) => {
 
   return (
     <>
+    <hr />
       <NmTable
         columns={columns}
         rows={networks}
