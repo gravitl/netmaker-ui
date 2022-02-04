@@ -153,6 +153,7 @@ export const ExtClientView: React.FC = () => {
         >
           <Grid item xs={12} sx={{ margin: '0.5em 0em 1em 0em' }}>
             <NetworkSelect />
+            <hr />
           </Grid>
           <Grid
             item

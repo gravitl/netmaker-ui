@@ -224,6 +224,7 @@ export const NetworkNodes: React.FC = () => {
             </Grid>
           </Grid>
         </Grid>
+        <hr />
         <NmTable
           columns={columns}
           rows={filterNodes.length && filterNodes.length < listOfNodes.length ? filterNodes : listOfNodes}

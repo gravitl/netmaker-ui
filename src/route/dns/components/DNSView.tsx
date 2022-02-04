@@ -139,6 +139,7 @@ export const DNSView: React.FC = () => {
             {serverConfig.DNSMode &&
               <NetworkSelect />
             }
+            <hr />
           </Grid>
           <Grid
             item
