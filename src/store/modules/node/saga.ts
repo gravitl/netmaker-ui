@@ -247,7 +247,6 @@ function* handleCreateIngressNodeRequest(
 
     yield put(createIngressNode['success'](response.data))
   } catch (e: unknown) {
-    console.log(e)
     yield put(createIngressNode['failure'](e as Error))
   }
 }
