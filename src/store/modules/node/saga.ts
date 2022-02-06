@@ -67,9 +67,9 @@ function* handleUpdateNodeRequest(
         success: i18n.t('toast.update.success.node', {
           nodeid: action.payload.node.id,
         }),
-        error: i18n.t('toast.update.failure.node', {
-          nodeid: action.payload.node.id,
-        }),
+        error: e => `${i18n.t('toast.update.failure.node', {
+          nodeid: action.payload.node.id
+        })} : ${e.response.data.Message}`,
       },
     })
 
@@ -102,9 +102,9 @@ function* handleDeleteNodeRequest(
         success: i18n.t('toast.delete.success.node', {
           nodeid: action.payload.nodeid,
         }),
-        error: i18n.t('toast.delete.failure.node', {
+        error: e => `${i18n.t('toast.delete.failure.node', {
           nodeid: action.payload.nodeid,
-        }),
+        })} : ${e.response.data.Message}`,
       },
     })
 
@@ -167,9 +167,9 @@ function* handleCreateRelayNodeRequest(
         success: i18n.t('toast.create.success.relay', {
           nodeid: action.payload.nodeid,
         }),
-        error: i18n.t('toast.create.failure.relay', {
+        error: e => `${i18n.t('toast.create.failure.relay', {
           nodeid: action.payload.nodeid,
-        }),
+        })} : ${e.response.data.Message}`,
       },
     })
 
@@ -200,9 +200,9 @@ function* handleDeleteRelayNodeRequest(
         success: i18n.t('toast.delete.success.relay', {
           nodeid: action.payload.nodeid,
         }),
-        error: i18n.t('toast.delete.failure.relay', {
+        error: e => `${i18n.t('toast.delete.failure.relay', {
           nodeid: action.payload.nodeid,
-        }),
+        })} : ${e.response.data.Message}`,
       },
     })
 
@@ -232,9 +232,9 @@ function* handleCreateIngressNodeRequest(
         success: i18n.t('toast.create.success.ingress', {
           nodeid: action.payload.nodeid,
         }),
-        error: i18n.t('toast.create.failure.ingress', {
+        error: e => `${i18n.t('toast.create.failure.ingress', {
           nodeid: action.payload.nodeid,
-        }),
+        })} : ${e.response.data.Message}`,
       },
     })
 
@@ -247,6 +247,7 @@ function* handleCreateIngressNodeRequest(
 
     yield put(createIngressNode['success'](response.data))
   } catch (e: unknown) {
+    console.log(e)
     yield put(createIngressNode['failure'](e as Error))
   }
 }
@@ -265,9 +266,9 @@ function* handleDeleteIngressNodeRequest(
         success: i18n.t('toast.delete.success.ingress', {
           nodeid: action.payload.nodeid,
         }),
-        error: i18n.t('toast.delete.failure.ingress', {
+        error: e => `${i18n.t('toast.delete.failure.ingress', {
           nodeid: action.payload.nodeid,
-        }),
+        })} : ${e.response.data.Message}`,
       },
     })
 
@@ -355,9 +356,9 @@ function* handleCreateExternalClientRequest(
         success: i18n.t('toast.create.success.extclient', {
           nodeid: action.payload.nodeid,
         }),
-        error: i18n.t('toast.create.failure.extclient', {
+        error: e => `${i18n.t('toast.create.failure.extclient', {
           nodeid: action.payload.nodeid,
-        }),
+        })} : ${e.response.data.Message}`,
       },
     })
 
@@ -462,9 +463,9 @@ function* handleCreateEgressNodeRequest(
         success: i18n.t('toast.create.success.egress', {
           nodeName: action.payload.nodeid,
         }),
-        error: i18n.t('toast.create.failure.egress', {
+        error: e => `${i18n.t('toast.create.failure.egress', {
           nodeName: action.payload.nodeid,
-        }),
+        })} : ${e.response.data.Message}`,
       },
     })
 
@@ -495,9 +496,9 @@ function* handleDeleteEgressNodeRequest(
         success: i18n.t('toast.delete.success.egress', {
           nodeName: action.payload.nodeid,
         }),
-        error: i18n.t('toast.delete.failure.egress', {
+        error: e => `${i18n.t('toast.delete.failure.egress', {
           nodeName: action.payload.nodeid,
-        }),
+        })} : ${e.response.data.Message}`,
       },
     })
 

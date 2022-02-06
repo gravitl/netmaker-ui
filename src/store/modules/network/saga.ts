@@ -114,9 +114,9 @@ function* handleUpdateNetworkRequest(
       success: updateNetwork['success'],
       error: updateNetwork['failure'],
       params: {
-        pending: `Updaing network ${action.payload.network.netid}`,
-        success: `Updaing network ${action.payload.network.netid} success!`,
-        error: `Updaing network ${action.payload.network.netid} error!`,
+        pending: `Updating network ${action.payload.network.netid}`,
+        success: `Updating network ${action.payload.network.netid} success!`,
+        error: `Updating network ${action.payload.network.netid} error!`,
       },
     })
 
