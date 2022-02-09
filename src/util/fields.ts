@@ -31,10 +31,10 @@ export const randomNetworkName = () =>
 
 export const copy = (text: string) => navigator.clipboard.writeText(text)
 
-export const decode64 = (str: string): string =>
-  Buffer.from(str, 'base64').toString('binary')
-export const encode64 = (str: string): string =>
-  Buffer.from(str, 'binary').toString('base64')
+// export const decode64 = (str: string): string =>
+//   Buffer.from(str, 'base64').toString('binary')
+// export const encode64 = (str: string): string =>
+//   Buffer.from(str, 'binary').toString('base64')
 
 export const getCommaSeparatedArray = (values: string) => {
   const newArray = values.split(',')
@@ -42,4 +42,17 @@ export const getCommaSeparatedArray = (values: string) => {
     newArray[i] = newArray[i].trim()
   }
   return newArray as []
+}
+
+// Returns level of health of a node
+// 2 - unhealthy (hasn't checked in for 30 min)
+// 1 - warning (hasn't checked in for 5 min)
+// 0 - healthy
+export const isNodeHealthy = (lastCheckinTime: number) => {
+  const time = Date.now() / 1000
+  if (time - lastCheckinTime >= 1800)
+    return 2
+  if (time - lastCheckinTime >= 300)
+    return 1
+  return 0
 }

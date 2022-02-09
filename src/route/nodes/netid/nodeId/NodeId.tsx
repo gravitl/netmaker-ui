@@ -18,7 +18,6 @@ import {
 } from 'react-router-dom'
 import { NmLink } from '~components/index'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
-import { decode64 } from '~util/fields'
 import { useNodeById } from '~util/node'
 import { datePickerConverter } from '~util/unixTime'
 import { NodeEdit } from '../nodeEdit/NodeEdit'
@@ -35,7 +34,7 @@ export const NodeId: React.FC = () => {
 
   const { netid, nodeId } =
     useParams<{ nodeId: string; netid: string }>()
-  const node = useNodeById(decode64(decodeURIComponent(nodeId)))
+  const node = useNodeById(decodeURIComponent(nodeId))
   const network = useNetwork(netid)
   const user = useSelector(authSelectors.getUser)
   const [open, setOpen] = React.useState(false)
@@ -129,7 +128,7 @@ export const NodeId: React.FC = () => {
               <NmLink to={`${url}/edit`} variant="outlined" style={{width: '50%', margin: '4px'}}>
                 {t('common.edit')}
               </NmLink>
-              <Button variant="outlined" color='warning' style={{width: '50%', margin: '4px'}} onClick={handleOpen}>
+              <Button disabled={node.isserver} variant="outlined" color='warning' style={{width: '50%', margin: '4px'}} onClick={handleOpen}>
                 {t('common.delete')}
               </Button>
               {network.allowmanualsignup && node.ispending === 'yes' && user?.isAdmin ?
@@ -271,61 +270,44 @@ export const NodeId: React.FC = () => {
               label={t('node.network')}
             />
           </Grid>
-          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-            <FormControlLabel
-              label={t('node.saveconfig')}
-              control={<SwitchField checked={node.saveconfig} disabled />}
-              disabled
-            />
-          </Grid>
-          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-            <FormControlLabel
-              label={t('node.isstatic')}
-              control={<SwitchField checked={node.isstatic} disabled />}
-              disabled
-            />
-          </Grid>
-          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-            <FormControlLabel
-              label={t('node.udpholepunch')}
-              control={<SwitchField checked={node.udpholepunch} disabled />}
-              disabled
-            />
-          </Grid>
-          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-            <FormControlLabel
-              label={t('node.dnson')}
-              control={<SwitchField checked={node.dnson} disabled />}
-              disabled
-            />
-          </Grid>
-          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-            <FormControlLabel
-              label={t('node.isdualstack')}
-              control={<SwitchField checked={node.isdualstack} disabled />}
-              disabled
-            />
-          </Grid>
-          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-            <FormControlLabel
-              label={t('node.islocal')}
-              control={<SwitchField checked={node.islocal} disabled />}
-              disabled
-            />
-          </Grid>
-          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-            <FormControlLabel
-              label={t('node.roaming')}
-              control={<SwitchField checked={node.roaming} disabled />}
-              disabled
-            />
-          </Grid>
-          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-            <FormControlLabel
-              label={t('node.ipforwarding')}
-              control={<SwitchField checked={node.ipforwarding} disabled />}
-              disabled
-            />
+          <Grid item xs={12}>
+            <Grid container justifyContent='space-between' alignItems='center'>
+              <Grid item xs={10} sm={5} md={2} sx={rowMargin}>
+                <FormControlLabel
+                  label={t('node.isstatic')}
+                  control={<SwitchField checked={node.isstatic} disabled />}
+                  disabled
+                />
+              </Grid>
+              <Grid item xs={10} sm={5} md={2} sx={rowMargin}>
+                <FormControlLabel
+                  label={t('node.udpholepunch')}
+                  control={<SwitchField checked={node.udpholepunch} disabled />}
+                  disabled
+                />
+              </Grid>
+              <Grid item xs={10} sm={5} md={2} sx={rowMargin}>
+                <FormControlLabel
+                  label={t('node.dnson')}
+                  control={<SwitchField checked={node.dnson} disabled />}
+                  disabled
+                />
+              </Grid>
+              <Grid item xs={10} sm={5} md={2} sx={rowMargin}>
+                <FormControlLabel
+                  label={t('node.isdualstack')}
+                  control={<SwitchField checked={node.isdualstack} disabled />}
+                  disabled
+                />
+              </Grid>
+              <Grid item xs={10} sm={5} md={2} sx={rowMargin}>
+                <FormControlLabel
+                  label={t('node.islocal')}
+                  control={<SwitchField checked={node.islocal} disabled />}
+                  disabled
+                />
+              </Grid>
+            </Grid>
           </Grid>
         </Grid>
       </Route>

@@ -10,6 +10,15 @@ export interface LocalStorageUserKeyValue {
   user: User
 }
 
+export interface UserSettings {
+  rowsPerPage: number
+  username: string
+}
+
+export interface LocalSettings {
+  userSettings: UserSettings[]
+}
+
 export interface GetAllUsers {
   Request: void
   Response: Array<User>

@@ -10,7 +10,6 @@ import {
   deleteRelayNode,
 } from '~modules/node/actions'
 import { Node } from '~store/types'
-import { encode64 } from '~util/fields'
 import { Link } from 'react-router-dom'
 import CustomDialog from '~components/dialog/CustomDialog'
 
@@ -35,6 +34,7 @@ export const TableToggleButton: React.FC<{
   SignalIcon: ReactNode
   children?: ReactNode
   withHistory?: boolean
+  extraLogic?: () => void
 }> = ({
   which,
   node,
@@ -43,6 +43,7 @@ export const TableToggleButton: React.FC<{
   removeText,
   SignalIcon,
   withHistory,
+  extraLogic,
 }) => {
   const dispatch = useDispatch()
   const [hovering, setHovering] = React.useState(false)
@@ -61,7 +62,7 @@ export const TableToggleButton: React.FC<{
         dispatch(
           deleteEgressNode.request({
             netid: node.network,
-            nodeMac: node.macaddress,
+            nodeid: node.id,
           })
         )
         break
@@ -69,7 +70,7 @@ export const TableToggleButton: React.FC<{
         dispatch(
           deleteIngressNode.request({
             netid: node.network,
-            nodeid: node.macaddress,
+            nodeid: node.id,
           })
         )
         break
@@ -78,10 +79,12 @@ export const TableToggleButton: React.FC<{
           deleteRelayNode.request({
             netid: node.network,
             nodeid: node.id,
-            nodemac: node.macaddress,
           })
         )
         break
+    }
+    if (!!extraLogic) {
+      extraLogic()
     }
   }
 
@@ -91,9 +94,11 @@ export const TableToggleButton: React.FC<{
         createIngressNode.request({
           netid: node.network,
           nodeid: node.id,
-          nodemac: node.macaddress,
         })
       )
+    }
+    if (!!extraLogic) {
+      extraLogic()
     }
   }
 
@@ -113,9 +118,7 @@ export const TableToggleButton: React.FC<{
             sx={isOn ? hoverRedStyle : hoverBlueStyle}
             component={Link}
             onClick={!isOn ? () => {} : handleOpen}
-            to={`/nodes/${node.network}/${encode64(
-              node.id
-            )}/create-${which}`}
+            to={`/nodes/${node.network}/${node.id}/create-${which}`}
             onMouseEnter={handleHoverEnter}
             onMouseLeave={handleHoverLeave}
             disabled={which === 'relay' && node.isrelayed}

@@ -1,4 +1,5 @@
 import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import {
   Paper,
   Table,
@@ -15,6 +16,8 @@ import {
 import { useRouteMatch, useHistory } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useQuery } from '~util/query'
+import { authSelectors } from '~store/types'
+import { setUserSettings } from '~store/modules/auth/actions'
 
 type Column<Row> = {
   [Key in keyof Row]: {
@@ -73,15 +76,28 @@ export function NmTable<T>({
   const history = useHistory()
   const query = useQuery()
   const { t } = useTranslation()
+  const dispatch = useDispatch()
+  const user = useSelector(authSelectors.getUser)
+  const userSettings = useSelector(authSelectors.getUserSettings)
 
-  const setQueryParams = (page: number, rowsPerPage: number) =>
+  const setQueryParams = (page: number, rowsPerPage: number) => {
     history.push(`${url}?page=${page}&rowsPerPage=${rowsPerPage}`)
+    if (!!user && !!rowsPerPage) {
+      dispatch(setUserSettings({
+        rowsPerPage,
+        username: user.name,
+      }))
+    }
+  }
+  
 
-  rowsPerPageOptions = rowsPerPageOptions || [10, 25, 100]
+  rowsPerPageOptions = rowsPerPageOptions || [10, 25, 100, 250]
   const page = query.has('page') ? Number(query.get('page')) : 0
   const rowsPerPage = query.has('rowsPerPage')
     ? Number(query.get('rowsPerPage'))
-    : rowsPerPageOptions[0]
+    : !!userSettings && !!userSettings.rowsPerPage 
+    ? userSettings.rowsPerPage 
+    :rowsPerPageOptions[0]
 
   const handleChangePage = (
     _: React.MouseEvent<HTMLButtonElement, MouseEvent> | null,

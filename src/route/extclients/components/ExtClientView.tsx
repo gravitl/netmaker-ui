@@ -15,6 +15,7 @@ import { DownloadExtClientButton } from './DownloadExtClientButton'
 import { DeleteExtClientButton } from './DeleteExtClientButton'
 import { EditExtClientButton } from './EditExtClientButton'
 import { NetworkSelect } from '~components/NetworkSelect'
+import { CheckBox, CheckBoxOutlineBlank } from '@mui/icons-material'
 
 const columns: TableColumns<Node> = [
   {
@@ -43,7 +44,7 @@ const extColumns: TableColumns<ExternalClient> = [
   {
     id: 'clientid',
     labelKey: 'extclient.clientid',
-    minWidth: 150,
+    minWidth: 125,
     align: 'center',
     sortable: true,
     format: (_, client) => <EditExtClientButton client={client} />,
@@ -91,8 +92,9 @@ export const ExtClientView: React.FC = () => {
   const { t } = useTranslation()
   const extClients = useSelector(nodeSelectors.getExtClients)
   const { netid } = useParams<{ netid: string }>()
-  const clients = filterExtClientsByNetwork(extClients, netid)
+  var clients = filterExtClientsByNetwork(extClients, netid)
   const listOfNodes = useNodesByNetworkId(netid)
+  const [ filterClients, setFilterClients ] = React.useState([] as ExternalClient[])
 
   useLinkBreadcrumb({
     link: url,
@@ -105,7 +107,7 @@ export const ExtClientView: React.FC = () => {
 
   const gateways = filterIngressGateways(listOfNodes)
 
-  if (!gateways.length) {
+  if (!!!gateways.length) {
     return (
       <Grid
         container
@@ -123,6 +125,21 @@ export const ExtClientView: React.FC = () => {
         </Grid>
       </Grid>
     )
+  } 
+
+  const isChecked = (id: string) => {
+    const index = filterClients.findIndex(
+      (s) => s.ingressgatewayid === id    
+    )
+    return !!!(~index)
+  }
+
+  const handleChecked = (id: string, checked: boolean) => {
+    if (!checked) {
+      setFilterClients([...filterClients.filter(client => client.ingressgatewayid !== id)])
+    } else {
+      setFilterClients([...filterClients, ...clients.filter(client => client.ingressgatewayid === id)])
+    }
   }
 
   return (
@@ -136,13 +153,14 @@ export const ExtClientView: React.FC = () => {
         >
           <Grid item xs={12} sx={{ margin: '0.5em 0em 1em 0em' }}>
             <NetworkSelect />
+            <hr />
           </Grid>
           <Grid
             item
             xs={12}
             sm={12}
-            md={4}
-            sx={{ margin: '0.5em 0.5em 0.5em 0.5em' }}
+            md={5}
+            sx={{ margin: '0.5rem 0.25rem 0.5rem 0.25rem' }}
           >
             <div style={centerText as any}>
               <Typography variant="h4" sx={{ marginBottom: '1em' }}>
@@ -153,14 +171,22 @@ export const ExtClientView: React.FC = () => {
               columns={columns}
               rows={gateways}
               getRowId={(row) => row.id}
+              actions={[(row) => ({
+                tooltip: t('ingress.view'),
+                disabled: (!!!clients.filter((s) => s.ingressgatewayid === row.id).length),
+                icon: isChecked(row.id) ? <CheckBox /> : <CheckBoxOutlineBlank />,
+                onClick: () => {
+                  handleChecked(row.id, isChecked(row.id))
+                },
+              })]}
             />
           </Grid>
           <Grid
             item
             xs={12}
             sm={12}
-            md={7}
-            sx={{ margin: '0.5em 0.5em 0.5em 0.5em' }}
+            md={6}
+            sx={{ margin: '0.5rem 0.25rem 0.5rem 0.25rem' }}
           >
             <div style={centerText as any}>
               <Typography variant="h4" sx={{ marginBottom: '1em' }}>
@@ -169,7 +195,9 @@ export const ExtClientView: React.FC = () => {
             </div>
             <NmTable
               columns={extColumns}
-              rows={clients}
+              rows={clients.filter(client => {
+                return !!!(~filterClients.findIndex(c => c.clientid === client.clientid))
+              })}
               getRowId={(row) => row.clientid}
             />
           </Grid>

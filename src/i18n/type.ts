@@ -41,6 +41,7 @@ export interface LanguageResource {
     dashboard: string
     createegress: string
     createrelay: string
+    graphs: string
   }
   common: {
     disabled: string
@@ -65,6 +66,12 @@ export interface LanguageResource {
     count: string
     search: string
     pending: string
+    cidr: string
+    type: string
+    max: string
+    min: string
+    chars: string
+    optional: string
   }
   dashboard: {
     title: string
@@ -117,6 +124,7 @@ export interface LanguageResource {
     name: string
     gateways: string
     clients: string
+    view: string
   }
   helper: {
     egress: string
@@ -153,9 +161,13 @@ export interface LanguageResource {
     refresh: string
     details: string
     refreshconfirm: string
+    graphs: string
+    graphview: string
+    graph: string
   }
   node: {
     nodes: string
+    node: string
     id: string
     accesskey: string
     lastpeerupdate: string
@@ -219,6 +231,16 @@ export interface LanguageResource {
     pendingApproval: string
     approve: string
     approveconfirm: string
+    none: string
+    isingressegress: string
+    isingressegressrelay: string
+    isrelayed: string
+    state: {
+      error: string
+      warning: string
+      normal: string
+      healthy: string
+    }
   }
   login: {
     validation: {

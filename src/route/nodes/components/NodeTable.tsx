@@ -6,7 +6,6 @@ import { useDispatch } from 'react-redux'
 import { Node } from '~modules/node'
 import { NmTable, TableColumns } from '~components/Table'
 import { Chip } from '@mui/material'
-import { encode64 } from '~util/fields'
 import { TableToggleButton } from '../netid/components/TableToggleButton'
 import { AltRoute, CallMerge, CallSplit, Delete } from '@mui/icons-material'
 import { i18n } from '../../../i18n/i18n'
@@ -22,7 +21,7 @@ const columns: TableColumns<Node> = [
     format: (value, node) => (
       <NmLink
         to={`/nodes/${node.network}/${encodeURIComponent(
-          encode64(node.id)
+          node.id
         )}`}
         sx={{textTransform: 'none'}}
       >
@@ -140,27 +139,28 @@ export const NodeTable: React.FC<{nodes: Node[]}> = ({nodes}) => {
 
   return (
     <div>
-    <NmTable 
-      columns={columns} 
-      rows={nodes} 
-      getRowId={(row) => row.id} 
-      actions={[(row) => ({
-        tooltip: t('common.delete'),
-        disabled: false,
-        icon: <Delete />,
-        onClick: () => {
-          handleOpen(row)
-        },
-      }),
-      ]}
-    />
-    <CustomizedDialogs
-      open={!!selected.name}
-      handleClose={handleClose}
-      handleAccept={handleDeleteNode}
-      message={t('node.deleteconfirm')}
-      title={`${t('common.delete')} ${selected.name}`}
-    />
+      <hr />
+      <NmTable 
+        columns={columns} 
+        rows={nodes} 
+        getRowId={(row) => row.id} 
+        actions={[(row) => ({
+          tooltip: !row.isserver ? t('common.delete') : t('common.disabled'),
+          disabled: row.isserver,
+          icon: <Delete />,
+          onClick: () => {
+            handleOpen(row)
+          },
+        }),
+        ]}
+      />
+      <CustomizedDialogs
+        open={!!selected.name}
+        handleClose={handleClose}
+        handleAccept={handleDeleteNode}
+        message={t('node.deleteconfirm')}
+        title={`${t('common.delete')} ${selected.name}`}
+      />
     </div>
   )
 }

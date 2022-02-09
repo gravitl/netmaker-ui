@@ -15,7 +15,7 @@ export const ExtClientCreateButton: React.FC<{
     dispatch(
       createExternalClient.request({
         netid: node.network,
-        nodeid: node.macaddress,
+        nodeid: node.id,
       })
     )
   }

@@ -67,7 +67,7 @@ export const NetworkCreate: React.FC = () => {
       dispatch(
         getNetworks.request()
       )
-      history.goBack()
+      history.push('/networks')
     },
     [dispatch, history]
   )
@@ -122,7 +122,7 @@ export const NetworkCreate: React.FC = () => {
           <NmFormInputText
             style={{width: '90%'}}
             name={'netid'}
-            label={t('network.netid')}
+            label={`${t('network.netid')} (${t('common.max')} 12 ${t('common.chars')})`}
           />
         </Grid>
         <Grid item xs={12} sm={12} md={7} className={classes.center + ' ' + classes.rowMargin}>

@@ -3,17 +3,16 @@ import React from 'react'
 import { useRouteMatch, Switch, Route } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
-import { AccessKeyCreate } from './components/AccessKeyCreate'
-import { AccessKeyView } from './components/AccessKeyView'
 import { NetworkSelect } from '~components/NetworkSelect'
-import { AccessKeyTable } from './components/AccessKeyTable'
+// import { NetworkGraph } from './components/NetworkGraph'
+import { NetworkGraph } from './components/NetworkGraph'
 
-export const AccessKeys: React.FC = () => {
+export const Graphs: React.FC = () => {
   const { path } = useRouteMatch()
   const { t } = useTranslation()
 
   useLinkBreadcrumb({
-    title: t('breadcrumbs.accessKeys'),
+    title: t('breadcrumbs.graphs'),
   })
 
   const titleStyle = {
@@ -33,21 +32,15 @@ export const AccessKeys: React.FC = () => {
             <Grid item xs={5}>
               <div style={titleStyle}>
                 <Typography variant="h5">
-                  {t('accesskey.accesskeys')}
+                  {t('network.graphs')}
                 </Typography>
               </div>
             </Grid>
           </Grid>
           <NetworkSelect selectAll />
         </Route>
-        <Route path={`${path}/:netid/details/:keyname`}>
-          <AccessKeyView />
-        </Route>
-        <Route path={`${path}/:netid/create`}>
-          <AccessKeyCreate />
-        </Route>
         <Route path={`${path}/:netid`}>
-          <AccessKeyTable />
+          <NetworkGraph />
         </Route>
       </Switch>
     </Container>

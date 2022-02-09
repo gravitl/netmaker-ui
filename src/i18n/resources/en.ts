@@ -43,6 +43,7 @@ export const en: LanguageResource = {
     dashboard: 'Dashboard',
     createegress: 'Create Egress',
     createrelay: 'Create Relay',
+    graphs: 'Graphs'
   },
   common: {
     disabled: 'Disabled',
@@ -67,6 +68,12 @@ export const en: LanguageResource = {
     count: 'Count',
     search: 'Search',
     pending: 'pending',
+    cidr: 'Address Range (CIDR)',
+    type: 'Type',
+    max: 'Max',
+    min: 'Min',
+    chars: 'characters',
+    optional: 'optional',
   },
   dashboard: {
     title: 'Netmaker Dashboard',
@@ -119,7 +126,7 @@ export const en: LanguageResource = {
     name: 'Gateway Name',
     gateways: 'Gateways',
     clients: 'Clients',
-
+    view: 'View Attached Clients?',
   },
   network: {
     allowmanualsignup: 'Allow Node Signup Without Keys',
@@ -149,7 +156,10 @@ export const en: LanguageResource = {
     deleteconfirm: 'Are you sure you want to delete this network?',
     refresh: 'Refresh public keys',
     details: 'Network Details',
-    refreshconfirm: 'Are you sure you want to reset the public & private key pairs of all nodes on the network?'
+    refreshconfirm: 'Are you sure you want to reset the public & private key pairs of all nodes on the network?',
+    graphs: 'Network Graphs',
+    graphview: 'Viewing Network Graph',
+    graph: 'Graph',
   },
   helper: {
     egress: 'Enter your network interface name, i.e. "eth0"',
@@ -159,6 +169,7 @@ export const en: LanguageResource = {
   },
   node: {
     nodes: 'Nodes',
+    node: 'Node',
     id: 'Id',
     accesskey: 'Access Key',
     lastpeerupdate: 'Last Peer Update',
@@ -221,7 +232,17 @@ export const en: LanguageResource = {
     sync: 'Sync Nodes with Server',
     pendingApproval: 'pending approval',
     approve: 'Approve',
-    approveconfirm: "Are you sure you want to grant access to this node?"
+    approveconfirm: "Are you sure you want to grant access to this node?",
+    none: "No nodes found",
+    isingressegress: 'Is Egress and Ingress',
+    isingressegressrelay: 'Is Egress, Ingress & Relay',
+    isrelayed: 'Being Relayed',
+    state: {
+      error: 'ERROR',
+      warning: 'WARNING',
+      normal: 'Normal',
+      healthy: 'HEALTHY'
+    }
   },
   login: {
     validation: {

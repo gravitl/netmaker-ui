@@ -18,3 +18,4 @@ export const hasNetworkError = createSelector(
   (auth) => auth.networkError
 )
 export const getAuthError = createSelector(getAuth, (auth) => auth.authError)
+export const getUserSettings = createSelector(getAuth, (auth) => auth.userSettings)

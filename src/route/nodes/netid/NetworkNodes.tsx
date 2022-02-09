@@ -3,21 +3,19 @@ import { NmLink } from '~components/index'
 import { NmTable, TableColumns } from '~components/Table'
 import { Node } from '~modules/node'
 import { useTranslation } from 'react-i18next'
-import { useRouteMatch, useParams, Route, Switch } from 'react-router-dom'
+import { useRouteMatch, useParams, Route, Switch, Link, useHistory } from 'react-router-dom'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 import { useNetwork, useNodesByNetworkId } from '~util/network'
 import { NodeId } from './nodeId/NodeId'
 import { Chip, Grid, IconButton, InputAdornment, TextField, Tooltip, Typography } from '@mui/material'
-import { encode64 } from '~util/fields'
-import { AltRoute, CallMerge, CallSplit, Delete, Search, Sync } from '@mui/icons-material'
+import { AccountTree, AltRoute, CallMerge, CallSplit, Delete, Search, Sync } from '@mui/icons-material'
 import { i18n } from '../../../i18n/i18n'
 import { CreateEgress } from './components/CreateEgress'
 import { TableToggleButton } from './components/TableToggleButton'
 import { CreateRelay } from './components/CreateRelay'
 import { NetworkSelect } from '../../../components/NetworkSelect'
-import { useDispatch, useSelector } from 'react-redux'
-import { authSelectors } from '~store/selectors'
-import { deleteNode, getNodes } from '~store/modules/node/actions'
+import { useDispatch } from 'react-redux'
+import { deleteNode } from '~store/modules/node/actions'
 import CustomizedDialogs from '~components/dialog/CustomDialog'
 
 const columns: TableColumns<Node> = [
@@ -29,7 +27,7 @@ const columns: TableColumns<Node> = [
     format: (value, node) => (
       <NmLink
         to={`/nodes/${node.network}/${encodeURIComponent(
-          encode64(node.id)
+          node.id
         )}`}
         sx={{textTransform: 'none'}}
       >
@@ -119,13 +117,13 @@ const columns: TableColumns<Node> = [
 export const NetworkNodes: React.FC = () => {
   const { path, url } = useRouteMatch()
   const { t } = useTranslation()
-  const token = useSelector(authSelectors.getToken)
   const { netid } = useParams<{ netid: string }>()
   const network = useNetwork(netid)
   const listOfNodes = useNodesByNetworkId(netid) || []
   const [ filterNodes, setFilterNodes ] = React.useState(listOfNodes)
   const [selected, setSelected] = React.useState({} as Node)
   const dispatch = useDispatch()
+  const history = useHistory()
 
   useLinkBreadcrumb({
     link: url,
@@ -133,8 +131,8 @@ export const NetworkNodes: React.FC = () => {
   })
 
   const syncNodes = () => {
-    if (token) {
-      dispatch(getNodes.request({ token }))
+    if (!!netid) {
+      history.push(`/nodes/${netid}`)
     }
   }
 
@@ -188,8 +186,15 @@ export const NetworkNodes: React.FC = () => {
                   {`${netid} ${t('node.nodes')}`}
                 </Typography>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={8}>
                 <Grid container justifyContent="center" alignItems="center">
+                  <Grid item xs={1}>
+                    <Tooltip title={`${t('network.graph')}`} placement='top' aria-label='view node graph'>
+                      <IconButton component={Link} to={`/graphs/${netid}`}>
+                        <AccountTree />
+                      </IconButton>
+                    </Tooltip>
+                  </Grid>
                   <Grid item xs={4}>
                   <TextField
                     InputProps={{
@@ -203,7 +208,7 @@ export const NetworkNodes: React.FC = () => {
                     onChange={handleFilter} 
                   />
                   </Grid>
-                  <Grid item xs={7}>
+                  <Grid item xs={6}>
                     <NetworkSelect selectAll />
                   </Grid>
                   <Grid item xs={1}>
@@ -218,12 +223,13 @@ export const NetworkNodes: React.FC = () => {
             </Grid>
           </Grid>
         </Grid>
+        <hr />
         <NmTable
           columns={columns}
           rows={filterNodes.length && filterNodes.length < listOfNodes.length ? filterNodes : listOfNodes}
           actions={[(row) => ({
-              tooltip: t('common.delete'),
-              disabled: false,
+              tooltip: !row.isserver ? t('common.delete') : t('common.disabled'),
+              disabled: row.isserver,
               icon: <Delete />,
               onClick: () => {
                 handleOpen(row)
