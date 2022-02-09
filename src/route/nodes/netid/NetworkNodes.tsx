@@ -3,7 +3,7 @@ import { NmLink } from '~components/index'
 import { NmTable, TableColumns } from '~components/Table'
 import { Node } from '~modules/node'
 import { useTranslation } from 'react-i18next'
-import { useRouteMatch, useParams, Route, Switch, Link } from 'react-router-dom'
+import { useRouteMatch, useParams, Route, Switch, Link, useHistory } from 'react-router-dom'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 import { useNetwork, useNodesByNetworkId } from '~util/network'
 import { NodeId } from './nodeId/NodeId'
@@ -14,9 +14,8 @@ import { CreateEgress } from './components/CreateEgress'
 import { TableToggleButton } from './components/TableToggleButton'
 import { CreateRelay } from './components/CreateRelay'
 import { NetworkSelect } from '../../../components/NetworkSelect'
-import { useDispatch, useSelector } from 'react-redux'
-import { authSelectors } from '~store/selectors'
-import { deleteNode, getNodes } from '~store/modules/node/actions'
+import { useDispatch } from 'react-redux'
+import { deleteNode } from '~store/modules/node/actions'
 import CustomizedDialogs from '~components/dialog/CustomDialog'
 
 const columns: TableColumns<Node> = [
@@ -118,13 +117,13 @@ const columns: TableColumns<Node> = [
 export const NetworkNodes: React.FC = () => {
   const { path, url } = useRouteMatch()
   const { t } = useTranslation()
-  const token = useSelector(authSelectors.getToken)
   const { netid } = useParams<{ netid: string }>()
   const network = useNetwork(netid)
   const listOfNodes = useNodesByNetworkId(netid) || []
   const [ filterNodes, setFilterNodes ] = React.useState(listOfNodes)
   const [selected, setSelected] = React.useState({} as Node)
   const dispatch = useDispatch()
+  const history = useHistory()
 
   useLinkBreadcrumb({
     link: url,
@@ -132,8 +131,8 @@ export const NetworkNodes: React.FC = () => {
   })
 
   const syncNodes = () => {
-    if (token) {
-      dispatch(getNodes.request({ token }))
+    if (!!netid) {
+      history.push(`/nodes/${netid}`)
     }
   }
 
