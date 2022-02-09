@@ -1,9 +1,8 @@
 import { Container, Grid, IconButton, InputAdornment, TextField, Tooltip } from '@mui/material'
 import React from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { authSelectors, nodeSelectors } from '~store/selectors'
-import { getNodes } from '~store/modules/node/actions'
-import { useRouteMatch, Switch, Route } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import { nodeSelectors } from '~store/selectors'
+import { useRouteMatch, Switch, Route, useHistory } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { NodeTable } from './components/NodeTable'
 import { NetworkSelect } from '../../components/NetworkSelect'
@@ -13,15 +12,12 @@ import { NetworkNodes } from './netid/NetworkNodes'
 export const Nodes: React.FC = () => {
   const { path } = useRouteMatch()
   const { t } = useTranslation()
-  const token = useSelector(authSelectors.getToken)
   const listOfNodes = useSelector(nodeSelectors.getNodes)
   const [ filterNodes, setFilterNodes ] = React.useState(listOfNodes)
-  const dispatch = useDispatch()
+  const history = useHistory()
 
   const syncNodes = () => {
-    if (token) {
-      dispatch(getNodes.request({ token }))
-    }
+    history.push('/nodes')
   }
 
   const handleFilter = (event: {target: {value: string}}) => {
