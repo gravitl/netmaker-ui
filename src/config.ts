@@ -6,8 +6,20 @@ export const BACKEND_URL =
 
 export const DEBUG = BACKEND_URL.includes('localhost')
 
+
+const extractVersion = (v: string | undefined) => {
+  console.log(`Found version ${v}`)
+  if (!!!v) {
+    return 'latest'
+  }
+  if (v.charAt(0) === 'v' || v.charAt(0) === 'V') {
+    return v
+  }
+  return `v${v}`
+}
+
 // == set UI version here ==
-export const UI_VERSION = version
+export const UI_VERSION = extractVersion(version)
 
 // == local storage keys ==
 export const USER_KEY = 'netmaker-user'
