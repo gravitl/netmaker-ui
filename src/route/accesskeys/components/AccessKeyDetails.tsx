@@ -22,6 +22,16 @@ const style = {
   p: 4,
 }
 
+const extractVersion = (v: string | undefined) => {
+  if (!!!v) {
+    return 'latest'
+  }
+  if (v.charAt(0) === 'v' || v.charAt(0) === 'V') {
+    return v
+  }
+  return `v${v}`
+}
+
 export default function AccessKeyDetails(Props: {
   title: string
   keyValue: string
@@ -30,8 +40,9 @@ export default function AccessKeyDetails(Props: {
   handleClose: () => void
   open: boolean
 }) {
+
   const { t } = useTranslation()
-  const version = useSelector(serverSelectors.getServerConfig).Version || 'latest'
+  const version = extractVersion(useSelector(serverSelectors.getServerConfig).Version)
 
   const styles = {
     centerStyle: {
@@ -44,15 +55,15 @@ export default function AccessKeyDetails(Props: {
   } as any
 
   const getAgentInstallCommand = (accessToken: string) => {
-    return `curl -sfL https://raw.githubusercontent.com/gravitl/netmaker/master/scripts/netclient-install.sh | VERSION=v${version} KEY=${accessToken} sh -`
+    return `curl -sfL https://raw.githubusercontent.com/gravitl/netmaker/master/scripts/netclient-install.sh | VERSION=${version} KEY=${accessToken} sh -`
   }
 
   const getDockerRunCommand = (accessToken: string) => {
-    return `docker run -d --network host  --privileged -e TOKEN=${accessToken} -v /etc/netclient:/etc/netclient --name netclient gravitl/netclient:v${version}`
+    return `docker run -d --network host  --privileged -e TOKEN=${accessToken} -v /etc/netclient:/etc/netclient --name netclient gravitl/netclient:${version}`
   }
 
   const getWindowsRunCommand = (accessToken: string) => {
-    return `. { iwr -useb  https://raw.githubusercontent.com/gravitl/netmaker/master/scripts/netclient-install.ps1 } | iex; Netclient-Install -version "v${version}" -token "${accessToken}"`
+    return `. { iwr -useb  https://raw.githubusercontent.com/gravitl/netmaker/master/scripts/netclient-install.ps1 } | iex; Netclient-Install -version "${version}" -token "${accessToken}"`
   }
 
   const getManualCommand = (accessToken: string) => {
