@@ -104,6 +104,7 @@ export const en: LanguageResource = {
     notfound: 'Not found',
     network: 'Could not reach server',
     tokenexpire: 'Session has expired',
+    unauthorized: 'Unauthorized access attempted',
   },
   extclient: {
     extclients: 'External Clients',
@@ -267,7 +268,7 @@ export const en: LanguageResource = {
     },
     header: 'Login below:',
     login: 'Login',
-    loginFailed: 'Failed to login, wrong username or password.',
+    loginFailed: 'Failed to login, invalid credentials or server disconnect.',
     logout: 'Logout',
   },
   users: {

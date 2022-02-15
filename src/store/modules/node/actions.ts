@@ -16,7 +16,10 @@ import {
   UpdateNodePayload,
   DeleteEgressNodePayload,
   CreateRelayNodePayload,
+  shouldSignOut,
 } from './types'
+
+export const setShouldLogout = createAction('setShouldLogout')<shouldSignOut>()
 
 export const getNodes = createAsyncAction(
   'Node_getNodes_Request',

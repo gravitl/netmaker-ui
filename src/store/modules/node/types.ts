@@ -216,3 +216,5 @@ export interface DeleteIngressNodePayload {
   }
   Response: NodePayload
 }
+
+export type shouldSignOut = '' | 'network' | 'auth'
