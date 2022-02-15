@@ -4,9 +4,10 @@ import { NmForm, NmFormInputText, validate } from '../form'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { correctUserNameRegex, correctPasswordRegex } from '../../util/regex'
-import { authSelectors } from '../../store/selectors'
+import { authSelectors, nodeSelectors } from '../../store/selectors'
 import { createAdmin } from '../../store/modules/auth/actions'
 import { Redirect } from 'react-router'
+import { setShouldLogout } from '~store/modules/node/actions'
 
 const styles = {
   centerText: {
@@ -36,12 +37,19 @@ export default function CreateAdmin() {
   const isCreating = useSelector(authSelectors.isCreating)
   const hasAdmin = useSelector(authSelectors.hasAdmin)
   const hasNetworkError = useSelector(authSelectors.hasNetworkError)
+  const shouldSignOut = useSelector(nodeSelectors.getShouldSignOut)
 
   const initialAdminForm = { username: '', password: '', confirmation: '' }
 
   useEffect(() => {
-    if (hasNetworkError) {
+    if (hasNetworkError || shouldSignOut === 'network') {
       setError(t('error.network'))
+      dispatch(setShouldLogout(''))
+    }
+
+    if (shouldSignOut === 'auth') {
+      setError(t('error.unauthorized'))
+      dispatch(setShouldLogout(''))
     }
 
     if (!triedToCreate) {
@@ -51,7 +59,7 @@ export default function CreateAdmin() {
     if (isCreating) {
       setError('')
     }
-  }, [isCreating, triedToCreate, setError, t, hasNetworkError])
+  }, [isCreating, triedToCreate, setError, t, hasNetworkError, shouldSignOut, dispatch])
 
   const createAdminValidation = useMemo(
     () =>

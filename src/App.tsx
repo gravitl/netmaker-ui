@@ -7,7 +7,7 @@ import { ToastContainer } from 'react-toastify'
 import { ThemeProvider } from '@mui/material/styles'
 import { useCurrentTheme } from './components/theme'
 import { useSelector, useDispatch } from 'react-redux'
-import { authSelectors } from '~store/types'
+import { authSelectors, nodeSelectors } from '~store/types'
 import { logout } from '~store/modules/auth/actions'
 import AdapterDateFns from '@mui/lab/AdapterDateFns'
 import LocalizationProvider from '@mui/lab/LocalizationProvider'
@@ -22,17 +22,20 @@ function App() {
   const user = useSelector(authSelectors.getUser)
   const token = useSelector(authSelectors.getToken)
   const isLoggedIn = useSelector(authSelectors.getLoggedIn)
+  const shouldSignOut = useSelector(nodeSelectors.getShouldSignOut)
 
   React.useEffect(() => {
     const interval = setInterval(() => {
       if (!isLoggedIn || (!!user && Date.now() / 1000 > user.exp && !window.location.href.includes('/login'))) {
         dispatch(logout())
+      } else if (shouldSignOut) {
+        dispatch(logout())
       } else if (isLoggedIn && token) {
         dispatch(getNodes.request({ token }))
       }
-    }, 5000)
+    }, 7500)
     return () => clearInterval(interval)
-  }, [dispatch, user, isLoggedIn, token])
+  }, [dispatch, user, isLoggedIn, token, shouldSignOut])
 
   const theme = useCurrentTheme()
 

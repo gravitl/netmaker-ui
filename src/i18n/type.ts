@@ -102,6 +102,7 @@ export interface LanguageResource {
     notfound: string
     network: string
     tokenexpire: string
+    unauthorized: string
   }
   extclient: {
     extclients: string

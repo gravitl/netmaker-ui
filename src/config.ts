@@ -8,7 +8,6 @@ export const DEBUG = BACKEND_URL.includes('localhost')
 
 
 const extractVersion = (v: string | undefined) => {
-  console.log(`Found version ${v}`)
   if (!!!v) {
     return 'latest'
   }
