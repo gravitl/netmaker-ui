@@ -140,7 +140,6 @@ export interface LanguageResource {
     addressrange: string
     addressrange6: string
     localrange: string
-    displayname: string
     nodeslastmodified: string
     networklastmodified: string
     defaultinterface: string

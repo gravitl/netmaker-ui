@@ -65,10 +65,10 @@ export const NetworkEdit: React.FC<{
       ref={formRef}
     >
       <Grid container justifyContent="space-around" alignItems="center">
-        <Grid item xs={12}>
+      <Grid item xs={12}>
           <div style={{ textAlign: 'center', margin: '1em 0 1em 0' }}>
             <Typography variant="h5">
-              {`${t('network.details')} : ${network.displayname}`}
+              {`${t('network.details')} : ${network.netid}`}
             </Typography>
           </div>
         </Grid>
@@ -88,12 +88,6 @@ export const NetworkEdit: React.FC<{
           <NmFormInputText
             name={'localrange'}
             label={t('network.localrange')}
-          />
-        </Grid>
-        <Grid item xs={12} sm={4} md={3}>
-          <NmFormInputText
-            name={'displayname'}
-            label={t('network.displayname')}
           />
         </Grid>
         <Grid item xs={12} sm={4} md={3}>

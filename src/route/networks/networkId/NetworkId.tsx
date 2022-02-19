@@ -165,13 +165,6 @@ export const NetworkId: React.FC = () => {
             <Grid item xs={12} sm={6} md={3}>
               <TextField
                 disabled
-                value={network.displayname}
-                label={t('network.displayname')}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
-              <TextField
-                disabled
                 value={network.defaultinterface}
                 label={t('network.defaultinterface')}
               />
@@ -235,15 +228,6 @@ export const NetworkId: React.FC = () => {
               <FormControlLabel
                 label={t('network.isdualstack')}
                 control={<SwitchField checked={network.isdualstack} disabled />}
-                disabled
-              />
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
-              <FormControlLabel
-                label={t('network.defaultsaveconfig')}
-                control={
-                  <SwitchField checked={network.defaultsaveconfig} disabled />
-                }
                 disabled
               />
             </Grid>

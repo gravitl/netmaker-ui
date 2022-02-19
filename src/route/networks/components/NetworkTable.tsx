@@ -21,12 +21,6 @@ const columns: TableColumns<Network> = [
     format: (value) => <NmLink sx={{textTransform: 'none'}} to={`/networks/${value}`}>{value}</NmLink>,
   },
   {
-    id: 'displayname',
-    labelKey: 'network.displayname',
-    minWidth: 100,
-    sortable: true,
-  },
-  {
     id: 'addressrange',
     labelKey: 'network.addressrange',
     minWidth: 150,
@@ -99,7 +93,7 @@ export const NetworkTable: React.FC<{networks: Network[]}> = ({networks}) => {
         getRowId={(row) => row.netid}
         actions={[
           (row) => ({
-            tooltip: `${t('network.refresh')} : ${row.displayname}`,
+            tooltip: `${t('network.refresh')} : ${row.netid}`,
             disabled: false,
             icon: <Autorenew />,
             onClick: () => {
