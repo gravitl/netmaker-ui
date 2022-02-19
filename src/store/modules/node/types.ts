@@ -13,7 +13,6 @@ export interface Node {
   postdown: string
   allowedips: []
   persistentkeepalive: number
-  saveconfig: boolean
   accesskey: string
   interface: string
   lastmodified: number
@@ -35,36 +34,37 @@ export interface Node {
   ingressgatewayrange: string
   isstatic: boolean
   udpholepunch: boolean
-  pullchanges: boolean
   dnson: boolean
   isdualstack: boolean
   isserver: boolean
   action: string
   islocal: boolean
   localrange: string
-  roaming: boolean
   ipforwarding: boolean
   os: string
   mtu: number
+  version: string
+  commid: string
+  isdocker: boolean
+  isk8s: boolean
 }
 
 export type NodePayload = Modify<
   Node,
   {
-    saveconfig: 'yes' | 'no'
     isegressgateway: 'yes' | 'no'
     isingressgateway: 'yes' | 'no'
     isstatic: 'yes' | 'no'
     udpholepunch: 'yes' | 'no'
-    pullchanges: 'yes' | 'no'
     dnson: 'yes' | 'no'
     isdualstack: 'yes' | 'no'
     isserver: 'yes' | 'no'
     islocal: 'yes' | 'no'
-    roaming: 'yes' | 'no'
     ipforwarding: 'yes' | 'no'
     isrelayed: 'yes' | 'no'
     isrelay: 'yes' | 'no'
+    isdocker: 'yes' | 'no'
+    isk8s: 'yes' | 'no'
   }
 >
 

@@ -136,7 +136,6 @@ export const en: LanguageResource = {
     addressrange: 'Address Range (IPv4)',
     addressrange6: 'Address Range (IPv6)',
     localrange: 'Local Range',
-    displayname: 'Display Name',
     nodeslastmodified: 'Nodes Last Modified',
     networklastmodified: 'Network Last Modified',
     defaultinterface: 'Default Interface',
