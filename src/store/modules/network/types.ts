@@ -77,6 +77,7 @@ export interface CreateNetworkPayload {
     isdualstack: 'yes' | 'no'
     addressrange6: string
     defaultudpholepunch: 'yes' | 'no'
+    ishubandspoke: 'yes' | 'no'
   }
   Response: void
 }

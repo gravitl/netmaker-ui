@@ -240,6 +240,15 @@ export const NetworkId: React.FC = () => {
                 disabled
               />
             </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <FormControlLabel
+                label={t('network.ishubandspoke')}
+                control={
+                  <SwitchField checked={network.ishubandspoke} disabled />
+                }
+                disabled
+              />
+            </Grid>
           </Grid>
         </Route>
       </Switch>
