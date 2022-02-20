@@ -225,6 +225,7 @@ export const en: LanguageResource = {
     statusegress: 'Egress Status',
     statusingress: 'Ingress Status',
     statusrelay: 'Relay Status',
+    statushub: 'Is Network Hub',
     confirmegress: 'Are you sure you want to make an Egress Gateway?',
     confirmingress: 'Are you sure you want to make an Ingress Gateway?',
     confirmrelay: 'Are you sure you want to make a Relay Server?',
@@ -239,6 +240,10 @@ export const en: LanguageResource = {
     isingressegress: 'Is Egress and Ingress',
     isingressegressrelay: 'Is Egress, Ingress & Relay',
     isrelayed: 'Being Relayed',
+    ishub: 'Is Network Hub',
+    onehub: 'This node is currently the hub',
+    createhub: 'Make this node the hub',
+    updatenode: 'Update Node',
     state: {
       error: 'ERROR',
       warning: 'WARNING',

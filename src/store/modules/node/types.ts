@@ -47,6 +47,7 @@ export interface Node {
   commid: string
   isdocker: boolean
   isk8s: boolean
+  ishub: boolean
 }
 
 export type NodePayload = Modify<
@@ -65,6 +66,7 @@ export type NodePayload = Modify<
     isrelay: 'yes' | 'no'
     isdocker: 'yes' | 'no'
     isk8s: 'yes' | 'no'
+    ishub: 'yes' | 'no'
   }
 >
 

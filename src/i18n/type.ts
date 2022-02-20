@@ -223,6 +223,7 @@ export interface LanguageResource {
     statusegress: string
     statusingress: string
     statusrelay: string
+    statushub: string
     confirmrelay: string
     confirmingress: string
     confirmegress: string
@@ -237,6 +238,10 @@ export interface LanguageResource {
     isingressegress: string
     isingressegressrelay: string
     isrelayed: string
+    ishub: string
+    onehub: string
+    createhub: string
+    updatenode: string
     state: {
       error: string
       warning: string
