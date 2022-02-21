@@ -142,7 +142,7 @@ export const NetworkNodes: React.FC = () => {
     },
   ]
 
-  if (network.ishubandspoke) {
+  if (network.ispointtosite) {
     columns.push(
       {
         id: 'ishub',

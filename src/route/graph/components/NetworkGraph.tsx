@@ -137,7 +137,7 @@ export const NetworkGraph: React.FC = () => {
     }
   }
 
-  if (currentNetwork.ishubandspoke) {
+  if (currentNetwork.ispointtosite) {
     const hubNode = listOfNodes.filter(currNode => currNode.ishub)[0]
     if (!!hubNode) {
       for (let i = 0; i < listOfNodes.length; i++) {

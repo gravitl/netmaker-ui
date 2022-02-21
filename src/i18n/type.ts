@@ -132,7 +132,7 @@ export interface LanguageResource {
     egressiface: string
     udpholepunching: string
     islocal: string
-    ishubandspoke: string
+    ispointtosite: string
   }
   network: {
     allowmanualsignup: string
@@ -152,7 +152,7 @@ export interface LanguageResource {
     defaultextclientdns: string
     defaultmtu: string
     isdualstack: string
-    ishubandspoke: string
+    ispointtosite: string
     defaultsaveconfig: string
     accesskeys: string
     defaultudpholepunch: string

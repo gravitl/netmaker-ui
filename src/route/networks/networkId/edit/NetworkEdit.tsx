@@ -165,8 +165,8 @@ export const NetworkEdit: React.FC<{
         </Grid>
         <Grid item xs={12} sm={4} md={3}>
           <NmFormInputSwitch
-            name={'ishubandspoke'}
-            label={t('network.ishubandspoke')}
+            name={'ispointtosite'}
+            label={t('network.ispointtosite')}
           />
         </Grid>
       </Grid>
