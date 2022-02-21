@@ -139,12 +139,21 @@ export const NetworkGraph: React.FC = () => {
 
   if (currentNetwork.ishubandspoke) {
     const hubNode = listOfNodes.filter(currNode => currNode.ishub)[0]
-    console.log(hubNode)
     if (!!hubNode) {
       for (let i = 0; i < listOfNodes.length; i++) {
         const innerNode = listOfNodes[i]
-        if (innerNode.isingressgateway || innerNode.isegressgateway) { 
-          if (innerNode.isingressgateway && innerNode.isegressgateway) { // and ext clients
+        if (innerNode.isingressgateway || innerNode.isegressgateway) { // handle adding external cidr(s)
+          if (innerNode.isingressgateway && innerNode.isegressgateway && innerNode.isrelay) {
+            data.nodeTypes.push({
+              type: 'i&e&r',
+              id: innerNode.id,
+              name: innerNode.name,
+              lastCheckin: innerNode.lastcheckin,
+            })
+            extractEgressRanges(innerNode)
+            extractIngressRanges(innerNode)
+            extractRelayedNodes(innerNode)
+          } else if (innerNode.isingressgateway && innerNode.isegressgateway) { // and ext clients
             data.nodeTypes.push({
               type: '1&e',
               id: innerNode.id,
@@ -171,6 +180,17 @@ export const NetworkGraph: React.FC = () => {
              })
              extractIngressRanges(innerNode)
           }  
+        }
+        else if (innerNode.isrelay) {
+           data.nodeTypes.push({
+            type: 'relay',
+            id: innerNode.id,
+            name: innerNode.name,
+            lastCheckin: innerNode.lastcheckin,
+          })
+          extractRelayedNodes(innerNode)
+        } else if (innerNode.isrelayed) { // skip edges for relayed nodes
+          continue
         } else {
           data.nodeTypes.push({
             type: 'normal',
@@ -182,14 +202,17 @@ export const NetworkGraph: React.FC = () => {
         if (innerNode.id === hubNode.id) { // skip the hub node
           continue
         }
-        data.edges.push({
-          from: innerNode.id,
-          to: hubNode.id,
-        })
-        data.edges.push({
-          from: hubNode.id,
-          to: innerNode.id,
-        })
+        
+        if (isConnected(innerNode, hubNode)) {
+          data.edges.push({
+            from: innerNode.id,
+            to: hubNode.id,
+          })
+          data.edges.push({
+            from: hubNode.id,
+            to: innerNode.id,
+          })
+        }
       }
     }
   } else {
@@ -264,8 +287,8 @@ export const NetworkGraph: React.FC = () => {
               to: outerNode.id,
             })
           }
+        }
       }
-    }
   }
 
   return (
