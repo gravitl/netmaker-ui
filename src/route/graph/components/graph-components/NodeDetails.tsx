@@ -138,7 +138,7 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({ data, handleClose, altData, n
           withHistory
           extraLogic={handleClose}
         />
-        {network.ishubandspoke ? 
+        {network.ispointtosite ? 
         <HubButton 
           node={data}
           createText={`${t('node.createhub')} : ${data.name}`}

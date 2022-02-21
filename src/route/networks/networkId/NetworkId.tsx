@@ -244,9 +244,9 @@ export const NetworkId: React.FC = () => {
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
               <FormControlLabel
-                label={t('network.ishubandspoke')}
+                label={t('network.ispointtosite')}
                 control={
-                  <SwitchField checked={network.ishubandspoke} disabled />
+                  <SwitchField checked={network.ispointtosite} disabled />
                 }
                 disabled
               />

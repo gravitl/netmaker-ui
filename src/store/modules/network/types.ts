@@ -20,7 +20,7 @@ export interface Network {
   isdualstack: boolean
   isipv4: boolean
   isipv6: boolean
-  ishubandspoke: boolean
+  ispointtosite: boolean 
   iscomms: boolean
   localrange: string
   defaultudpholepunch: boolean
@@ -37,7 +37,7 @@ export type NetworkPayload = Modify<
     isipv4: 'no' | 'yes'
     isipv6: 'no' | 'yes'
     defaultudpholepunch: 'no' | 'yes'
-    ishubandspoke: 'no' | 'yes'
+    ispointtosite: 'no' | 'yes'
     iscomms: 'no' | 'yes'
   }
 >
@@ -77,7 +77,7 @@ export interface CreateNetworkPayload {
     isdualstack: 'yes' | 'no'
     addressrange6: string
     defaultudpholepunch: 'yes' | 'no'
-    ishubandspoke: 'yes' | 'no'
+    ispointtosite: 'yes' | 'no'
   }
   Response: void
 }

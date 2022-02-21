@@ -13,7 +13,7 @@ export const networkToNetworkPayload = (network: Network): NetworkPayload => {
     isipv6: network.isipv6 ? 'yes' : 'no',
     defaultudpholepunch: network.defaultudpholepunch ? 'yes' : 'no',
     iscomms: network.iscomms ? 'yes' : 'no',
-    ishubandspoke: network.ishubandspoke ? 'yes' : 'no',
+    ispointtosite: network.ispointtosite ? 'yes' : 'no',
   }
 }
 export const networkPayloadToNetwork = (network: NetworkPayload): Network => {
@@ -28,7 +28,7 @@ export const networkPayloadToNetwork = (network: NetworkPayload): Network => {
     isipv4: network.isipv4 === 'yes',
     isipv6: network.isipv6 === 'yes',
     defaultudpholepunch: network.defaultudpholepunch === 'yes',
-    ishubandspoke: network.ishubandspoke === 'yes',
+    ispointtosite: network.ispointtosite === 'yes',
     iscomms: network.iscomms === 'yes',
   }
 }

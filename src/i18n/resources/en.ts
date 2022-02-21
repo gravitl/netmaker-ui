@@ -147,7 +147,7 @@ export const en: LanguageResource = {
     defaultextclientdns: 'Default Ext Client DNS',
     defaultmtu: 'Default MTU',
     isdualstack: 'Is Dual Stack (IPv4 + IPv6)',
-    ishubandspoke: 'Is Hub And Spoke',
+    ispointtosite: 'Is Point to Site',
     defaultsaveconfig: 'Default Saveconfig',
     accesskeys: 'Access Keys',
     defaultudpholepunch: 'UDP Hole Punching',
@@ -167,7 +167,7 @@ export const en: LanguageResource = {
     egressiface: 'Find your interface on linux with "ip link show"',
     udpholepunching: 'This can enhance connectivity in cases where NAT may block communication.',
     islocal: 'Use if server is on same network (LAN) as you',
-    ishubandspoke: 'Create a network in which all clients have only one, central peer',
+    ispointtosite: 'Create a network in which all clients have only one, central peer',
   },
   node: {
     nodes: 'Nodes',
