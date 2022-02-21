@@ -43,8 +43,12 @@ export const NetworkEdit: React.FC<{
     [dispatch]
   )
 
-  if (!network) {
-    return <div>Not Found</div>
+  if (!!!network) {
+    return <div style={{ textAlign: 'center', margin: '1em 0 1em 0' }}>
+        <Typography variant="h5">
+          {`${t('error.notfound')}`}
+        </Typography>
+      </div>
   }
 
   return (
@@ -74,7 +78,7 @@ export const NetworkEdit: React.FC<{
           {network.iscomms && 
             <div style={{ textAlign: 'center', margin: '1em 0 1em 0' }}>
               <Typography variant="h6" style={{overflowWrap: 'break-word'}}>
-                {`${t('network.iscomms')}`}
+                {`${t('network.commswarn')}`}
               </Typography>
             </div>
           }
@@ -147,6 +151,8 @@ export const NetworkEdit: React.FC<{
         <Grid item xs={12} sm={4} md={3}>
         </Grid>
         <Grid item xs={12} sm={4} md={3}>
+        </Grid>
+        <Grid item xs={12} sm={4} md={3}>
           <NmFormInputSwitch
             name={'allowmanualsignup'}
             label={'Allow Node Signup Without Keys'}
@@ -156,12 +162,6 @@ export const NetworkEdit: React.FC<{
           <NmFormInputSwitch
             name={'isdualstack'}
             label={t('network.isdualstack')}
-          />
-        </Grid>
-        <Grid item xs={12} sm={4} md={3}>
-          <NmFormInputSwitch
-            name={'defaultsaveconfig'}
-            label={t('network.defaultsaveconfig')}
           />
         </Grid>
         <Grid item xs={12} sm={4} md={3}>

@@ -54,8 +54,12 @@ export const NetworkId: React.FC = () => {
     [dispatch, network, setProps, t]
   )
 
-  if (!network) {
-    return <div>Not Found</div>
+  if (!!!network) {
+    return <div style={{ textAlign: 'center', margin: '1em 0 1em 0' }}>
+    <Typography variant="h5">
+      {`${t('error.notfound')}`}
+    </Typography>
+  </div>
   }
 
   const buttonStyle = {
