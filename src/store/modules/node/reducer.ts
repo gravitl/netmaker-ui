@@ -84,7 +84,15 @@ export const reducer = createReducer({
         (node) => node.id === action.payload.id
       )
       if (~index) {
-        draftState.nodes[index] = nodePayloadToNode(action.payload)
+        const newNode = nodePayloadToNode(action.payload)
+        if (newNode.ishub && draftState.nodes[index].ishub !== newNode.ishub) { // set all other nodes on same network as not hub
+          for (let i = 0; i < draftState.nodes.length; i++) {
+            if (i !== index && draftState.nodes[i].network === newNode.network) {
+              draftState.nodes[i].ishub = false
+            }
+          }
+        }
+        draftState.nodes[index] = newNode
       }
     })
   )

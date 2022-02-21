@@ -132,6 +132,7 @@ export interface LanguageResource {
     egressiface: string
     udpholepunching: string
     islocal: string
+    ishubandspoke: string
   }
   network: {
     allowmanualsignup: string
@@ -151,6 +152,7 @@ export interface LanguageResource {
     defaultextclientdns: string
     defaultmtu: string
     isdualstack: string
+    ishubandspoke: string
     defaultsaveconfig: string
     accesskeys: string
     defaultudpholepunch: string
@@ -221,6 +223,7 @@ export interface LanguageResource {
     statusegress: string
     statusingress: string
     statusrelay: string
+    statushub: string
     confirmrelay: string
     confirmingress: string
     confirmegress: string
@@ -235,6 +238,10 @@ export interface LanguageResource {
     isingressegress: string
     isingressegressrelay: string
     isrelayed: string
+    ishub: string
+    onehub: string
+    createhub: string
+    updatenode: string
     state: {
       error: string
       warning: string

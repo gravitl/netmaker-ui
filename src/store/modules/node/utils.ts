@@ -19,6 +19,7 @@ export const nodeToNodePayload = (node: Node): NodePayload => {
     isrelayed: node.isrelayed ? 'yes' : 'no',
     isdocker: node.isdocker ? 'yes' : 'no',
     isk8s: node.isk8s ? 'yes' : 'no',
+    ishub: node.ishub ? 'yes' : 'no',
   }
 }
 export const nodePayloadToNode = (node: NodePayload): Node => {
@@ -40,6 +41,7 @@ export const nodePayloadToNode = (node: NodePayload): Node => {
     isrelayed: node.isrelayed === 'yes',
     isdocker: node.isdocker === 'yes',
     isk8s: node.isk8s === 'yes',
+    ishub: node.ishub === 'yes',
   }
 }
 

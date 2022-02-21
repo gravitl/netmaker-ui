@@ -147,6 +147,7 @@ export const en: LanguageResource = {
     defaultextclientdns: 'Default Ext Client DNS',
     defaultmtu: 'Default MTU',
     isdualstack: 'Is Dual Stack (IPv4 + IPv6)',
+    ishubandspoke: 'Is Hub And Spoke',
     defaultsaveconfig: 'Default Saveconfig',
     accesskeys: 'Access Keys',
     defaultudpholepunch: 'UDP Hole Punching',
@@ -165,7 +166,8 @@ export const en: LanguageResource = {
     egress: 'Enter your network interface name, i.e. "eth0"',
     egressiface: 'Find your interface on linux with "ip link show"',
     udpholepunching: 'This can enhance connectivity in cases where NAT may block communication.',
-    islocal: 'Use if server is on same network (LAN) as you'
+    islocal: 'Use if server is on same network (LAN) as you',
+    ishubandspoke: 'Create a network in which all clients have only one, central peer',
   },
   node: {
     nodes: 'Nodes',
@@ -223,6 +225,7 @@ export const en: LanguageResource = {
     statusegress: 'Egress Status',
     statusingress: 'Ingress Status',
     statusrelay: 'Relay Status',
+    statushub: 'Is Network Hub',
     confirmegress: 'Are you sure you want to make an Egress Gateway?',
     confirmingress: 'Are you sure you want to make an Ingress Gateway?',
     confirmrelay: 'Are you sure you want to make a Relay Server?',
@@ -237,6 +240,10 @@ export const en: LanguageResource = {
     isingressegress: 'Is Egress and Ingress',
     isingressegressrelay: 'Is Egress, Ingress & Relay',
     isrelayed: 'Being Relayed',
+    ishub: 'Is Network Hub',
+    onehub: 'This node is currently the hub',
+    createhub: 'Make this node the hub',
+    updatenode: 'Update Node',
     state: {
       error: 'ERROR',
       warning: 'WARNING',

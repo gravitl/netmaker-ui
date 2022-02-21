@@ -12,7 +12,7 @@ export const networkToNetworkPayload = (network: Network): NetworkPayload => {
     isipv4: network.isipv4 ? 'yes' : 'no',
     isipv6: network.isipv6 ? 'yes' : 'no',
     defaultudpholepunch: network.defaultudpholepunch ? 'yes' : 'no',
-    iscomms: network.defaultudpholepunch ? 'yes' : 'no',
+    iscomms: network.iscomms ? 'yes' : 'no',
     ishubandspoke: network.ishubandspoke ? 'yes' : 'no',
   }
 }
