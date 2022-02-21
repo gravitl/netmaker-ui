@@ -166,6 +166,8 @@ export interface LanguageResource {
     graphs: string
     graphview: string
     graph: string
+    iscomms: string
+    commswarn: string
   }
   node: {
     nodes: string

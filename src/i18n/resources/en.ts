@@ -161,6 +161,8 @@ export const en: LanguageResource = {
     graphs: 'Network Graphs',
     graphview: 'Viewing Network Graph',
     graph: 'Graph',
+    iscomms: 'This is your comms network',
+    commswarn: 'Editing this network could cause your networks to lose consensus',
   },
   helper: {
     egress: 'Enter your network interface name, i.e. "eth0"',

@@ -65,12 +65,19 @@ export const NetworkEdit: React.FC<{
       ref={formRef}
     >
       <Grid container justifyContent="space-around" alignItems="center">
-      <Grid item xs={12}>
+        <Grid item xs={12}>
           <div style={{ textAlign: 'center', margin: '1em 0 1em 0' }}>
             <Typography variant="h5">
               {`${t('network.details')} : ${network.netid}`}
             </Typography>
           </div>
+          {network.iscomms && 
+            <div style={{ textAlign: 'center', margin: '1em 0 1em 0' }}>
+              <Typography variant="h6" style={{overflowWrap: 'break-word'}}>
+                {`${t('network.iscomms')}`}
+              </Typography>
+            </div>
+          }
         </Grid>
         <Grid item xs={12} sm={4} md={3}>
           <NmFormInputText
