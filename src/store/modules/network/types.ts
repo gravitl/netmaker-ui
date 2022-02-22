@@ -4,7 +4,6 @@ import { Modify } from '../../../types/react-app-env'
 export interface Network {
   addressrange: string
   addressrange6: string
-  displayname: string
   netid: string
   nodeslastmodified: number
   networklastmodified: number
@@ -13,9 +12,7 @@ export interface Network {
   nodelimit: number
   defaultpostup: string
   defaultpostdown: string
-  keyupdatetimestamp: number
   defaultkeepalive: number
-  defaultsaveconfig: boolean
   accesskeys: Array<AccessKey>
   externalclients: Array<ExternalClient>
   allowmanualsignup: boolean
@@ -23,9 +20,9 @@ export interface Network {
   isdualstack: boolean
   isipv4: boolean
   isipv6: boolean
-  isgrpchub: boolean
+  ispointtosite: boolean 
+  iscomms: boolean
   localrange: string
-  checkininterval: number
   defaultudpholepunch: boolean
   defaultextclientdns: string
   defaultmtu: number
@@ -34,22 +31,14 @@ export interface Network {
 export type NetworkPayload = Modify<
   Network,
   {
-    defaultsaveconfig: 'no' | 'yes'
     allowmanualsignup: 'no' | 'yes'
     islocal: 'no' | 'yes'
     isdualstack: 'no' | 'yes'
     isipv4: 'no' | 'yes'
     isipv6: 'no' | 'yes'
-    isgrpchub: 'no' | 'yes'
     defaultudpholepunch: 'no' | 'yes'
-    // defaultmtu: number
-    // checkininterval: number
-    // keyupdatetimestamp: number
-    // defaultkeepalive: number
-    // nodeslastmodified: number
-    // networklastmodified: number
-    // defaultlistenport: number
-    // nodelimit: number
+    ispointtosite: 'no' | 'yes'
+    iscomms: 'no' | 'yes'
   }
 >
 
@@ -88,6 +77,7 @@ export interface CreateNetworkPayload {
     isdualstack: 'yes' | 'no'
     addressrange6: string
     defaultudpholepunch: 'yes' | 'no'
+    ispointtosite: 'yes' | 'no'
   }
   Response: void
 }

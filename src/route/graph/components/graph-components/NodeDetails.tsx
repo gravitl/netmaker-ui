@@ -8,23 +8,25 @@ import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import { useTranslation } from 'react-i18next';
 import { red, orange, green, grey } from '@mui/material/colors';
-import { Node } from '~store/types';
+import { Node, Network } from '~store/types';
 import { List, ListItem, ListItemIcon, ListItemText, Tooltip } from '@mui/material';
-import { AltRoute, ArrowRightAlt, CallMerge, CallSplit, Circle, Close, DeleteForever, Edit } from '@mui/icons-material';
+import { AltRoute, ArrowRightAlt, CallMerge, CallSplit, Circle, Close, DeleteForever, Edit, Hub } from '@mui/icons-material';
 import { AltDataNode } from './types';
 import { isNodeHealthy } from '~util/fields';
 import { Link } from 'react-router-dom';
 import { TableToggleButton } from '../../../nodes/netid/components/TableToggleButton'
+import { HubButton } from '../../../nodes/netid/components/HubButton';
 import { deleteNode } from '~store/modules/node/actions'
 import CustomizedDialogs from '~components/dialog/CustomDialog';
 
 interface NodeDetailsProps {
     data: Node | undefined;
     handleClose: () => void;
-    altData: AltDataNode | undefined
+    altData: AltDataNode | undefined;
+    network: Network;
 }
   
-const NodeDetails: React.FC<NodeDetailsProps> = ({ data, handleClose, altData }) => {
+const NodeDetails: React.FC<NodeDetailsProps> = ({ data, handleClose, altData, network }) => {
 
   const dispatch = useDispatch()
   const { t } = useTranslation()
@@ -136,6 +138,14 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({ data, handleClose, altData })
           withHistory
           extraLogic={handleClose}
         />
+        {network.ispointtosite ? 
+        <HubButton 
+          node={data}
+          createText={`${t('node.createhub')} : ${data.name}`}
+          SignalIcon={<Hub />}
+          disabledText={`${t('node.onehub')}`}
+          extraLogic={handleClose}
+        /> : null}
         <Tooltip title={`${t('common.delete')} ${t('node.node')}`} placement='top'>
           <IconButton disabled={data.isserver} aria-label="delete node" onClick={handleOpenPrompt}>
             <DeleteForever />

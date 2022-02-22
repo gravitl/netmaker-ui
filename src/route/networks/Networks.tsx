@@ -27,7 +27,7 @@ export const Networks: React.FC = () => {
     if (!!!searchTerm) {
       setFilterNetworks(listOfNetworks)
     } else {
-      setFilterNetworks(listOfNetworks.filter(network => `${network.netid}${network.displayname}${network.addressrange}`.includes(searchTerm)))
+      setFilterNetworks(listOfNetworks.filter(network => `${network.netid}${network.addressrange}`.includes(searchTerm)))
     }
   }
 

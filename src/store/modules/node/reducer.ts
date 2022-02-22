@@ -1,6 +1,7 @@
 import { produce } from 'immer'
 import { createReducer } from 'typesafe-actions'
 import { ExternalClient } from '~store/types'
+import { shouldSignOut } from '.'
 import {
   approveNode,
   clearQr,
@@ -15,6 +16,7 @@ import {
   getExternalClientConf,
   getExternalClients,
   getNodes,
+  setShouldLogout,
   updateExternalClient,
   updateNode,
 } from './actions'
@@ -27,7 +29,13 @@ export const reducer = createReducer({
   externalClients: [] as Array<ExternalClient>,
   isFetchingClients: false as boolean,
   qrData: '' as string,
+  shouldSignOut: '' as shouldSignOut,
 })
+  .handleAction(setShouldLogout, (state, action) =>
+    produce(state, (draftState) => {
+      draftState.shouldSignOut = action.payload
+    })
+  )
   .handleAction(getNodes['request'], (state, _) =>
     produce(state, (draftState) => {
       draftState.isFetching = true
@@ -56,10 +64,18 @@ export const reducer = createReducer({
       draftState.isFetchingClients = false
     })
   )
-  .handleAction(getNodes['failure'], (state, _) =>
+  .handleAction(getNodes['failure'], (state, action) =>
     produce(state, (draftState) => {
       draftState.nodes = []
       draftState.isFetching = false
+      if (!!action.payload && !!action.payload.message) { // && action.payload.message.includes("unauth")) {
+        if (action.payload.message.includes("Network Error")) {
+          draftState.shouldSignOut = 'network'
+        }
+        if (action.payload.message.includes("status code 401")) {
+          draftState.shouldSignOut = 'auth'
+        }
+      }
     })
   )
   .handleAction(updateNode['success'], (state, action) =>
@@ -68,7 +84,15 @@ export const reducer = createReducer({
         (node) => node.id === action.payload.id
       )
       if (~index) {
-        draftState.nodes[index] = nodePayloadToNode(action.payload)
+        const newNode = nodePayloadToNode(action.payload)
+        if (newNode.ishub && draftState.nodes[index].ishub !== newNode.ishub) { // set all other nodes on same network as not hub
+          for (let i = 0; i < draftState.nodes.length; i++) {
+            if (i !== index && draftState.nodes[i].network === newNode.network) {
+              draftState.nodes[i].ishub = false
+            }
+          }
+        }
+        draftState.nodes[index] = newNode
       }
     })
   )

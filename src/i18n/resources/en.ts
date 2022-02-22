@@ -104,6 +104,7 @@ export const en: LanguageResource = {
     notfound: 'Not found',
     network: 'Could not reach server',
     tokenexpire: 'Session has expired',
+    unauthorized: 'Unauthorized access attempted',
   },
   extclient: {
     extclients: 'External Clients',
@@ -135,7 +136,6 @@ export const en: LanguageResource = {
     addressrange: 'Address Range (IPv4)',
     addressrange6: 'Address Range (IPv6)',
     localrange: 'Local Range',
-    displayname: 'Display Name',
     nodeslastmodified: 'Nodes Last Modified',
     networklastmodified: 'Network Last Modified',
     defaultinterface: 'Default Interface',
@@ -147,6 +147,7 @@ export const en: LanguageResource = {
     defaultextclientdns: 'Default Ext Client DNS',
     defaultmtu: 'Default MTU',
     isdualstack: 'Is Dual Stack (IPv4 + IPv6)',
+    ispointtosite: 'Is Point to Site',
     defaultsaveconfig: 'Default Saveconfig',
     accesskeys: 'Access Keys',
     defaultudpholepunch: 'UDP Hole Punching',
@@ -160,12 +161,15 @@ export const en: LanguageResource = {
     graphs: 'Network Graphs',
     graphview: 'Viewing Network Graph',
     graph: 'Graph',
+    iscomms: 'This is your comms network',
+    commswarn: 'Editing this network could cause your networks to lose consensus',
   },
   helper: {
     egress: 'Enter your network interface name, i.e. "eth0"',
     egressiface: 'Find your interface on linux with "ip link show"',
     udpholepunching: 'This can enhance connectivity in cases where NAT may block communication.',
-    islocal: 'Use if server is on same network (LAN) as you'
+    islocal: 'Use if server is on same network (LAN) as you',
+    ispointtosite: 'Create a network in which all clients have only one, central peer',
   },
   node: {
     nodes: 'Nodes',
@@ -223,6 +227,7 @@ export const en: LanguageResource = {
     statusegress: 'Egress Status',
     statusingress: 'Ingress Status',
     statusrelay: 'Relay Status',
+    statushub: 'Is Network Hub',
     confirmegress: 'Are you sure you want to make an Egress Gateway?',
     confirmingress: 'Are you sure you want to make an Ingress Gateway?',
     confirmrelay: 'Are you sure you want to make a Relay Server?',
@@ -237,6 +242,10 @@ export const en: LanguageResource = {
     isingressegress: 'Is Egress and Ingress',
     isingressegressrelay: 'Is Egress, Ingress & Relay',
     isrelayed: 'Being Relayed',
+    ishub: 'Is Network Hub',
+    onehub: 'This node is currently the hub',
+    createhub: 'Make this node the hub',
+    updatenode: 'Update Node',
     state: {
       error: 'ERROR',
       warning: 'WARNING',
@@ -267,7 +276,7 @@ export const en: LanguageResource = {
     },
     header: 'Login below:',
     login: 'Login',
-    loginFailed: 'Failed to login, wrong username or password.',
+    loginFailed: 'Failed to login, invalid credentials or server disconnect.',
     logout: 'Logout',
   },
   users: {

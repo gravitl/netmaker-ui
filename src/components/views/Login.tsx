@@ -4,10 +4,11 @@ import { NmForm, NmFormInputText, validate } from '../form'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { correctUserNameRegex, correctPasswordRegex } from '../../util/regex'
-import { authSelectors } from '../../store/selectors'
+import { authSelectors, nodeSelectors } from '../../store/selectors'
 import { login } from '../../store/modules/auth/actions'
 import { Redirect, useLocation } from 'react-router'
 import { useQuery } from '~util/query'
+import { setShouldLogout } from '~store/modules/node/actions'
 
 const styles = {
   centerText: {
@@ -31,6 +32,7 @@ export default function Login() {
   const isLogginIn = useSelector(authSelectors.isLogginIn)
   const isLoggedIn = useSelector(authSelectors.getLoggedIn)
   const authError = useSelector(authSelectors.getAuthError)
+  const shouldSignOut = useSelector(nodeSelectors.getShouldSignOut)
   const { t } = useTranslation()
   const [error, setError] = React.useState('')
   const [triedToLogin, setTriedToLogin] = React.useState(false)
@@ -44,6 +46,18 @@ export default function Login() {
   const initialLoginForm = { username: '', password: '' }
 
   useEffect(() => {
+    if (shouldSignOut === 'auth') {
+      setError(t('error.unauthorized'))
+      dispatch(setShouldLogout(''))
+      return
+    }
+
+    if (shouldSignOut === 'network') {
+      setError(t('error.network'))
+      dispatch(setShouldLogout(''))
+      return
+    }
+
     if (oauth) {
       setError(t('login.oauth.failed'))
       setTriedToLogin(true)
@@ -78,6 +92,7 @@ export default function Login() {
     setError,
     t,
     authError,
+    shouldSignOut,
   ])
 
   const loginValidation = useMemo(

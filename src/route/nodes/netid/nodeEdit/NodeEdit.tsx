@@ -270,39 +270,46 @@ export const NodeEdit: React.FC<{
         </Grid>
         <Grid item xs={12}>
           <Grid container justifyContent='space-between' alignItems='center'>
-            <Grid item xs={10} sm={5} md={2} sx={rowMargin}>
+            <Grid item xs={10} sm={4} md={2} sx={rowMargin}>
               <NmFormInputSwitch
                 label={t('node.isstatic')}
                 name={'isstatic'}
                 defaultValue={node.isstatic}
               />
             </Grid>
-            <Grid item xs={10} sm={5} md={2} sx={rowMargin}>
+            <Grid item xs={10} sm={4} md={2} sx={rowMargin}>
               <NmFormInputSwitch
                 label={t('node.udpholepunch')}
                 name={'udpholepunch'}
                 defaultValue={node.udpholepunch}
               />
             </Grid>
-            <Grid item xs={10} sm={5} md={2} sx={rowMargin}>
+            <Grid item xs={10} sm={4} md={2} sx={rowMargin}>
               <NmFormInputSwitch
                 label={t('node.dnson')}
                 name={'dnson'}
                 defaultValue={node.dnson}
               />
             </Grid>
-            <Grid item xs={10} sm={5} md={2} sx={rowMargin}>
+            <Grid item xs={10} sm={4} md={2} sx={rowMargin}>
               <NmFormInputSwitch
                 label={t('node.isdualstack')}
                 name={'isdualstack'}
                 defaultValue={node.isdualstack}
               />
             </Grid>
-            <Grid item xs={10} sm={5} md={2} sx={rowMargin}>
+            <Grid item xs={10} sm={4} md={1} sx={rowMargin}>
               <NmFormInputSwitch
                 label={t('node.islocal')}
                 name={'islocal'}
                 defaultValue={node.islocal}
+              />
+            </Grid>
+            <Grid item xs={10} sm={4} md={2} sx={rowMargin}>
+              <NmFormInputSwitch
+                label={t('node.ishub')}
+                name={'ishub'}
+                defaultValue={node.ishub}
               />
             </Grid>
           </Grid>

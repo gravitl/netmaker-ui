@@ -102,6 +102,7 @@ export interface LanguageResource {
     notfound: string
     network: string
     tokenexpire: string
+    unauthorized: string
   }
   extclient: {
     extclients: string
@@ -131,6 +132,7 @@ export interface LanguageResource {
     egressiface: string
     udpholepunching: string
     islocal: string
+    ispointtosite: string
   }
   network: {
     allowmanualsignup: string
@@ -139,7 +141,6 @@ export interface LanguageResource {
     addressrange: string
     addressrange6: string
     localrange: string
-    displayname: string
     nodeslastmodified: string
     networklastmodified: string
     defaultinterface: string
@@ -151,6 +152,7 @@ export interface LanguageResource {
     defaultextclientdns: string
     defaultmtu: string
     isdualstack: string
+    ispointtosite: string
     defaultsaveconfig: string
     accesskeys: string
     defaultudpholepunch: string
@@ -164,6 +166,8 @@ export interface LanguageResource {
     graphs: string
     graphview: string
     graph: string
+    iscomms: string
+    commswarn: string
   }
   node: {
     nodes: string
@@ -221,6 +225,7 @@ export interface LanguageResource {
     statusegress: string
     statusingress: string
     statusrelay: string
+    statushub: string
     confirmrelay: string
     confirmingress: string
     confirmegress: string
@@ -235,6 +240,10 @@ export interface LanguageResource {
     isingressegress: string
     isingressegressrelay: string
     isrelayed: string
+    ishub: string
+    onehub: string
+    createhub: string
+    updatenode: string
     state: {
       error: string
       warning: string

@@ -22,6 +22,7 @@ interface CreateNetwork {
   isdualstack: boolean
   addressrange6: string
   defaultudpholepunch: boolean
+  ispointtosite: boolean
 }
 
 const initialState: CreateNetwork = {
@@ -32,6 +33,7 @@ const initialState: CreateNetwork = {
   isdualstack: false,
   addressrange6: '',
   defaultudpholepunch: false,
+  ispointtosite: false,
 }
 
 const useStyles = makeStyles(() =>
@@ -62,6 +64,7 @@ export const NetworkCreate: React.FC = () => {
           islocal: data.islocal ? 'yes' : 'no',
           isdualstack: data.isdualstack ? 'yes' : 'no',
           defaultudpholepunch: data.defaultudpholepunch ? 'yes' : 'no',
+          ispointtosite: data.ispointtosite ? 'yes' : 'no',
         })
       )
       dispatch(
@@ -136,6 +139,13 @@ export const NetworkCreate: React.FC = () => {
           <Tooltip title={t('helper.udpholepunching') as string} placement='top'>
             <div>
               <NmFormInputSwitch name={'defaultudpholepunch'} label={t('network.defaultudpholepunch')} />
+            </div>
+          </Tooltip>
+        </Grid>
+        <Grid item xs={12} sm={10} md={10} className={classes.center + ' ' + classes.rowMargin} style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+          <Tooltip title={t('helper.ispointtosite') as string} placement='top'>
+            <div>
+              <NmFormInputSwitch name={'ispointtosite'} label={t('network.ispointtosite')} />
             </div>
           </Tooltip>
         </Grid>

@@ -5,7 +5,7 @@ import CustomDialog from '~components/dialog/CustomDialog'
 // import { Node } from '~store/types'
 import { useParams, useRouteMatch } from 'react-router-dom'
 import { Grid, Typography } from '@mui/material'
-import { useNodesByNetworkId } from '~util/network'
+import { useNetwork, useNodesByNetworkId } from '~util/network'
 import { Node } from '~store/types'
 import NodeGraph from './graph-components/NodeGraph'
 import NodeDetails from './graph-components/NodeDetails'
@@ -22,6 +22,7 @@ export const NetworkGraph: React.FC = () => {
   const [open, setOpen] = React.useState(false)
   const { url } = useRouteMatch()
   const { netid } = useParams<{ netid: string }>()
+  const currentNetwork = useNetwork(netid)
   const listOfNodes = useNodesByNetworkId(netid)
   const [selectedNode, setSelectedNode] = React.useState({} as Node)
   const [selectedAltData, setSelectedAltData] = React.useState({} as AltDataNode)
@@ -64,7 +65,7 @@ export const NetworkGraph: React.FC = () => {
     setSelectedAltData({} as AltDataNode)
   }
 
-  if (!!!listOfNodes || !!!listOfNodes.length) {
+  if (!!!listOfNodes || !!!listOfNodes.length || !!!currentNetwork) {
       return <Grid container justifyContent="space-between" alignItems="center">
         <Grid item xs={6}>
           <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
@@ -136,7 +137,86 @@ export const NetworkGraph: React.FC = () => {
     }
   }
 
-  for (let i = 0; i < listOfNodes.length; i++) {
+  if (currentNetwork.ispointtosite) {
+    const hubNode = listOfNodes.filter(currNode => currNode.ishub)[0]
+    if (!!hubNode) {
+      for (let i = 0; i < listOfNodes.length; i++) {
+        const innerNode = listOfNodes[i]
+        if (innerNode.isingressgateway || innerNode.isegressgateway) { // handle adding external cidr(s)
+          if (innerNode.isingressgateway && innerNode.isegressgateway && innerNode.isrelay) {
+            data.nodeTypes.push({
+              type: 'i&e&r',
+              id: innerNode.id,
+              name: innerNode.name,
+              lastCheckin: innerNode.lastcheckin,
+            })
+            extractEgressRanges(innerNode)
+            extractIngressRanges(innerNode)
+            extractRelayedNodes(innerNode)
+          } else if (innerNode.isingressgateway && innerNode.isegressgateway) { // and ext clients
+            data.nodeTypes.push({
+              type: '1&e',
+              id: innerNode.id,
+              name: innerNode.name,
+              lastCheckin: innerNode.lastcheckin,
+            })
+            extractEgressRanges(innerNode)
+            extractIngressRanges(innerNode)
+          }
+          else if (innerNode.isegressgateway) { // handle adding external cidr(s)
+             data.nodeTypes.push({
+               type: 'egress',
+               id: innerNode.id,
+               name: innerNode.name,
+               lastCheckin: innerNode.lastcheckin,
+              }) 
+              extractEgressRanges(innerNode)
+          } else { // handle adding ext client nodes
+            data.nodeTypes.push({
+              type: 'ingress',
+              id: innerNode.id,
+              name: innerNode.name,
+              lastCheckin: innerNode.lastcheckin,
+             })
+             extractIngressRanges(innerNode)
+          }  
+        }
+        else if (innerNode.isrelay) {
+           data.nodeTypes.push({
+            type: 'relay',
+            id: innerNode.id,
+            name: innerNode.name,
+            lastCheckin: innerNode.lastcheckin,
+          })
+          extractRelayedNodes(innerNode)
+        } else if (innerNode.isrelayed) { // skip edges for relayed nodes
+          continue
+        } else {
+          data.nodeTypes.push({
+            type: 'normal',
+            id: innerNode.id,
+            name: innerNode.name,
+            lastCheckin: innerNode.lastcheckin,
+           })
+        }
+        if (innerNode.id === hubNode.id) { // skip the hub node
+          continue
+        }
+        
+        if (isConnected(innerNode, hubNode)) {
+          data.edges.push({
+            from: innerNode.id,
+            to: hubNode.id,
+          })
+          data.edges.push({
+            from: hubNode.id,
+            to: innerNode.id,
+          })
+        }
+      }
+    }
+  } else {
+    for (let i = 0; i < listOfNodes.length; i++) {
       const innerNode = listOfNodes[i]
       if (innerNode.isingressgateway || innerNode.isegressgateway) { // handle adding external cidr(s)
         if (innerNode.isingressgateway && innerNode.isegressgateway && innerNode.isrelay) {
@@ -207,6 +287,7 @@ export const NetworkGraph: React.FC = () => {
               to: outerNode.id,
             })
           }
+        }
       }
   }
 
@@ -253,7 +334,7 @@ export const NetworkGraph: React.FC = () => {
             </Grid>
             <Grid item xs={12} sm={4}>
               <div style={{display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'space-between'}}>
-                  <NodeDetails data={selectedNode} handleClose={handleUnsetNode} altData={selectedAltData} />
+                  <NodeDetails network={currentNetwork} data={selectedNode} handleClose={handleUnsetNode} altData={selectedAltData} />
               </div>
             </Grid>
         </Grid>

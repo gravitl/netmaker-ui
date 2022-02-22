@@ -54,8 +54,12 @@ export const NetworkId: React.FC = () => {
     [dispatch, network, setProps, t]
   )
 
-  if (!network) {
-    return <div>Not Found</div>
+  if (!!!network) {
+    return <div style={{ textAlign: 'center', margin: '1em 0 1em 0' }}>
+    <Typography variant="h5">
+      {`${t('error.notfound')}`}
+    </Typography>
+  </div>
   }
 
   const buttonStyle = {
@@ -90,6 +94,13 @@ export const NetworkId: React.FC = () => {
               {`${t('network.details')} : ${netid}`}
             </Typography>
           </div>
+          {network.iscomms && 
+          <div style={{ textAlign: 'center', margin: '1em 0 1em 0' }}>
+            <Typography variant="h6" style={{overflowWrap: 'break-word'}}>
+              {`${t('network.iscomms')}`}
+            </Typography>
+          </div>
+          }
           <Grid
             container
             justifyContent="flex-start"
@@ -165,13 +176,6 @@ export const NetworkId: React.FC = () => {
             <Grid item xs={12} sm={6} md={3}>
               <TextField
                 disabled
-                value={network.displayname}
-                label={t('network.displayname')}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
-              <TextField
-                disabled
                 value={network.defaultinterface}
                 label={t('network.defaultinterface')}
               />
@@ -223,6 +227,8 @@ export const NetworkId: React.FC = () => {
             <Grid item xs={12} sm={6} md={3}>
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
               <FormControlLabel
                 label={t('network.allowmanualsignup')}
                 control={
@@ -240,18 +246,18 @@ export const NetworkId: React.FC = () => {
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
               <FormControlLabel
-                label={t('network.defaultsaveconfig')}
+                label={t('network.defaultudpholepunch')}
                 control={
-                  <SwitchField checked={network.defaultsaveconfig} disabled />
+                  <SwitchField checked={network.defaultudpholepunch} disabled />
                 }
                 disabled
               />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
               <FormControlLabel
-                label={t('network.defaultudpholepunch')}
+                label={t('network.ispointtosite')}
                 control={
-                  <SwitchField checked={network.defaultudpholepunch} disabled />
+                  <SwitchField checked={network.ispointtosite} disabled />
                 }
                 disabled
               />

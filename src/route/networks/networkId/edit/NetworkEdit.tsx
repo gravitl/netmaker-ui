@@ -43,8 +43,12 @@ export const NetworkEdit: React.FC<{
     [dispatch]
   )
 
-  if (!network) {
-    return <div>Not Found</div>
+  if (!!!network) {
+    return <div style={{ textAlign: 'center', margin: '1em 0 1em 0' }}>
+        <Typography variant="h5">
+          {`${t('error.notfound')}`}
+        </Typography>
+      </div>
   }
 
   return (
@@ -68,9 +72,16 @@ export const NetworkEdit: React.FC<{
         <Grid item xs={12}>
           <div style={{ textAlign: 'center', margin: '1em 0 1em 0' }}>
             <Typography variant="h5">
-              {`${t('network.details')} : ${network.displayname}`}
+              {`${t('network.details')} : ${network.netid}`}
             </Typography>
           </div>
+          {network.iscomms && 
+            <div style={{ textAlign: 'center', margin: '1em 0 1em 0' }}>
+              <Typography variant="h6" style={{overflowWrap: 'break-word'}}>
+                {`${t('network.commswarn')}`}
+              </Typography>
+            </div>
+          }
         </Grid>
         <Grid item xs={12} sm={4} md={3}>
           <NmFormInputText
@@ -88,12 +99,6 @@ export const NetworkEdit: React.FC<{
           <NmFormInputText
             name={'localrange'}
             label={t('network.localrange')}
-          />
-        </Grid>
-        <Grid item xs={12} sm={4} md={3}>
-          <NmFormInputText
-            name={'displayname'}
-            label={t('network.displayname')}
           />
         </Grid>
         <Grid item xs={12} sm={4} md={3}>
@@ -146,6 +151,8 @@ export const NetworkEdit: React.FC<{
         <Grid item xs={12} sm={4} md={3}>
         </Grid>
         <Grid item xs={12} sm={4} md={3}>
+        </Grid>
+        <Grid item xs={12} sm={4} md={3}>
           <NmFormInputSwitch
             name={'allowmanualsignup'}
             label={'Allow Node Signup Without Keys'}
@@ -159,14 +166,14 @@ export const NetworkEdit: React.FC<{
         </Grid>
         <Grid item xs={12} sm={4} md={3}>
           <NmFormInputSwitch
-            name={'defaultsaveconfig'}
-            label={t('network.defaultsaveconfig')}
+            name={'defaultudpholepunch'}
+            label={t('network.defaultudpholepunch')}
           />
         </Grid>
         <Grid item xs={12} sm={4} md={3}>
           <NmFormInputSwitch
-            name={'defaultudpholepunch'}
-            label={t('network.defaultudpholepunch')}
+            name={'ispointtosite'}
+            label={t('network.ispointtosite')}
           />
         </Grid>
       </Grid>

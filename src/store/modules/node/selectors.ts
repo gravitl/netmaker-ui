@@ -18,3 +18,8 @@ export const getCurrentQrCode = createSelector(
   getNodeState,
   (node) => node.qrData
 )
+
+export const getShouldSignOut = createSelector(
+  getNodeState,
+  (node) => node.shouldSignOut
+)
