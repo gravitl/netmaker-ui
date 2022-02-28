@@ -77,7 +77,7 @@ export const NetworkEdit: React.FC<{
           </div>
           {network.iscomms && 
             <div style={{ textAlign: 'center', margin: '1em 0 1em 0' }}>
-              <Typography variant="h6" style={{overflowWrap: 'break-word'}}>
+              <Typography variant="h6" style={{color: '#F32013', overflowWrap: 'break-word'}}>
                 {`${t('network.commswarn')}`}
               </Typography>
             </div>
