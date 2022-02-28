@@ -14,6 +14,7 @@ import { RouterState } from '~store/modules/router/Component'
 import { Users } from './users/Users'
 import { DNS } from './dns/DNS'
 import { Graphs } from './graph/Graphs'
+import { NodeAcls } from './node_acls/NodeACLs'
 
 function NoMatch() {
   const location = useLocation()
@@ -63,6 +64,9 @@ function Routes() {
           </PrivateRoute>
           <PrivateRoute path="/graphs">
             <Graphs />
+          </PrivateRoute>
+          <PrivateRoute path="/acls/nodes">
+            <NodeAcls />
           </PrivateRoute>
           <PrivateRoute
             path="/users"

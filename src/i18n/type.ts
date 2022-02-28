@@ -9,6 +9,12 @@ export interface LanguageResource {
     dns: string
     externalClients: string
     users: string
+    acls: string
+  }
+  acls: {
+    acls: string
+    nodes: string
+    aclicon: string
   }
   accesskey: {
     accesskeys: string

@@ -11,6 +11,12 @@ export const en: LanguageResource = {
     dns: 'DNS',
     externalClients: 'External clients',
     users: 'Users',
+    acls: 'ACLs',
+  },
+  acls: {
+    acls: 'ACLs',
+    nodes: 'Node ACLs',
+    aclicon: 'ACL Icon',
   },
   accesskey: {
     accesskeys: 'Access Keys',
