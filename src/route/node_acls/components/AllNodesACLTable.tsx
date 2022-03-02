@@ -1,16 +1,15 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import { NmLink } from '../../../components'
-import { AccessKey } from '../../../store/modules/network'
 import { NmTable, TableColumns } from '../../../components/Table'
-import { Delete } from '@mui/icons-material'
 import { useTranslation } from 'react-i18next'
 import { useParams, useHistory, useRouteMatch } from 'react-router-dom'
-import { deleteAccessKey } from '~store/modules/network/actions'
-import { useNetwork } from '~util/network'
+import { useNetwork, useNodesByNetworkId } from '~util/network'
 import CustomDialog from '~components/dialog/CustomDialog'
 import { Button, Grid, Typography } from '@mui/material'
 import { NetworkSelect } from '~components/NetworkSelect'
+import { Node } from '~store/types'
+import { CheckCircle } from '@mui/icons-material'
 
 export const AllNodesACLTable: React.FC<{}> = () => {
   const { t } = useTranslation()
@@ -19,6 +18,7 @@ export const AllNodesACLTable: React.FC<{}> = () => {
   const [open, setOpen] = React.useState(false)
   const [selectedKey, setSelectedKey] = React.useState('')
   const { netid } = useParams<{ netid: string }>()
+  const listOfNodes = useNodesByNetworkId(netid) || []
   const network = useNetwork(netid)
   const { url } = useRouteMatch()
 
@@ -35,45 +35,37 @@ export const AllNodesACLTable: React.FC<{}> = () => {
         <NetworkSelect />
       </Grid>
     </Grid>
-}
+  }
 
-  const columns: TableColumns<AccessKey> = [
+  const columns: TableColumns<Node> = [
     {
-        id: 'name',
-        label: t('accesskey.accesskey'),
-        minWidth: 170,
-        sortable: true,
-        format: (value) => <NmLink sx={{textTransform: 'none'}} to={`/access-keys/${netid}/details/${value}`}>{value}</NmLink>,
-        align: 'center',
-    },
-    {
-        id: 'uses',
-        labelKey: 'accesskey.uses',
+        id: 'id',
+        label: t('node.name'),
         minWidth: 100,
         sortable: true,
-        align: 'center',
+        format: (value, row) => <NmLink sx={{textTransform: 'none'}} to={`/nodes/${netid}/${value}`}>{row.name}</NmLink>,
+        align: 'left',
     },
   ]
+  listOfNodes.map(node => columns.push(
+  {
+      id: 'id',
+      label: ' ',
+      minWidth: 50,
+      sortable: true,
+      format: () => <CheckCircle htmlColor='#2800ee' />,
+      align: 'left',
+  }))
 
   const handleClose = () => {
     setOpen(false)
     history.goBack()
   }
 
-  const handleOpen = (selected: string) => {
-    setSelectedKey(selected)
-    setOpen(true)
-  }
-
-  const handleDeleteAccesKey = () => {
-    dispatch(
-      deleteAccessKey.request({
-        netid,
-        name: selectedKey!,
-      })
-    )
-    history.push(`/access-keys/${netid}`)
-  }
+  // const handleOpen = (selected: string) => {
+  //   setSelectedKey(selected)
+  //   setOpen(true)
+  // }
 
   return (
     <Grid container>
@@ -82,7 +74,7 @@ export const AllNodesACLTable: React.FC<{}> = () => {
           <Grid item xs={5}>
             <div style={{ textAlign: 'center' }}>
               <Typography variant="h4">
-                {`${t('accesskey.viewing')} ${netid}`}
+                {`${t('acls.nodeview')} ${netid}`}
               </Typography>
             </div>
           </Grid>
@@ -93,9 +85,9 @@ export const AllNodesACLTable: React.FC<{}> = () => {
             <Button
                 fullWidth
                 variant="contained"
-                onClick={() => history.push(`${url}/create`)}
+                onClick={() => console.log('submitting')}
             >
-                {`${t('common.create')} ${t('accesskey.accesskey')}`}
+                {`${t('common.submitchanges')}`}
             </Button>
         </Grid>
         </Grid>
@@ -103,26 +95,16 @@ export const AllNodesACLTable: React.FC<{}> = () => {
       </Grid>
       <NmTable
         columns={columns}
-        rows={network.accesskeys}
-        getRowId={(row) => row.name}
-        actions={[
-          (row) => ({
-            tooltip: t('common.delete'),
-            disabled: false,
-            icon: <Delete />,
-            onClick: () => {
-              handleOpen(row.name)
-            },
-          }),
-        ]}
+        rows={listOfNodes}
+        getRowId={(row) => row.id}
       />
       {selectedKey && (
         <CustomDialog
             open={open}
             handleClose={handleClose}
-            handleAccept={handleDeleteAccesKey}
-            message={t('accesskey.deleteconfirm')}
-            title={`${t('common.delete')} ${selectedKey}`}
+            handleAccept={handleClose}
+            message={t('acls.nodesconfirm')}
+            title={`${t('common.submitchanges')} ${netid}`}
         />
       )}
     </Grid>

@@ -16,7 +16,10 @@ export const en: LanguageResource = {
   acls: {
     acls: 'ACLs',
     nodes: 'Node ACLs',
+    nodeview: 'Viewing Node ACLs for',
     aclicon: 'ACL Icon',
+    nodeconfirm: 'Confirm Node ACL Change',
+    nodesconfirm: 'Confirm Network ACL Change',
   },
   accesskey: {
     accesskeys: 'Access Keys',
@@ -80,6 +83,7 @@ export const en: LanguageResource = {
     min: 'Min',
     chars: 'characters',
     optional: 'optional',
+    submitchanges: 'Submit Changes',
   },
   dashboard: {
     title: 'Netmaker Dashboard',

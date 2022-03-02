@@ -31,7 +31,7 @@ export const NodeAcls: React.FC = () => {
             <Grid item xs={5}>
               <div style={titleStyle}>
                 <Typography variant="h5">
-                  {t('accesskey.accesskeys')}
+                  {t('acls.nodes')}
                 </Typography>
               </div>
             </Grid>

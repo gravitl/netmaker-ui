@@ -14,7 +14,10 @@ export interface LanguageResource {
   acls: {
     acls: string
     nodes: string
+    nodeview: string
     aclicon: string
+    nodesconfirm: string
+    nodeconfirm: string 
   }
   accesskey: {
     accesskeys: string
@@ -78,6 +81,7 @@ export interface LanguageResource {
     min: string
     chars: string
     optional: string
+    submitchanges: string
   }
   dashboard: {
     title: string
