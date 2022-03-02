@@ -38,6 +38,8 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({ data, handleClose, altData, n
       { label: t('node.isingressgateway'), color: '#ebde34' },
       { label: t('node.isingressegress'), color: '#d9ffa3'},
       { label: t('node.isrelay'), color: '#a552ff' },
+      { label: t('node.isingressrelay'), color: '#d5db8a' },
+      { label: t('node.isegressrelay'), color: '#19ffb2' },
       { label: t('node.isrelayed'), color: '#639cbf'},
       { label: t('node.isingressegressrelay'), color: '#f2c7ff' },
       { label: t('extclient.extclient'), color: '#26ffff'},
