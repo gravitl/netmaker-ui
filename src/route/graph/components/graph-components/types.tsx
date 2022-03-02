@@ -17,4 +17,4 @@ export interface Edge {
     to: string
 }
 
-export type DataNodeType = 'normal' | '1&e' | 'ingress' | 'egress' | 'relay' | 'relayed' | 'extclient' | 'cidr' | 'i&e&r'
+export type DataNodeType = 'normal' | '1&e' | 'ingress' | 'egress' | 'i&r' | 'e&r' | 'relay' | 'relayed' | 'extclient' | 'cidr' | 'i&e&r'

@@ -239,6 +239,8 @@ export interface LanguageResource {
     none: string
     isingressegress: string
     isingressegressrelay: string
+    isingressrelay: string
+    isegressrelay: string
     isrelayed: string
     ishub: string
     onehub: string

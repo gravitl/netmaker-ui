@@ -12,6 +12,8 @@ export const getColor = (dataType: DataNodeType, lastcheckin: number | undefined
     switch(dataType) {
         case 'normal': return "#2b00ff"
         case '1&e': return '#d9ffa3'
+        case 'e&r': return '#19ffb2'
+        case 'i&r': return '#d5db8a'
         case 'egress': return '#6bdbb6'
         case 'ingress': return '#ebde34'
         case 'extclient': return '#26ffff'
