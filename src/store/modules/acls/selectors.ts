@@ -1,25 +1,10 @@
 import { createSelector } from 'reselect'
 import { RootState } from '../../reducers'
 
-const getNodeState = (state: RootState) => state.node
+const getACLState = (state: RootState) => state.acls
 
-export const isFetchingNodes = createSelector(
-  getNodeState,
-  (node) => node.isFetching
+export const isProcessing = createSelector(
+  getACLState,
+  (acl) => acl.isProcessing
 )
-export const getNodes = createSelector(getNodeState, (node) => node.nodes)
-
-export const getExtClients = createSelector(
-  getNodeState,
-  (node) => node.externalClients
-)
-
-export const getCurrentQrCode = createSelector(
-  getNodeState,
-  (node) => node.qrData
-)
-
-export const getShouldSignOut = createSelector(
-  getNodeState,
-  (node) => node.shouldSignOut
-)
+export const getCurrentACL = createSelector(getACLState, (acl) => acl.currentACL)

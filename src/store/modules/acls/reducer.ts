@@ -59,7 +59,7 @@ export const reducer = createReducer({
 )
 .handleAction(updateNodeACL['success'], (state, payload) => 
   produce(state, (draftState) => {
-    draftState.isProcessing = true
+    draftState.isProcessing = false
     const { nodeID, nodeACL } = payload.payload
     draftState.currentACL[nodeID] = nodeACL
   })

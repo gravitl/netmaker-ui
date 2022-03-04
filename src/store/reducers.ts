@@ -7,6 +7,7 @@ import { reducer as network } from './modules/network'
 import { reducer as node } from './modules/node'
 import { reducer as server } from './modules/server'
 import { reducer as router } from './modules/router'
+import { reducer as acls } from './modules/acls'
 
 export const createRootReducer = () =>
   combineReducers({
@@ -16,6 +17,7 @@ export const createRootReducer = () =>
     node,
     server,
     router,
+    acls,
   })
 
 export type RootState = StateType<ReturnType<typeof createRootReducer>>
