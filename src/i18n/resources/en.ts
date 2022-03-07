@@ -241,6 +241,8 @@ export const en: LanguageResource = {
     none: "No nodes found",
     isingressegress: 'Is Egress and Ingress',
     isingressegressrelay: 'Is Egress, Ingress & Relay',
+    isegressrelay: 'Is Egress and Relay',
+    isingressrelay: 'Is Ingress and Relay',
     isrelayed: 'Being Relayed',
     ishub: 'Is Network Hub',
     onehub: 'This node is currently the hub',
