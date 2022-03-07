@@ -1,5 +1,5 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { NmLink } from '../../../components'
 import { NmTable, TableColumns } from '../../../components/Table'
 import { useTranslation } from 'react-i18next'
@@ -10,6 +10,9 @@ import { Button, Grid, Typography } from '@mui/material'
 import { NetworkSelect } from '~components/NetworkSelect'
 import { Node } from '~store/types'
 import { CheckCircle } from '@mui/icons-material'
+import { NodeACLContainer } from '~store/modules/acls'
+import { getNodeACLContainer } from '~store/modules/acls/actions'
+import { aclSelectors } from '~store/selectors'
 
 export const AllNodesACLTable: React.FC<{}> = () => {
   const { t } = useTranslation()
@@ -17,10 +20,19 @@ export const AllNodesACLTable: React.FC<{}> = () => {
   const history = useHistory()
   const [open, setOpen] = React.useState(false)
   const [selectedKey, setSelectedKey] = React.useState('')
+  const [networkACL, setNetworkACL] = React.useState({} as NodeACLContainer)
   const { netid } = useParams<{ netid: string }>()
   const listOfNodes = useNodesByNetworkId(netid) || []
   const network = useNetwork(netid)
   const { url } = useRouteMatch()
+  const isProcessing = useSelector(aclSelectors.isProcessing)
+  const currentNetwork = useSelector(aclSelectors.getCurrentACL)
+  React.useEffect(() => {
+    console.log("About to fetch")
+    console.log(isProcessing)
+    dispatch(getNodeACLContainer.request({netid}))
+    console.log(currentNetwork)
+  })
 
   if (!!!network) {
     return <Grid container justifyContent="space-between" alignItems="center">

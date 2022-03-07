@@ -8,7 +8,7 @@ import { AxiosResponse } from 'axios'
 import { NodeACL, NodeACLContainer } from './types'
 import { apiRequestWithAuthSaga } from '../api/saga'
 import { generatorToastSaga } from '../toast/saga'
-import { i18n } from 'src/i18n/i18n'
+import { i18n } from '../../../i18n/i18n'
 import { getType } from 'typesafe-actions'
 
 function* handleGetACLContainerRequest(

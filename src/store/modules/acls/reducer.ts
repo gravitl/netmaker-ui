@@ -27,6 +27,7 @@ export const reducer = createReducer({
 )
 .handleAction(getNodeACLContainer['success'], (state, payload) =>
   produce(state, (draftState) => {
+    console.log("PAYLOAD", payload)
     draftState.isProcessing = false
     draftState.currentACL = payload.payload
   })

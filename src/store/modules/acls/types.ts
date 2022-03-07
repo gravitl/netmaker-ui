@@ -26,7 +26,6 @@ export interface UpdateNodeACLContainerPayload {
 
 export interface GetACLContainerPayload {
     Request: {
-      token: string
       netid: string
     }
     Response: NodeACLContainer
