@@ -66,7 +66,7 @@ export default function NodeCard() {
         <CardContent>
           <Avatar
             sx={{ bgcolor: grey[900] }}
-            aria-label={t('breadcrumbs.extClients')}
+            aria-label={String(t('breadcrumbs.extClients'))}
           >
             <Devices />
           </Avatar>
@@ -100,7 +100,7 @@ export default function NodeCard() {
               <Grid item xs={1}>
                 <Avatar
                   sx={{ bgcolor: grey[900] }}
-                  aria-label={t('common.count')}
+                  aria-label={String(t('common.count'))}
                 >
                     {clientCount}
                 </Avatar>

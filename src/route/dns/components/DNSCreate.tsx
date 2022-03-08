@@ -121,7 +121,7 @@ export const DNSEntryCreate: React.FC<{}> = () => {
                     <NmFormInputText
                       name="name"
                       defaultValue={''}
-                      label={t('dns.name')}
+                      label={String(t('dns.name'))}
                       variant="outlined"
                       margin="normal"
                       required
@@ -139,7 +139,7 @@ export const DNSEntryCreate: React.FC<{}> = () => {
                 <Grid item xs={4}>
                   <NmFormInputText
                     name="address"
-                    label={t('dns.address')}
+                    label={String(t('dns.address'))}
                     variant="outlined"
                     margin="normal"
                     color="primary"

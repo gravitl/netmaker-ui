@@ -102,7 +102,7 @@ export const ExtClientEdit: React.FC<{}> = () => {
               <NmFormInputText
                 name="clientid"
                 defaultValue={clientid}
-                label={t('extclient.clientid')}
+                label={String(t('extclient.clientid'))}
                 variant="outlined"
                 margin="normal"
                 required

@@ -132,34 +132,34 @@ export const NetworkCreate: React.FC = () => {
           <NmFormInputText
             style={{width: '90%'}}
             name={'addressrange'}
-            label={t('network.addressrange')}
+            label={String(t('network.addressrange'))}
           />
         </Grid>
         <Grid item xs={12} sm={10} md={10} className={classes.center + ' ' + classes.rowMargin} style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
           <Tooltip title={t('helper.udpholepunching') as string} placement='top'>
             <div>
-              <NmFormInputSwitch name={'defaultudpholepunch'} label={t('network.defaultudpholepunch')} />
+              <NmFormInputSwitch name={'defaultudpholepunch'} label={String(t('network.defaultudpholepunch'))} />
             </div>
           </Tooltip>
         </Grid>
         <Grid item xs={12} sm={10} md={10} className={classes.center + ' ' + classes.rowMargin} style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
           <Tooltip title={t('helper.ispointtosite') as string} placement='top'>
             <div>
-              <NmFormInputSwitch name={'ispointtosite'} label={t('network.ispointtosite')} />
+              <NmFormInputSwitch name={'ispointtosite'} label={String(t('network.ispointtosite'))} />
             </div>
           </Tooltip>
         </Grid>
         <Grid item xs={12} sm={12} md={10} className={classes.center + ' ' + classes.rowMargin} style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
           <Tooltip title={t('helper.islocal') as string} placement='top'>
             <div onClick={handleViewLocal}>
-              <NmFormInputSwitch name={'islocal'} label={t('network.islocal')}/>
+              <NmFormInputSwitch name={'islocal'} label={String(t('network.islocal'))}/>
             </div>
           </Tooltip>
           {viewLocal &&
             <NmFormInputText
               style={{width: '60%'}}
               name={'localrange'}
-              label={t('network.localrange')}
+              label={String(t('network.localrange'))}
             />
           }
         </Grid>
@@ -167,14 +167,14 @@ export const NetworkCreate: React.FC = () => {
           <div  onClick={handleViewDual}>
             <NmFormInputSwitch
               name={'isdualstack'}
-              label={t('network.isdualstack')}
+              label={String(t('network.isdualstack'))}
             />
           </div>
           {viewDual &&
             <NmFormInputText
               style={{width: '60%'}}
               name={'addressrange6'}
-              label={t('network.addressrange6')}
+              label={String(t('network.addressrange6'))}
             />
           }
         </Grid>

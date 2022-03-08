@@ -156,35 +156,35 @@ export const NetworkId: React.FC = () => {
               <TextField
                 disabled
                 value={network.addressrange}
-                label={t('network.addressrange')}
+                label={String(t('network.addressrange'))}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
               <TextField
                 disabled
                 value={network.addressrange6}
-                label={t('network.addressrange6')}
+                label={String(t('network.addressrange6'))}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
               <TextField
                 disabled
                 value={network.localrange}
-                label={t('network.localrange')}
+                label={String(t('network.localrange'))}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
               <TextField
                 disabled
                 value={network.defaultinterface}
-                label={t('network.defaultinterface')}
+                label={String(t('network.defaultinterface'))}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
               <TextField
                 disabled
                 value={network.defaultlistenport}
-                label={t('network.defaultlistenport')}
+                label={String(t('network.defaultlistenport'))}
                 type="number"
               />
             </Grid>
@@ -192,35 +192,35 @@ export const NetworkId: React.FC = () => {
               <TextField
                 disabled
                 value={network.defaultpostup}
-                label={t('network.defaultpostup')}
+                label={String(t('network.defaultpostup'))}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
               <TextField
                 disabled
                 value={network.defaultpostdown}
-                label={t('network.defaultpostdown')}
+                label={String(t('network.defaultpostdown'))}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
               <TextField
                 disabled
                 value={network.defaultkeepalive}
-                label={t('network.defaultkeepalive')}
+                label={String(t('network.defaultkeepalive'))}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
               <TextField
                 disabled
                 value={network.defaultextclientdns}
-                label={t('network.defaultextclientdns')}
+                label={String(t('network.defaultextclientdns'))}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
               <TextField
                 disabled
                 value={network.defaultmtu}
-                label={t('network.defaultmtu')}
+                label={String(t('network.defaultmtu'))}
                 type="number"
               />
             </Grid>
@@ -230,7 +230,7 @@ export const NetworkId: React.FC = () => {
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
               <FormControlLabel
-                label={t('network.allowmanualsignup')}
+                label={String(t('network.allowmanualsignup'))}
                 control={
                   <SwitchField checked={network.allowmanualsignup} disabled />
                 }
@@ -239,14 +239,14 @@ export const NetworkId: React.FC = () => {
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
               <FormControlLabel
-                label={t('network.isdualstack')}
+                label={String(t('network.isdualstack'))}
                 control={<SwitchField checked={network.isdualstack} disabled />}
                 disabled
               />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
               <FormControlLabel
-                label={t('network.defaultudpholepunch')}
+                label={String(t('network.defaultudpholepunch'))}
                 control={
                   <SwitchField checked={network.defaultudpholepunch} disabled />
                 }
@@ -255,7 +255,7 @@ export const NetworkId: React.FC = () => {
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
               <FormControlLabel
-                label={t('network.ispointtosite')}
+                label={String(t('network.ispointtosite'))}
                 control={
                   <SwitchField checked={network.ispointtosite} disabled />
                 }

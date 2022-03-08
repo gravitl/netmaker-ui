@@ -71,7 +71,7 @@ export default function UserCard() {
       style={cardStyle}
     >
       <CardContent>
-        <Avatar sx={{ bgcolor: grey[900] }} aria-label={t('users.header')}>
+        <Avatar sx={{ bgcolor: grey[900] }} aria-label={String(t('users.header'))}>
           <UsersIcon />
         </Avatar>
         <div style={cardContentStyle}>
@@ -104,7 +104,7 @@ export default function UserCard() {
           <Grid item xs={1}>
             <Avatar
               sx={{ bgcolor: grey[900] }}
-              aria-label={t('common.count')}
+              aria-label={String(t('common.count'))}
             >
                 {userCount}
             </Avatar>

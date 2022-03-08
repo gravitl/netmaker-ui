@@ -276,13 +276,13 @@ export default function CustomDrawer() {
         <Divider />
         <List>
           <ListItemButton component={Link} to={`/acls/nodes${!!netid ? `/${netid}` : ''}`}>
-            <ListItemIcon aria-label={t('acls.nodes')}>
+            <ListItemIcon aria-label={String(t('acls.nodes'))}>
               <ViewList />
             </ListItemIcon>
             <ListItemText primary={t('header.acls')} />
           </ListItemButton>
           <ListItemButton component={Link} to="/users">
-            <ListItemIcon aria-label={t('users.header')}>
+            <ListItemIcon aria-label={String(t('users.header'))}>
               <UsersIcon />
             </ListItemIcon>
             <ListItemText primary={t('users.header')} />
@@ -292,7 +292,7 @@ export default function CustomDrawer() {
         </>) : null}
         <List>
           <ListItem>
-            <ListItemIcon aria-label={t('users.header')}>
+            <ListItemIcon aria-label={String(t('users.header'))}>
               <Info />
             </ListItemIcon>
             <ListItemText
@@ -306,7 +306,7 @@ export default function CustomDrawer() {
             target="_blank"
             rel="noopener noreferer"
           >
-            <ListItemIcon aria-label={t('header.docs')}>
+            <ListItemIcon aria-label={String(t('header.docs'))}>
               <LibraryBooks />
             </ListItemIcon>
             <ListItemText primary={t('header.docs')} />
@@ -315,13 +315,13 @@ export default function CustomDrawer() {
             (isLoggedIn ? (
               <>
                 <ListItemButton component={Link} to={`/users/${user!.name}`}>
-                  <ListItemIcon aria-label={t('users.details')}>
+                  <ListItemIcon aria-label={String(t('users.details'))}>
                     <Person />
                   </ListItemIcon>
                   <ListItemText primary={user?.name} />
                 </ListItemButton>
                 <ListItemButton onClick={() => dispatch(logout())}>
-                  <ListItemIcon aria-label={t('header.logout')}>
+                  <ListItemIcon aria-label={String(t('header.logout'))}>
                     <Logout />
                   </ListItemIcon>
                   <ListItemText primary={t('header.logout')} />
@@ -329,10 +329,10 @@ export default function CustomDrawer() {
               </>
             ) : (
               <ListItemButton component={Link} to="/login">
-                <ListItemIcon aria-label={t('header.login')}>
+                <ListItemIcon aria-label={String(t('header.login'))}>
                   <Login />
                 </ListItemIcon>
-                <ListItemText primary={t('header.login')} />
+                <ListItemText primary={String(t('header.login'))} />
               </ListItemButton>
             ))}
         </List>

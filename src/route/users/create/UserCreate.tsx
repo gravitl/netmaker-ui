@@ -164,7 +164,7 @@ export const UserCreate: React.FC = () => {
             <Grid item sm={12} md={5}>
               <NmFormInputText
                 name={'username'}
-                label={t('users.label.username')}
+                label={String(t('users.label.username'))}
                 variant="outlined"
                 margin="normal"
                 required
@@ -176,7 +176,7 @@ export const UserCreate: React.FC = () => {
             <Grid item sm={12} md={5}>
               <NmFormInputText
                 name={'password'}
-                label={t('users.label.password')}
+                label={String(t('users.label.password'))}
                 variant="outlined"
                 margin="normal"
                 required
@@ -190,7 +190,7 @@ export const UserCreate: React.FC = () => {
             <Grid item sm={12} md={5}>
               <NmFormInputText
                 name={'confirmation'}
-                label={t('users.label.confirmation')}
+                label={String(t('users.label.confirmation'))}
                 variant="outlined"
                 margin="normal"
                 required
@@ -204,7 +204,7 @@ export const UserCreate: React.FC = () => {
             <Grid item sm={12} md={5}>
               <NmFormInputCheckbox
                 name="isadmin"
-                label={t('users.create.isAdmin')}
+                label={String(t('users.create.isAdmin'))}
               />
             </Grid>
             <Grid item sm={12} md={5}>

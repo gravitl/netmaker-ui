@@ -16,9 +16,14 @@ function* handleGetACLContainerRequest(
 ) {
   try {
     const response: AxiosResponse<NodeACLContainer> =
-      yield apiRequestWithAuthSaga('get', `/networks/${action.payload.netid}/acls`, {})
+      yield apiRequestWithAuthSaga(
+        'get', 
+        `/networks/${action.payload.netid}/acls`,
+        {}
+      )
     yield put(getNodeACLContainer['success'](response.data))
   } catch (e: unknown) {
+    console.log('ERROR this')
     yield put(getNodeACLContainer['failure'](e as Error))
   }
 }

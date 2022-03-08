@@ -100,7 +100,7 @@ export const UserChangePassword: React.FC = () => {
             <Grid item sm={12} md={5}>
               <NmFormInputText
                 name={'password'}
-                label={t('users.label.password')}
+                label={String(t('users.label.password'))}
                 variant="outlined"
                 margin="normal"
                 required
@@ -114,7 +114,7 @@ export const UserChangePassword: React.FC = () => {
             <Grid item sm={12} md={5}>
               <NmFormInputText
                 name={'confirmation'}
-                label={t('users.label.confirmation')}
+                label={String(t('users.label.confirmation'))}
                 variant="outlined"
                 margin="normal"
                 required

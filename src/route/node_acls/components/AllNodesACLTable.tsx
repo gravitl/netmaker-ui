@@ -1,38 +1,41 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { NmLink } from '../../../components'
-import { NmTable, TableColumns } from '../../../components/Table'
 import { useTranslation } from 'react-i18next'
-import { useParams, useHistory, useRouteMatch } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 import { useNetwork, useNodesByNetworkId } from '~util/network'
 import CustomDialog from '~components/dialog/CustomDialog'
-import { Button, Grid, Typography } from '@mui/material'
+import { Button, Grid, LinearProgress, TablePagination, Typography } from '@mui/material'
 import { NetworkSelect } from '~components/NetworkSelect'
-import { Node } from '~store/types'
-import { CheckCircle } from '@mui/icons-material'
-import { NodeACLContainer } from '~store/modules/acls'
+import { CheckCircle, NotInterested as NotAllowedIcon, RemoveCircleOutline as DisabledIcon } from '@mui/icons-material'
 import { getNodeACLContainer } from '~store/modules/acls/actions'
 import { aclSelectors } from '~store/selectors'
+import Table from '@mui/material/Table'
+import TableBody from '@mui/material/TableBody'
+import TableCell from '@mui/material/TableCell'
+import TableContainer from '@mui/material/TableContainer'
+import TableHead from '@mui/material/TableHead'
+import TableRow from '@mui/material/TableRow'
+import Paper from '@mui/material/Paper'
 
 export const AllNodesACLTable: React.FC<{}> = () => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const history = useHistory()
   const [open, setOpen] = React.useState(false)
-  const [selectedKey, setSelectedKey] = React.useState('')
-  const [networkACL, setNetworkACL] = React.useState({} as NodeACLContainer)
   const { netid } = useParams<{ netid: string }>()
   const listOfNodes = useNodesByNetworkId(netid) || []
   const network = useNetwork(netid)
-  const { url } = useRouteMatch()
   const isProcessing = useSelector(aclSelectors.isProcessing)
-  const currentNetwork = useSelector(aclSelectors.getCurrentACL)
+  const currentNetworkACL = useSelector(aclSelectors.getCurrentACL)
+  const currentNodeACLs = Object.keys(currentNetworkACL)
+  const nodeNameMap : Map<string, string> = new Map()
+
   React.useEffect(() => {
-    console.log("About to fetch")
-    console.log(isProcessing)
-    dispatch(getNodeACLContainer.request({netid}))
-    console.log(currentNetwork)
-  })
+    if (currentNodeACLs.length === 0) {
+      dispatch(getNodeACLContainer.request({ netid }))
+    }
+  }, [ dispatch, netid, currentNetworkACL, currentNodeACLs ])
 
   if (!!!network) {
     return <Grid container justifyContent="space-between" alignItems="center">
@@ -47,37 +50,39 @@ export const AllNodesACLTable: React.FC<{}> = () => {
         <NetworkSelect />
       </Grid>
     </Grid>
+  } else if (isProcessing || currentNodeACLs.length === 0) {
+    return <Grid container justifyContent="center" alignItems="center">
+        <Grid item xs={12}>
+          <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+            <Typography variant="h4">
+                {`${netid}, ${t('network.none')}`}
+            </Typography>
+          </div>
+        </Grid>
+        <Grid item xs={10} sx={{marginTop: '3em'}}>
+          <LinearProgress />
+        </Grid>
+      </Grid>
   }
 
-  const columns: TableColumns<Node> = [
-    {
-        id: 'id',
-        label: t('node.name'),
-        minWidth: 100,
-        sortable: true,
-        format: (value, row) => <NmLink sx={{textTransform: 'none'}} to={`/nodes/${netid}/${value}`}>{row.name}</NmLink>,
-        align: 'left',
-    },
-  ]
-  listOfNodes.map(node => columns.push(
-  {
-      id: 'id',
-      label: ' ',
-      minWidth: 50,
-      sortable: true,
-      format: () => <CheckCircle htmlColor='#2800ee' />,
-      align: 'left',
-  }))
+  listOfNodes.map(node => nodeNameMap.set(node.id, node.name))
+
+  // fill others currentNodeACLs
+  const getACLCellRender = (nodeID : string, loopID : string) => {
+    // if it's this node's index, render disabled thing
+    if (nodeID === loopID) { // looking at self
+      return <DisabledIcon color='inherit' />
+    }
+    if (currentNetworkACL[nodeID][loopID] === 1) {
+      return <NotAllowedIcon color='error' />
+    }
+    return <CheckCircle htmlColor='#2800ee' />
+  }
 
   const handleClose = () => {
     setOpen(false)
     history.goBack()
   }
-
-  // const handleOpen = (selected: string) => {
-  //   setSelectedKey(selected)
-  //   setOpen(true)
-  // }
 
   return (
     <Grid container>
@@ -105,20 +110,44 @@ export const AllNodesACLTable: React.FC<{}> = () => {
         </Grid>
         <hr />
       </Grid>
-      <NmTable
-        columns={columns}
-        rows={listOfNodes}
-        getRowId={(row) => row.id}
+      <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+      <TableContainer sx={{ maxHeight: 600 }}>
+      <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+        <TableHead>
+          <TableRow>
+            <TableCell>{t('node.name')}</TableCell>
+            {
+              currentNodeACLs.map(nodeID => <TableCell align='center' key={nodeID}><NmLink sx={{textTransform: 'none'}} to={`/nodes/${netid}/${nodeID}`}>{nodeNameMap.get(nodeID)}</NmLink></TableCell>)
+            }
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {currentNodeACLs.map((currentACLID) => (
+            <TableRow
+              key={currentACLID}
+              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+            >
+              <TableCell component="th" scope="row">
+                <NmLink sx={{textTransform: 'none'}} to={`/nodes/${netid}/${currentACLID}`}>{nodeNameMap.get(currentACLID)}</NmLink>
+              </TableCell>
+              {
+                currentNodeACLs.map((loopACLID) => (
+                  <TableCell key={`${loopACLID}-2`} align='center'>{getACLCellRender(currentACLID, loopACLID)}</TableCell>
+                ))
+              }
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+      </TableContainer>
+      </Paper>
+      <CustomDialog
+        open={open}
+        handleClose={handleClose}
+        handleAccept={handleClose}
+        message={t('acls.nodesconfirm')}
+        title={`${t('common.submitchanges')} ${netid}`}
       />
-      {selectedKey && (
-        <CustomDialog
-            open={open}
-            handleClose={handleClose}
-            handleAccept={handleClose}
-            message={t('acls.nodesconfirm')}
-            title={`${t('common.submitchanges')} ${netid}`}
-        />
-      )}
     </Grid>
   )
 }

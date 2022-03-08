@@ -2,9 +2,9 @@ import { createAction, createAsyncAction } from 'typesafe-actions'
 import { GetACLContainerPayload, UpdateNodeACLContainerPayload, UpdateNodeACLPayload } from '.'
 
 export const getNodeACLContainer = createAsyncAction(
-  'ACLs_getNetworkACLs_Request',
-  'ACLs_getNetworkACLs_Success',
-  'ACLs_getNetworkACLs_Failure'
+  'ACLs_getNodeACLContainer_Request',
+  'ACLs_getNodeACLContainer_Success',
+  'ACLs_getNodeACLContainer_Failure'
 )<GetACLContainerPayload['Request'], GetACLContainerPayload['Response'], Error>()
 
 export const updateNodeContainerACL = createAsyncAction(

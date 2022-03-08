@@ -58,7 +58,7 @@ export default function ACLCard() {
       style={cardStyle}
     >
       <CardContent>
-        <Avatar sx={{ bgcolor: grey[900] }} aria-label={t('users.header')}>
+        <Avatar sx={{ bgcolor: grey[900] }} aria-label={String(t('users.header'))}>
           <ACLIcon />
         </Avatar>
         <div style={cardContentStyle}>
@@ -91,7 +91,7 @@ export default function ACLCard() {
           <Grid item xs={1}>
             <Avatar
               sx={{ bgcolor: grey[900] }}
-              aria-label={t('acl.aclicon')}
+              aria-label={String(t('acl.aclicon'))}
             >
                 <VpnLockOutlined />
             </Avatar>

@@ -7,10 +7,11 @@ import { saga as node } from './modules/node'
 import { saga as server } from './modules/server'
 import { saga as toast } from './modules/toast'
 import { saga as router } from './modules/router'
+import { saga as acls } from './modules/acls'
 
 export const createRootSaga = () => {
   function* rootSaga() {
-    yield all([auth(), api(), network(), node(), server(), toast(), router()])
+    yield all([auth(), api(), network(), node(), server(), toast(), router(), acls()])
   }
   return rootSaga
 }
