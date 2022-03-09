@@ -275,7 +275,7 @@ export default function CustomDrawer() {
         {isLoggedIn && user!.isAdmin ? (<>
         <Divider />
         <List>
-          <ListItemButton component={Link} to={`/acls/nodes${!!netid ? `/${netid}` : ''}`}>
+          <ListItemButton component={Link} to={`/acls${!!netid ? `/${netid}` : ''}`}>
             <ListItemIcon aria-label={String(t('acls.nodes'))}>
               <ViewList />
             </ListItemIcon>

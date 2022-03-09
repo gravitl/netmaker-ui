@@ -121,6 +121,9 @@ export const NetworkId: React.FC = () => {
                 <NmLink to={`/graphs/${netid}`} variant="outlined" fullWidth style={buttonStyle}>
                   {t('network.graph')}
                 </NmLink>
+                <NmLink to={`/acls/${netid}`} variant="outlined" fullWidth style={buttonStyle}>
+                  {t('header.acls')}
+                </NmLink>
                 <Button
                   variant="outlined"
                   onClick={() => deleteNetworkCallback()}

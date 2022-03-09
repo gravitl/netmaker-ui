@@ -65,7 +65,7 @@ function Routes() {
           <PrivateRoute path="/graphs">
             <Graphs />
           </PrivateRoute>
-          <PrivateRoute path="/acls/nodes">
+          <PrivateRoute path="/acls">
             <NodeAcls />
           </PrivateRoute>
           <PrivateRoute

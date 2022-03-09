@@ -16,10 +16,12 @@ export const en: LanguageResource = {
   acls: {
     acls: 'ACLs',
     nodes: 'Node ACLs',
-    nodeview: 'Viewing Node ACLs for',
+    nodeview: 'View Node ACLs for',
+    networkview: 'Viewing ACLs on network',
     aclicon: 'ACL Icon',
     nodeconfirm: 'Confirm Node ACL Change',
     nodesconfirm: 'Confirm Network ACL Change',
+    viewall: 'View All Rules'
   },
   accesskey: {
     accesskeys: 'Access Keys',
@@ -86,6 +88,7 @@ export const en: LanguageResource = {
     optional: 'optional',
     submitchanges: 'Submit Changes',
     loading: 'Loading',
+    confirmsubmit: 'Please confirm you want to submit these changes',
   },
   dashboard: {
     title: 'Netmaker Dashboard',
@@ -351,13 +354,15 @@ export const en: LanguageResource = {
         networkrefresh: 'Refreshed nodes public keys!',
         user: 'User Updated!',
         approve: 'Node Approved!',
+        nodeacl: 'ACL Updated!',
       },
       failure: {
         node: 'Node updated failed!',
         extclient: 'Ext Client update failed!',
         networkrefresh: 'Failed to refresh nodes public keys!',
         user: 'Failed to update user!',
-        approve: 'Failed to approve node!'
+        approve: 'Failed to approve node!',
+        nodeacl: 'Failed to update ACL!',
       },
     },
     create: {

@@ -128,6 +128,9 @@ export const NodeId: React.FC = () => {
               <NmLink to={`${url}/edit`} variant="outlined" style={{width: '50%', margin: '4px'}}>
                 {t('common.edit')}
               </NmLink>
+              <NmLink to={`/acls/${netid}/${nodeId}`} variant="outlined" style={{width: '50%', margin: '4px'}}>
+                {t('header.acls')}
+              </NmLink>
               <Button disabled={node.isserver} variant="outlined" color='warning' style={{width: '50%', margin: '4px'}} onClick={handleOpen}>
                 {t('common.delete')}
               </Button>

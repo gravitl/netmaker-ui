@@ -1,7 +1,6 @@
 import { produce } from 'immer'
 import { createReducer } from 'typesafe-actions'
 import {
-  updateNodeACL,
   updateNodeContainerACL,
   getNodeACLContainer,
   clearCurrentACL,
@@ -52,20 +51,20 @@ export const reducer = createReducer({
     draftState.isProcessing = false
   })
 )
-.handleAction(updateNodeACL['request'], (state, _) => 
-  produce(state, (draftState) => {
-    draftState.isProcessing = true
-  })
-)
-.handleAction(updateNodeACL['success'], (state, payload) => 
-  produce(state, (draftState) => {
-    draftState.isProcessing = false
-    const { nodeID, nodeACL } = payload.payload
-    draftState.currentACL[nodeID] = nodeACL
-  })
-)
-.handleAction(updateNodeACL['failure'], (state, _) => 
-  produce(state, (draftState) => {
-    draftState.isProcessing = false
-  })
-)
+// .handleAction(updateNodeACL['request'], (state, _) => 
+//   produce(state, (draftState) => {
+//     draftState.isProcessing = true
+//   })
+// )
+// .handleAction(updateNodeACL['success'], (state, payload) => 
+//   produce(state, (draftState) => {
+//     draftState.isProcessing = false
+//     const { nodeID, nodeACL } = payload.payload
+//     draftState.currentACL[nodeID] = nodeACL
+//   })
+// )
+// .handleAction(updateNodeACL['failure'], (state, _) => 
+//   produce(state, (draftState) => {
+//     draftState.isProcessing = false
+//   })
+// )

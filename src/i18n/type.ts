@@ -15,9 +15,11 @@ export interface LanguageResource {
     acls: string
     nodes: string
     nodeview: string
+    networkview: string
     aclicon: string
     nodesconfirm: string
     nodeconfirm: string 
+    viewall: string
   }
   accesskey: {
     accesskeys: string
@@ -84,6 +86,7 @@ export interface LanguageResource {
     optional: string
     submitchanges: string
     loading: string
+    confirmsubmit: string
   }
   dashboard: {
     title: string
@@ -345,6 +348,7 @@ export interface LanguageResource {
         networkrefresh: string
         user: string
         approve: string
+        nodeacl: string
       }
       failure: {
         node: string
@@ -352,6 +356,7 @@ export interface LanguageResource {
         networkrefresh: string
         user: string
         approve: string
+        nodeacl: string
       }
     }
     create: {

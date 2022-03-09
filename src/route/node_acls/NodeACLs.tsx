@@ -4,17 +4,14 @@ import { useRouteMatch, Switch, Route } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 import { NetworkSelect } from '~components/NetworkSelect'
-import { AllNodesACLTable } from './components/AllNodesACLTable'
+import { NodesACLTable } from './components/NodesACLTable'
 
 export const NodeAcls: React.FC = () => {
-  const { path } = useRouteMatch()
+  const { path, url } = useRouteMatch()
   const { t } = useTranslation()
 
   useLinkBreadcrumb({
-    title: t('breadcrumbs.nodes'),
-  })
-  
-  useLinkBreadcrumb({
+    link: url,
     title: t('breadcrumbs.acls'),
   })
 
@@ -42,8 +39,11 @@ export const NodeAcls: React.FC = () => {
           </Grid>
           <NetworkSelect selectAll />
         </Route>
+        <Route path={`${path}/:netid/:nodeid`}>
+          <NodesACLTable />
+        </Route>
         <Route path={`${path}/:netid`}>
-          <AllNodesACLTable />
+          <NodesACLTable />
         </Route>
       </Switch>
     </Container>

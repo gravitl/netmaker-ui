@@ -42,7 +42,7 @@ export default function ACLCard() {
   const actions = [
     {
       icon: (
-        <Link color="primary" to="/acls/nodes">
+        <Link color="primary" to="/acls">
           <DeviceHub />
         </Link>
       ),
@@ -51,7 +51,7 @@ export default function ACLCard() {
   ]
 
   return (
-    <Button component={Link} to={'/acls/nodes'} color={'inherit'} fullWidth style={{textTransform: 'none'}}>
+    <Button component={Link} to={'/acls'} color={'inherit'} fullWidth style={{textTransform: 'none'}}>
     <Card
       sx={{ minWidth: 275, backgroundColor: grey[200] }}
       variant="outlined"
