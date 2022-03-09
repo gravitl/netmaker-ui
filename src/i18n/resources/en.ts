@@ -52,7 +52,8 @@ export const en: LanguageResource = {
     dashboard: 'Dashboard',
     createegress: 'Create Egress',
     createrelay: 'Create Relay',
-    graphs: 'Graphs'
+    graphs: 'Graphs',
+    acls: 'ACLs',
   },
   common: {
     disabled: 'Disabled',
@@ -84,6 +85,7 @@ export const en: LanguageResource = {
     chars: 'characters',
     optional: 'optional',
     submitchanges: 'Submit Changes',
+    loading: 'Loading',
   },
   dashboard: {
     title: 'Netmaker Dashboard',
@@ -173,6 +175,7 @@ export const en: LanguageResource = {
     graph: 'Graph',
     iscomms: 'This is your comms network',
     commswarn: 'Editing this network could cause your networks to lose consensus',
+    none: 'No Network Selected',
   },
   helper: {
     egress: 'Enter your network interface name, i.e. "eth0"',

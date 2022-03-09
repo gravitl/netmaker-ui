@@ -51,6 +51,7 @@ export interface LanguageResource {
     createegress: string
     createrelay: string
     graphs: string
+    acls: string
   }
   common: {
     disabled: string
@@ -82,6 +83,7 @@ export interface LanguageResource {
     chars: string
     optional: string
     submitchanges: string
+    loading: string
   }
   dashboard: {
     title: string
@@ -178,6 +180,7 @@ export interface LanguageResource {
     graph: string
     iscomms: string
     commswarn: string
+    none: string
   }
   node: {
     nodes: string

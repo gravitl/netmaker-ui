@@ -11,7 +11,11 @@ export const NodeAcls: React.FC = () => {
   const { t } = useTranslation()
 
   useLinkBreadcrumb({
-    title: t('breadcrumbs.accessKeys'),
+    title: t('breadcrumbs.nodes'),
+  })
+  
+  useLinkBreadcrumb({
+    title: t('breadcrumbs.acls'),
   })
 
   const titleStyle = {

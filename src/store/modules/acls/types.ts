@@ -2,7 +2,9 @@ export type NodeID = string
 
 export type NodeACL = Record<NodeID, number>
 
-export type NodeACLContainer = Record<NodeID, NodeACL> 
+type MutableRequired<T> = { -readonly [P in keyof T]-?: T[P] };
+
+export type NodeACLContainer =  MutableRequired<{ [nodeID: NodeID] : NodeACL}>
 
 export interface UpdateNodeACLPayload {
     Request: {
