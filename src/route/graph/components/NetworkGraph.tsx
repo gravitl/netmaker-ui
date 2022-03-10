@@ -42,7 +42,7 @@ export const NetworkGraph: React.FC = () => {
   })
 
   React.useEffect(() => {
-    if (!!!currentNodeACLs.length && !isProcessing) {
+    if ((!!!currentNodeACLs.length && !isProcessing)) {
       dispatch(getNodeACLContainer.request({ netid }))
     } else if (!!!listOfNodes.length || !!!currentNodeACLs.filter(acl => acl === listOfNodes[0].id).length) {
       dispatch(clearCurrentACL(''))
@@ -63,8 +63,7 @@ export const NetworkGraph: React.FC = () => {
     } else if (node1.isrelayed || node2.isrelayed) {
       return false
     } else if (!!currentNodeACLs.length && 
-      !!currentNetworkACL[node1.id] &&
-      !!currentNetworkACL[node1.id].length && 
+      !!currentNetworkACL[node1.id] && 
       currentNetworkACL[node1.id][node2.id] === 1) {
       return false
     }
