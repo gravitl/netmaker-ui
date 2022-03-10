@@ -9,6 +9,19 @@ export interface LanguageResource {
     dns: string
     externalClients: string
     users: string
+    acls: string
+  }
+  acls: {
+    acls: string
+    nodes: string
+    nodeview: string
+    networkview: string
+    aclicon: string
+    nodesconfirm: string
+    nodeconfirm: string 
+    viewall: string
+    allowall: string
+    blockall: string
   }
   accesskey: {
     accesskeys: string
@@ -42,6 +55,7 @@ export interface LanguageResource {
     createegress: string
     createrelay: string
     graphs: string
+    acls: string
   }
   common: {
     disabled: string
@@ -72,6 +86,9 @@ export interface LanguageResource {
     min: string
     chars: string
     optional: string
+    submitchanges: string
+    loading: string
+    confirmsubmit: string
   }
   dashboard: {
     title: string
@@ -168,6 +185,7 @@ export interface LanguageResource {
     graph: string
     iscomms: string
     commswarn: string
+    none: string
   }
   node: {
     nodes: string
@@ -332,6 +350,7 @@ export interface LanguageResource {
         networkrefresh: string
         user: string
         approve: string
+        nodeacl: string
       }
       failure: {
         node: string
@@ -339,6 +358,7 @@ export interface LanguageResource {
         networkrefresh: string
         user: string
         approve: string
+        nodeacl: string
       }
     }
     create: {

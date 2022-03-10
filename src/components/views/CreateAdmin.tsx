@@ -139,7 +139,7 @@ export default function CreateAdmin() {
             <Grid item sm={12} md={10}>
               <NmFormInputText
                 name={'username'}
-                label={t('login.label.username')}
+                label={String(t('login.label.username'))}
                 variant="outlined"
                 margin="normal"
                 required
@@ -151,7 +151,7 @@ export default function CreateAdmin() {
             <Grid item sm={12} md={10}>
               <NmFormInputText
                 name={'password'}
-                label={t('login.label.password')}
+                label={String(t('login.label.password'))}
                 variant="outlined"
                 margin="normal"
                 required
@@ -165,7 +165,7 @@ export default function CreateAdmin() {
             <Grid item sm={12} md={10}>
               <NmFormInputText
                 name={'confirmation'}
-                label={t('login.label.confirmation')}
+                label={String(t('login.label.confirmation'))}
                 variant="outlined"
                 margin="normal"
                 required

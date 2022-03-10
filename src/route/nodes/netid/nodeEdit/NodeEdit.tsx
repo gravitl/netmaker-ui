@@ -103,7 +103,7 @@ export const NodeEdit: React.FC<{
         <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <NmFormInputText
             name={'address'}
-            label={t('node.address')}
+            label={String(t('node.address'))}
             defaultValue={node.address}
             disabled={node.isserver}
           />
@@ -112,7 +112,7 @@ export const NodeEdit: React.FC<{
           <NmFormInputText
             defaultValue={node.address6}
             name={'address6'}
-            label={t('node.address6')}
+            label={String(t('node.address6'))}
             disabled={!node.isdualstack || node.isserver}
           />
         </Grid>
@@ -120,21 +120,21 @@ export const NodeEdit: React.FC<{
           <NmFormInputText
             defaultValue={node.localaddress}
             name={'localaddress'}
-            label={t('node.localaddress')}
+            label={String(t('node.localaddress'))}
           />
         </Grid>
         <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <NmFormInputText
             defaultValue={node.name}
             name={'name'}
-            label={t('node.name')}
+            label={String(t('node.name'))}
           />
         </Grid>
         <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <NmFormInputText
             defaultValue={String(node.listenport)}
             name={'listenport'}
-            label={t('node.listenport')}
+            label={String(t('node.listenport'))}
             type="number"
             disabled={node.isserver}
           />
@@ -144,28 +144,28 @@ export const NodeEdit: React.FC<{
             disabled
             defaultValue={t('node.publickey')}
             name={'publickey'}
-            label={t('node.publickey')}
+            label={String(t('node.publickey'))}
           />
         </Grid>
         <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <NmFormInputText
             defaultValue={node.endpoint}
             name={'endpoint'}
-            label={t('node.endpoint')}
+            label={String(t('node.endpoint'))}
           />
         </Grid>
         <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <NmFormInputText
             defaultValue={node.postup}
             name={'postup'}
-            label={t('node.postup')}
+            label={String(t('node.postup'))}
             disabled={!serverConfig.RCE}
           />
         </Grid>
         <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <NmFormInputText
             defaultValue={node.postdown}
-            label={t('node.postdown')}
+            label={String(t('node.postdown'))}
             name={'postdown'}
             disabled={!serverConfig.RCE}
           />
@@ -173,14 +173,14 @@ export const NodeEdit: React.FC<{
         <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <NmFormInputText
             defaultValue={node.allowedips ? node.allowedips.join(',') : ''}
-            label={t('node.allowedips')}
+            label={String(t('node.allowedips'))}
             name={'allowedips'}
           />
         </Grid>
         <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <NmFormInputText
             defaultValue={node.persistentkeepalive}
-            label={t('node.persistentkeepalive')}
+            label={String(t('node.persistentkeepalive'))}
             name={'persistentkeepalive'}
           />
         </Grid>
@@ -190,7 +190,7 @@ export const NodeEdit: React.FC<{
             defaultValue={
               node.relayaddrs ? node.relayaddrs.join(',') : ''
             }
-            label={t('node.relayaddrs')}
+            label={String(t('node.relayaddrs'))}
             name={'relayaddrs'}
           />
         </Grid>
@@ -200,7 +200,7 @@ export const NodeEdit: React.FC<{
               renderInput={(props) => 
                 <TextField fullWidth={false} sx={{maxWidth: '15rem'}} {...props} />
               }
-              label={t('node.expdatetime')}
+              label={String(t('node.expdatetime'))}
               value={expTime ? datePickerConverter(expTime) : datePickerConverter(node.expdatetime)}
               onChange={(newValue: string | null) => {
                 if (!!newValue) {
@@ -214,7 +214,7 @@ export const NodeEdit: React.FC<{
           <TextField
             disabled
             value={datePickerConverter(node.lastcheckin)}
-            label={t('node.lastcheckin')}
+            label={String(t('node.lastcheckin'))}
             name={'lastcheckin'}
           />
         </Grid>
@@ -222,7 +222,7 @@ export const NodeEdit: React.FC<{
           <NmFormInputText
             disabled
             defaultValue={node.macaddress}
-            label={t('node.macaddress')}
+            label={String(t('node.macaddress'))}
             name={'macaddress'}
           />
         </Grid>
@@ -230,7 +230,7 @@ export const NodeEdit: React.FC<{
           <NmFormInputText
             disabled
             defaultValue={node.network}
-            label={t('node.network')}
+            label={String(t('node.network'))}
             name={'network'}
           />
         </Grid>
@@ -240,14 +240,14 @@ export const NodeEdit: React.FC<{
             defaultValue={
               node.egressgatewayranges ? node.egressgatewayranges.join(',') : ''
             }
-            label={t('node.egressgatewayranges')}
+            label={String(t('node.egressgatewayranges'))}
             name={'egressgatewayranges'}
           />
         </Grid>
         <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <NmFormInputText
             defaultValue={node.localrange}
-            label={t('node.localrange')}
+            label={String(t('node.localrange'))}
             name={'localrange'}
             disabled={!node.islocal}
           />
@@ -256,7 +256,7 @@ export const NodeEdit: React.FC<{
           <NmFormInputText
             disabled
             defaultValue={node.os}
-            label={t('node.os')}
+            label={String(t('node.os'))}
             name={'os'}
           />
         </Grid>
@@ -264,7 +264,7 @@ export const NodeEdit: React.FC<{
           <NmFormInputText
             type="number"
             defaultValue={String(node.mtu)}
-            label={t('node.mtu')}
+            label={String(t('node.mtu'))}
             name={'mtu'}
           />
         </Grid>
@@ -272,42 +272,42 @@ export const NodeEdit: React.FC<{
           <Grid container justifyContent='space-between' alignItems='center'>
             <Grid item xs={10} sm={4} md={2} sx={rowMargin}>
               <NmFormInputSwitch
-                label={t('node.isstatic')}
+                label={String(t('node.isstatic'))}
                 name={'isstatic'}
                 defaultValue={node.isstatic}
               />
             </Grid>
             <Grid item xs={10} sm={4} md={2} sx={rowMargin}>
               <NmFormInputSwitch
-                label={t('node.udpholepunch')}
+                label={String(t('node.udpholepunch'))}
                 name={'udpholepunch'}
                 defaultValue={node.udpholepunch}
               />
             </Grid>
             <Grid item xs={10} sm={4} md={2} sx={rowMargin}>
               <NmFormInputSwitch
-                label={t('node.dnson')}
+                label={String(t('node.dnson'))}
                 name={'dnson'}
                 defaultValue={node.dnson}
               />
             </Grid>
             <Grid item xs={10} sm={4} md={2} sx={rowMargin}>
               <NmFormInputSwitch
-                label={t('node.isdualstack')}
+                label={String(t('node.isdualstack'))}
                 name={'isdualstack'}
                 defaultValue={node.isdualstack}
               />
             </Grid>
             <Grid item xs={10} sm={4} md={1} sx={rowMargin}>
               <NmFormInputSwitch
-                label={t('node.islocal')}
+                label={String(t('node.islocal'))}
                 name={'islocal'}
                 defaultValue={node.islocal}
               />
             </Grid>
             <Grid item xs={10} sm={4} md={2} sx={rowMargin}>
               <NmFormInputSwitch
-                label={t('node.ishub')}
+                label={String(t('node.ishub'))}
                 name={'ishub'}
                 defaultValue={node.ishub}
               />

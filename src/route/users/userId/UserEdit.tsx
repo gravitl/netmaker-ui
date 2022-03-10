@@ -118,7 +118,7 @@ export const UserEdit: React.FC = () => {
             <Grid item sm={12} md={5}>
               <NmFormInputText
                 name={'username'}
-                label={t('users.label.username')}
+                label={String(t('users.label.username'))}
                 variant="outlined"
                 margin="normal"
                 required
@@ -131,7 +131,7 @@ export const UserEdit: React.FC = () => {
             <Grid item sm={12} md={5}>
               <NmFormInputCheckbox
                 name="isadmin"
-                label={t('users.update.isAdmin')}
+                label={String(t('users.update.isAdmin'))}
               />
             </Grid>
             <Grid item sm={12} md={5}>

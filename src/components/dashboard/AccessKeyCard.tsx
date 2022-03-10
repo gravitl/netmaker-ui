@@ -69,7 +69,7 @@ export default function AccessKeyCard() {
         <CardContent>
           <Avatar
             sx={{ bgcolor: grey[900] }}
-            aria-label={t('breadcrumbs.accessKeys')}
+            aria-label={String(t('breadcrumbs.accessKeys'))}
           >
             <VpnKey />
           </Avatar>
@@ -103,7 +103,7 @@ export default function AccessKeyCard() {
             <Grid item xs={1}>
               <Avatar
                 sx={{ bgcolor: grey[900] }}
-                aria-label={t('common.count')}
+                aria-label={String(t('common.count'))}
               >
                   {accessKeyCount}
               </Avatar>

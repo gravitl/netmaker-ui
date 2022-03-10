@@ -160,7 +160,7 @@ export function CreateRelay() {
                 fullWidth
                 disabled
                 name={'ranges'}
-                label={t('node.relayaddrs')}
+                label={String(t('node.relayaddrs'))}
                 sx={{ height: '100%', margin: '1em 0 1em 0' }}
               />
             </Grid>

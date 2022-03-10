@@ -165,19 +165,19 @@ export function Header(Props: ToggleProps) {
                 indicatorColor="primary"
               >
                 <Tab
-                  label={t('header.networks')}
+                  label={String(t('header.networks'))}
                   tabIndex={0}
                   value="/networks"
                   onClick={() => tabChange('/networks')}
                 />
                 <Tab
-                  label={t('header.nodes')}
+                  label={String(t('header.nodes'))}
                   tabIndex={1}
                   value="/nodes"
                   onClick={() => tabChange('/nodes')}
                 />
                 <Tab
-                  label={t('header.accessKeys')}
+                  label={String(t('header.accessKeys'))}
                   tabIndex={2}
                   value="/keys"
                   onClick={() => tabChange('/keys')}
@@ -194,7 +194,7 @@ export function Header(Props: ToggleProps) {
                   onClick={() => tabChange('/dns')}
                 />
                 <Tab
-                  label={t('header.externalClients')}
+                  label={String(t('header.externalClients'))}
                   tabIndex={4}
                   value="/external"
                   onClick={() => tabChange('/external')}

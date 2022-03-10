@@ -161,7 +161,7 @@ export default function Login() {
             <Grid item sm={12} md={5}>
               <NmFormInputText
                 name={'username'}
-                label={t('login.label.username')}
+                label={String(t('login.label.username'))}
                 variant="outlined"
                 margin="normal"
                 required
@@ -173,7 +173,7 @@ export default function Login() {
             <Grid item sm={12} md={5}>
               <NmFormInputText
                 name={'password'}
-                label={t('login.label.password')}
+                label={String(t('login.label.password'))}
                 variant="outlined"
                 margin="normal"
                 required

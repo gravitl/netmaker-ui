@@ -159,7 +159,7 @@ export function CreateEgress() {
                 minRows={2}
                 fullWidth
                 name={'ranges'}
-                label={t('node.egressgatewayranges')}
+                label={String(t('node.egressgatewayranges'))}
                 sx={{ height: '100%', margin: '1em 0 1em 0' }}
               />
             </Grid>
@@ -168,7 +168,7 @@ export function CreateEgress() {
                 <NmFormInputText
                   fullWidth
                   name={'iface'}
-                  label={t('node.interface')}
+                  label={String(t('node.interface'))}
                 />
                 <HelperText
                   text={t('helper.egress')}

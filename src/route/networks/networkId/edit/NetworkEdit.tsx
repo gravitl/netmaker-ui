@@ -86,65 +86,65 @@ export const NetworkEdit: React.FC<{
         <Grid item xs={12} sm={4} md={3}>
           <NmFormInputText
             name={'addressrange'}
-            label={t('network.addressrange')}
+            label={String(t('network.addressrange'))}
           />
         </Grid>
         <Grid item xs={12} sm={4} md={3}>
           <NmFormInputText
             name={'addressrange6'}
-            label={t('network.addressrange6')}
+            label={String(t('network.addressrange6'))}
           />
         </Grid>
         <Grid item xs={12} sm={4} md={3}>
           <NmFormInputText
             name={'localrange'}
-            label={t('network.localrange')}
+            label={String(t('network.localrange'))}
           />
         </Grid>
         <Grid item xs={12} sm={4} md={3}>
           <NmFormInputText
             name={'defaultinterface'}
-            label={t('network.defaultinterface')}
+            label={String(t('network.defaultinterface'))}
           />
         </Grid>
         <Grid item xs={12} sm={4} md={3}>
           <NmFormInputText
             name={'defaultlistenport'}
-            label={t('network.defaultlistenport')}
+            label={String(t('network.defaultlistenport'))}
             type="number"
           />
         </Grid>
         <Grid item xs={12} sm={4} md={3}>
           <NmFormInputText
             name={'defaultpostup'}
-            label={t('network.defaultpostup')}
+            label={String(t('network.defaultpostup'))}
             disabled={!serverConfig.RCE}
           />
         </Grid>
         <Grid item xs={12} sm={4} md={3}>
           <NmFormInputText
             name={'defaultpostdown'}
-            label={t('network.defaultpostdown')}
+            label={String(t('network.defaultpostdown'))}
             disabled={!serverConfig.RCE}
           />
         </Grid>
         <Grid item xs={12} sm={4} md={3}>
           <NmFormInputText
             name={'defaultkeepalive'}
-            label={t('network.defaultkeepalive')}
+            label={String(t('network.defaultkeepalive'))}
             type="number"
           />
         </Grid>
         <Grid item xs={12} sm={4} md={3}>
           <NmFormInputText
             name={'defaultextclientdns'}
-            label={t('network.defaultextclientdns')}
+            label={String(t('network.defaultextclientdns'))}
           />
         </Grid>
         <Grid item xs={12} sm={4} md={3}>
           <NmFormInputText
             name={'defaultmtu'}
-            label={t('network.defaultmtu')}
+            label={String(t('network.defaultmtu'))}
             type="number"
           />
         </Grid>
@@ -161,19 +161,19 @@ export const NetworkEdit: React.FC<{
         <Grid item xs={12} sm={4} md={3}>
           <NmFormInputSwitch
             name={'isdualstack'}
-            label={t('network.isdualstack')}
+            label={String(t('network.isdualstack'))}
           />
         </Grid>
         <Grid item xs={12} sm={4} md={3}>
           <NmFormInputSwitch
             name={'defaultudpholepunch'}
-            label={t('network.defaultudpholepunch')}
+            label={String(t('network.defaultudpholepunch'))}
           />
         </Grid>
         <Grid item xs={12} sm={4} md={3}>
           <NmFormInputSwitch
             name={'ispointtosite'}
-            label={t('network.ispointtosite')}
+            label={String(t('network.ispointtosite'))}
           />
         </Grid>
       </Grid>

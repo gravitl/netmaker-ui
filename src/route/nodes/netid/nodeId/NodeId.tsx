@@ -128,6 +128,9 @@ export const NodeId: React.FC = () => {
               <NmLink to={`${url}/edit`} variant="outlined" style={{width: '50%', margin: '4px'}}>
                 {t('common.edit')}
               </NmLink>
+              <NmLink to={`/acls/${netid}/${nodeId}`} variant="outlined" style={{width: '50%', margin: '4px'}}>
+                {t('header.acls')}
+              </NmLink>
               <Button disabled={node.isserver} variant="outlined" color='warning' style={{width: '50%', margin: '4px'}} onClick={handleOpen}>
                 {t('common.delete')}
               </Button>
@@ -146,97 +149,97 @@ export const NodeId: React.FC = () => {
             <TextField
               disabled
               value={node.address}
-              label={t('node.address')}
+              label={String(t('node.address'))}
             />
           </Grid>
           <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
             <TextField
               disabled
               value={node.address6}
-              label={t('node.address6')}
+              label={String(t('node.address6'))}
             />
           </Grid>
           <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
             <TextField
               disabled
               value={node.localaddress}
-              label={t('node.localaddress')}
+              label={String(t('node.localaddress'))}
             />
           </Grid>
           <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-            <TextField disabled value={node.name} label={t('node.name')} />
+            <TextField disabled value={node.name} label={String(t('node.name'))} />
           </Grid>
           <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
             <TextField
               disabled
               value={node.listenport}
-              label={t('node.listenport')}
+              label={String(t('node.listenport'))}
             />
           </Grid>
           <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
             <TextField
               disabled
               value={node.publickey}
-              label={t('node.publickey')}
+              label={String(t('node.publickey'))}
             />
           </Grid>
           <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
             <TextField
               disabled
               value={node.endpoint}
-              label={t('node.endpoint')}
+              label={String(t('node.endpoint'))}
             />
           </Grid>
           <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-            <TextField disabled value={node.postup} label={t('node.postup')} />
+            <TextField disabled value={node.postup} label={String(t('node.postup'))} />
           </Grid>
           <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
             <TextField
               disabled
               value={node.postdown}
-              label={t('node.postdown')}
+              label={String(t('node.postdown'))}
             />
           </Grid>
           <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
             <TextField
               disabled
               value={node.allowedips ? node.allowedips.join(',') : ''}
-              label={t('node.allowedips')}
+              label={String(t('node.allowedips'))}
             />
           </Grid>
           <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
             <TextField
               disabled
               value={node.persistentkeepalive}
-              label={t('node.persistentkeepalive')}
+              label={String(t('node.persistentkeepalive'))}
             />
           </Grid>
           <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
             <TextField
               disabled
               value={datePickerConverter(node.lastmodified)}
-              label={t('node.lastmodified')}
+              label={String(t('node.lastmodified'))}
             />
           </Grid>
           <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
             <TextField
               disabled
               value={datePickerConverter(node.expdatetime)}
-              label={t('node.expdatetime')}
+              label={String(t('node.expdatetime'))}
             />
           </Grid>
           <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
             <TextField
               disabled
               value={datePickerConverter(node.lastcheckin)}
-              label={t('node.lastcheckin')}
+              label={String(t('node.lastcheckin'))}
             />
           </Grid>
           <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
             <TextField
               disabled
               value={node.macaddress}
-              label={t('node.macaddress')}
+              label={String(t('node.macaddress'))}
             />
           </Grid>
           <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
@@ -247,69 +250,69 @@ export const NodeId: React.FC = () => {
                   ? node.egressgatewayranges.join(',')
                   : ''
               }
-              label={t('node.egressgatewayranges')}
+              label={String(t('node.egressgatewayranges'))}
             />
           </Grid>
           <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
             <TextField
               disabled
               value={node.localrange}
-              label={t('node.localrange')}
+              label={String(t('node.localrange'))}
             />
           </Grid>
           <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-            <TextField disabled value={node.os} label={t('node.os')} />
+            <TextField disabled value={node.os} label={String(t('node.os'))} />
           </Grid>
           <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-            <TextField disabled value={node.mtu} label={t('node.mtu')} />
+            <TextField disabled value={node.mtu} label={String(t('node.mtu'))} />
           </Grid>
           <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
             <TextField
               disabled
               value={node.network}
-              label={t('node.network')}
+              label={String(t('node.network'))}
             />
           </Grid>
           <Grid item xs={12}>
             <Grid container justifyContent='space-between' alignItems='center'>
               <Grid item xs={10} sm={4} md={2} sx={rowMargin}>
                 <FormControlLabel
-                  label={t('node.isstatic')}
+                  label={String(t('node.isstatic'))}
                   control={<SwitchField checked={node.isstatic} disabled />}
                   disabled
                 />
               </Grid>
               <Grid item xs={10} sm={4} md={2} sx={rowMargin}>
                 <FormControlLabel
-                  label={t('node.udpholepunch')}
+                  label={String(t('node.udpholepunch'))}
                   control={<SwitchField checked={node.udpholepunch} disabled />}
                   disabled
                 />
               </Grid>
               <Grid item xs={10} sm={4} md={2} sx={rowMargin}>
                 <FormControlLabel
-                  label={t('node.dnson')}
+                  label={String(t('node.dnson'))}
                   control={<SwitchField checked={node.dnson} disabled />}
                   disabled
                 />
               </Grid>
               <Grid item xs={10} sm={4} md={2} sx={rowMargin}>
                 <FormControlLabel
-                  label={t('node.isdualstack')}
+                  label={String(t('node.isdualstack'))}
                   control={<SwitchField checked={node.isdualstack} disabled />}
                   disabled
                 />
               </Grid>
               <Grid item xs={10} sm={4} md={1} sx={rowMargin}>
                 <FormControlLabel
-                  label={t('node.islocal')}
+                  label={String(t('node.islocal'))}
                   control={<SwitchField checked={node.islocal} disabled />}
                   disabled
                 />
               </Grid>
               <Grid item xs={10} sm={4} md={2} sx={rowMargin}>
                 <FormControlLabel
-                  label={t('node.ishub')}
+                  label={String(t('node.ishub'))}
                   control={<SwitchField checked={node.ishub} disabled />}
                   disabled
                 />

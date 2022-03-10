@@ -11,6 +11,7 @@ import DNSCard from '~components/dashboard/DNSCard'
 import UserCard from '~components/dashboard/UserCard'
 import { useSelector } from 'react-redux'
 import { authSelectors } from '~store/types'
+import ACLCard from '~components/dashboard/ACLCard'
 
 export const Dashboard: React.FC = () => {
   const { path } = useRouteMatch()
@@ -47,9 +48,14 @@ export const Dashboard: React.FC = () => {
               <DNSCard />
             </Grid>
             {user?.isAdmin && (
+              <>
+              <Grid item xs={12} sm={6} md={5}>
+                <ACLCard />
+              </Grid>
               <Grid item xs={12} sm={6} md={5}>
                 <UserCard />
               </Grid>
+              </>
             )}
           </Grid>
         </Route>

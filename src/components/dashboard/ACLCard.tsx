@@ -6,16 +6,13 @@ import Card from '@mui/material/Card'
 import CardActions from '@mui/material/CardActions'
 import SpeedDial from '@mui/material/SpeedDial'
 import SpeedDialAction from '@mui/material/SpeedDialAction'
-import PreviewIcon from '@mui/icons-material/Preview'
-import CreateIcon from '@mui/icons-material/AddBox'
+// import PreviewIcon from '@mui/icons-material/Preview'
 import { grey } from '@mui/material/colors'
-import { useSelector } from 'react-redux'
-import { authSelectors } from '~store/types'
 
 import CardContent from '@mui/material/CardContent'
 import Typography from '@mui/material/Typography'
 import { useTranslation } from 'react-i18next'
-import { KeyboardArrowRight, People as UsersIcon } from '@mui/icons-material'
+import { DeviceHub, KeyboardArrowRight, ViewList as ACLIcon, VpnLockOutlined } from '@mui/icons-material'
 import { Button, Grid } from '@mui/material'
 
 const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
@@ -25,10 +22,8 @@ const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
   },
 }))
 
-export default function UserCard() {
+export default function ACLCard() {
   const { t } = useTranslation()
-  const users = useSelector(authSelectors.getUsers)
-  const userCount = users.length
 
   const cardStyle = {
     marginBottom: '1em',
@@ -47,24 +42,16 @@ export default function UserCard() {
   const actions = [
     {
       icon: (
-        <Link color="primary" to="/users">
-          <PreviewIcon />
+        <Link color="primary" to="/acls">
+          <DeviceHub />
         </Link>
       ),
-      name: t('common.view'),
-    },
-    {
-      icon: (
-        <Link color="primary" to="/users/create">
-          <CreateIcon />
-        </Link>
-      ),
-      name: t('common.create'),
+      name: `${t('common.view')} ${t('acls.nodes')}`,
     },
   ]
 
   return (
-    <Button component={Link} to={'/users'} color={'inherit'} fullWidth style={{textTransform: 'none'}}>
+    <Button component={Link} to={'/acls'} color={'inherit'} fullWidth style={{textTransform: 'none'}}>
     <Card
       sx={{ minWidth: 275, backgroundColor: grey[200] }}
       variant="outlined"
@@ -72,14 +59,14 @@ export default function UserCard() {
     >
       <CardContent>
         <Avatar sx={{ bgcolor: grey[900] }} aria-label={String(t('users.header'))}>
-          <UsersIcon />
+          <ACLIcon />
         </Avatar>
         <div style={cardContentStyle}>
           <Typography variant="h5" component="div">
-            {t('users.header')}
+            {t('header.acls')}
           </Typography>
           <Typography variant="body2">
-            {`${t('common.manage')} ${t('users.header')}`}
+            {`${t('common.manage')} ${t('header.acls')}`}
           </Typography>
         </div>
       </CardContent>
@@ -87,7 +74,7 @@ export default function UserCard() {
         <Grid container justifyContent='space-around' alignItems='center'>
           <Grid item xs={10}>
             <StyledSpeedDial
-              ariaLabel={`${t('common.manage')} ${t('user.header')}`}
+              ariaLabel={`${t('common.manage')} ${t('header.acls')}`}
               icon={<KeyboardArrowRight />}
               direction={'right'}
             >
@@ -104,9 +91,9 @@ export default function UserCard() {
           <Grid item xs={1}>
             <Avatar
               sx={{ bgcolor: grey[900] }}
-              aria-label={String(t('common.count'))}
+              aria-label={String(t('acl.aclicon'))}
             >
-                {userCount}
+                <VpnLockOutlined />
             </Avatar>
           </Grid>
         </Grid>
