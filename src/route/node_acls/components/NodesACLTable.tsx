@@ -5,9 +5,9 @@ import { useTranslation } from 'react-i18next'
 import { useParams, useRouteMatch } from 'react-router-dom'
 import { useNetwork, useNodesByNetworkId } from '~util/network'
 import CustomDialog from '~components/dialog/CustomDialog'
-import { Button, Grid, IconButton, InputAdornment, LinearProgress, TextField, Typography } from '@mui/material'
+import { Button, Grid, IconButton, InputAdornment, LinearProgress, TextField, Tooltip, Typography } from '@mui/material'
 import { NetworkSelect } from '~components/NetworkSelect'
-import { CheckCircle, NotInterested as NotAllowedIcon, RemoveCircleOutline as DisabledIcon, Search } from '@mui/icons-material'
+import { Block, CheckCircle, NotInterested as NotAllowedIcon, RemoveCircleOutline as DisabledIcon, RestartAlt, Search } from '@mui/icons-material'
 import { clearCurrentACL, getNodeACLContainer, updateNodeContainerACL } from '~store/modules/acls/actions'
 import { aclSelectors } from '~store/selectors'
 import Table from '@mui/material/Table'
@@ -19,6 +19,10 @@ import TableRow from '@mui/material/TableRow'
 import Paper from '@mui/material/Paper'
 import { NodeACL, NodeACLContainer } from '~store/types'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
+
+const BLOCKED = 1
+const ALLOWED = 2
+const HIGHLIGHT = '#D7BE69'
 
 export const NodesACLTable: React.FC<{}> = () => {
   const { t } = useTranslation()
@@ -37,6 +41,11 @@ export const NodesACLTable: React.FC<{}> = () => {
   var nodeNameMap : Map<string, string> = new Map()
   var filteredNameMap : Map<string, string> = new Map()
   const [ filterNodes, setFilterNodes ] = React.useState(listOfNodes)
+  type HoveredNode = {
+    nodeID1: string
+    nodeID2: string
+  }
+  const [ hoveredCell, setHoveredCell ] = React.useState({nodeID1: '', nodeID2: ''} as HoveredNode)
 
   const handleFilter = (event: {target: {value: string}}) => {
     const { value } = event.target
@@ -55,7 +64,7 @@ export const NodesACLTable: React.FC<{}> = () => {
 
   React.useEffect(() => {
     
-    if (!!!currentNodeACLs.length && !isProcessing) {
+    if ((!!!currentNodeACLs.length && !isProcessing) || listOfNodes.length !== currentNodeACLs.length) {
       dispatch(getNodeACLContainer.request({ netid }))
     } else if (!!!listOfNodes.length || !!!currentNodeACLs.filter(acl => acl === listOfNodes[0].id).length) {
       dispatch(clearCurrentACL(''))
@@ -119,12 +128,12 @@ export const NodesACLTable: React.FC<{}> = () => {
     if (!!!newACLs[node2ID][node1ID]) {
       newACLs[node2ID][node1ID] = editableNetworkACL[node2ID][node1ID] 
     }
-    if (newACLs[node1ID][node2ID] === 2) {
-      newACLs[node1ID][node2ID] = 1
-      newACLs[node2ID][node1ID] = 1
+    if (newACLs[node1ID][node2ID] === ALLOWED) {
+      newACLs[node1ID][node2ID] = BLOCKED
+      newACLs[node2ID][node1ID] = BLOCKED
     } else {
-      newACLs[node1ID][node2ID] = 2
-      newACLs[node2ID][node1ID] = 2
+      newACLs[node1ID][node2ID] = ALLOWED
+      newACLs[node2ID][node1ID] = ALLOWED
     }
     
     for (let i = 0; i < currentNodeACLs.length; i++) { // loop through all "outer" nodes to make a deep copy
@@ -151,11 +160,31 @@ export const NodesACLTable: React.FC<{}> = () => {
       return <DisabledIcon color='inherit' />
     }
     return <IconButton onClick={() => handleRuleUpdate(nodeID, loopID)}>
-        {(!!editableNetworkACL[nodeID] && !!editableNetworkACL[nodeID][loopID] && editableNetworkACL[nodeID][loopID] === 2) ? 
+        {(!!editableNetworkACL[nodeID] && !!editableNetworkACL[nodeID][loopID] && editableNetworkACL[nodeID][loopID] === ALLOWED) ? 
           <CheckCircle htmlColor='#2800ee' /> : 
           <NotAllowedIcon color='error' />
         }
     </IconButton>
+  }
+
+  const affectAllConnections = (choice: 1 | 2) => {
+    const newACLs = {} as NodeACLContainer
+    
+    for (let i = 0; i < currentNodeACLs.length; i++) { // loop through all "outer" nodes to make a deep copy
+      const currentAclIDs = Object.keys(editableNetworkACL[currentNodeACLs[i]]) // get node's acl
+      if (!!!newACLs[currentNodeACLs[i]]) {
+        newACLs[currentNodeACLs[i]] = {} as NodeACL
+      }
+      for (let j = 0; j < currentAclIDs.length; j++) { // loop through all nodes within node's acl
+        if (!!!newACLs[currentNodeACLs[i]][currentAclIDs[j]]) {
+          newACLs[currentNodeACLs[i]][currentAclIDs[j]] = editableNetworkACL[currentNodeACLs[i]][currentAclIDs[j]]
+        }  
+        if (currentNodeACLs[i] === currentAclIDs[j]) continue // skip adding self to lists
+        newACLs[currentNodeACLs[i]][currentAclIDs[j]] = choice // block connection
+      }
+    }
+    
+    setEditableNetworkACL(newACLs)
   }
 
   const stickyColStyle = {
@@ -191,7 +220,7 @@ export const NodesACLTable: React.FC<{}> = () => {
           <Grid item xs={4}>
             <div style={{ textAlign: 'center' }}>
               <Typography variant="h4">
-                {`${t('acls.nodeview')} ${netid}`}
+                {`${t('acls.networkview')} ${netid}`}
               </Typography>
             </div>
           </Grid>
@@ -220,15 +249,37 @@ export const NodesACLTable: React.FC<{}> = () => {
             >
                 {`${t('common.submitchanges')}`}
             </Button>
-            <Button
-                fullWidth
-                variant="outlined"
-                color='secondary'
-                sx={{marginTop: '1rem'}}
-                onClick={handleReset}
-            >
-                {`${t('common.reset')}`}
-            </Button>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'space-between' }}>
+              <Tooltip title={`${t('common.reset')}`} placement='top'>
+                <IconButton
+                    color='secondary'
+                    sx={{marginTop: '1rem'}}
+                    onClick={handleReset}
+                >
+                    <RestartAlt />
+                </IconButton>
+              </Tooltip>
+              {!!!nodeid && <>
+              <Tooltip title={`${t('acls.allowall')}`} placement='top'>
+                <IconButton
+                    color='error'
+                    sx={{marginTop: '1rem'}}
+                    onClick={() => affectAllConnections(ALLOWED)}
+                >
+                    <CheckCircle htmlColor='#2800ee' />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title={`${t('acls.blockall')}`} placement='top'>
+                <IconButton
+                    color='error'
+                    sx={{marginTop: '1rem'}}
+                    onClick={() => affectAllConnections(BLOCKED)}
+                >
+                    <Block />
+                </IconButton>
+              </Tooltip>
+              </>}
+            </div>
             </div>
         </Grid>
         </Grid>
@@ -242,7 +293,7 @@ export const NodesACLTable: React.FC<{}> = () => {
             <TableRow>
               <TableCell>{t('node.name')}</TableCell>
               {
-                currentNodeACLs.map(nodeID => <TableCell align='center' key={nodeID}><NmLink sx={{textTransform: 'none'}} disabled={!!nodeid} to={`${url}/${nodeID}`}>{nodeNameMap.get(nodeID)}</NmLink></TableCell>)
+                currentNodeACLs.map(nodeID => <TableCell align='center' key={nodeID}><NmLink sx={{textTransform: 'none', background: !!!nodeid && hoveredCell.nodeID2 === nodeID ? HIGHLIGHT : ''}} disabled={!!nodeid} to={`${url}/${nodeID}`}>{nodeNameMap.get(nodeID)}</NmLink></TableCell>)
               }
             </TableRow>
           </TableHead>
@@ -252,12 +303,18 @@ export const NodesACLTable: React.FC<{}> = () => {
                 key={currentACLID}
                 sx={{'&:last-child td, &:last-child th': { border: 0 }, background: index % 2 === 0 ? '#f2f3f4' : '' }}
               >
-                <TableCell sx={stickyColStyle} component="th" scope="row">
+                <TableCell sx={{...stickyColStyle, backgroundColor: !!!nodeid && hoveredCell.nodeID1 === currentACLID ? HIGHLIGHT : ''}} component="th" scope="row">
                   <NmLink sx={{textTransform: 'none'}} disabled={!!nodeid} to={`${url}/${currentACLID}`}>{nodeNameMap.get(currentACLID)}</NmLink>
                 </TableCell>
                 {
                   currentNodeACLs.map((loopACLID) => (
-                    <TableCell key={`${loopACLID}-2`} align='center'>{getACLCellRender(currentACLID, loopACLID)}</TableCell>
+                    <TableCell 
+                      onMouseEnter={() => setHoveredCell({nodeID1: currentACLID, nodeID2: loopACLID})}
+                      onMouseLeave={() => setHoveredCell({nodeID1: '', nodeID2: ''})}
+                      key={`${loopACLID}-2`} 
+                      align='center'>
+                        {getACLCellRender(currentACLID, loopACLID)}
+                      </TableCell>
                   ))
                 }
               </TableRow>

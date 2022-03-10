@@ -21,7 +21,9 @@ export const en: LanguageResource = {
     aclicon: 'ACL Icon',
     nodeconfirm: 'Confirm Node ACL Change',
     nodesconfirm: 'Confirm Network ACL Change',
-    viewall: 'View All Rules'
+    viewall: 'View All Rules',
+    allowall: 'Allow All',
+    blockall: 'Block All',
   },
   accesskey: {
     accesskeys: 'Access Keys',

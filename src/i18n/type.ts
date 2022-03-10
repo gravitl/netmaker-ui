@@ -20,6 +20,8 @@ export interface LanguageResource {
     nodesconfirm: string
     nodeconfirm: string 
     viewall: string
+    allowall: string
+    blockall: string
   }
   accesskey: {
     accesskeys: string

@@ -15,7 +15,6 @@ import LocalizationProvider from '@mui/lab/LocalizationProvider'
 import Routes from './route/root'
 import { PathBreadcrumbsProvider } from './components/PathBreadcrumbs'
 import { getNodes } from '~store/modules/node/actions'
-import { clearCurrentACL } from '~store/modules/acls/actions'
 
 function App() {
   const dispatch = useDispatch()
@@ -27,10 +26,6 @@ function App() {
 
   React.useEffect(() => {
     const interval = setInterval(() => {
-      if (!!Object.keys(currentACL).length && !window.location.href.includes('acls')) {
-        console.log('this was called')
-        dispatch(clearCurrentACL(''))
-      }
       
       if (!isLoggedIn || (!!user && Date.now() / 1000 > user.exp && !window.location.href.includes('/login'))) {
         dispatch(logout())

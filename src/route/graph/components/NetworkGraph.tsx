@@ -1,5 +1,5 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import CustomDialog from '~components/dialog/CustomDialog'
 // import { Node } from '~store/types'
@@ -11,10 +11,11 @@ import NodeGraph from './graph-components/NodeGraph'
 import NodeDetails from './graph-components/NodeDetails'
 import { ControlsContainer, SearchControl, SigmaContainer, ZoomControl, FullScreenControl } from "react-sigma-v2";
 import { filterExtClientsByNetwork } from "~util/node"
-import { nodeSelectors } from '~store/selectors'
+import { nodeSelectors, aclSelectors } from '~store/selectors'
 import { AltDataNode, DataNode, Edge } from './graph-components/types'
 import { NetworkSelect } from '~components/NetworkSelect'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
+import { clearCurrentACL, getNodeACLContainer } from '~store/modules/acls/actions'
 
 export const NetworkGraph: React.FC = () => {
   // const networks = useSelector(networkSelectors.getNetworks)
@@ -22,17 +23,31 @@ export const NetworkGraph: React.FC = () => {
   const [open, setOpen] = React.useState(false)
   const { url } = useRouteMatch()
   const { netid } = useParams<{ netid: string }>()
+  const dispatch = useDispatch()
   const currentNetwork = useNetwork(netid)
-  const listOfNodes = useNodesByNetworkId(netid)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const listOfNodes = useNodesByNetworkId(netid) || []
+  const isProcessing = useSelector(aclSelectors.isProcessing)
+  const currentNetworkACL = useSelector(aclSelectors.getCurrentACL)
+  const currentNodeACLs = Object.keys(currentNetworkACL)
   const [selectedNode, setSelectedNode] = React.useState({} as Node)
   const [selectedAltData, setSelectedAltData] = React.useState({} as AltDataNode)
   const extClients = useSelector(nodeSelectors.getExtClients)
   const clients = filterExtClientsByNetwork(extClients, netid)
 
+
   useLinkBreadcrumb({
     link: url,
     title: netid,
   })
+
+  React.useEffect(() => {
+    if (!!!currentNodeACLs.length && !isProcessing) {
+      dispatch(getNodeACLContainer.request({ netid }))
+    } else if (!!!listOfNodes.length || !!!currentNodeACLs.filter(acl => acl === listOfNodes[0].id).length) {
+      dispatch(clearCurrentACL(''))
+    }
+  }, [ dispatch, netid, currentNetworkACL, currentNodeACLs, listOfNodes, isProcessing])
 
   const handleClose = () => {
     setOpen(false)
@@ -46,6 +61,11 @@ export const NetworkGraph: React.FC = () => {
     if (node1.isrelay && ([...node1.relayaddrs] as string[]).indexOf(node2.address) >= 0) {
       return false
     } else if (node1.isrelayed || node2.isrelayed) {
+      return false
+    } else if (!!currentNodeACLs.length && 
+      !!currentNetworkACL[node1.id] &&
+      !!currentNetworkACL[node1.id].length && 
+      currentNetworkACL[node1.id][node2.id] === 1) {
       return false
     }
     return true
