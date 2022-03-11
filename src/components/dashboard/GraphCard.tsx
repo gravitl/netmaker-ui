@@ -1,18 +1,16 @@
 import * as React from 'react'
 import { Link } from 'react-router-dom'
 import { styled } from '@mui/material/styles'
-import Avatar from '@mui/material/Avatar'
 import Card from '@mui/material/Card'
 import CardActions from '@mui/material/CardActions'
 import SpeedDial from '@mui/material/SpeedDial'
+import Avatar from '@mui/material/Avatar'
 import SpeedDialAction from '@mui/material/SpeedDialAction'
-// import PreviewIcon from '@mui/icons-material/Preview'
 import { grey } from '@mui/material/colors'
-
 import CardContent from '@mui/material/CardContent'
 import Typography from '@mui/material/Typography'
 import { useTranslation } from 'react-i18next'
-import { DeviceHub, KeyboardArrowRight, ViewList as ACLIcon, VpnLockOutlined } from '@mui/icons-material'
+import { AccountTree, EditLocationAlt, KeyboardArrowRight, PreviewOutlined } from '@mui/icons-material'
 import { Button, Grid } from '@mui/material'
 
 const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
@@ -22,7 +20,7 @@ const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
   },
 }))
 
-export default function ACLCard() {
+export default function GraphCard() {
   const { t } = useTranslation()
 
   const cardStyle = {
@@ -42,61 +40,61 @@ export default function ACLCard() {
   const actions = [
     {
       icon: (
-        <Link color="primary" to="/acls">
-          <DeviceHub />
+        <Link to="/graphs">
+          <PreviewOutlined />
         </Link>
       ),
-      name: `${t('common.view')} ${t('acls.nodes')}`,
+      name: t('common.view'),
     },
   ]
 
   return (
-    <Button component={Link} to={'/acls'} color={'inherit'} fullWidth style={{textTransform: 'none'}}>
+    <Button component={Link} to={'/graphs'} color={'inherit'} fullWidth style={{textTransform: 'none'}}>
     <Card
       sx={{ minWidth: 275, backgroundColor: grey[200] }}
       variant="outlined"
       style={cardStyle}
     >
       <CardContent>
-        <Avatar sx={{ bgcolor: grey[900] }} aria-label={String(t('users.header'))}>
-          <ACLIcon />
+        <Avatar sx={{ bgcolor: grey[900] }} aria-label={String(t('network.graphs'))}>
+          <AccountTree />
         </Avatar>
         <div style={cardContentStyle}>
           <Typography variant="h5" component="div">
-            {t('acls.fullname')}
+            {t('network.graphs')}
           </Typography>
           <Typography variant="body2">
-            {`${t('common.manage')} ${t('header.acls')}`}
+            {`${t('common.manage')} ${t('node.nodevisual')}`}
           </Typography>
         </div>
       </CardContent>
       <CardActions>
         <Grid container justifyContent='space-around' alignItems='center'>
-          <Grid item xs={10}>
+            <Grid item xs={10}>
             <StyledSpeedDial
-              ariaLabel={`${t('common.manage')} ${t('header.acls')}`}
+              ariaLabel={`${t('common.manage')} ${t('node.nodevisual')}`}
               icon={<KeyboardArrowRight />}
               direction={'right'}
             >
-            {actions.map((action) => (
-              <SpeedDialAction
-                color="primary"
-                key={action.name}
-                icon={action.icon}
-                tooltipTitle={action.name}
-              />
-            ))}
-          </StyledSpeedDial>
+              {actions.map((action) => (
+                <SpeedDialAction
+                  color="primary"
+                  key={action.name}
+                  icon={action.icon}
+                  tooltipTitle={action.name}
+                />
+              ))}
+            </StyledSpeedDial>
+            </Grid>
+            <Grid item xs={1}>
+              <Avatar
+                sx={{ bgcolor: grey[900] }}
+                aria-label={`${t('network.graphs')}-icon`}
+              >
+                  <EditLocationAlt />
+              </Avatar>
+            </Grid>
           </Grid>
-          <Grid item xs={1}>
-            <Avatar
-              sx={{ bgcolor: grey[900] }}
-              aria-label={String(t('acl.aclicon'))}
-            >
-                <VpnLockOutlined />
-            </Avatar>
-          </Grid>
-        </Grid>
       </CardActions>
     </Card>
     </Button>

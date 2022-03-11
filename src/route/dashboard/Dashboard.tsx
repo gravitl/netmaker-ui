@@ -12,6 +12,7 @@ import UserCard from '~components/dashboard/UserCard'
 import { useSelector } from 'react-redux'
 import { authSelectors } from '~store/types'
 import ACLCard from '~components/dashboard/ACLCard'
+import GraphCard from '~components/dashboard/GraphCard'
 
 export const Dashboard: React.FC = () => {
   const { path } = useRouteMatch()
@@ -29,22 +30,25 @@ export const Dashboard: React.FC = () => {
           <Grid
             container
             direction="row"
-            justifyContent="space-around"
+            justifyContent="space-evenly"
             alignItems="center"
           >
-            <Grid item xs={12} sm={6} md={5}>
+            <Grid item xs={12} sm={6} md={3.75}>
               <NetworkCard />
             </Grid>
-            <Grid item xs={12} sm={6} md={5}>
+            <Grid item xs={12} sm={6} md={3.75}>
               <NodeCard />
             </Grid>
-            <Grid item xs={12} sm={6} md={5}>
+            <Grid item xs={12} sm={6} md={3.75}>
+              <GraphCard />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3.75}>
               <AccessKeysCard />
             </Grid>
-            <Grid item xs={12} sm={6} md={5}>
+            <Grid item xs={12} sm={6} md={3.75}>
               <ExtClientsCard />
             </Grid>
-            <Grid item xs={12} sm={6} md={5}>
+            <Grid item xs={12} sm={6} md={3.75}>
               <DNSCard />
             </Grid>
             {user?.isAdmin && (
