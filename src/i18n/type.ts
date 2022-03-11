@@ -22,6 +22,7 @@ export interface LanguageResource {
     viewall: string
     allowall: string
     blockall: string
+    fullname: string
   }
   accesskey: {
     accesskeys: string
@@ -274,6 +275,7 @@ export interface LanguageResource {
       normal: string
       healthy: string
     }
+    nodevisual: string
   }
   login: {
     validation: {

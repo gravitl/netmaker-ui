@@ -24,6 +24,7 @@ export const en: LanguageResource = {
     viewall: 'View All Rules',
     allowall: 'Allow All',
     blockall: 'Block All',
+    fullname: 'Access Control Lists',
   },
   accesskey: {
     accesskeys: 'Access Keys',
@@ -275,7 +276,8 @@ export const en: LanguageResource = {
       warning: 'WARNING',
       normal: 'Normal',
       healthy: 'HEALTHY'
-    }
+    },
+    nodevisual: 'Nodes visually',
   },
   login: {
     validation: {
