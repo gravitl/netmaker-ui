@@ -80,6 +80,7 @@ export interface ExternalClient {
   ingressgatewayid: string
   ingressgatewayendpoint: string
   lastmodified: number
+  enabled: boolean
 }
 
 export interface GetNodesPayload {
@@ -147,6 +148,7 @@ export interface UpdateExternalClientPayload {
     netid: string
     clientName: string
     newClientName: string
+    enabled: boolean
   }
   Response: {
     previousId: string
