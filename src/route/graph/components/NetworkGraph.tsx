@@ -122,7 +122,7 @@ export const NetworkGraph: React.FC = () => {
 
   const extractIngressRanges = (node: Node) => {
     for (let i = 0; i < clients.length; i++) {
-      if (clients[i].ingressgatewayid === node.id) {
+      if (clients[i].ingressgatewayid === node.id && clients[i].enabled) {
         data.nodeTypes.push({
           type: 'extclient',
           id: clients[i].clientid,
