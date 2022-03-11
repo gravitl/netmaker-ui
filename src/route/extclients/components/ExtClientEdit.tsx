@@ -1,11 +1,12 @@
 import React, { useCallback } from 'react'
 import { Grid, Modal, Typography, Box } from '@mui/material'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useHistory, useRouteMatch, useParams } from 'react-router'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 import { updateExternalClient } from '~store/modules/node/actions'
 import { NmForm, NmFormInputText } from '~components/form'
+import { nodeSelectors } from '~store/selectors'
 
 export const ExtClientEdit: React.FC<{}> = () => {
   const history = useHistory()
@@ -14,6 +15,8 @@ export const ExtClientEdit: React.FC<{}> = () => {
   const { netid, clientid } = useParams<{ netid: string; clientid: string }>()
   const newPath = `${path.split(':netid')[0]}${netid}`
   const dispatch = useDispatch()
+  const extClients = useSelector(nodeSelectors.getExtClients)
+  const currentClient = extClients.filter(ec => ec.clientid === clientid)[0]
 
   useLinkBreadcrumb({
     link: newPath,
@@ -23,6 +26,23 @@ export const ExtClientEdit: React.FC<{}> = () => {
   useLinkBreadcrumb({
     title: t('common.edit'),
   })
+
+  const handleSubmit = useCallback(
+    (data: UpdateClient) => {
+        if (!!currentClient) {
+        dispatch(
+          updateExternalClient.request({
+            clientName: clientid,
+            netid,
+            newClientName: data.clientid,
+            enabled: currentClient.enabled,
+          })
+        )
+        history.goBack()
+      }
+    },
+    [dispatch, clientid, netid, history, currentClient]
+  )
 
   const handleClose = () => {
     history.push(newPath)
@@ -35,20 +55,6 @@ export const ExtClientEdit: React.FC<{}> = () => {
   const initialState: UpdateClient = {
     clientid: '',
   }
-
-  const handleSubmit = useCallback(
-    (data: UpdateClient) => {
-      dispatch(
-        updateExternalClient.request({
-          clientName: clientid,
-          netid,
-          newClientName: data.clientid,
-        })
-      )
-      history.goBack()
-    },
-    [dispatch, clientid, netid, history]
-  )
 
   const boxStyle = {
     modal: {

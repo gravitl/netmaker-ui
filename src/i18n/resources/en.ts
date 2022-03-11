@@ -91,6 +91,8 @@ export const en: LanguageResource = {
     submitchanges: 'Submit Changes',
     loading: 'Loading',
     confirmsubmit: 'Please confirm you want to submit these changes',
+    disable: 'Disable',
+    enable: 'Enable',
   },
   dashboard: {
     title: 'Netmaker Dashboard',
@@ -132,11 +134,13 @@ export const en: LanguageResource = {
     none: 'No Ext Clients Found',
     name: 'Name',
     deleteconfirm: 'Are you sure you want to delete this Ext. Client?',
+    changeconfirm: 'Are you sure you want to change access for this Ext. Client?',
     download: 'Download Client Configuration',
     viewqr: 'View Configuration QR',
     clientid: 'Client ID',
     qr: 'QR Code',
     edit: 'Change Ext Client Name',
+    enabled: 'Enabled'
   },
   ingress: {
     none: 'No Ingress Gateways Found',

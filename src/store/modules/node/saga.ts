@@ -399,7 +399,7 @@ function* handleUpdateExternalClientRequest(
       yield apiRequestWithAuthSaga(
         'put',
         `/extclients/${action.payload.netid}/${action.payload.clientName}`,
-        { clientid: action.payload.newClientName },
+        { clientid: action.payload.newClientName, enabled: action.payload.enabled },
         {}
       )
 

@@ -89,6 +89,8 @@ export interface LanguageResource {
     submitchanges: string
     loading: string
     confirmsubmit: string
+    disable: string
+    enable: string
   }
   dashboard: {
     title: string
@@ -130,11 +132,13 @@ export interface LanguageResource {
     none: string
     name: string
     deleteconfirm: string
+    changeconfirm: string
     download: string
     viewqr: string
     clientid: string
     qr: string
     edit: string
+    enabled: string
   }
   ingress: {
     none: string
