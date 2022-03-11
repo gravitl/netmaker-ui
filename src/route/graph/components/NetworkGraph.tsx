@@ -58,13 +58,13 @@ export const NetworkGraph: React.FC = () => {
   }
 
   const isConnected = (node1: Node, node2: Node) => {
-    if (node1.isrelay && ([...node1.relayaddrs] as string[]).indexOf(node2.address) >= 0) {
-      return false
-    } else if (node1.isrelayed || node2.isrelayed) {
-      return false
-    } else if (!!currentNodeACLs.length && 
+    if (!!currentNodeACLs.length && 
       !!currentNetworkACL[node1.id] && 
       currentNetworkACL[node1.id][node2.id] === 1) {
+      return false
+    } else if (node1.isrelay && ([...node1.relayaddrs] as string[]).indexOf(node2.address) >= 0) {
+      return false
+    } else if (node1.isrelayed || node2.isrelayed) {
       return false
     }
     return true
@@ -148,10 +148,14 @@ export const NetworkGraph: React.FC = () => {
           name: currentNode.name,
           lastCheckin: currentNode.lastcheckin,
         })
-        data.edges.push({
-          from: currentNode.id,
-          to: node.id
-        })
+        if (!!currentNodeACLs.length && 
+          !!currentNetworkACL[currentNode.id] && 
+          currentNetworkACL[currentNode.id][node.id] === 2) {
+          data.edges.push({
+            from: currentNode.id,
+            to: node.id
+          })
+        }
       }
     }
   }
