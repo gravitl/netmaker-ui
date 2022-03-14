@@ -197,6 +197,15 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({ data, handleClose, altData, n
                 secondary={t('node.os')}
                 />
             </ListItem>
+            <ListItem>
+                <ListItemIcon>
+                    <ArrowRightAlt />
+                </ListItemIcon>
+                <ListItemText
+                primary={data.version || 'N/A'}
+                secondary={t('node.version')}
+                />
+            </ListItem>
         </List>
       </CardContent>
     </Card> : !!altData && !!altData.id ? 

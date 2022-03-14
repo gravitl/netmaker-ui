@@ -278,6 +278,7 @@ export const en: LanguageResource = {
       healthy: 'HEALTHY'
     },
     nodevisual: 'Nodes visually',
+    version: 'Version',
   },
   login: {
     validation: {

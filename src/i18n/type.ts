@@ -276,6 +276,7 @@ export interface LanguageResource {
       healthy: string
     }
     nodevisual: string
+    version: string
   }
   login: {
     validation: {
