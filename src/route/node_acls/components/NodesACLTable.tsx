@@ -169,7 +169,6 @@ export const NodesACLTable: React.FC<{}> = () => {
 
   const affectAllConnections = (choice: 1 | 2) => {
     const newACLs = {} as NodeACLContainer
-    
     for (let i = 0; i < currentNodeACLs.length; i++) { // loop through all "outer" nodes to make a deep copy
       const currentAclIDs = Object.keys(editableNetworkACL[currentNodeACLs[i]]) // get node's acl
       if (!!!newACLs[currentNodeACLs[i]]) {
@@ -180,7 +179,21 @@ export const NodesACLTable: React.FC<{}> = () => {
           newACLs[currentNodeACLs[i]][currentAclIDs[j]] = editableNetworkACL[currentNodeACLs[i]][currentAclIDs[j]]
         }  
         if (currentNodeACLs[i] === currentAclIDs[j]) continue // skip adding self to lists
-        newACLs[currentNodeACLs[i]][currentAclIDs[j]] = choice // block connection
+        if (!!!nodeid || (!!nodeid && (nodeid === currentAclIDs[j] || nodeid === currentAclIDs[i])))
+          newACLs[currentNodeACLs[i]][currentAclIDs[j]] = choice // affect connection
+      }
+    }
+    if (!!nodeid) {
+      const currentAclIDs = Object.keys(editableNetworkACL[nodeid]) // get node's acl
+      if (!!!newACLs[nodeid]) {
+        newACLs[nodeid] = {} as NodeACL
+      }
+      for (let i = 0; i < currentAclIDs.length; i++) { // loop through all nodes within node's acl
+        if (!!!newACLs[nodeid][currentAclIDs[i]]) {
+          newACLs[nodeid][currentAclIDs[i]] = editableNetworkACL[nodeid][currentAclIDs[i]]
+        }  
+        if (nodeid === currentAclIDs[i]) continue // skip adding self to lists
+          newACLs[nodeid][currentAclIDs[i]] = choice // affect connection
       }
     }
     
@@ -259,7 +272,6 @@ export const NodesACLTable: React.FC<{}> = () => {
                     <RestartAlt />
                 </IconButton>
               </Tooltip>
-              {!!!nodeid && <>
               <Tooltip title={`${t('acls.allowall')}`} placement='top'>
                 <IconButton
                     color='error'
@@ -278,7 +290,6 @@ export const NodesACLTable: React.FC<{}> = () => {
                     <Block />
                 </IconButton>
               </Tooltip>
-              </>}
             </div>
             </div>
         </Grid>
@@ -293,7 +304,7 @@ export const NodesACLTable: React.FC<{}> = () => {
             <TableRow>
               <TableCell>{t('node.name')}</TableCell>
               {
-                currentNodeACLs.map(nodeID => <TableCell align='center' key={nodeID}><NmLink sx={{textTransform: 'none', background: !!!nodeid && hoveredCell.nodeID2 === nodeID ? HIGHLIGHT : ''}} disabled={!!nodeid} to={`${url}/${nodeID}`}>{nodeNameMap.get(nodeID)}</NmLink></TableCell>)
+                currentNodeACLs.map(nodeID => <TableCell align='center' key={nodeID}><NmLink sx={{textTransform: 'none', background: hoveredCell.nodeID2 === nodeID ? HIGHLIGHT : ''}} to={`/acls/${netid}/${nodeID}`}>{nodeNameMap.get(nodeID)}</NmLink></TableCell>)
               }
             </TableRow>
           </TableHead>

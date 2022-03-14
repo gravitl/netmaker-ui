@@ -68,7 +68,7 @@ export const NetworkGraph: React.FC = () => {
       return false
     }
     return true
-  } // TODO: tell if nodes are connected or not
+  }
 
   const handleSetNode = (selected: Node) => {
     handleUnsetNode()
