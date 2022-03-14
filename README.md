@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="src/netmaker-logo.png"><break/>
+  <img style="width:33%;" src="src/netmaker-logo.png"><break/>
 </p>
 
 ## v0.12.0
