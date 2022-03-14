@@ -10,7 +10,7 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material'
-import Logo from '../netmaker.png'
+import Logo from '../netmaker-logo.png'
 import Info from '@mui/icons-material/Info'
 import { UI_VERSION } from '../config'
 import { useTranslation } from 'react-i18next'
@@ -37,7 +37,7 @@ const styles = {
   },
   logo: {
     objectFit: 'cover',
-    width: '50%',
+    width: '25%',
     height: '100%',
     minWidth: '2em',
   },
