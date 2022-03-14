@@ -35,7 +35,7 @@ import { authSelectors, serverSelectors } from '../../store/selectors'
 import { logout } from '../../store/modules/auth/actions'
 import { NmLink } from '../../components/Link'
 import { UI_VERSION } from '../../config'
-import Logo from '../../netmaker.png'
+import Logo from '../../netmaker-logo.png'
 import { AccountTree, ViewList } from '@mui/icons-material'
 
 const drawerWidth = 240
@@ -113,9 +113,10 @@ const styles = {
     HTMLImageElement
   >['style'],
   headerLogo: {
-    width: '50%',
+    width: '25%',
     height: 100,
-    margin: '0 auto',
+    margin: 'auto auto',
+    paddingRight: '1.5rem',
     display: 'flex',
     justifyContent: 'space-around',
     alignItems: 'center',
