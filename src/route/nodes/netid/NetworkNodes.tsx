@@ -66,13 +66,22 @@ export const NetworkNodes: React.FC = () => {
     {
       id: 'address',
       labelKey: 'node.address',
-      minWidth: 170,
+      minWidth: 130,
       align: 'right',
+    },
+    {
+      id: 'version',
+      labelKey: 'node.version',
+      minWidth: 50,
+      align: 'center',
+      format: (value) => (
+        <>{!!value ? value : 'N/A'}</>
+      )
     },
     {
       id: 'network',
       labelKey: 'node.network',
-      minWidth: 170,
+      minWidth: 100,
       align: 'right',
       format: (value) => <NmLink sx={{textTransform: 'none'}} to={`/networks/${value}`}>{value}</NmLink>,
     },

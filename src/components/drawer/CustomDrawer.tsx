@@ -35,8 +35,8 @@ import { authSelectors, serverSelectors } from '../../store/selectors'
 import { logout } from '../../store/modules/auth/actions'
 import { NmLink } from '../../components/Link'
 import { UI_VERSION } from '../../config'
-import Logo from '../../netmaker.png'
-import { AccountTree } from '@mui/icons-material'
+import Logo from '../../netmaker-logo.png'
+import { AccountTree, ViewList } from '@mui/icons-material'
 
 const drawerWidth = 240
 
@@ -113,9 +113,10 @@ const styles = {
     HTMLImageElement
   >['style'],
   headerLogo: {
-    width: '50%',
+    width: '25%',
     height: 100,
-    margin: '0 auto',
+    margin: 'auto auto',
+    paddingRight: '1.5rem',
     display: 'flex',
     justifyContent: 'space-around',
     alignItems: 'center',
@@ -272,15 +273,41 @@ export default function CustomDrawer() {
             </ListItemButton>
           ))}
         </List>
+        {isLoggedIn && user!.isAdmin ? (<>
         <Divider />
         <List>
+          <ListItemButton component={Link} to={`/acls${!!netid ? `/${netid}` : ''}`}>
+            <ListItemIcon aria-label={String(t('acls.nodes'))}>
+              <ViewList />
+            </ListItemIcon>
+            <ListItemText primary={t('header.acls')} />
+          </ListItemButton>
+          <ListItemButton component={Link} to="/users">
+            <ListItemIcon aria-label={String(t('users.header'))}>
+              <UsersIcon />
+            </ListItemIcon>
+            <ListItemText primary={t('users.header')} />
+          </ListItemButton>
+        </List>
+        <Divider />
+        </>) : null}
+        <List>
+          <ListItem>
+            <ListItemIcon aria-label={String(t('users.header'))}>
+              <Info />
+            </ListItemIcon>
+            <ListItemText
+              primary={`UI: ${UI_VERSION}`}
+              secondary={`Server: ${serverConfig.Version}`}
+            />
+          </ListItem>
           <ListItemButton
             component={'a'}
             href="https://docs.netmaker.org"
             target="_blank"
             rel="noopener noreferer"
           >
-            <ListItemIcon aria-label={t('header.docs')}>
+            <ListItemIcon aria-label={String(t('header.docs'))}>
               <LibraryBooks />
             </ListItemIcon>
             <ListItemText primary={t('header.docs')} />
@@ -289,13 +316,13 @@ export default function CustomDrawer() {
             (isLoggedIn ? (
               <>
                 <ListItemButton component={Link} to={`/users/${user!.name}`}>
-                  <ListItemIcon aria-label={t('users.details')}>
+                  <ListItemIcon aria-label={String(t('users.details'))}>
                     <Person />
                   </ListItemIcon>
                   <ListItemText primary={user?.name} />
                 </ListItemButton>
                 <ListItemButton onClick={() => dispatch(logout())}>
-                  <ListItemIcon aria-label={t('header.logout')}>
+                  <ListItemIcon aria-label={String(t('header.logout'))}>
                     <Logout />
                   </ListItemIcon>
                   <ListItemText primary={t('header.logout')} />
@@ -303,32 +330,12 @@ export default function CustomDrawer() {
               </>
             ) : (
               <ListItemButton component={Link} to="/login">
-                <ListItemIcon aria-label={t('header.login')}>
+                <ListItemIcon aria-label={String(t('header.login'))}>
                   <Login />
                 </ListItemIcon>
-                <ListItemText primary={t('header.login')} />
+                <ListItemText primary={String(t('header.login'))} />
               </ListItemButton>
             ))}
-        </List>
-        <Divider />
-        <List>
-          {isLoggedIn && user!.isAdmin ? (
-            <ListItemButton component={Link} to="/users">
-              <ListItemIcon aria-label={t('users.header')}>
-                <UsersIcon />
-              </ListItemIcon>
-              <ListItemText primary={t('users.header')} />
-            </ListItemButton>
-          ) : null}
-          <ListItem>
-            <ListItemIcon aria-label={t('users.header')}>
-              <Info />
-            </ListItemIcon>
-            <ListItemText
-              primary={`UI: ${UI_VERSION}`}
-              secondary={`Server: ${serverConfig.Version}`}
-            />
-          </ListItem>
         </List>
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3, margin: '1em 0 1em 0' }}>

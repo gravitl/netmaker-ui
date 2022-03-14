@@ -1,8 +1,8 @@
 <p align="center">
-  <img src="netmaker.png"><break/>
+  <img style="width:50%;" src="src/netmaker-logo.png"><break/>
 </p>
 
-## v0.11.1
+## v0.12.0
 
 ## For more information, visit one of the official documentation sites:
 1. [docs.netmaker.org](https://docs.netmaker.org)

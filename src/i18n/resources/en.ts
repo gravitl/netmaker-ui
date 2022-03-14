@@ -11,6 +11,20 @@ export const en: LanguageResource = {
     dns: 'DNS',
     externalClients: 'External clients',
     users: 'Users',
+    acls: 'ACLs',
+  },
+  acls: {
+    acls: 'ACLs',
+    nodes: 'Node ACLs',
+    nodeview: 'View Node ACLs for',
+    networkview: 'Viewing ACLs on network',
+    aclicon: 'ACL Icon',
+    nodeconfirm: 'Confirm Node ACL Change',
+    nodesconfirm: 'Confirm Network ACL Change',
+    viewall: 'View All Rules',
+    allowall: 'Allow All',
+    blockall: 'Block All',
+    fullname: 'Access Control Lists',
   },
   accesskey: {
     accesskeys: 'Access Keys',
@@ -43,7 +57,8 @@ export const en: LanguageResource = {
     dashboard: 'Dashboard',
     createegress: 'Create Egress',
     createrelay: 'Create Relay',
-    graphs: 'Graphs'
+    graphs: 'Graphs',
+    acls: 'ACLs',
   },
   common: {
     disabled: 'Disabled',
@@ -74,6 +89,11 @@ export const en: LanguageResource = {
     min: 'Min',
     chars: 'characters',
     optional: 'optional',
+    submitchanges: 'Submit Changes',
+    loading: 'Loading',
+    confirmsubmit: 'Please confirm you want to submit these changes',
+    disable: 'Disable',
+    enable: 'Enable',
   },
   dashboard: {
     title: 'Netmaker Dashboard',
@@ -115,11 +135,13 @@ export const en: LanguageResource = {
     none: 'No Ext Clients Found',
     name: 'Name',
     deleteconfirm: 'Are you sure you want to delete this Ext. Client?',
+    changeconfirm: 'Are you sure you want to change access for this Ext. Client?',
     download: 'Download Client Configuration',
     viewqr: 'View Configuration QR',
     clientid: 'Client ID',
     qr: 'QR Code',
     edit: 'Change Ext Client Name',
+    enabled: 'Enabled'
   },
   ingress: {
     none: 'No Ingress Gateways Found',
@@ -163,6 +185,7 @@ export const en: LanguageResource = {
     graph: 'Graph',
     iscomms: 'This is your comms network',
     commswarn: 'Editing this network could cause your networks to lose consensus',
+    none: 'No Network Selected',
   },
   helper: {
     egress: 'Enter your network interface name, i.e. "eth0"',
@@ -253,7 +276,9 @@ export const en: LanguageResource = {
       warning: 'WARNING',
       normal: 'Normal',
       healthy: 'HEALTHY'
-    }
+    },
+    nodevisual: 'Nodes visually',
+    version: 'Version',
   },
   login: {
     validation: {
@@ -338,13 +363,15 @@ export const en: LanguageResource = {
         networkrefresh: 'Refreshed nodes public keys!',
         user: 'User Updated!',
         approve: 'Node Approved!',
+        nodeacl: 'ACL Updated!',
       },
       failure: {
         node: 'Node updated failed!',
         extclient: 'Ext Client update failed!',
         networkrefresh: 'Failed to refresh nodes public keys!',
         user: 'Failed to update user!',
-        approve: 'Failed to approve node!'
+        approve: 'Failed to approve node!',
+        nodeacl: 'Failed to update ACL!',
       },
     },
     create: {

@@ -64,7 +64,7 @@ export default function NodeCard() {
         style={cardStyle}
       >
         <CardContent>
-          <Avatar sx={{ bgcolor: grey[900] }} aria-label={t('breadcrumbs.dns')}>
+          <Avatar sx={{ bgcolor: grey[900] }} aria-label={String(t('breadcrumbs.dns'))}>
             <Language />
           </Avatar>
           <div style={cardContentStyle}>
@@ -97,7 +97,7 @@ export default function NodeCard() {
               <Grid item xs={1}>
                 <Avatar
                   sx={{ bgcolor: grey[900] }}
-                  aria-label={t('common.count')}
+                  aria-label={String(t('common.count'))}
                 >
                     {dnsCount}
                 </Avatar>

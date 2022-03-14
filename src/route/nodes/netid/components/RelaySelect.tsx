@@ -76,7 +76,7 @@ export default function RelaySelect(props: {
             input={
               <OutlinedInput
                 id="select-multiple-nodes"
-                label={t('node.choose')}
+                label={String(t('node.choose'))}
               />
             }
             renderValue={(selected) => (

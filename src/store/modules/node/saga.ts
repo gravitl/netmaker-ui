@@ -110,7 +110,7 @@ function* handleDeleteNodeRequest(
 
     yield apiRequestWithAuthSaga(
       'delete',
-      `/nodes/${action.payload.netid}/${action.payload.nodeid.split('###')[0]}`,
+      `/nodes/${action.payload.netid}/${action.payload.nodeid}`,
       {}
     )
 
@@ -142,7 +142,7 @@ function* handleApproveNodeRequest(
 
     yield apiRequestWithAuthSaga(
       'post',
-      `/nodes/${action.payload.netid}/${action.payload.nodeid.split('###')[0]}/approve`,
+      `/nodes/${action.payload.netid}/${action.payload.nodeid}/approve`,
       {},
       {}
     )
@@ -399,7 +399,7 @@ function* handleUpdateExternalClientRequest(
       yield apiRequestWithAuthSaga(
         'put',
         `/extclients/${action.payload.netid}/${action.payload.clientName}`,
-        { clientid: action.payload.newClientName },
+        { clientid: action.payload.newClientName, enabled: action.payload.enabled },
         {}
       )
 
@@ -512,10 +512,6 @@ function* handleDeleteEgressNodeRequest(
     yield put(deleteEgressNode['failure'](e as Error))
   }
 }
-
-// get external client qr
-// get http://hakeee.duckdns.org:8081/api/extclients/testnet/fun-hulk
-// response content type png
 
 export function* saga() {
   yield all([

@@ -37,14 +37,23 @@ export const NodeTable: React.FC<{nodes: Node[]}> = ({nodes}) => {
     {
       id: 'address',
       labelKey: 'node.address',
-      minWidth: 170,
-      align: 'right',
+      minWidth: 130,
+      align: 'center',
+    },
+    {
+      id: 'version',
+      labelKey: 'node.version',
+      minWidth: 50,
+      align: 'center',
+      format: (value) => (
+        <>{!!value ? value : 'N/A'}</>
+      )
     },
     {
       id: 'network',
       labelKey: 'node.network',
-      minWidth: 170,
-      align: 'right',
+      minWidth: 100,
+      align: 'center',
       format: (value) => <NmLink sx={{textTransform: 'none'}} to={`/networks/${value}`}>{value}</NmLink>,
     },
     {

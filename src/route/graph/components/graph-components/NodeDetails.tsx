@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next';
 import { red, orange, green, grey } from '@mui/material/colors';
 import { Node, Network } from '~store/types';
 import { List, ListItem, ListItemIcon, ListItemText, Tooltip } from '@mui/material';
-import { AltRoute, ArrowRightAlt, CallMerge, CallSplit, Circle, Close, DeleteForever, Edit, Hub } from '@mui/icons-material';
+import { AltRoute, ArrowRightAlt, CallMerge, CallSplit, Circle, Close, DeleteForever, Edit, Hub, ViewList } from '@mui/icons-material';
 import { AltDataNode } from './types';
 import { isNodeHealthy } from '~util/fields';
 import { Link } from 'react-router-dom';
@@ -148,6 +148,11 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({ data, handleClose, altData, n
           disabledText={`${t('node.onehub')}`}
           extraLogic={handleClose}
         /> : null}
+        <Tooltip title={`${t('acls.nodeview')} ${t('node.node')}`} placement='top'>
+          <IconButton component={Link} to={`/acls/${data.network}/${data.id}`} disabled={data.isserver} aria-label="view-node-acl">
+            <ViewList />
+          </IconButton>
+        </Tooltip>
         <Tooltip title={`${t('common.delete')} ${t('node.node')}`} placement='top'>
           <IconButton disabled={data.isserver} aria-label="delete node" onClick={handleOpenPrompt}>
             <DeleteForever />
@@ -190,6 +195,15 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({ data, handleClose, altData, n
                 <ListItemText
                 primary={data.os || 'N/A'}
                 secondary={t('node.os')}
+                />
+            </ListItem>
+            <ListItem>
+                <ListItemIcon>
+                    <ArrowRightAlt />
+                </ListItemIcon>
+                <ListItemText
+                primary={data.version || 'N/A'}
+                secondary={t('node.version')}
                 />
             </ListItem>
         </List>

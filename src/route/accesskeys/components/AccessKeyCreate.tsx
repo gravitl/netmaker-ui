@@ -116,7 +116,7 @@ export const AccessKeyCreate: React.FC = () => {
             <Grid item xs={12} md={6}>
               <NmFormInputText
                 name={'uses'}
-                label={t('accesskey.uses')}
+                label={String(t('accesskey.uses'))}
                 type="number"
               />
             </Grid>

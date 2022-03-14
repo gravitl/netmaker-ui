@@ -26,7 +26,7 @@ export const NetworkModifiedStats: React.FC<{ netid: string }> = ({
     >
       <Grid item xs={12} md={6}>
         <TextField
-          label={t('network.nodeslastmodified')}
+          label={String(t('network.nodeslastmodified'))}
           type="datetime-local"
           disabled
           style={fieldStyle}
@@ -39,7 +39,7 @@ export const NetworkModifiedStats: React.FC<{ netid: string }> = ({
 
       <Grid item xs={12} md={6}>
         <TextField
-          label={t('network.networklastmodified')}
+          label={String(t('network.networklastmodified'))}
           type="datetime-local"
           disabled
           style={fieldStyle}
