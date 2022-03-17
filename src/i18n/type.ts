@@ -155,6 +155,7 @@ export interface LanguageResource {
     udpholepunching: string
     islocal: string
     ispointtosite: string
+    defaultacl: string
   }
   network: {
     allowmanualsignup: string
@@ -191,6 +192,7 @@ export interface LanguageResource {
     iscomms: string
     commswarn: string
     none: string
+    defaultacl: string
   }
   node: {
     nodes: string
