@@ -26,6 +26,7 @@ export interface Network {
   defaultudpholepunch: boolean
   defaultextclientdns: string
   defaultmtu: number
+  defaultacl: boolean
 }
 
 export type NetworkPayload = Modify<
@@ -38,7 +39,8 @@ export type NetworkPayload = Modify<
     isipv6: 'no' | 'yes'
     defaultudpholepunch: 'no' | 'yes'
     ispointtosite: 'no' | 'yes'
-    iscomms: 'no' | 'yes'
+    iscomms: 'no' | 'yes',
+    defaultacl: 'no' | 'yes',
   }
 >
 
@@ -78,8 +80,9 @@ export interface CreateNetworkPayload {
     addressrange6: string
     defaultudpholepunch: 'yes' | 'no'
     ispointtosite: 'yes' | 'no'
+    defaultacl: 'yes' | 'no'
   }
-  Response: void
+  Response: NetworkPayload
 }
 
 export interface TempKey {

@@ -158,22 +158,28 @@ export const NetworkEdit: React.FC<{
             label={'Allow Node Signup Without Keys'}
           />
         </Grid>
-        <Grid item xs={12} sm={4} md={3}>
+        <Grid item xs={12} sm={4} md={2}>
           <NmFormInputSwitch
             name={'isdualstack'}
             label={String(t('network.isdualstack'))}
           />
         </Grid>
-        <Grid item xs={12} sm={4} md={3}>
+        <Grid item xs={12} sm={4} md={2}>
           <NmFormInputSwitch
             name={'defaultudpholepunch'}
             label={String(t('network.defaultudpholepunch'))}
           />
         </Grid>
-        <Grid item xs={12} sm={4} md={3}>
+        <Grid item xs={12} sm={4} md={2}>
           <NmFormInputSwitch
             name={'ispointtosite'}
             label={String(t('network.ispointtosite'))}
+          />
+        </Grid>
+        <Grid item xs={12} sm={6} md={3}>
+          <NmFormInputSwitch
+            name={'defaultacl'}
+            label={String(t('network.defaultacl'))}
           />
         </Grid>
       </Grid>
