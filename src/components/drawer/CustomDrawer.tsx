@@ -118,7 +118,7 @@ const styles = {
     margin: 'auto auto',
     paddingRight: '1.5rem',
     display: 'flex',
-    justifyContent: 'space-around',
+    justifyContent: 'space-evenly',
     alignItems: 'center',
   },
   central: {
