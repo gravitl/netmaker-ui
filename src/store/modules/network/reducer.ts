@@ -13,6 +13,7 @@ import {
   createDnsEntry,
   deleteDnsEntry,
   setTempKey,
+  createNetwork,
 } from './actions'
 import { Network } from './types'
 import { networkPayloadToNetwork } from './utils'
@@ -84,6 +85,13 @@ export const reducer = createReducer({
         ].accesskeys.filter(
           (accessKey) => accessKey.name !== action.payload.name
         )
+      }
+    })
+  )
+  .handleAction(createNetwork['success'], (state, action) =>
+    produce(state, (draftState) => {
+      if (!!action.payload) {
+        draftState.networks.push(networkPayloadToNetwork(action.payload))    
       }
     })
   )

@@ -200,17 +200,22 @@ function* handleCreateNetworkRequest(
       success: createNetwork['success'],
       error: createNetwork['failure'],
       params: {
-        pending: `Creating network ${action.payload.netid}`,
-        success: `Creating network ${action.payload.netid} success!`,
+        pending: `${i18n.t('common.pending')}`,
+        success: `Created network ${action.payload.netid} successfully!`,
         error: (error) =>
           `Creating network ${action.payload.netid} error!\n${error.response.data.Message}`,
       },
     })
 
-    yield apiRequestWithAuthSaga('post', '/networks', action.payload, {})
+    const response: AxiosResponse<NetworkPayload> = yield apiRequestWithAuthSaga(
+      'post', 
+      '/networks', 
+      action.payload,
+      {}
+    )
     yield call(handleGetNetworksRequest)
 
-    yield put(createNetwork['success']())
+    yield put(createNetwork['success'](response.data))
   } catch (e: unknown) {
     yield put(createNetwork['failure'](e as Error))
   }

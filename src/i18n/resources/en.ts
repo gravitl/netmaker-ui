@@ -186,6 +186,7 @@ export const en: LanguageResource = {
     iscomms: 'This is your comms network',
     commswarn: 'Editing this network could cause your networks to lose consensus',
     none: 'No Network Selected',
+    defaultacl: 'Default Access Control'
   },
   helper: {
     egress: 'Enter your network interface name, i.e. "eth0"',
@@ -193,6 +194,7 @@ export const en: LanguageResource = {
     udpholepunching: 'This can enhance connectivity in cases where NAT may block communication.',
     islocal: 'Use if server is on same network (LAN) as you',
     ispointtosite: 'Create a network in which all clients have only one, central peer',
+    defaultacl: "Indicates the default ACL value for a node when it joins in respect to it's peers (enabled or disabled)"
   },
   node: {
     nodes: 'Nodes',

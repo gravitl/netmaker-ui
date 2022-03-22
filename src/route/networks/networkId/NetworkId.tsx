@@ -231,7 +231,7 @@ export const NetworkId: React.FC = () => {
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
             </Grid>
-            <Grid item xs={12} sm={6} md={3}>
+            <Grid item xs={12} sm={6} md={2}>
               <FormControlLabel
                 label={String(t('network.allowmanualsignup'))}
                 control={
@@ -247,7 +247,7 @@ export const NetworkId: React.FC = () => {
                 disabled
               />
             </Grid>
-            <Grid item xs={12} sm={6} md={3}>
+            <Grid item xs={12} sm={6} md={2}>
               <FormControlLabel
                 label={String(t('network.defaultudpholepunch'))}
                 control={
@@ -256,11 +256,20 @@ export const NetworkId: React.FC = () => {
                 disabled
               />
             </Grid>
-            <Grid item xs={12} sm={6} md={3}>
+            <Grid item xs={12} sm={6} md={2}>
               <FormControlLabel
                 label={String(t('network.ispointtosite'))}
                 control={
                   <SwitchField checked={network.ispointtosite} disabled />
+                }
+                disabled
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <FormControlLabel
+                label={String(t('network.defaultacl'))}
+                control={
+                  <SwitchField checked={network.defaultacl} disabled />
                 }
                 disabled
               />
