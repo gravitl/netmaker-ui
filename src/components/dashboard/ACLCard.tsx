@@ -13,7 +13,7 @@ import CardContent from '@mui/material/CardContent'
 import Typography from '@mui/material/Typography'
 import { useTranslation } from 'react-i18next'
 import { DeviceHub, KeyboardArrowRight, ViewList as ACLIcon, VpnLockOutlined } from '@mui/icons-material'
-import { Button, Grid } from '@mui/material'
+import { Button, Grid, useTheme } from '@mui/material'
 
 const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
   '&.MuiSpeedDial-directionRight': {
@@ -24,6 +24,7 @@ const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
 
 export default function ACLCard() {
   const { t } = useTranslation()
+  const theme = useTheme()
 
   const cardStyle = {
     marginBottom: '1em',
@@ -59,13 +60,13 @@ export default function ACLCard() {
     >
       <CardContent>
         <Avatar sx={{ bgcolor: grey[900] }} aria-label={String(t('users.header'))}>
-          <ACLIcon />
+          <ACLIcon sx={{color: theme.palette.common.white}}/>
         </Avatar>
         <div style={cardContentStyle}>
-          <Typography variant="h5" component="div">
+          <Typography variant="h5" component="div" color='black'>
             {t('acls.fullname')}
           </Typography>
-          <Typography variant="body2">
+          <Typography variant="body2" color='primary'>
             {`${t('common.manage')} ${t('header.acls')}`}
           </Typography>
         </div>
@@ -93,7 +94,7 @@ export default function ACLCard() {
               sx={{ bgcolor: grey[900] }}
               aria-label={String(t('acl.aclicon'))}
             >
-                <VpnLockOutlined />
+              <VpnLockOutlined sx={{color: theme.palette.common.white}} />
             </Avatar>
           </Grid>
         </Grid>

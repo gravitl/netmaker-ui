@@ -12,7 +12,7 @@ import CardContent from '@mui/material/CardContent'
 import Typography from '@mui/material/Typography'
 import { useTranslation } from 'react-i18next'
 import { DeviceHub, KeyboardArrowRight } from '@mui/icons-material'
-import { Button, Grid } from '@mui/material'
+import { Button, Grid, useTheme } from '@mui/material'
 import { useSelector } from 'react-redux'
 import { nodeSelectors } from '~store/types'
 
@@ -27,6 +27,7 @@ export default function NodeCard() {
   const { t } = useTranslation()
   const nodes = useSelector(nodeSelectors.getNodes)
   const nodeCount = nodes.length
+  const theme = useTheme()
 
   const cardStyle = {
     marginBottom: '1em',
@@ -62,13 +63,13 @@ export default function NodeCard() {
     >
       <CardContent>
         <Avatar sx={{ bgcolor: grey[900] }} aria-label={String(t('node.nodes'))}>
-          <DeviceHub />
+          <DeviceHub sx={{color: theme.palette.common.white}} />
         </Avatar>
         <div style={cardContentStyle}>
-          <Typography variant="h5" component="div">
+          <Typography variant="h5" component="div" color='black'>
             {t('node.nodes')}
           </Typography>
-          <Typography variant="body2">
+          <Typography variant="body2" color='primary'>
             {`${t('common.manage')} ${t('node.nodes')}`}
           </Typography>
         </div>
@@ -96,7 +97,9 @@ export default function NodeCard() {
                 sx={{ bgcolor: grey[900] }}
                 aria-label={String(t('common.count'))}
               >
-                  {nodeCount}
+                  <Typography variant="body1" color='white'>
+                    {nodeCount}
+                  </Typography>
               </Avatar>
             </Grid>
           </Grid>
