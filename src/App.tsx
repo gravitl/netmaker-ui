@@ -23,6 +23,7 @@ function App() {
   const isLoggedIn = useSelector(authSelectors.getLoggedIn)
   const shouldSignOut = useSelector(nodeSelectors.getShouldSignOut)
   const currentACL = useSelector(aclSelectors.getCurrentACL)
+  const userSettings = useSelector(authSelectors.getUserSettings)
 
   React.useEffect(() => {
     const interval = setInterval(() => {
@@ -39,7 +40,7 @@ function App() {
     return () => clearInterval(interval)
   }, [dispatch, user, isLoggedIn, token, shouldSignOut, currentACL])
 
-  const theme = useCurrentTheme()
+  const theme = useCurrentTheme(userSettings.mode || 'dark')
 
   return (
     <PathBreadcrumbsProvider>

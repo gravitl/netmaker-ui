@@ -11,7 +11,7 @@ import CardContent from '@mui/material/CardContent'
 import Typography from '@mui/material/Typography'
 import { useTranslation } from 'react-i18next'
 import { AccountTree, EditLocationAlt, KeyboardArrowRight, PreviewOutlined } from '@mui/icons-material'
-import { Button, Grid } from '@mui/material'
+import { Button, Grid, useTheme } from '@mui/material'
 
 const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
   '&.MuiSpeedDial-directionRight': {
@@ -22,6 +22,7 @@ const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
 
 export default function GraphCard() {
   const { t } = useTranslation()
+  const theme = useTheme()
 
   const cardStyle = {
     marginBottom: '1em',
@@ -57,13 +58,13 @@ export default function GraphCard() {
     >
       <CardContent>
         <Avatar sx={{ bgcolor: grey[900] }} aria-label={String(t('network.graphs'))}>
-          <AccountTree />
+          <AccountTree sx={{color: theme.palette.common.white}} />
         </Avatar>
         <div style={cardContentStyle}>
-          <Typography variant="h5" component="div">
+          <Typography variant="h5" component="div" color='black'>
             {t('network.graphs')}
           </Typography>
-          <Typography variant="body2">
+          <Typography variant="body2" color='primary'>
             {`${t('common.manage')} ${t('node.nodevisual')}`}
           </Typography>
         </div>
@@ -91,7 +92,7 @@ export default function GraphCard() {
                 sx={{ bgcolor: grey[900] }}
                 aria-label={`${t('network.graphs')}-icon`}
               >
-                  <EditLocationAlt />
+                  <EditLocationAlt sx={{color: theme.palette.common.white}} />
               </Avatar>
             </Grid>
           </Grid>

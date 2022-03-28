@@ -16,7 +16,7 @@ import CardContent from '@mui/material/CardContent'
 import Typography from '@mui/material/Typography'
 import { useTranslation } from 'react-i18next'
 import { Devices, KeyboardArrowRight } from '@mui/icons-material'
-import { Button, Grid } from '@mui/material'
+import { Button, Grid, useTheme } from '@mui/material'
 
 const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
   '&.MuiSpeedDial-directionRight': {
@@ -29,6 +29,7 @@ export default function NodeCard() {
   const { t } = useTranslation()
   const clients = useSelector(nodeSelectors.getExtClients)
   const clientCount = clients.length
+  const theme = useTheme()
 
   const cardStyle = {
     marginBottom: '1em',
@@ -68,13 +69,13 @@ export default function NodeCard() {
             sx={{ bgcolor: grey[900] }}
             aria-label={String(t('breadcrumbs.extClients'))}
           >
-            <Devices />
+            <Devices sx={{color: theme.palette.common.white}} />
           </Avatar>
           <div style={cardContentStyle}>
-            <Typography variant="h5" component="div">
+            <Typography variant="h5" component="div" color='black'>
               {t('breadcrumbs.extClients')}
             </Typography>
-            <Typography variant="body2">
+            <Typography variant="body2" color='primary'>
               {`${t('common.manage')} ${t('breadcrumbs.extClients')}`}
             </Typography>
           </div>
@@ -102,7 +103,9 @@ export default function NodeCard() {
                   sx={{ bgcolor: grey[900] }}
                   aria-label={String(t('common.count'))}
                 >
+                  <Typography variant="body1" color='white'>
                     {clientCount}
+                  </Typography>
                 </Avatar>
               </Grid>
             </Grid>

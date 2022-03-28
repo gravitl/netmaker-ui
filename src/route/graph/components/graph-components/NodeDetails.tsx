@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
@@ -18,6 +18,7 @@ import { TableToggleButton } from '../../../nodes/netid/components/TableToggleBu
 import { HubButton } from '../../../nodes/netid/components/HubButton';
 import { deleteNode } from '~store/modules/node/actions'
 import CustomizedDialogs from '~components/dialog/CustomDialog';
+import { authSelectors } from '~store/selectors'
 
 interface NodeDetailsProps {
     data: Node | undefined;
@@ -31,6 +32,7 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({ data, handleClose, altData, n
   const dispatch = useDispatch()
   const { t } = useTranslation()
   const [open, setOpen] = React.useState(false)
+  const userSettings = useSelector(authSelectors.getUserSettings)
 
   const legendData = [
       { label: `${t('node.state.normal')} ${t('node.node')}`, color: '#2b00ff' },
@@ -77,7 +79,7 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({ data, handleClose, altData, n
 
   return (
     !!data && !!data.id ? 
-    <Card sx={{ width: '100%', height: '100%', backgroundColor: '#f0f0f0' }}>
+    <Card sx={{ width: '100%', height: '100%', backgroundColor: userSettings.mode === 'dark' ? '#272727' : '#f0f0f0' }}>
       <CustomizedDialogs
         open={open}
         handleClose={handleClosePrompt}
@@ -209,7 +211,7 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({ data, handleClose, altData, n
         </List>
       </CardContent>
     </Card> : !!altData && !!altData.id ? 
-    <Card sx={{ width: '100%', height: '100%', backgroundColor: '#f0f0f0' }}>
+    <Card sx={{ width: '100%', height: '100%', backgroundColor: userSettings.mode === 'dark' ? '#272727' : '#f0f0f0' }}>
         <CardHeader
         avatar={
             <Avatar sx={{ bgcolor: grey[500]}} aria-label={`${altData.type}-status`}>
@@ -247,7 +249,7 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({ data, handleClose, altData, n
         </List>
         </CardContent>
     </Card> :
-    <Card sx={{ width: '100%', height: '100%', backgroundColor: '#f0f0f0' }}>
+    <Card sx={{ width: '100%', height: '100%', backgroundColor: userSettings.mode === 'dark' ? '#272727' : '#f0f0f0' }}>
     <CardContent>
       <List dense>
           {legendData.map(indicator =>

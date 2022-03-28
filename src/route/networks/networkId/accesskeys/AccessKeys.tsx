@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     position: 'absolute',
     width: '60%',
-    backgroundColor: theme.palette.background.paper,
+    backgroundColor: '#f5f5f5',
     outline: 0, // Disable browser on-focus borders
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),

@@ -16,7 +16,7 @@ import CardContent from '@mui/material/CardContent'
 import Typography from '@mui/material/Typography'
 import { useTranslation } from 'react-i18next'
 import { KeyboardArrowRight, People as UsersIcon } from '@mui/icons-material'
-import { Button, Grid } from '@mui/material'
+import { Button, Grid, useTheme } from '@mui/material'
 
 const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
   '&.MuiSpeedDial-directionRight': {
@@ -29,6 +29,7 @@ export default function UserCard() {
   const { t } = useTranslation()
   const users = useSelector(authSelectors.getUsers)
   const userCount = users.length
+  const theme = useTheme()
 
   const cardStyle = {
     marginBottom: '1em',
@@ -72,13 +73,13 @@ export default function UserCard() {
     >
       <CardContent>
         <Avatar sx={{ bgcolor: grey[900] }} aria-label={String(t('users.header'))}>
-          <UsersIcon />
+          <UsersIcon sx={{color: theme.palette.common.white}} />
         </Avatar>
         <div style={cardContentStyle}>
-          <Typography variant="h5" component="div">
+          <Typography variant="h5" component="div" color='black'>
             {t('users.header')}
           </Typography>
-          <Typography variant="body2">
+          <Typography variant="body2" color='primary'>
             {`${t('common.manage')} ${t('users.header')}`}
           </Typography>
         </div>
@@ -106,7 +107,9 @@ export default function UserCard() {
               sx={{ bgcolor: grey[900] }}
               aria-label={String(t('common.count'))}
             >
-                {userCount}
+                <Typography variant="body1" color='white'>
+                  {userCount}
+                </Typography>
             </Avatar>
           </Grid>
         </Grid>
