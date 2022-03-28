@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux'
 import { serverSelectors } from '~store/types'
 import copy from 'copy-to-clipboard'
 import { grey } from '@mui/material/colors'
+import { authSelectors } from '~store/selectors'
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -43,6 +44,7 @@ export default function AccessKeyDetails(Props: {
 
   const { t } = useTranslation()
   const version = extractVersion(useSelector(serverSelectors.getServerConfig).Version)
+  const userSettings = useSelector(authSelectors.getUserSettings)
 
   const styles = {
     centerStyle: {
@@ -96,7 +98,7 @@ export default function AccessKeyDetails(Props: {
                   fullWidth
                   maxRows={1}
                   value={Props.keyValue}
-                  sx={{ backgroundColor: grey[100] }}
+                  sx={{ backgroundColor: userSettings.mode === 'dark' ? '#272727' : grey[100] }}
                 />
               </Grid>
               <Grid item xs={1} style={styles.centerStyle}>
@@ -114,7 +116,7 @@ export default function AccessKeyDetails(Props: {
                   maxRows={1}
                   fullWidth
                   value={Props.accessString}
-                  sx={{ backgroundColor: grey[100] }}
+                  sx={{ backgroundColor: userSettings.mode === 'dark' ? '#272727' : grey[100] }}
                 />
               </Grid>
               <Grid item xs={1} style={styles.centerStyle}>
@@ -140,7 +142,7 @@ export default function AccessKeyDetails(Props: {
                   fullWidth
                   maxRows={1}
                   value={getAgentInstallCommand(Props.accessString)}
-                  sx={{ backgroundColor: grey[100] }}
+                  sx={{ backgroundColor: userSettings.mode === 'dark' ? '#272727' : grey[100] }}
                 />
               </Grid>
               <Grid item xs={1} style={styles.centerStyle}>
@@ -165,7 +167,7 @@ export default function AccessKeyDetails(Props: {
                   fullWidth
                   maxRows={1}
                   value={getDockerRunCommand(Props.accessString)}
-                  sx={{ backgroundColor: grey[100] }}
+                  sx={{ backgroundColor: userSettings.mode === 'dark' ? '#272727' : grey[100] }}
                 />
               </Grid>
               <Grid item xs={1} style={styles.centerStyle}>
@@ -190,7 +192,7 @@ export default function AccessKeyDetails(Props: {
                   fullWidth
                   maxRows={1}
                   value={getWindowsRunCommand(Props.accessString)}
-                  sx={{ backgroundColor: grey[100] }}
+                  sx={{ backgroundColor: userSettings.mode === 'dark' ? '#272727' : grey[100] }}
                 />
               </Grid>
               <Grid item xs={1} style={styles.centerStyle}>
@@ -215,7 +217,7 @@ export default function AccessKeyDetails(Props: {
                   fullWidth
                   maxRows={1}
                   value={getManualCommand(Props.accessString)}
-                  sx={{ backgroundColor: grey[100] }}
+                  sx={{ backgroundColor: userSettings.mode === 'dark' ? '#272727' : grey[100] }}
                 />
               </Grid>
               <Grid item xs={1} style={styles.centerStyle}>
