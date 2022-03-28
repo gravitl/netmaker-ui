@@ -92,6 +92,8 @@ export interface LanguageResource {
     confirmsubmit: string
     disable: string
     enable: string
+    togglelite: string
+    toggledark: string
   }
   dashboard: {
     title: string

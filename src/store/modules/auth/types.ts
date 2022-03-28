@@ -13,6 +13,7 @@ export interface LocalStorageUserKeyValue {
 export interface UserSettings {
   rowsPerPage: number
   username: string
+  mode: 'dark' | 'light' | undefined
 }
 
 export interface LocalSettings {

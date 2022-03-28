@@ -1,3 +1,3 @@
 export { NmLink } from './Link'
 export { NmCheckbox } from './Checkbox'
-export { theme, useCurrentTheme, useSetTheme } from './theme'
+export { darkTheme, lightTheme, useCurrentTheme } from './theme'

@@ -86,6 +86,7 @@ export function NmTable<T>({
       dispatch(setUserSettings({
         rowsPerPage,
         username: user.name,
+        mode: userSettings.mode,
       }))
     }
   }

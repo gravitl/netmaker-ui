@@ -28,7 +28,7 @@ import Person from '@mui/icons-material/Person'
 import VpnKey from '@mui/icons-material/VpnKey'
 import { PathBreadcrumbs } from '~components/PathBreadcrumbs'
 import { useTranslation } from 'react-i18next'
-import { ListItemButton } from '@mui/material'
+import { ListItemButton, Switch } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useRouteMatch, Link } from 'react-router-dom'
 import { authSelectors, serverSelectors } from '../../store/selectors'
@@ -36,7 +36,10 @@ import { logout } from '../../store/modules/auth/actions'
 import { NmLink } from '../../components/Link'
 import { UI_VERSION } from '../../config'
 import Logo from '../../netmaker-logo.png'
+import DarkLogo from '../../netmaker-logo-2.png'
+
 import { AccountTree, ViewList } from '@mui/icons-material'
+import { setUserSettings } from '../../store/modules/auth/actions'
 
 const drawerWidth = 240
 
@@ -184,6 +187,7 @@ export default function CustomDrawer() {
   const showAuthButton = !match
 
   const user = useSelector(authSelectors.getUser)
+  const userSettings = useSelector(authSelectors.getUserSettings)
   const serverConfig = useSelector(serverSelectors.getServerConfig)
   const isLoggedIn = useSelector(authSelectors.getLoggedIn)
   const dispatch = useDispatch()
@@ -196,6 +200,7 @@ export default function CustomDrawer() {
   const location = useLocation()
   const parts = location.pathname.split('/')
   const netid = parts.length > 2 ? parts[2] : false
+  const isDarkMode = userSettings.mode === 'dark'
 
   const handleDrawerOpen = () => {
     setOpen(true)
@@ -214,10 +219,19 @@ export default function CustomDrawer() {
     setOpen(false)
   }
 
+  const handleToggleMode = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (!!userSettings) {
+      dispatch(setUserSettings({
+        ...userSettings,
+        mode: userSettings.mode === 'dark' ? 'light' : 'dark',
+      }))
+    }
+  }
+
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar position="fixed" open={open || clickOpen}>
+      <AppBar position="fixed" color='primary' open={open || clickOpen}>
         <Toolbar>
           <IconButton
             color="inherit"
@@ -235,7 +249,7 @@ export default function CustomDrawer() {
             <div style={styles.headerLogo}>
               <img
                 style={styles.logo}
-                src={Logo}
+                src={userSettings.mode === 'dark' ? DarkLogo : Logo}
                 alt="Netmaker makes networks."
               />
             </div>
@@ -327,6 +341,12 @@ export default function CustomDrawer() {
                   </ListItemIcon>
                   <ListItemText primary={t('header.logout')} />
                 </ListItemButton>
+                <ListItem>
+                  <ListItemIcon aria-label={isDarkMode ? String(t('common.togglelite')) : String(t('common.toggledark'))} >
+                    <Switch onChange={handleToggleMode} checked={isDarkMode} />
+                  </ListItemIcon>
+                  <ListItemText primary={isDarkMode ? String(t('common.togglelite')) : String(t('common.toggledark'))} />
+                </ListItem>
               </>
             ) : (
               <ListItemButton component={Link} to="/login">
