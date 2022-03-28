@@ -9,7 +9,7 @@ import { Button, Grid, IconButton, InputAdornment, LinearProgress, TextField, To
 import { NetworkSelect } from '~components/NetworkSelect'
 import { Block, CheckCircle, NotInterested as NotAllowedIcon, RemoveCircleOutline as DisabledIcon, RestartAlt, Search } from '@mui/icons-material'
 import { clearCurrentACL, getNodeACLContainer, updateNodeContainerACL } from '~store/modules/acls/actions'
-import { aclSelectors } from '~store/selectors'
+import { aclSelectors, authSelectors } from '~store/selectors'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
@@ -41,6 +41,7 @@ export const NodesACLTable: React.FC<{}> = () => {
   var nodeNameMap : Map<string, string> = new Map()
   var filteredNameMap : Map<string, string> = new Map()
   const [ filterNodes, setFilterNodes ] = React.useState(listOfNodes)
+  const userSettings = useSelector(authSelectors.getUserSettings)
   type HoveredNode = {
     nodeID1: string
     nodeID2: string
@@ -312,9 +313,9 @@ export const NodesACLTable: React.FC<{}> = () => {
             {currentNodeACLs.map((currentACLID, index) => filteredNameMap.size === 0 || filteredNameMap.has(currentACLID) ? (
               <TableRow
                 key={currentACLID}
-                sx={{'&:last-child td, &:last-child th': { border: 0 }, background: index % 2 === 0 ? '#f2f3f4' : '' }}
+                sx={{'&:last-child td, &:last-child th': { border: 0 }, background: index % 2 === 0 ? userSettings.mode === 'dark' ? '#272727' : '#f2f3f4' : '' }}
               >
-                <TableCell sx={{...stickyColStyle, backgroundColor: !!!nodeid && hoveredCell.nodeID1 === currentACLID ? HIGHLIGHT : ''}} component="th" scope="row">
+                <TableCell sx={{...stickyColStyle, backgroundColor: !!!nodeid && hoveredCell.nodeID1 === currentACLID ? HIGHLIGHT : userSettings.mode === 'dark' ? '#272727' : ''}} component="th" scope="row">
                   <NmLink sx={{textTransform: 'none'}} disabled={!!nodeid} to={`${url}/${currentACLID}`}>{nodeNameMap.get(currentACLID)}</NmLink>
                 </TableCell>
                 {
