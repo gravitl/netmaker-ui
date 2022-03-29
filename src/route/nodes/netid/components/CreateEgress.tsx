@@ -7,6 +7,7 @@ import {
   useFormControl,
   FormControl,
   Typography,
+  useTheme,
 } from '@mui/material'
 import { useHistory } from 'react-router-dom'
 import { useRouteMatch, useParams } from 'react-router-dom'
@@ -73,6 +74,7 @@ function HelperText(props: { text: string; focusText: string }) {
 
 export function CreateEgress() {
   const history = useHistory()
+  const theme = useTheme()
   const { t } = useTranslation()
   const { netid, nodeId } =
     useParams<{ netid: string; nodeId: string }>()
@@ -128,7 +130,7 @@ export function CreateEgress() {
         history.goBack()
       }}
     >
-      <Box style={styles.modal}>
+      <Box style={{...styles.modal, backgroundColor: theme.palette.background.paper}}>
         <NmForm
           initialState={initialState}
           onSubmit={onSubmit}
