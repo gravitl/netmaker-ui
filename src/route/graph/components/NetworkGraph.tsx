@@ -11,7 +11,7 @@ import NodeGraph from './graph-components/NodeGraph'
 import NodeDetails from './graph-components/NodeDetails'
 import { ControlsContainer, SearchControl, SigmaContainer, ZoomControl, FullScreenControl } from "react-sigma-v2";
 import { filterExtClientsByNetwork } from "~util/node"
-import { nodeSelectors, aclSelectors } from '~store/selectors'
+import { nodeSelectors, aclSelectors, authSelectors } from '~store/selectors'
 import { AltDataNode, DataNode, Edge } from './graph-components/types'
 import { NetworkSelect } from '~components/NetworkSelect'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
@@ -34,7 +34,7 @@ export const NetworkGraph: React.FC = () => {
   const [selectedAltData, setSelectedAltData] = React.useState({} as AltDataNode)
   const extClients = useSelector(nodeSelectors.getExtClients)
   const clients = filterExtClientsByNetwork(extClients, netid)
-
+  const userSettings = useSelector(authSelectors.getUserSettings)
 
   useLinkBreadcrumb({
     link: url,
@@ -366,7 +366,7 @@ export const NetworkGraph: React.FC = () => {
             <Grid item xs={12} sm={8}>
               <React.StrictMode>
                 <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: '5em', width: '100%'}}>
-                    <SigmaContainer style={{height: '35em', width: '600px'}}>
+                    <SigmaContainer style={{height: '35em', width: '600px', backgroundColor: userSettings.mode === 'dark' ? '#272727' : '#f0f0f0' }}>
                       <NodeGraph data={data} handleViewNode={handleSetNode} handleViewAlt={handleSetAlt} />
                       <ControlsContainer position={"top-right"}>
                         <ZoomControl />

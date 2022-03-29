@@ -69,9 +69,9 @@ export const reducer = createReducer({
       draftState.nodes = []
       draftState.isFetching = false
       if (!!action.payload && !!action.payload.message) { // && action.payload.message.includes("unauth")) {
-        if (action.payload.message.includes("Network Error")) {
-          draftState.shouldSignOut = 'network'
-        }
+        // if (action.payload.message.includes("Network Error")) {
+        //   draftState.shouldSignOut = 'network'
+        // }
         if (action.payload.message.includes("status code 401")) {
           draftState.shouldSignOut = 'auth'
         }

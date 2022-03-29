@@ -16,7 +16,7 @@ import CardContent from '@mui/material/CardContent'
 import Typography from '@mui/material/Typography'
 import { useTranslation } from 'react-i18next'
 import { KeyboardArrowRight, Language } from '@mui/icons-material'
-import { Button } from '@mui/material'
+import { Button, useTheme } from '@mui/material'
 
 const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
   '&.MuiSpeedDial-directionRight': {
@@ -30,6 +30,7 @@ export default function NodeCard() {
   const dnsEntries = useSelector(networkSelectors.getDnsEntries)
   const hasDNS = useSelector(serverSelectors.getServerConfig).DNSMode
   const dnsCount = !!dnsEntries && hasDNS ? dnsEntries.length : 0
+  const theme = useTheme()
 
   const cardStyle = {
     marginBottom: '1em',
@@ -65,13 +66,13 @@ export default function NodeCard() {
       >
         <CardContent>
           <Avatar sx={{ bgcolor: grey[900] }} aria-label={String(t('breadcrumbs.dns'))}>
-            <Language />
+            <Language sx={{color: theme.palette.common.white}} />
           </Avatar>
           <div style={cardContentStyle}>
-            <Typography variant="h5" component="div">
+            <Typography variant="h5" component="div" color='black'>
               {t('breadcrumbs.dns')}
             </Typography>
-            <Typography variant="body2">
+            <Typography variant="body2" color='primary'>
               {`${t('common.manage')} ${t('breadcrumbs.dns')}`}
             </Typography>
           </div>
@@ -99,7 +100,9 @@ export default function NodeCard() {
                   sx={{ bgcolor: grey[900] }}
                   aria-label={String(t('common.count'))}
                 >
-                    {dnsCount}
+                    <Typography variant="body1" color='white'>
+                      {dnsCount}
+                    </Typography>
                 </Avatar>
               </Grid>
             </Grid>

@@ -61,6 +61,7 @@ const NodeGraph: React.FC<ICustomGraphProps> = ({ data, handleViewNode, handleVi
             size: nodeTypes[i].type === 'cidr' || nodeTypes[i].type === 'extclient' ? 15 : 20,
             color: getColor(nodeTypes[i].type, nodeTypes[i].lastCheckin),
             url: './icons/up.png',
+            labelColor: '#ffffff',
           })
         } catch (err) {
           // ignore repeats

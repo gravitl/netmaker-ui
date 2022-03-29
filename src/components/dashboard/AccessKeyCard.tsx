@@ -15,7 +15,7 @@ import CardContent from '@mui/material/CardContent'
 import Typography from '@mui/material/Typography'
 import { useTranslation } from 'react-i18next'
 import { KeyboardArrowRight, VpnKey } from '@mui/icons-material'
-import { Button, Grid } from '@mui/material'
+import { Button, Grid, useTheme } from '@mui/material'
 
 const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
   '&.MuiSpeedDial-directionRight': {
@@ -26,6 +26,7 @@ const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
 
 export default function AccessKeyCard() {
   const { t } = useTranslation()
+  const theme = useTheme()
 
   const networks = useSelector(networkSelectors.getNetworks)
   let accessKeyCount = 0
@@ -68,16 +69,16 @@ export default function AccessKeyCard() {
       >
         <CardContent>
           <Avatar
-            sx={{ bgcolor: grey[900] }}
+            sx={{ bgcolor: grey[900]}}
             aria-label={String(t('breadcrumbs.accessKeys'))}
           >
-            <VpnKey />
+            <VpnKey sx={{ color: theme.palette.common.white }} />
           </Avatar>
           <div style={cardContentStyle}>
-            <Typography variant="h5" component="div">
+            <Typography variant="h5" component="div" color='black'>
               {t('breadcrumbs.accessKeys')}
             </Typography>
-            <Typography variant="body2">
+            <Typography variant="body2" color='primary'>
               {`${t('common.manage')} ${t('breadcrumbs.accessKeys')}`}
             </Typography>
           </div>
@@ -105,7 +106,9 @@ export default function AccessKeyCard() {
                 sx={{ bgcolor: grey[900] }}
                 aria-label={String(t('common.count'))}
               >
-                  {accessKeyCount}
+                <Typography variant="body1" color='white'>
+                {accessKeyCount}
+                </Typography>
               </Avatar>
             </Grid>
           </Grid>

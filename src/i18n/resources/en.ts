@@ -94,6 +94,8 @@ export const en: LanguageResource = {
     confirmsubmit: 'Please confirm you want to submit these changes',
     disable: 'Disable',
     enable: 'Enable',
+    togglelite: 'Use Light Mode',
+    toggledark: 'Use Dark Mode',
   },
   dashboard: {
     title: 'Netmaker Dashboard',
