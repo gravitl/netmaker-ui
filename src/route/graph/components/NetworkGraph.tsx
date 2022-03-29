@@ -365,7 +365,7 @@ export const NetworkGraph: React.FC = () => {
             </Grid>
             <Grid item xs={12} sm={8}>
               <React.StrictMode>
-                <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: '5em', width: '100%'}}>
+                <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%'}}>
                     <SigmaContainer style={{height: '35em', width: '600px', backgroundColor: userSettings.mode === 'dark' ? '#272727' : '#f0f0f0' }}>
                       <NodeGraph data={data} handleViewNode={handleSetNode} handleViewAlt={handleSetAlt} />
                       <ControlsContainer position={"top-right"}>
