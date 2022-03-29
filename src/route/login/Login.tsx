@@ -1,6 +1,6 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { Modal, Box } from '@mui/material'
+import { Modal, Box, useTheme } from '@mui/material'
 import { useHistory } from 'react-router-dom'
 import { authSelectors } from '../../store/selectors'
 import LoginView from '../../components/views/Login'
@@ -49,6 +49,7 @@ const styles = {
 export function Login() {
   const history = useHistory()
   const hasAdmin = useSelector(authSelectors.hasAdmin)
+  const theme = useTheme()
 
   const authRenderSwitch = () => {
     if (hasAdmin) return <LoginView />
@@ -56,14 +57,14 @@ export function Login() {
   }
 
   return (
-    <Modal
-      style={{ display: 'flex', flex: 1 }}
-      open={true}
-      onClose={() => {
-        history.goBack()
-      }}
-    >
-      <Box style={styles.modal}>{authRenderSwitch()}</Box>
-    </Modal>
+      <Modal
+        style={{ display: 'flex', flex: 1}}
+        open={true}
+        onClose={() => {
+          history.goBack()
+        }}
+      >
+        <Box style={{...styles.modal, backgroundColor: theme.palette.background.paper }}>{authRenderSwitch()}</Box>
+      </Modal>
   )
 }
