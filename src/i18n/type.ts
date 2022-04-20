@@ -195,6 +195,8 @@ export interface LanguageResource {
     commswarn: string
     none: string
     defaultacl: string
+    isipv6: string
+    isipv4: string
   }
   node: {
     nodes: string
@@ -281,6 +283,7 @@ export interface LanguageResource {
     }
     nodevisual: string
     version: string
+    addresses: string
   }
   login: {
     validation: {

@@ -105,7 +105,7 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({ data, handleClose, altData, n
           </IconButton>
         }
         title={`${data.name} (${nodeHealth === 0 ? 'HEALTHY' : nodeHealth === 1 ? 'WARNING' : 'ERROR'})`}
-        subheader={data.address}
+        subheader={`${!!data.address ? data.address : ''}${' '}${!!data.address6 ? data.address6 : ''}`}
       />
       <CardActions>
         <Tooltip title={`${t('common.edit')} ${t('node.node')}`} placement='top'>

@@ -71,6 +71,12 @@ export const NetworkId: React.FC = () => {
     overflow: 'hidden',
   } as any
 
+  const centerStyle = {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  } as any
+
   return (
     <>
       <Switch>
@@ -228,8 +234,22 @@ export const NetworkId: React.FC = () => {
               />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
+              <div style={centerStyle}>
+                <FormControlLabel
+                  label={String(t('network.isipv4'))}
+                  control={<SwitchField checked={network.isipv4} disabled />}
+                  disabled
+                />
+              </div>
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
+              <div style={centerStyle}>
+                <FormControlLabel
+                  label={String(t('network.isipv6'))}
+                  control={<SwitchField checked={network.isipv6} disabled />}
+                  disabled
+                />
+              </div>
             </Grid>
             <Grid item xs={12} sm={6} md={2}>
               <FormControlLabel
@@ -237,13 +257,6 @@ export const NetworkId: React.FC = () => {
                 control={
                   <SwitchField checked={network.allowmanualsignup} disabled />
                 }
-                disabled
-              />
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
-              <FormControlLabel
-                label={String(t('network.isdualstack'))}
-                control={<SwitchField checked={network.isdualstack} disabled />}
                 disabled
               />
             </Grid>

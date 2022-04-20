@@ -298,13 +298,6 @@ export const NodeId: React.FC = () => {
               </Grid>
               <Grid item xs={10} sm={4} md={2} sx={rowMargin}>
                 <FormControlLabel
-                  label={String(t('node.isdualstack'))}
-                  control={<SwitchField checked={node.isdualstack} disabled />}
-                  disabled
-                />
-              </Grid>
-              <Grid item xs={10} sm={4} md={1} sx={rowMargin}>
-                <FormControlLabel
                   label={String(t('node.islocal'))}
                   control={<SwitchField checked={node.islocal} disabled />}
                   disabled

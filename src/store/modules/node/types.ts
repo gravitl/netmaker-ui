@@ -77,6 +77,7 @@ export interface ExternalClient {
   publickey: string
   network: string
   address: string
+  address6: string
   ingressgatewayid: string
   ingressgatewayendpoint: string
   lastmodified: number

@@ -293,13 +293,6 @@ export const NodeEdit: React.FC<{
             </Grid>
             <Grid item xs={10} sm={4} md={2} sx={rowMargin}>
               <NmFormInputSwitch
-                label={String(t('node.isdualstack'))}
-                name={'isdualstack'}
-                defaultValue={node.isdualstack}
-              />
-            </Grid>
-            <Grid item xs={10} sm={4} md={1} sx={rowMargin}>
-              <NmFormInputSwitch
                 label={String(t('node.islocal'))}
                 name={'islocal'}
                 defaultValue={node.islocal}
