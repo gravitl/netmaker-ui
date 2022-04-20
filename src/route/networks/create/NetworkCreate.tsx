@@ -11,7 +11,7 @@ import {
 } from '../../../components/form'
 import { useLinkBreadcrumb } from '../../../components/PathBreadcrumbs'
 import { createNetwork, getNetworks } from '../../../store/modules/network/actions'
-import { randomNetworkName, randomCIDR } from '~util/fields'
+import { randomNetworkName, randomCIDR, randomCIDR6 } from '~util/fields'
 import { useHistory } from 'react-router'
 
 interface CreateNetwork {
@@ -58,8 +58,8 @@ export const NetworkCreate: React.FC = () => {
   const history = useHistory()
   const classes = useStyles()
   const [ viewLocal, setViewLocal ] = React.useState(false)
-  const [ viewIpv4, setIpv4View ] = React.useState(true)
-  const [ viewIpv6, setIpv6View ] = React.useState(false)
+  const [ useIpv4, setUseIpv4 ] = React.useState(true)
+  const [ useIpv6, setUseIpv6 ] = React.useState(false)
 
   const onSubmit = useCallback(
     (data: CreateNetwork) => {
@@ -69,6 +69,8 @@ export const NetworkCreate: React.FC = () => {
           islocal: data.islocal ? 'yes' : 'no',
           isipv4: data.isipv4 ? 'yes' : 'no',
           isipv6: data.isipv6 ? 'yes' : 'no',
+          addressrange6: data.isipv6 ? data.addressrange6 : '',
+          addressrange: data.isipv4 ? data.addressrange : '',
           defaultudpholepunch: data.defaultudpholepunch ? 'yes' : 'no',
           ispointtosite: data.ispointtosite ? 'yes' : 'no',
           defaultacl: data.defaultacl ? 'yes' : 'no',
@@ -89,11 +91,11 @@ export const NetworkCreate: React.FC = () => {
   })
 
   const handleViewIpv6 = () => {
-    setIpv6View(!viewIpv6)
+    setUseIpv6(!useIpv6)
   }
 
   const handleViewIpv4 = () => {
-    setIpv4View(!viewIpv4)
+    setUseIpv4(!useIpv4)
   }
 
   const handleViewLocal = () => {
@@ -120,7 +122,8 @@ export const NetworkCreate: React.FC = () => {
                 {
                   ...formRef.current?.values,
                   netid: randomNetworkName(),
-                  addressrange: randomCIDR(),
+                  addressrange: useIpv4 ?  randomCIDR() : '',
+                  addressrange6: useIpv6 ? randomCIDR6() : '',
                   defaultudpholepunch: true,
                 },
                 { keepDefaultValues: true }
@@ -146,7 +149,7 @@ export const NetworkCreate: React.FC = () => {
               label={String(t('network.isipv4'))}
             />
           </div>
-          {viewIpv4 &&
+          {useIpv4 &&
             <NmFormInputText
               style={{width: '60%'}}
               name={'addressrange'}
@@ -161,7 +164,7 @@ export const NetworkCreate: React.FC = () => {
               label={String(t('network.isipv6'))}
             />
           </div>
-          {viewIpv6 &&
+          {useIpv6 &&
             <NmFormInputText
               style={{width: '60%'}}
               name={'addressrange6'}

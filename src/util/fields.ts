@@ -39,8 +39,24 @@ export const genRandomNumber = (size: number, inclusive: boolean) => {
   return Math.floor(Math.random() * size)
 }
 
+// export const genRandomHex = (size: number) => {
+//   [...Array(size)].map(() => Math.floor(Math.random() * 16).toString(16)).join('');
+// }
+const genRandomHex = (size: number) => {
+  const result = [];
+  const hexRef = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+
+  for (let n = 0; n < size; n++) {
+    result.push(hexRef[Math.floor(Math.random() * 16)]);
+  }
+  return result.join('');
+}
+
 export const randomCIDR = () =>
   `10.${genRandomNumber(254, true)}.${genRandomNumber(254, true)}.0/24`
+
+export const randomCIDR6 = () => 
+  `${genRandomHex(4)}:4206:9753:2021::/64`
 
 export const randomNetworkName = () =>
   validNetworkNames[genRandomNumber(validNetworkNames.length, false)]
