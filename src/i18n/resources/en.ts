@@ -285,6 +285,7 @@ export const en: LanguageResource = {
     },
     nodevisual: 'Nodes visually',
     version: 'Version',
+    addresses: 'Addresses',
   },
   login: {
     validation: {

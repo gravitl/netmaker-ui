@@ -283,6 +283,7 @@ export interface LanguageResource {
     }
     nodevisual: string
     version: string
+    addresses: string
   }
   login: {
     validation: {

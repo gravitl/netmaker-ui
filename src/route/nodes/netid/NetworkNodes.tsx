@@ -65,9 +65,12 @@ export const NetworkNodes: React.FC = () => {
     },
     {
       id: 'address',
-      labelKey: 'node.address',
+      labelKey: 'node.addresses',
       minWidth: 130,
       align: 'right',
+      format: (_, node) => (
+        <>{`${!!node.address ? node.address : ''}${' '}${!!node.address6 ? node.address6 : ''}`}</>
+      )
     },
     {
       id: 'version',
