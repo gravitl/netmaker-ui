@@ -19,7 +19,8 @@ interface CreateNetwork {
   netid: string
   localrange: string
   islocal: boolean
-  isdualstack: boolean
+  isipv4: boolean
+  isipv6: boolean
   addressrange6: string
   defaultudpholepunch: boolean
   ispointtosite: boolean
@@ -31,7 +32,8 @@ const initialState: CreateNetwork = {
   netid: '',
   localrange: '',
   islocal: false,
-  isdualstack: false,
+  isipv4: true,
+  isipv6: false,
   addressrange6: '',
   defaultudpholepunch: false,
   ispointtosite: false,
@@ -56,7 +58,8 @@ export const NetworkCreate: React.FC = () => {
   const history = useHistory()
   const classes = useStyles()
   const [ viewLocal, setViewLocal ] = React.useState(false)
-  const [ viewDual, setViewDual ] = React.useState(false)
+  const [ viewIpv4, setIpv4View ] = React.useState(true)
+  const [ viewIpv6, setIpv6View ] = React.useState(false)
 
   const onSubmit = useCallback(
     (data: CreateNetwork) => {
@@ -64,7 +67,8 @@ export const NetworkCreate: React.FC = () => {
         createNetwork.request({
           ...data,
           islocal: data.islocal ? 'yes' : 'no',
-          isdualstack: data.isdualstack ? 'yes' : 'no',
+          isipv4: data.isipv4 ? 'yes' : 'no',
+          isipv6: data.isipv6 ? 'yes' : 'no',
           defaultudpholepunch: data.defaultudpholepunch ? 'yes' : 'no',
           ispointtosite: data.ispointtosite ? 'yes' : 'no',
           defaultacl: data.defaultacl ? 'yes' : 'no',
@@ -84,8 +88,12 @@ export const NetworkCreate: React.FC = () => {
     title: t('common.create'),
   })
 
-  const handleViewDual = () => {
-    setViewDual(!viewDual)
+  const handleViewIpv6 = () => {
+    setIpv6View(!viewIpv6)
+  }
+
+  const handleViewIpv4 = () => {
+    setIpv4View(!viewIpv4)
   }
 
   const handleViewLocal = () => {
@@ -131,13 +139,43 @@ export const NetworkCreate: React.FC = () => {
             label={`${t('network.netid')} (${t('common.max')} 12 ${t('common.chars')})`}
           />
         </Grid>
-        <Grid item xs={12} sm={12} md={7} className={classes.center + ' ' + classes.rowMargin}>
+        <Grid item xs={12} sm={12} md={10} className={classes.rowMargin} style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+          <div onClick={handleViewIpv4}>
+            <NmFormInputSwitch
+              name={'isipv4'}
+              label={String(t('network.isipv4'))}
+            />
+          </div>
+          {viewIpv4 &&
+            <NmFormInputText
+              style={{width: '60%'}}
+              name={'addressrange'}
+              label={String(t('network.addressrange'))}
+            />
+          }
+        </Grid>
+        <Grid item xs={12} sm={12} md={10} className={classes.rowMargin} style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+          <div  onClick={handleViewIpv6}>
+            <NmFormInputSwitch
+              name={'isipv6'}
+              label={String(t('network.isipv6'))}
+            />
+          </div>
+          {viewIpv6 &&
+            <NmFormInputText
+              style={{width: '60%'}}
+              name={'addressrange6'}
+              label={String(t('network.addressrange6'))}
+            />
+          }
+        </Grid>
+        {/* <Grid item xs={12} sm={12} md={7} className={classes.center + ' ' + classes.rowMargin}>
           <NmFormInputText
             style={{width: '90%'}}
             name={'addressrange'}
             label={String(t('network.addressrange'))}
           />
-        </Grid>
+        </Grid> */}
         <Grid item xs={12} sm={10} md={10} className={classes.center + ' ' + classes.rowMargin} style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
           <Tooltip title={t('helper.udpholepunching') as string} placement='top'>
             <div>
@@ -170,21 +208,6 @@ export const NetworkCreate: React.FC = () => {
               style={{width: '60%'}}
               name={'localrange'}
               label={String(t('network.localrange'))}
-            />
-          }
-        </Grid>
-        <Grid item xs={12} sm={12} md={10} className={classes.rowMargin} style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-          <div  onClick={handleViewDual}>
-            <NmFormInputSwitch
-              name={'isdualstack'}
-              label={String(t('network.isdualstack'))}
-            />
-          </div>
-          {viewDual &&
-            <NmFormInputText
-              style={{width: '60%'}}
-              name={'addressrange6'}
-              label={String(t('network.addressrange6'))}
             />
           }
         </Grid>

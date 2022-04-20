@@ -242,8 +242,8 @@ export const NetworkId: React.FC = () => {
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
               <FormControlLabel
-                label={String(t('network.isdualstack'))}
-                control={<SwitchField checked={network.isdualstack} disabled />}
+                label={String(t('network.isipv6'))}
+                control={<SwitchField checked={network.isipv6} disabled />}
                 disabled
               />
             </Grid>

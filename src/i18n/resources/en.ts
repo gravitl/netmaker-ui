@@ -188,7 +188,9 @@ export const en: LanguageResource = {
     iscomms: 'This is your comms network',
     commswarn: 'Editing this network could cause your networks to lose consensus',
     none: 'No Network Selected',
-    defaultacl: 'Default Access Control'
+    defaultacl: 'Default Access Control',
+    isipv6: 'IPv6',
+    isipv4: 'IPv4',
   },
   helper: {
     egress: 'Enter your network interface name, i.e. "eth0"',
