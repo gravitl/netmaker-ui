@@ -31,9 +31,12 @@ const columns: TableColumns<Node> = [
   },
   {
     id: 'address',
-    labelKey: 'node.address',
+    labelKey: 'node.addresses',
     minWidth: 90,
     align: 'center',
+    format: (_, node) => (
+      <>{`${!!node.address ? node.address : ''}${' '}${!!node.address6 ? node.address6 : ''}`}</>
+    )
   },
   {
     id: 'id',
@@ -101,10 +104,13 @@ export const ExtClientView: React.FC = () => {
     },
     {
       id: 'address',
-      labelKey: 'node.address',
+      labelKey: 'node.addresses',
       minWidth: 80,
       align: 'center',
       sortable: true,
+      format: (_, node) => (
+        <>{`${!!node.address ? node.address : ''}${' '}${!!node.address6 ? node.address6 : ''}`}</>
+      )
     },
     {
       id: 'network',
