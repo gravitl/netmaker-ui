@@ -8,6 +8,7 @@ import { NmForm, NmFormInputSwitch, NmFormInputText } from '~components/form'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 import { getCommaSeparatedArray } from '~util/fields'
 import { useNodeById } from '~util/node'
+import { useNetwork } from '~util/network' 
 import { serverSelectors } from '~store/selectors'
 import { Node } from '~store/modules/node/types'
 import { datePickerConverter } from '~util/unixTime'
@@ -27,6 +28,7 @@ export const NodeEdit: React.FC<{
   const { netid } = useParams<{ netid: string }>()
   const { nodeId } = useParams<{ nodeId: string }>()
   const node = useNodeById(decodeURIComponent(nodeId))
+  const network = useNetwork(netid)
 
   useLinkBreadcrumb({
     link: url,
@@ -113,7 +115,7 @@ export const NodeEdit: React.FC<{
             defaultValue={node.address6}
             name={'address6'}
             label={String(t('node.address6'))}
-            disabled={!node.isdualstack || node.isserver}
+            disabled={!network?.isipv6}
           />
         </Grid>
         <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
@@ -303,6 +305,7 @@ export const NodeEdit: React.FC<{
                 label={String(t('node.ishub'))}
                 name={'ishub'}
                 defaultValue={node.ishub}
+                disabled={!network?.ispointtosite}
               />
             </Grid>
           </Grid>

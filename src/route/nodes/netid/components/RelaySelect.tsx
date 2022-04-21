@@ -33,7 +33,7 @@ function getStyles(name: string, nodeName: readonly string[], theme: Theme) {
 
 export default function RelaySelect(props: {
   onSelect: (value: string) => void
-  names: { name: string; address: string, isserver: boolean }[]
+  names: { name: string; address: string, address6: string, isserver: boolean }[]
 }) {
   const theme = useTheme()
   const [nodeName, setNodeName] = React.useState<string[]>([])
@@ -88,10 +88,10 @@ export default function RelaySelect(props: {
             )}
             MenuProps={MenuProps}
           >
-            {props.names.map(({ name, address, isserver }) => !isserver ? (
+            {props.names.map(({ name, address, isserver, address6 }) => !isserver ? (
               <MenuItem
                 key={name}
-                value={address}
+                value={`${!!address ? address: ''}${!!address && !!address6 ? ',' : ''}${!!address6 ? address6 : ''}`}
                 style={getStyles(name, nodeName, theme)}
               >
                 {name}
