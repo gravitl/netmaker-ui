@@ -23,7 +23,13 @@ const columns: TableColumns<Network> = [
   {
     id: 'addressrange',
     labelKey: 'network.addressrange',
-    minWidth: 150,
+    minWidth: 100,
+    sortable: true,
+  },
+  {
+    id: 'addressrange6',
+    labelKey: 'network.addressrange6',
+    minWidth: 100,
     sortable: true,
   },
   {

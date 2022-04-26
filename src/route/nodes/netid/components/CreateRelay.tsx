@@ -101,9 +101,9 @@ export function CreateRelay() {
   }
 
   for (let i = 0; i < nodes.length; i++) {
-    if (!!nodes) {
-      const data = { name: nodes[i].name, address: nodes[i].address, isserver: nodes[i].isserver }
-      if (data.address !== node.address) {
+    if (!!nodes && !!nodes.length) {
+      const data = { name: nodes[i].name, address: nodes[i].address, isserver: nodes[i].isserver, address6: nodes[i].address6 }
+      if (nodes[i].id !== node.id) {
         nodeNames.push(data)
       }
     }

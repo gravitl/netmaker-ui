@@ -51,6 +51,12 @@ export const NetworkEdit: React.FC<{
       </div>
   }
 
+  const centerStyle = {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  } as any
+
   return (
     <NmForm
       initialState={network}
@@ -87,12 +93,14 @@ export const NetworkEdit: React.FC<{
           <NmFormInputText
             name={'addressrange'}
             label={String(t('network.addressrange'))}
+            disabled={!network.isipv4} 
           />
         </Grid>
         <Grid item xs={12} sm={4} md={3}>
           <NmFormInputText
             name={'addressrange6'}
             label={String(t('network.addressrange6'))}
+            disabled={!network.isipv6}
           />
         </Grid>
         <Grid item xs={12} sm={4} md={3}>
@@ -148,20 +156,28 @@ export const NetworkEdit: React.FC<{
             type="number"
           />
         </Grid>
-        <Grid item xs={12} sm={4} md={3}>
-        </Grid>
-        <Grid item xs={12} sm={4} md={3}>
-        </Grid>
+        <Grid item xs={12} sm={6} md={3}>
+              <div style={centerStyle}>
+              <NmFormInputSwitch
+                name={'isipv4'}
+                label={String(t('network.isipv4'))}
+                disabled
+              />
+              </div>
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <div style={centerStyle}>
+                <NmFormInputSwitch
+                  name={'isipv6'}
+                  label={String(t('network.isipv6'))}
+                  disabled
+                />
+              </div>
+            </Grid>
         <Grid item xs={12} sm={4} md={3}>
           <NmFormInputSwitch
             name={'allowmanualsignup'}
             label={'Allow Node Signup Without Keys'}
-          />
-        </Grid>
-        <Grid item xs={12} sm={4} md={2}>
-          <NmFormInputSwitch
-            name={'isdualstack'}
-            label={String(t('network.isdualstack'))}
           />
         </Grid>
         <Grid item xs={12} sm={4} md={2}>

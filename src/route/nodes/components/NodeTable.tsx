@@ -36,9 +36,12 @@ export const NodeTable: React.FC<{nodes: Node[]}> = ({nodes}) => {
     },
     {
       id: 'address',
-      labelKey: 'node.address',
+      labelKey: 'node.addresses',
       minWidth: 130,
-      align: 'center',
+      align: 'right',
+      format: (_, node) => (
+        <>{`${!!node.address ? node.address : ''}${' '}${!!node.address6 ? node.address6 : ''}`}</>
+      )
     },
     {
       id: 'version',
@@ -109,7 +112,7 @@ export const NodeTable: React.FC<{nodes: Node[]}> = ({nodes}) => {
     {
       id: 'lastcheckin',
       labelKey: 'node.status',
-      minWidth: 130,
+      minWidth: 170,
       align: 'center',
       format: (lastcheckin) => {
         const time = Date.now() / 1000

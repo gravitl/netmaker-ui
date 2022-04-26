@@ -17,7 +17,6 @@ export interface Network {
   externalclients: Array<ExternalClient>
   allowmanualsignup: boolean
   islocal: boolean
-  isdualstack: boolean
   isipv4: boolean
   isipv6: boolean
   ispointtosite: boolean 
@@ -34,7 +33,6 @@ export type NetworkPayload = Modify<
   {
     allowmanualsignup: 'no' | 'yes'
     islocal: 'no' | 'yes'
-    isdualstack: 'no' | 'yes'
     isipv4: 'no' | 'yes'
     isipv6: 'no' | 'yes'
     defaultudpholepunch: 'no' | 'yes'
@@ -76,7 +74,8 @@ export interface CreateNetworkPayload {
     netid: string
     localrange: string
     islocal: 'yes' | 'no'
-    isdualstack: 'yes' | 'no'
+    isipv4: 'yes' | 'no'
+    isipv6: 'yes' | 'no'
     addressrange6: string
     defaultudpholepunch: 'yes' | 'no'
     ispointtosite: 'yes' | 'no'
