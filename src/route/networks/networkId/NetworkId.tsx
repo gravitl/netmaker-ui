@@ -100,13 +100,6 @@ export const NetworkId: React.FC = () => {
               {`${t('network.details')} : ${netid}`}
             </Typography>
           </div>
-          {network.iscomms && 
-          <div style={{ textAlign: 'center', margin: '1em 0 1em 0' }}>
-            <Typography variant="h6" style={{overflowWrap: 'break-word'}}>
-              {`${t('network.iscomms')}`}
-            </Typography>
-          </div>
-          }
           <Grid
             container
             justifyContent="flex-start"
