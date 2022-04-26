@@ -81,13 +81,6 @@ export const NetworkEdit: React.FC<{
               {`${t('network.details')} : ${network.netid}`}
             </Typography>
           </div>
-          {network.iscomms && 
-            <div style={{ textAlign: 'center', margin: '1em 0 1em 0' }}>
-              <Typography variant="h6" style={{color: '#F32013', overflowWrap: 'break-word'}}>
-                {`${t('network.commswarn')}`}
-              </Typography>
-            </div>
-          }
         </Grid>
         <Grid item xs={12} sm={4} md={3}>
           <NmFormInputText
