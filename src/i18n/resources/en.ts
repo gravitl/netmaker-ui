@@ -185,7 +185,6 @@ export const en: LanguageResource = {
     graphs: 'Network Graphs',
     graphview: 'Viewing Network Graph',
     graph: 'Graph',
-    iscomms: 'This is your comms network',
     commswarn: 'Editing this network could cause your networks to lose consensus',
     none: 'No Network Selected',
     defaultacl: 'Default Access Control',

@@ -191,7 +191,6 @@ export interface LanguageResource {
     graphs: string
     graphview: string
     graph: string
-    iscomms: string
     commswarn: string
     none: string
     defaultacl: string

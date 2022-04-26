@@ -20,7 +20,6 @@ export interface Network {
   isipv4: boolean
   isipv6: boolean
   ispointtosite: boolean 
-  iscomms: boolean
   localrange: string
   defaultudpholepunch: boolean
   defaultextclientdns: string
@@ -37,8 +36,7 @@ export type NetworkPayload = Modify<
     isipv6: 'no' | 'yes'
     defaultudpholepunch: 'no' | 'yes'
     ispointtosite: 'no' | 'yes'
-    iscomms: 'no' | 'yes',
-    defaultacl: 'no' | 'yes',
+    defaultacl: 'no' | 'yes'
   }
 >
 
