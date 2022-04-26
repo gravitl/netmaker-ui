@@ -11,7 +11,6 @@ export const networkToNetworkPayload = (network: Network): NetworkPayload => {
     isipv4: network.isipv4 ? 'yes' : 'no',
     isipv6: network.isipv6 ? 'yes' : 'no',
     defaultudpholepunch: network.defaultudpholepunch ? 'yes' : 'no',
-    iscomms: network.iscomms ? 'yes' : 'no',
     ispointtosite: network.ispointtosite ? 'yes' : 'no',
     defaultacl: network.defaultacl ? 'yes' : 'no',
   }
@@ -28,7 +27,6 @@ export const networkPayloadToNetwork = (network: NetworkPayload): Network => {
     isipv6: network.isipv6 === 'yes',
     defaultudpholepunch: network.defaultudpholepunch === 'yes',
     ispointtosite: network.ispointtosite === 'yes',
-    iscomms: network.iscomms === 'yes',
     defaultacl: network.defaultacl === 'yes',
   }
 }
