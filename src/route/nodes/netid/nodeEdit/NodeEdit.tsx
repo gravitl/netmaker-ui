@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import { Grid, TextField, Typography } from '@mui/material'
+import { Grid, TextField, Typography, Tooltip } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import { useRouteMatch, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
@@ -289,12 +289,22 @@ export const NodeEdit: React.FC<{
               />
             </Grid>
             <Grid item xs={10} sm={4} md={2} sx={rowMargin}>
-              <NmFormInputSwitch
-                label={String(t('node.udpholepunch'))}
-                name={'udpholepunch'}
-                defaultValue={node.udpholepunch}
-                disabled={!network?.defaultudpholepunch}
-              />
+              <Tooltip
+                title={
+                  !network?.defaultudpholepunch
+                    ? 'UDP hole punch disabled.'
+                    : ''
+                }
+              >
+                <span>
+                  <NmFormInputSwitch
+                    label={String(t('node.udpholepunch'))}
+                    name={'udpholepunch'}
+                    defaultValue={node.udpholepunch}
+                    disabled={!network?.defaultudpholepunch}
+                  />
+                </span>
+              </Tooltip>
             </Grid>
             <Grid item xs={10} sm={4} md={2} sx={rowMargin}>
               <NmFormInputSwitch
