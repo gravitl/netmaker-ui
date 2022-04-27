@@ -292,7 +292,7 @@ export const NodeEdit: React.FC<{
               <Tooltip
                 title={
                   !network?.defaultudpholepunch
-                    ? 'UDP hole punch disabled.'
+                    ? String(t('node.udpdisabled'))
                     : ''
                 }
               >

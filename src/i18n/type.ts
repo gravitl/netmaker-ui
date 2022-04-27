@@ -18,7 +18,7 @@ export interface LanguageResource {
     networkview: string
     aclicon: string
     nodesconfirm: string
-    nodeconfirm: string 
+    nodeconfirm: string
     viewall: string
     allowall: string
     blockall: string
@@ -283,6 +283,7 @@ export interface LanguageResource {
     nodevisual: string
     version: string
     addresses: string
+    udpdisabled: string
   }
   login: {
     validation: {
