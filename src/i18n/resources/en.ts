@@ -137,13 +137,14 @@ export const en: LanguageResource = {
     none: 'No Ext Clients Found',
     name: 'Name',
     deleteconfirm: 'Are you sure you want to delete this Ext. Client?',
-    changeconfirm: 'Are you sure you want to change access for this Ext. Client?',
+    changeconfirm:
+      'Are you sure you want to change access for this Ext. Client?',
     download: 'Download Client Configuration',
     viewqr: 'View Configuration QR',
     clientid: 'Client ID',
     qr: 'QR Code',
     edit: 'Change Ext Client Name',
-    enabled: 'Enabled'
+    enabled: 'Enabled',
   },
   ingress: {
     none: 'No Ingress Gateways Found',
@@ -181,11 +182,13 @@ export const en: LanguageResource = {
     deleteconfirm: 'Are you sure you want to delete this network?',
     refresh: 'Refresh public keys',
     details: 'Network Details',
-    refreshconfirm: 'Are you sure you want to reset the public & private key pairs of all nodes on the network?',
+    refreshconfirm:
+      'Are you sure you want to reset the public & private key pairs of all nodes on the network?',
     graphs: 'Network Graphs',
     graphview: 'Viewing Network Graph',
     graph: 'Graph',
-    commswarn: 'Editing this network could cause your networks to lose consensus',
+    commswarn:
+      'Editing this network could cause your networks to lose consensus',
     none: 'No Network Selected',
     defaultacl: 'Default Access Control',
     isipv6: 'IPv6',
@@ -194,10 +197,13 @@ export const en: LanguageResource = {
   helper: {
     egress: 'Enter your network interface name, i.e. "eth0"',
     egressiface: 'Find your interface on linux with "ip link show"',
-    udpholepunching: 'This can enhance connectivity in cases where NAT may block communication.',
+    udpholepunching:
+      'This can enhance connectivity in cases where NAT may block communication.',
     islocal: 'Use if server is on same network (LAN) as you',
-    ispointtosite: 'Create a network in which all clients have only one, central peer',
-    defaultacl: "Indicates the default ACL value for a node when it joins in respect to it's peers (enabled or disabled)"
+    ispointtosite:
+      'Create a network in which all clients have only one, central peer',
+    defaultacl:
+      "Indicates the default ACL value for a node when it joins in respect to it's peers (enabled or disabled)",
   },
   node: {
     nodes: 'Nodes',
@@ -265,8 +271,8 @@ export const en: LanguageResource = {
     sync: 'Sync Nodes with Server',
     pendingApproval: 'pending approval',
     approve: 'Approve',
-    approveconfirm: "Are you sure you want to grant access to this node?",
-    none: "No nodes found",
+    approveconfirm: 'Are you sure you want to grant access to this node?',
+    none: 'No nodes found',
     isingressegress: 'Is Egress and Ingress',
     isingressegressrelay: 'Is Egress, Ingress & Relay',
     isegressrelay: 'Is Egress and Relay',
@@ -280,11 +286,12 @@ export const en: LanguageResource = {
       error: 'ERROR',
       warning: 'WARNING',
       normal: 'Normal',
-      healthy: 'HEALTHY'
+      healthy: 'HEALTHY',
     },
     nodevisual: 'Nodes visually',
     version: 'Version',
     addresses: 'Addresses',
+    udpdisabled: 'UDP hole punching is disabled on the network',
   },
   login: {
     validation: {
@@ -427,6 +434,6 @@ export const en: LanguageResource = {
     login: {
       success: 'Logged in successfully',
       failure: 'Failed to login',
-    }
+    },
   },
 }
