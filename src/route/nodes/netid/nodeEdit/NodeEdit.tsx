@@ -8,14 +8,13 @@ import { NmForm, NmFormInputSwitch, NmFormInputText } from '~components/form'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 import { getCommaSeparatedArray } from '~util/fields'
 import { useNodeById } from '~util/node'
-import { useNetwork } from '~util/network' 
+import { useNetwork } from '~util/network'
 import { serverSelectors } from '~store/selectors'
 import { Node } from '~store/modules/node/types'
 import { datePickerConverter } from '~util/unixTime'
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import DateTimePicker from '@mui/lab/DateTimePicker';
-
+import AdapterDateFns from '@mui/lab/AdapterDateFns'
+import LocalizationProvider from '@mui/lab/LocalizationProvider'
+import DateTimePicker from '@mui/lab/DateTimePicker'
 
 export const NodeEdit: React.FC<{
   onCancel: () => void
@@ -44,16 +43,18 @@ export const NodeEdit: React.FC<{
   const onSubmit = useCallback(
     (data: Node) => {
       const node = {
-        ...data
+        ...data,
       }
-      if(typeof data.relayaddrs === 'string') {
+      if (typeof data.relayaddrs === 'string') {
         const newRelayAddrs = getCommaSeparatedArray(String(data.relayaddrs))
         if (newRelayAddrs.length) {
           node.relayaddrs = newRelayAddrs
         }
       }
       if (typeof data.egressgatewayranges === 'string') {
-        const newEgressRanges = getCommaSeparatedArray(String(data.egressgatewayranges))
+        const newEgressRanges = getCommaSeparatedArray(
+          String(data.egressgatewayranges)
+        )
         if (newEgressRanges.length) {
           node.egressgatewayranges = newEgressRanges
         }
@@ -98,7 +99,9 @@ export const NodeEdit: React.FC<{
         <Grid item xs={12}>
           <div style={{ textAlign: 'center', margin: '0.5em 0 1em 0' }}>
             <Typography variant="h5">
-              {`${t('node.details')} : ${node.name}${node.ispending === 'yes' ? ` (${t('common.pending')})` : ''}`}
+              {`${t('node.details')} : ${node.name}${
+                node.ispending === 'yes' ? ` (${t('common.pending')})` : ''
+              }`}
             </Typography>
           </div>
         </Grid>
@@ -189,9 +192,7 @@ export const NodeEdit: React.FC<{
         <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <NmFormInputText
             disabled={!node.isrelay}
-            defaultValue={
-              node.relayaddrs ? node.relayaddrs.join(',') : ''
-            }
+            defaultValue={node.relayaddrs ? node.relayaddrs.join(',') : ''}
             label={String(t('node.relayaddrs'))}
             name={'relayaddrs'}
           />
@@ -199,14 +200,22 @@ export const NodeEdit: React.FC<{
         <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DateTimePicker
-              renderInput={(props) => 
-                <TextField fullWidth={false} sx={{maxWidth: '15rem'}} {...props} />
-              }
+              renderInput={(props) => (
+                <TextField
+                  fullWidth={false}
+                  sx={{ maxWidth: '15rem' }}
+                  {...props}
+                />
+              )}
               label={String(t('node.expdatetime'))}
-              value={expTime ? datePickerConverter(expTime) : datePickerConverter(node.expdatetime)}
+              value={
+                expTime
+                  ? datePickerConverter(expTime)
+                  : datePickerConverter(node.expdatetime)
+              }
               onChange={(newValue: string | null) => {
                 if (!!newValue) {
-                  setExpTime(new Date(newValue).getTime() / 1000);
+                  setExpTime(new Date(newValue).getTime() / 1000)
                 }
               }}
             />
@@ -271,7 +280,7 @@ export const NodeEdit: React.FC<{
           />
         </Grid>
         <Grid item xs={12}>
-          <Grid container justifyContent='space-between' alignItems='center'>
+          <Grid container justifyContent="space-between" alignItems="center">
             <Grid item xs={10} sm={4} md={2} sx={rowMargin}>
               <NmFormInputSwitch
                 label={String(t('node.isstatic'))}
@@ -284,6 +293,7 @@ export const NodeEdit: React.FC<{
                 label={String(t('node.udpholepunch'))}
                 name={'udpholepunch'}
                 defaultValue={node.udpholepunch}
+                disabled={!network?.defaultudpholepunch}
               />
             </Grid>
             <Grid item xs={10} sm={4} md={2} sx={rowMargin}>
