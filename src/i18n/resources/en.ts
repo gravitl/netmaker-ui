@@ -37,7 +37,7 @@ export const en: LanguageResource = {
     name: 'Name',
     uses: 'Uses',
     deleteconfirm: 'Are you sure you want to delete this access key?',
-    details: 'Viewing your New Access Key Details',
+    details: 'Viewing your Access Key Details',
     accessToken: 'Access Token',
     installCommand: 'Linux, FreeBSD, Mac',
     dockerrun: 'Docker',

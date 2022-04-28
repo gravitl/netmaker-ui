@@ -41,9 +41,10 @@ export default function AccessKeyDetails(Props: {
   handleClose: () => void
   open: boolean
 }) {
-
   const { t } = useTranslation()
-  const version = extractVersion(useSelector(serverSelectors.getServerConfig).Version)
+  const version = extractVersion(
+    useSelector(serverSelectors.getServerConfig).Version
+  )
   const userSettings = useSelector(authSelectors.getUserSettings)
 
   const styles = {
@@ -83,7 +84,11 @@ export default function AccessKeyDetails(Props: {
         <Box sx={style}>
           <Grid container justifyContent="center" alignItems="center">
             <Grid item xs={12} style={styles.centerStyle}>
-              <Typography id="modal-modal-title" variant="h5" style={{marginBottom: '0.5em'}}>
+              <Typography
+                id="modal-modal-title"
+                variant="h5"
+                style={{ marginBottom: '0.5em' }}
+              >
                 {Props.title}
               </Typography>
             </Grid>
@@ -98,7 +103,12 @@ export default function AccessKeyDetails(Props: {
                   fullWidth
                   maxRows={1}
                   value={Props.keyValue}
-                  sx={{ backgroundColor: userSettings.mode === 'dark' ? '#272727' : grey[100] }}
+                  sx={{
+                    backgroundColor:
+                      !!!userSettings.mode || userSettings.mode === 'dark'
+                        ? '#272727'
+                        : grey[100],
+                  }}
                 />
               </Grid>
               <Grid item xs={1} style={styles.centerStyle}>
@@ -116,7 +126,12 @@ export default function AccessKeyDetails(Props: {
                   maxRows={1}
                   fullWidth
                   value={Props.accessString}
-                  sx={{ backgroundColor: userSettings.mode === 'dark' ? '#272727' : grey[100] }}
+                  sx={{
+                    backgroundColor:
+                      !!!userSettings.mode || userSettings.mode === 'dark'
+                        ? '#272727'
+                        : grey[100],
+                  }}
                 />
               </Grid>
               <Grid item xs={1} style={styles.centerStyle}>
@@ -130,7 +145,11 @@ export default function AccessKeyDetails(Props: {
                 </Tooltip>
               </Grid>
               <Grid item xs={12} style={styles.centerStyle}>
-                <Typography id="modal-modal-title" variant="h6" style={{marginBottom: '0.5em', marginTop: '0.5em'}}>
+                <Typography
+                  id="modal-modal-title"
+                  variant="h6"
+                  style={{ marginBottom: '0.5em', marginTop: '0.5em' }}
+                >
                   {t('accesskey.clientinstall')}
                 </Typography>
               </Grid>
@@ -142,7 +161,12 @@ export default function AccessKeyDetails(Props: {
                   fullWidth
                   maxRows={1}
                   value={getAgentInstallCommand(Props.accessString)}
-                  sx={{ backgroundColor: userSettings.mode === 'dark' ? '#272727' : grey[100] }}
+                  sx={{
+                    backgroundColor:
+                      !!!userSettings.mode || userSettings.mode === 'dark'
+                        ? '#272727'
+                        : grey[100],
+                  }}
                 />
               </Grid>
               <Grid item xs={1} style={styles.centerStyle}>
@@ -167,7 +191,12 @@ export default function AccessKeyDetails(Props: {
                   fullWidth
                   maxRows={1}
                   value={getDockerRunCommand(Props.accessString)}
-                  sx={{ backgroundColor: userSettings.mode === 'dark' ? '#272727' : grey[100] }}
+                  sx={{
+                    backgroundColor:
+                      !!!userSettings.mode || userSettings.mode === 'dark'
+                        ? '#272727'
+                        : grey[100],
+                  }}
                 />
               </Grid>
               <Grid item xs={1} style={styles.centerStyle}>
@@ -185,14 +214,19 @@ export default function AccessKeyDetails(Props: {
                 </Tooltip>
               </Grid>
               <Grid item xs={3} style={styles.centerStyle}>
-              <h3>{t('accesskey.windows')}</h3>
+                <h3>{t('accesskey.windows')}</h3>
               </Grid>
               <Grid item xs={7} style={styles.centeredText}>
                 <TextField
                   fullWidth
                   maxRows={1}
                   value={getWindowsRunCommand(Props.accessString)}
-                  sx={{ backgroundColor: userSettings.mode === 'dark' ? '#272727' : grey[100] }}
+                  sx={{
+                    backgroundColor:
+                      !!!userSettings.mode || userSettings.mode === 'dark'
+                        ? '#272727'
+                        : grey[100],
+                  }}
                 />
               </Grid>
               <Grid item xs={1} style={styles.centerStyle}>
@@ -210,14 +244,19 @@ export default function AccessKeyDetails(Props: {
                 </Tooltip>
               </Grid>
               <Grid item xs={3} style={styles.centerStyle}>
-              <h3>{t('accesskey.manual')}</h3>
+                <h3>{t('accesskey.manual')}</h3>
               </Grid>
               <Grid item xs={7} style={styles.centeredText}>
                 <TextField
                   fullWidth
                   maxRows={1}
                   value={getManualCommand(Props.accessString)}
-                  sx={{ backgroundColor: userSettings.mode === 'dark' ? '#272727' : grey[100] }}
+                  sx={{
+                    backgroundColor:
+                      !!!userSettings.mode || userSettings.mode === 'dark'
+                        ? '#272727'
+                        : grey[100],
+                  }}
                 />
               </Grid>
               <Grid item xs={1} style={styles.centerStyle}>
@@ -226,9 +265,7 @@ export default function AccessKeyDetails(Props: {
                   placement="top"
                 >
                   <IconButton
-                    onClick={() =>
-                      copy(getManualCommand(Props.accessString))
-                    }
+                    onClick={() => copy(getManualCommand(Props.accessString))}
                   >
                     <ContentCopy />
                   </IconButton>
