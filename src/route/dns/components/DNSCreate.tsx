@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 import { Grid, Modal, Typography, Box } from '@mui/material'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useHistory, useRouteMatch, useParams } from 'react-router'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
@@ -8,6 +8,7 @@ import { FormRef, NmForm, NmFormInputText } from '~components/form'
 import { useNodesByNetworkId } from '~util/network'
 import { DNSSelect } from './DNSSelect'
 import { createDnsEntry } from '~store/modules/network/actions'
+import { authSelectors } from '~store/selectors'
 
 export const DNSEntryCreate: React.FC<{}> = () => {
   const history = useHistory()
@@ -16,6 +17,8 @@ export const DNSEntryCreate: React.FC<{}> = () => {
   const { netid } = useParams<{ netid: string }>()
   const newPath = `${path.split(':netid')[0]}${netid}`
   const dispatch = useDispatch()
+  const inDarkMode = useSelector(authSelectors.isInDarkMode)
+
   const listOfNodes = useNodesByNetworkId(netid) || []
   const nodeAddresses = listOfNodes.map(
     (node) => `${node.address} ${node.name}`
@@ -62,7 +65,7 @@ export const DNSEntryCreate: React.FC<{}> = () => {
       left: '50%',
       transform: 'translate(-50%, -50%)',
       width: '80%',
-      backgroundColor: 'white',
+      backgroundColor: inDarkMode ? '#272727' : '#f0f0f0',
       border: '1px solid #000',
       minWidth: '33%',
       // boxShadow: 24,
@@ -117,7 +120,13 @@ export const DNSEntryCreate: React.FC<{}> = () => {
             >
               <Grid container justifyContent="center" alignItems="center">
                 <Grid item xs={10}>
-                  <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
+                  >
                     <NmFormInputText
                       name="name"
                       defaultValue={''}
@@ -128,11 +137,15 @@ export const DNSEntryCreate: React.FC<{}> = () => {
                       rightAlign
                       autoComplete="false"
                       autoFocus
-                      style={{width: '70%'}}
+                      style={{ width: '70%' }}
                       color="primary"
                     />
-                    <Typography variant='h6' style={{paddingTop: '4px', marginLeft: '8px'}}>
-                      {' '}.{netid}
+                    <Typography
+                      variant="h6"
+                      style={{ paddingTop: '4px', marginLeft: '8px' }}
+                    >
+                      {' '}
+                      .{netid}
                     </Typography>
                   </div>
                 </Grid>
