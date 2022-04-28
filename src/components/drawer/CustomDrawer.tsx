@@ -190,6 +190,7 @@ export default function CustomDrawer() {
   const userSettings = useSelector(authSelectors.getUserSettings)
   const serverConfig = useSelector(serverSelectors.getServerConfig)
   const isLoggedIn = useSelector(authSelectors.getLoggedIn)
+  const inDarkMode = useSelector(authSelectors.isInDarkMode)
   const dispatch = useDispatch()
 
   const { t } = useTranslation()
@@ -200,7 +201,6 @@ export default function CustomDrawer() {
   const location = useLocation()
   const parts = location.pathname.split('/')
   const netid = parts.length > 2 ? parts[2] : false
-  const isDarkMode = userSettings.mode === 'dark'
 
   const handleDrawerOpen = () => {
     setOpen(true)
@@ -224,7 +224,7 @@ export default function CustomDrawer() {
       dispatch(
         setUserSettings({
           ...userSettings,
-          mode: userSettings.mode === 'dark' ? 'light' : 'dark',
+          mode: inDarkMode ? 'light' : 'dark',
         })
       )
     }
@@ -251,11 +251,7 @@ export default function CustomDrawer() {
             <div style={styles.headerLogo}>
               <img
                 style={styles.logo}
-                src={
-                  !!!userSettings.mode || userSettings.mode === 'dark'
-                    ? DarkLogo
-                    : Logo
-                }
+                src={inDarkMode ? DarkLogo : Logo}
                 alt="Netmaker makes networks."
               />
             </div>
@@ -380,16 +376,16 @@ export default function CustomDrawer() {
                 <ListItem>
                   <ListItemIcon
                     aria-label={
-                      isDarkMode
+                      inDarkMode
                         ? String(t('common.togglelite'))
                         : String(t('common.toggledark'))
                     }
                   >
-                    <Switch onChange={handleToggleMode} checked={isDarkMode} />
+                    <Switch onChange={handleToggleMode} checked={inDarkMode} />
                   </ListItemIcon>
                   <ListItemText
                     primary={
-                      isDarkMode
+                      inDarkMode
                         ? String(t('common.togglelite'))
                         : String(t('common.toggledark'))
                     }

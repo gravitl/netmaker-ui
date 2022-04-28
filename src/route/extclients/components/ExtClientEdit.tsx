@@ -16,9 +16,9 @@ export const ExtClientEdit: React.FC<{}> = () => {
   const { netid, clientid } = useParams<{ netid: string; clientid: string }>()
   const newPath = `${path.split(':netid')[0]}${netid}`
   const dispatch = useDispatch()
-  const userSettings = useSelector(authSelectors.getUserSettings)
+  const inDarkMode = useSelector(authSelectors.isInDarkMode)
   const extClients = useSelector(nodeSelectors.getExtClients)
-  const currentClient = extClients.filter(ec => ec.clientid === clientid)[0]
+  const currentClient = extClients.filter((ec) => ec.clientid === clientid)[0]
 
   useLinkBreadcrumb({
     link: newPath,
@@ -31,7 +31,7 @@ export const ExtClientEdit: React.FC<{}> = () => {
 
   const handleSubmit = useCallback(
     (data: UpdateClient) => {
-        if (!!currentClient) {
+      if (!!currentClient) {
         dispatch(
           updateExternalClient.request({
             clientName: clientid,
@@ -68,7 +68,7 @@ export const ExtClientEdit: React.FC<{}> = () => {
       left: '50%',
       transform: 'translate(-50%, -50%)',
       width: 400,
-      backgroundColor: userSettings.mode === 'dark' ? '#272727' : grey[100],
+      backgroundColor: inDarkMode ? '#272727' : grey[100],
       border: '1px solid #000',
       minWidth: '33%',
       // boxShadow: 24,

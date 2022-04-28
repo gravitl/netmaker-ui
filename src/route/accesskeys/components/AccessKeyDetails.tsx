@@ -45,7 +45,7 @@ export default function AccessKeyDetails(Props: {
   const version = extractVersion(
     useSelector(serverSelectors.getServerConfig).Version
   )
-  const userSettings = useSelector(authSelectors.getUserSettings)
+  const inDarkMode = useSelector(authSelectors.isInDarkMode)
 
   const styles = {
     centerStyle: {
@@ -104,10 +104,7 @@ export default function AccessKeyDetails(Props: {
                   maxRows={1}
                   value={Props.keyValue}
                   sx={{
-                    backgroundColor:
-                      !!!userSettings.mode || userSettings.mode === 'dark'
-                        ? '#272727'
-                        : grey[100],
+                    backgroundColor: inDarkMode ? '#272727' : grey[100],
                   }}
                 />
               </Grid>
@@ -127,10 +124,7 @@ export default function AccessKeyDetails(Props: {
                   fullWidth
                   value={Props.accessString}
                   sx={{
-                    backgroundColor:
-                      !!!userSettings.mode || userSettings.mode === 'dark'
-                        ? '#272727'
-                        : grey[100],
+                    backgroundColor: inDarkMode ? '#272727' : grey[100],
                   }}
                 />
               </Grid>
@@ -162,10 +156,7 @@ export default function AccessKeyDetails(Props: {
                   maxRows={1}
                   value={getAgentInstallCommand(Props.accessString)}
                   sx={{
-                    backgroundColor:
-                      !!!userSettings.mode || userSettings.mode === 'dark'
-                        ? '#272727'
-                        : grey[100],
+                    backgroundColor: inDarkMode ? '#272727' : grey[100],
                   }}
                 />
               </Grid>
@@ -192,10 +183,7 @@ export default function AccessKeyDetails(Props: {
                   maxRows={1}
                   value={getDockerRunCommand(Props.accessString)}
                   sx={{
-                    backgroundColor:
-                      !!!userSettings.mode || userSettings.mode === 'dark'
-                        ? '#272727'
-                        : grey[100],
+                    backgroundColor: inDarkMode ? '#272727' : grey[100],
                   }}
                 />
               </Grid>
@@ -222,10 +210,7 @@ export default function AccessKeyDetails(Props: {
                   maxRows={1}
                   value={getWindowsRunCommand(Props.accessString)}
                   sx={{
-                    backgroundColor:
-                      !!!userSettings.mode || userSettings.mode === 'dark'
-                        ? '#272727'
-                        : grey[100],
+                    backgroundColor: inDarkMode ? '#272727' : grey[100],
                   }}
                 />
               </Grid>
@@ -252,10 +237,7 @@ export default function AccessKeyDetails(Props: {
                   maxRows={1}
                   value={getManualCommand(Props.accessString)}
                   sx={{
-                    backgroundColor:
-                      !!!userSettings.mode || userSettings.mode === 'dark'
-                        ? '#272727'
-                        : grey[100],
+                    backgroundColor: inDarkMode ? '#272727' : grey[100],
                   }}
                 />
               </Grid>
