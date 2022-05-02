@@ -9,13 +9,22 @@ import { useNetwork, useNodesByNetworkId } from '~util/network'
 import { Node } from '~store/types'
 import NodeGraph from './graph-components/NodeGraph'
 import NodeDetails from './graph-components/NodeDetails'
-import { ControlsContainer, SearchControl, SigmaContainer, ZoomControl, FullScreenControl } from "react-sigma-v2";
-import { filterExtClientsByNetwork } from "~util/node"
+import {
+  ControlsContainer,
+  SearchControl,
+  SigmaContainer,
+  ZoomControl,
+  FullScreenControl,
+} from 'react-sigma-v2'
+import { filterExtClientsByNetwork } from '~util/node'
 import { nodeSelectors, aclSelectors, authSelectors } from '~store/selectors'
 import { AltDataNode, DataNode, Edge } from './graph-components/types'
 import { NetworkSelect } from '~components/NetworkSelect'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
-import { clearCurrentACL, getNodeACLContainer } from '~store/modules/acls/actions'
+import {
+  clearCurrentACL,
+  getNodeACLContainer,
+} from '~store/modules/acls/actions'
 
 export const NetworkGraph: React.FC = () => {
   // const networks = useSelector(networkSelectors.getNetworks)
@@ -31,10 +40,12 @@ export const NetworkGraph: React.FC = () => {
   const currentNetworkACL = useSelector(aclSelectors.getCurrentACL)
   const currentNodeACLs = Object.keys(currentNetworkACL)
   const [selectedNode, setSelectedNode] = React.useState({} as Node)
-  const [selectedAltData, setSelectedAltData] = React.useState({} as AltDataNode)
+  const [selectedAltData, setSelectedAltData] = React.useState(
+    {} as AltDataNode
+  )
   const extClients = useSelector(nodeSelectors.getExtClients)
   const clients = filterExtClientsByNetwork(extClients, netid)
-  const userSettings = useSelector(authSelectors.getUserSettings)
+  const inDarkMode = useSelector(authSelectors.isInDarkMode)
 
   useLinkBreadcrumb({
     link: url,
@@ -42,27 +53,42 @@ export const NetworkGraph: React.FC = () => {
   })
 
   React.useEffect(() => {
-    if ((!!!currentNodeACLs.length && !isProcessing)) {
+    if (!!!currentNodeACLs.length && !isProcessing) {
       dispatch(getNodeACLContainer.request({ netid }))
-    } else if (!!!listOfNodes.length || !!!currentNodeACLs.filter(acl => acl === listOfNodes[0].id).length) {
+    } else if (
+      !!!listOfNodes.length ||
+      !!!currentNodeACLs.filter((acl) => acl === listOfNodes[0].id).length
+    ) {
       dispatch(clearCurrentACL(''))
     }
-  }, [ dispatch, netid, currentNetworkACL, currentNodeACLs, listOfNodes, isProcessing])
+  }, [
+    dispatch,
+    netid,
+    currentNetworkACL,
+    currentNodeACLs,
+    listOfNodes,
+    isProcessing,
+  ])
 
   const handleClose = () => {
     setOpen(false)
   }
 
   const handleAccept = () => {
-      setOpen(false)
+    setOpen(false)
   }
 
   const isConnected = (node1: Node, node2: Node) => {
-    if (!!currentNodeACLs.length && 
-      !!currentNetworkACL[node1.id] && 
-      currentNetworkACL[node1.id][node2.id] === 1) {
+    if (
+      !!currentNodeACLs.length &&
+      !!currentNetworkACL[node1.id] &&
+      currentNetworkACL[node1.id][node2.id] === 1
+    ) {
       return false
-    } else if (node1.isrelay && ([...node1.relayaddrs] as string[]).indexOf(node2.address) >= 0) {
+    } else if (
+      node1.isrelay &&
+      ([...node1.relayaddrs] as string[]).indexOf(node2.address) >= 0
+    ) {
       return false
     } else if (node1.isrelayed || node2.isrelayed) {
       return false
@@ -75,21 +101,29 @@ export const NetworkGraph: React.FC = () => {
     setSelectedNode(selected)
   }
 
-  const handleSetAlt = (selected : AltDataNode) => {
+  const handleSetAlt = (selected: AltDataNode) => {
     handleUnsetNode()
     setSelectedAltData(selected)
   }
 
-  const handleUnsetNode = () => { setSelectedNode({} as Node) 
+  const handleUnsetNode = () => {
+    setSelectedNode({} as Node)
     setSelectedAltData({} as AltDataNode)
   }
 
   if (!!!listOfNodes || !!!listOfNodes.length || !!!currentNetwork) {
-      return <Grid container justifyContent="space-between" alignItems="center">
+    return (
+      <Grid container justifyContent="space-between" alignItems="center">
         <Grid item xs={6}>
-          <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
             <Typography variant="h4">
-                {`${netid}, ${t('node.none')}`}
+              {`${netid}, ${t('node.none')}`}
             </Typography>
           </div>
         </Grid>
@@ -97,6 +131,7 @@ export const NetworkGraph: React.FC = () => {
           <NetworkSelect />
         </Grid>
       </Grid>
+    )
   }
 
   const data = {
@@ -115,7 +150,7 @@ export const NetworkGraph: React.FC = () => {
       })
       data.edges.push({
         from: node.id,
-        to: node.egressgatewayranges[i]
+        to: node.egressgatewayranges[i],
       })
     }
   }
@@ -131,7 +166,7 @@ export const NetworkGraph: React.FC = () => {
         })
         data.edges.push({
           from: clients[i].clientid,
-          to: node.id
+          to: node.id,
         })
       }
     }
@@ -148,12 +183,14 @@ export const NetworkGraph: React.FC = () => {
           name: currentNode.name,
           lastCheckin: currentNode.lastcheckin,
         })
-        if (!!currentNodeACLs.length && 
-          !!currentNetworkACL[currentNode.id] && 
-          currentNetworkACL[currentNode.id][node.id] === 2) {
+        if (
+          !!currentNodeACLs.length &&
+          !!currentNetworkACL[currentNode.id] &&
+          currentNetworkACL[currentNode.id][node.id] === 2
+        ) {
           data.edges.push({
             from: currentNode.id,
-            to: node.id
+            to: node.id,
           })
         }
       }
@@ -161,12 +198,17 @@ export const NetworkGraph: React.FC = () => {
   }
 
   if (currentNetwork.ispointtosite) {
-    const hubNode = listOfNodes.filter(currNode => currNode.ishub)[0]
+    const hubNode = listOfNodes.filter((currNode) => currNode.ishub)[0]
     if (!!hubNode) {
       for (let i = 0; i < listOfNodes.length; i++) {
         const innerNode = listOfNodes[i]
-        if (innerNode.isingressgateway || innerNode.isegressgateway) { // handle adding external cidr(s)
-          if (innerNode.isingressgateway && innerNode.isegressgateway && innerNode.isrelay) {
+        if (innerNode.isingressgateway || innerNode.isegressgateway) {
+          // handle adding external cidr(s)
+          if (
+            innerNode.isingressgateway &&
+            innerNode.isegressgateway &&
+            innerNode.isrelay
+          ) {
             data.nodeTypes.push({
               type: 'i&e&r',
               id: innerNode.id,
@@ -194,32 +236,35 @@ export const NetworkGraph: React.FC = () => {
             })
             extractIngressRanges(innerNode)
             extractRelayedNodes(innerNode)
-          } else if (innerNode.isegressgateway) { // handle adding external cidr(s)
+          } else if (innerNode.isegressgateway) {
+            // handle adding external cidr(s)
             data.nodeTypes.push({
               type: 'egress',
               id: innerNode.id,
               name: innerNode.name,
               lastCheckin: innerNode.lastcheckin,
-             }) 
-             extractEgressRanges(innerNode)
-          } else { // handle adding ext client nodes
+            })
+            extractEgressRanges(innerNode)
+          } else {
+            // handle adding ext client nodes
             data.nodeTypes.push({
               type: 'ingress',
               id: innerNode.id,
               name: innerNode.name,
               lastCheckin: innerNode.lastcheckin,
-             })
-             extractIngressRanges(innerNode)
-          }  
+            })
+            extractIngressRanges(innerNode)
+          }
         } else if (innerNode.isrelay) {
-           data.nodeTypes.push({
+          data.nodeTypes.push({
             type: 'relay',
             id: innerNode.id,
             name: innerNode.name,
             lastCheckin: innerNode.lastcheckin,
           })
           extractRelayedNodes(innerNode)
-        } else if (innerNode.isrelayed) { // skip edges for relayed nodes
+        } else if (innerNode.isrelayed) {
+          // skip edges for relayed nodes
           continue
         } else {
           data.nodeTypes.push({
@@ -227,12 +272,13 @@ export const NetworkGraph: React.FC = () => {
             id: innerNode.id,
             name: innerNode.name,
             lastCheckin: innerNode.lastcheckin,
-           })
+          })
         }
-        if (innerNode.id === hubNode.id) { // skip the hub node
+        if (innerNode.id === hubNode.id) {
+          // skip the hub node
           continue
         }
-        
+
         if (isConnected(innerNode, hubNode)) {
           data.edges.push({
             from: innerNode.id,
@@ -248,8 +294,13 @@ export const NetworkGraph: React.FC = () => {
   } else {
     for (let i = 0; i < listOfNodes.length; i++) {
       const innerNode = listOfNodes[i]
-      if (innerNode.isingressgateway || innerNode.isegressgateway) { // handle adding external cidr(s)
-        if (innerNode.isingressgateway && innerNode.isegressgateway && innerNode.isrelay) {
+      if (innerNode.isingressgateway || innerNode.isegressgateway) {
+        // handle adding external cidr(s)
+        if (
+          innerNode.isingressgateway &&
+          innerNode.isegressgateway &&
+          innerNode.isrelay
+        ) {
           data.nodeTypes.push({
             type: 'i&e&r',
             id: innerNode.id,
@@ -259,7 +310,8 @@ export const NetworkGraph: React.FC = () => {
           extractEgressRanges(innerNode)
           extractIngressRanges(innerNode)
           extractRelayedNodes(innerNode)
-        } else if (innerNode.isingressgateway && innerNode.isegressgateway) { // and ext clients
+        } else if (innerNode.isingressgateway && innerNode.isegressgateway) {
+          // and ext clients
           data.nodeTypes.push({
             type: '1&e',
             id: innerNode.id,
@@ -286,33 +338,35 @@ export const NetworkGraph: React.FC = () => {
           })
           extractIngressRanges(innerNode)
           extractRelayedNodes(innerNode)
-        } else if (innerNode.isegressgateway) { // handle adding external cidr(s)
-           data.nodeTypes.push({
-             type: 'egress',
-             id: innerNode.id,
-             name: innerNode.name,
-             lastCheckin: innerNode.lastcheckin,
-            }) 
-            extractEgressRanges(innerNode)
-        } else { // handle adding ext client nodes
+        } else if (innerNode.isegressgateway) {
+          // handle adding external cidr(s)
+          data.nodeTypes.push({
+            type: 'egress',
+            id: innerNode.id,
+            name: innerNode.name,
+            lastCheckin: innerNode.lastcheckin,
+          })
+          extractEgressRanges(innerNode)
+        } else {
+          // handle adding ext client nodes
           data.nodeTypes.push({
             type: 'ingress',
             id: innerNode.id,
             name: innerNode.name,
             lastCheckin: innerNode.lastcheckin,
-           })
-           extractIngressRanges(innerNode)
-        }  
-      }
-      else if (innerNode.isrelay) {
-         data.nodeTypes.push({
+          })
+          extractIngressRanges(innerNode)
+        }
+      } else if (innerNode.isrelay) {
+        data.nodeTypes.push({
           type: 'relay',
           id: innerNode.id,
           name: innerNode.name,
           lastCheckin: innerNode.lastcheckin,
         })
         extractRelayedNodes(innerNode)
-      } else if (innerNode.isrelayed) { // skip edges for relayed nodes
+      } else if (innerNode.isrelayed) {
+        // skip edges for relayed nodes
         continue
       } else {
         data.nodeTypes.push({
@@ -320,70 +374,105 @@ export const NetworkGraph: React.FC = () => {
           id: innerNode.id,
           name: innerNode.name,
           lastCheckin: innerNode.lastcheckin,
-         })
+        })
       }
 
       for (let j = 0; j < listOfNodes.length; j++) {
-          const outerNode = listOfNodes[j]
-          if (outerNode.id === innerNode.id) {
-              continue
-          }
-          if (isConnected(innerNode, outerNode)) {
-            data.edges.push({
-              from: innerNode.id,
-              to: outerNode.id,
-            })
-          }
+        const outerNode = listOfNodes[j]
+        if (outerNode.id === innerNode.id) {
+          continue
+        }
+        if (isConnected(innerNode, outerNode)) {
+          data.edges.push({
+            from: innerNode.id,
+            to: outerNode.id,
+          })
         }
       }
+    }
   }
 
   return (
-        <Grid container justifyContent='center' alignItems='center'>
-            <Grid item xs={12}>
-              {!!selectedNode && (
-                <CustomDialog
-                    open={open}
-                    handleClose={handleClose}
-                    handleAccept={handleAccept}
-                    message={t('hello there')}
-                    title={t('networks.graph')}
-                />
-              )}
-              <Grid container justifyContent="space-between" alignItems="center">
-                <Grid item xs={6}>
-                  <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-                    <Typography variant="h4">
-                        {`${t('network.graphview')}: ${netid}`}
-                    </Typography>
-                  </div>
-                </Grid>
-                <Grid item xs={5}>
-                  <NetworkSelect />
-                </Grid>
-              </Grid>
-            </Grid>
-            <Grid item xs={12} sm={8}>
-              <React.StrictMode>
-                <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%'}}>
-                    <SigmaContainer style={{height: '35em', width: '600px', backgroundColor: userSettings.mode === 'dark' ? '#272727' : '#f0f0f0' }}>
-                      <NodeGraph data={data} handleViewNode={handleSetNode} handleViewAlt={handleSetAlt} />
-                      <ControlsContainer position={"top-right"}>
-                        <ZoomControl />
-                        <FullScreenControl />
-                      </ControlsContainer>
-                      <ControlsContainer position={"top-left"}>
-                        <SearchControl />
-                      </ControlsContainer>
-                    </SigmaContainer>
-                </div>
-              </React.StrictMode>
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <div style={{display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'space-between'}}>
-                  <NodeDetails network={currentNetwork} data={selectedNode} handleClose={handleUnsetNode} altData={selectedAltData} />
-              </div>
-            </Grid>
+    <Grid container justifyContent="center" alignItems="center">
+      <Grid item xs={12}>
+        {!!selectedNode && (
+          <CustomDialog
+            open={open}
+            handleClose={handleClose}
+            handleAccept={handleAccept}
+            message={t('hello there')}
+            title={t('networks.graph')}
+          />
+        )}
+        <Grid container justifyContent="space-between" alignItems="center">
+          <Grid item xs={6}>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <Typography variant="h4">
+                {`${t('network.graphview')}: ${netid}`}
+              </Typography>
+            </div>
+          </Grid>
+          <Grid item xs={5}>
+            <NetworkSelect />
+          </Grid>
         </Grid>
+      </Grid>
+      <Grid item xs={12} sm={8}>
+        <React.StrictMode>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '100%',
+            }}
+          >
+            <SigmaContainer
+              style={{
+                height: '35em',
+                width: '600px',
+                backgroundColor: inDarkMode ? '#272727' : '#f0f0f0',
+              }}
+            >
+              <NodeGraph
+                data={data}
+                handleViewNode={handleSetNode}
+                handleViewAlt={handleSetAlt}
+              />
+              <ControlsContainer position={'top-right'}>
+                <ZoomControl />
+                <FullScreenControl />
+              </ControlsContainer>
+              <ControlsContainer position={'top-left'}>
+                <SearchControl />
+              </ControlsContainer>
+            </SigmaContainer>
+          </div>
+        </React.StrictMode>
+      </Grid>
+      <Grid item xs={12} sm={4}>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'flex-start',
+            justifyContent: 'space-between',
+          }}
+        >
+          <NodeDetails
+            network={currentNetwork}
+            data={selectedNode}
+            handleClose={handleUnsetNode}
+            altData={selectedAltData}
+          />
+        </div>
+      </Grid>
+    </Grid>
   )
 }

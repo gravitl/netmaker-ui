@@ -190,6 +190,7 @@ export default function CustomDrawer() {
   const userSettings = useSelector(authSelectors.getUserSettings)
   const serverConfig = useSelector(serverSelectors.getServerConfig)
   const isLoggedIn = useSelector(authSelectors.getLoggedIn)
+  const inDarkMode = useSelector(authSelectors.isInDarkMode)
   const dispatch = useDispatch()
 
   const { t } = useTranslation()
@@ -200,7 +201,6 @@ export default function CustomDrawer() {
   const location = useLocation()
   const parts = location.pathname.split('/')
   const netid = parts.length > 2 ? parts[2] : false
-  const isDarkMode = userSettings.mode === 'dark'
 
   const handleDrawerOpen = () => {
     setOpen(true)
@@ -221,17 +221,19 @@ export default function CustomDrawer() {
 
   const handleToggleMode = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!!userSettings) {
-      dispatch(setUserSettings({
-        ...userSettings,
-        mode: userSettings.mode === 'dark' ? 'light' : 'dark',
-      }))
+      dispatch(
+        setUserSettings({
+          ...userSettings,
+          mode: inDarkMode ? 'light' : 'dark',
+        })
+      )
     }
   }
 
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar position="fixed" color='primary' open={open || clickOpen}>
+      <AppBar position="fixed" color="primary" open={open || clickOpen}>
         <Toolbar>
           <IconButton
             color="inherit"
@@ -249,7 +251,7 @@ export default function CustomDrawer() {
             <div style={styles.headerLogo}>
               <img
                 style={styles.logo}
-                src={userSettings.mode === 'dark' ? DarkLogo : Logo}
+                src={inDarkMode ? DarkLogo : Logo}
                 alt="Netmaker makes networks."
               />
             </div>
@@ -259,7 +261,12 @@ export default function CustomDrawer() {
           <PathBreadcrumbs link="/" title={t('breadcrumbs.home')} />
         </div>
       </AppBar>
-      <Drawer variant="permanent" open={open || clickOpen} onMouseEnter={handleDrawerOpen} onMouseLeave={handleDrawerClose}>
+      <Drawer
+        variant="permanent"
+        open={open || clickOpen}
+        onMouseEnter={handleDrawerOpen}
+        onMouseLeave={handleDrawerClose}
+      >
         <Toolbar />
         <DrawerHeader>
           <IconButton onClick={handleClickClose}>
@@ -274,12 +281,32 @@ export default function CustomDrawer() {
         <List>
           {[
             { text: 'Dashboard', icon: <Dashboard />, link: '/' },
-            { text: 'Networks', icon: <Wifi />, link: '/networks'},
-            { text: 'Nodes', icon: <DeviceHub />, link: `/nodes${!!netid ? `/${netid}` : ''}` },
-            { text: 'Graphs', icon: <AccountTree />, link: `/graphs${!!netid ? `/${netid}` : ''}` },
-            { text: 'Access Keys', icon: <VpnKey />, link: `/access-keys${!!netid ? `/${netid}` : ''}` },
-            { text: 'Ext. Clients', icon: <Devices />, link: `/ext-clients${!!netid ? `/${netid}` : ''}` },
-            { text: 'DNS', icon: <Language />, link: `/dns${!!netid ? `/${netid}` : ''}` },
+            { text: 'Networks', icon: <Wifi />, link: '/networks' },
+            {
+              text: 'Nodes',
+              icon: <DeviceHub />,
+              link: `/nodes${!!netid ? `/${netid}` : ''}`,
+            },
+            {
+              text: 'Graphs',
+              icon: <AccountTree />,
+              link: `/graphs${!!netid ? `/${netid}` : ''}`,
+            },
+            {
+              text: 'Access Keys',
+              icon: <VpnKey />,
+              link: `/access-keys${!!netid ? `/${netid}` : ''}`,
+            },
+            {
+              text: 'Ext. Clients',
+              icon: <Devices />,
+              link: `/ext-clients${!!netid ? `/${netid}` : ''}`,
+            },
+            {
+              text: 'DNS',
+              icon: <Language />,
+              link: `/dns${!!netid ? `/${netid}` : ''}`,
+            },
           ].map((item) => (
             <ListItemButton component={Link} to={item.link} key={item.text}>
               <ListItemIcon>{item.icon}</ListItemIcon>
@@ -287,24 +314,29 @@ export default function CustomDrawer() {
             </ListItemButton>
           ))}
         </List>
-        {isLoggedIn && user!.isAdmin ? (<>
-        <Divider />
-        <List>
-          <ListItemButton component={Link} to={`/acls${!!netid ? `/${netid}` : ''}`}>
-            <ListItemIcon aria-label={String(t('acls.nodes'))}>
-              <ViewList />
-            </ListItemIcon>
-            <ListItemText primary={t('header.acls')} />
-          </ListItemButton>
-          <ListItemButton component={Link} to="/users">
-            <ListItemIcon aria-label={String(t('users.header'))}>
-              <UsersIcon />
-            </ListItemIcon>
-            <ListItemText primary={t('users.header')} />
-          </ListItemButton>
-        </List>
-        <Divider />
-        </>) : null}
+        {isLoggedIn && user!.isAdmin ? (
+          <>
+            <Divider />
+            <List>
+              <ListItemButton
+                component={Link}
+                to={`/acls${!!netid ? `/${netid}` : ''}`}
+              >
+                <ListItemIcon aria-label={String(t('acls.nodes'))}>
+                  <ViewList />
+                </ListItemIcon>
+                <ListItemText primary={t('header.acls')} />
+              </ListItemButton>
+              <ListItemButton component={Link} to="/users">
+                <ListItemIcon aria-label={String(t('users.header'))}>
+                  <UsersIcon />
+                </ListItemIcon>
+                <ListItemText primary={t('users.header')} />
+              </ListItemButton>
+            </List>
+            <Divider />
+          </>
+        ) : null}
         <List>
           <ListItem>
             <ListItemIcon aria-label={String(t('users.header'))}>
@@ -342,10 +374,22 @@ export default function CustomDrawer() {
                   <ListItemText primary={t('header.logout')} />
                 </ListItemButton>
                 <ListItem>
-                  <ListItemIcon aria-label={isDarkMode ? String(t('common.togglelite')) : String(t('common.toggledark'))} >
-                    <Switch onChange={handleToggleMode} checked={isDarkMode} />
+                  <ListItemIcon
+                    aria-label={
+                      inDarkMode
+                        ? String(t('common.togglelite'))
+                        : String(t('common.toggledark'))
+                    }
+                  >
+                    <Switch onChange={handleToggleMode} checked={inDarkMode} />
                   </ListItemIcon>
-                  <ListItemText primary={isDarkMode ? String(t('common.togglelite')) : String(t('common.toggledark'))} />
+                  <ListItemText
+                    primary={
+                      inDarkMode
+                        ? String(t('common.togglelite'))
+                        : String(t('common.toggledark'))
+                    }
+                  />
                 </ListItem>
               </>
             ) : (
