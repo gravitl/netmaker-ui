@@ -31,18 +31,14 @@ const columns: TableColumns<Network> = [
     labelKey: 'network.addressrange',
     minWidth: 100,
     sortable: true,
-    format: (value) => (
-      <CopyText value={value} type="subtitle2" color="white" />
-    ),
+    format: (value) => <CopyText value={value} type="subtitle2" />,
   },
   {
     id: 'addressrange6',
     labelKey: 'network.addressrange6',
     minWidth: 100,
     sortable: true,
-    format: (value) => (
-      <CopyText value={value} type="subtitle2" color="white" />
-    ),
+    format: (value) => <CopyText value={value} type="subtitle2" />,
   },
   {
     id: 'networklastmodified',

@@ -193,6 +193,7 @@ export const en: LanguageResource = {
     defaultacl: 'Default Access Control',
     isipv6: 'IPv6',
     isipv4: 'IPv4',
+    copytext: 'Copy',
   },
   helper: {
     egress: 'Enter your network interface name, i.e. "eth0"',

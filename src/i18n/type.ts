@@ -196,6 +196,7 @@ export interface LanguageResource {
     defaultacl: string
     isipv6: string
     isipv4: string
+    copytext: string
   }
   node: {
     nodes: string
