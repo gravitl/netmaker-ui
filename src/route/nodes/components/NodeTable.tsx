@@ -11,8 +11,9 @@ import { AltRoute, CallMerge, CallSplit, Delete } from '@mui/icons-material'
 import { i18n } from '../../../i18n/i18n'
 import { deleteNode } from '~store/modules/node/actions'
 import CustomizedDialogs from '~components/dialog/CustomDialog'
+import CopyText from '~components/CopyText'
 
-export const NodeTable: React.FC<{nodes: Node[]}> = ({nodes}) => {
+export const NodeTable: React.FC<{ nodes: Node[] }> = ({ nodes }) => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const [selected, setSelected] = React.useState({} as Node)
@@ -25,12 +26,13 @@ export const NodeTable: React.FC<{nodes: Node[]}> = ({nodes}) => {
       sortable: true,
       format: (value, node) => (
         <NmLink
-          to={`/nodes/${node.network}/${encodeURIComponent(
-            node.id
-          )}`}
-          sx={{textTransform: 'none'}}
+          to={`/nodes/${node.network}/${encodeURIComponent(node.id)}`}
+          sx={{ textTransform: 'none' }}
         >
-          {value}{`${node.ispending === 'yes' ? ` (${i18n.t('common.pending')})` : ''}`}
+          {value}
+          {`${
+            node.ispending === 'yes' ? ` (${i18n.t('common.pending')})` : ''
+          }`}
         </NmLink>
       ),
     },
@@ -40,24 +42,33 @@ export const NodeTable: React.FC<{nodes: Node[]}> = ({nodes}) => {
       minWidth: 130,
       align: 'right',
       format: (_, node) => (
-        <>{`${!!node.address ? node.address : ''}${' '}${!!node.address6 ? node.address6 : ''}`}</>
-      )
+        <>
+          <CopyText
+            value={`${!!node.address ? node.address : ''}${' '}${
+              !!node.address6 ? node.address6 : ''
+            }`}
+            type="subtitle2"
+          />
+        </>
+      ),
     },
     {
       id: 'version',
       labelKey: 'node.version',
       minWidth: 50,
       align: 'center',
-      format: (value) => (
-        <>{!!value ? value : 'N/A'}</>
-      )
+      format: (value) => <>{!!value ? value : 'N/A'}</>,
     },
     {
       id: 'network',
       labelKey: 'node.network',
       minWidth: 100,
       align: 'center',
-      format: (value) => <NmLink sx={{textTransform: 'none'}} to={`/networks/${value}`}>{value}</NmLink>,
+      format: (value) => (
+        <NmLink sx={{ textTransform: 'none' }} to={`/networks/${value}`}>
+          {value}
+        </NmLink>
+      ),
     },
     {
       id: 'isegressgateway',
@@ -152,18 +163,19 @@ export const NodeTable: React.FC<{nodes: Node[]}> = ({nodes}) => {
   return (
     <div>
       <hr />
-      <NmTable 
-        columns={columns} 
-        rows={nodes} 
-        getRowId={(row) => row.id} 
-        actions={[(row) => ({
-          tooltip: !row.isserver ? t('common.delete') : t('common.disabled'),
-          disabled: row.isserver,
-          icon: <Delete />,
-          onClick: () => {
-            handleOpen(row)
-          },
-        }),
+      <NmTable
+        columns={columns}
+        rows={nodes}
+        getRowId={(row) => row.id}
+        actions={[
+          (row) => ({
+            tooltip: !row.isserver ? t('common.delete') : t('common.disabled'),
+            disabled: row.isserver,
+            icon: <Delete />,
+            onClick: () => {
+              handleOpen(row)
+            },
+          }),
         ]}
       />
       <CustomizedDialogs
