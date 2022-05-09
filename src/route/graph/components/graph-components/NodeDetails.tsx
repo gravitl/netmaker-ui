@@ -38,6 +38,12 @@ import CustomizedDialogs from '~components/dialog/CustomDialog'
 import { authSelectors } from '~store/selectors'
 import { MultiCopy } from '~components/CopyText'
 
+const styles = {
+  multiCopy: {
+    marginLeft: '-.5rem',
+  } as any,
+}
+
 interface NodeDetailsProps {
   data: Node | undefined
   handleClose: () => void
@@ -138,8 +144,6 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({
           nodeHealth === 0 ? 'HEALTHY' : nodeHealth === 1 ? 'WARNING' : 'ERROR'
         })`}
         subheader={data.endpoint}
-        // primary={data.endpoint}
-        //       secondary={t('node.endpoint')}
       />
       <CardActions>
         <Tooltip
@@ -226,10 +230,12 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({
             </ListItemIcon>
             <ListItemText
               primary={
-                <MultiCopy
-                  type="caption"
-                  values={[data.address, data.address6]}
-                />
+                <div style={styles.multiCopy}>
+                  <MultiCopy
+                    type="caption"
+                    values={[data.address, data.address6]}
+                  />
+                </div>
               }
               secondary={t('node.addresses')}
             />
@@ -239,7 +245,11 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({
               <ArrowRightAlt />
             </ListItemIcon>
             <ListItemText
-              primary={<MultiCopy type="subtitle2" values={[data.publickey]} />}
+              primary={
+                <div style={styles.multiCopy}>
+                  <MultiCopy type="caption" values={[data.publickey]} />
+                </div>
+              }
               secondary={t('node.publickey')}
             />
           </ListItem>
@@ -247,7 +257,7 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({
             <ListItemIcon>
               <ArrowRightAlt />
             </ListItemIcon>
-            <ListItemText primary={data.id} secondary={'ID'} />
+            <ListItemText primary={data.id} secondary={t('node.id')} />
           </ListItem>
           <ListItem>
             <ListItemIcon>
