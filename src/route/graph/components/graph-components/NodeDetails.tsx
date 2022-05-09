@@ -36,6 +36,7 @@ import { HubButton } from '../../../nodes/netid/components/HubButton'
 import { deleteNode } from '~store/modules/node/actions'
 import CustomizedDialogs from '~components/dialog/CustomDialog'
 import { authSelectors } from '~store/selectors'
+import { MultiCopy } from '~components/CopyText'
 
 interface NodeDetailsProps {
   data: Node | undefined
@@ -136,9 +137,9 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({
         title={`${data.name} (${
           nodeHealth === 0 ? 'HEALTHY' : nodeHealth === 1 ? 'WARNING' : 'ERROR'
         })`}
-        subheader={`${!!data.address ? data.address : ''}${' '}${
-          !!data.address6 ? data.address6 : ''
-        }`}
+        subheader={data.endpoint}
+        // primary={data.endpoint}
+        //       secondary={t('node.endpoint')}
       />
       <CardActions>
         <Tooltip
@@ -223,14 +224,22 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({
             <ListItemIcon>
               <ArrowRightAlt />
             </ListItemIcon>
-            <ListItemText primary={data.id} secondary={'ID'} />
+            <ListItemText
+              primary={
+                <MultiCopy
+                  type="caption"
+                  values={[data.address, data.address6]}
+                />
+              }
+              secondary={t('node.addresses')}
+            />
           </ListItem>
           <ListItem>
             <ListItemIcon>
               <ArrowRightAlt />
             </ListItemIcon>
             <ListItemText
-              primary={data.publickey}
+              primary={<MultiCopy type="subtitle2" values={[data.publickey]} />}
               secondary={t('node.publickey')}
             />
           </ListItem>
@@ -238,10 +247,7 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({
             <ListItemIcon>
               <ArrowRightAlt />
             </ListItemIcon>
-            <ListItemText
-              primary={data.endpoint}
-              secondary={t('node.endpoint')}
-            />
+            <ListItemText primary={data.id} secondary={'ID'} />
           </ListItem>
           <ListItem>
             <ListItemIcon>
