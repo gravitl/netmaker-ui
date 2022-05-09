@@ -3,12 +3,36 @@ import { NmLink } from '~components/index'
 import { NmTable, TableColumns } from '~components/Table'
 import { Node } from '~modules/node'
 import { useTranslation } from 'react-i18next'
-import { useRouteMatch, useParams, Route, Switch, Link, useHistory } from 'react-router-dom'
+import {
+  useRouteMatch,
+  useParams,
+  Route,
+  Switch,
+  Link,
+  useHistory,
+} from 'react-router-dom'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 import { useNetwork, useNodesByNetworkId } from '~util/network'
 import { NodeId } from './nodeId/NodeId'
-import { Chip, Grid, IconButton, InputAdornment, TextField, Tooltip, Typography } from '@mui/material'
-import { AccountTree, AltRoute, CallMerge, CallSplit, Delete, Search, Sync, Hub } from '@mui/icons-material'
+import {
+  Chip,
+  Grid,
+  IconButton,
+  InputAdornment,
+  TextField,
+  Tooltip,
+  Typography,
+} from '@mui/material'
+import {
+  AccountTree,
+  AltRoute,
+  CallMerge,
+  CallSplit,
+  Delete,
+  Search,
+  Sync,
+  Hub,
+} from '@mui/icons-material'
 import { i18n } from '../../../i18n/i18n'
 import { CreateEgress } from './components/CreateEgress'
 import { TableToggleButton } from './components/TableToggleButton'
@@ -18,7 +42,7 @@ import { useDispatch } from 'react-redux'
 import { deleteNode } from '~store/modules/node/actions'
 import CustomizedDialogs from '~components/dialog/CustomDialog'
 import { HubButton } from './components/HubButton'
-
+import { MultiCopy } from '~components/CopyText'
 
 export const NetworkNodes: React.FC = () => {
   const { path, url } = useRouteMatch()
@@ -26,7 +50,7 @@ export const NetworkNodes: React.FC = () => {
   const { netid } = useParams<{ netid: string }>()
   const network = useNetwork(netid)
   const listOfNodes = useNodesByNetworkId(netid) || []
-  const [ filterNodes, setFilterNodes ] = React.useState(listOfNodes)
+  const [filterNodes, setFilterNodes] = React.useState(listOfNodes)
   const [selected, setSelected] = React.useState({} as Node)
   const dispatch = useDispatch()
   const history = useHistory()
@@ -54,12 +78,13 @@ export const NetworkNodes: React.FC = () => {
       sortable: true,
       format: (value, node) => (
         <NmLink
-          to={`/nodes/${node.network}/${encodeURIComponent(
-            node.id
-          )}`}
-          sx={{textTransform: 'none'}}
+          to={`/nodes/${node.network}/${encodeURIComponent(node.id)}`}
+          sx={{ textTransform: 'none' }}
         >
-          {value}{`${node.ispending === 'yes' ? ` (${i18n.t('common.pending')})` : ''}`}
+          {value}
+          {`${
+            node.ispending === 'yes' ? ` (${i18n.t('common.pending')})` : ''
+          }`}
         </NmLink>
       ),
     },
@@ -69,24 +94,26 @@ export const NetworkNodes: React.FC = () => {
       minWidth: 130,
       align: 'right',
       format: (_, node) => (
-        <>{`${!!node.address ? node.address : ''}${' '}${!!node.address6 ? node.address6 : ''}`}</>
-      )
+        <MultiCopy type="subtitle2" values={[node.address, node.address6]} />
+      ),
     },
     {
       id: 'version',
       labelKey: 'node.version',
       minWidth: 50,
       align: 'center',
-      format: (value) => (
-        <>{!!value ? value : 'N/A'}</>
-      )
+      format: (value) => <>{!!value ? value : 'N/A'}</>,
     },
     {
       id: 'network',
       labelKey: 'node.network',
       minWidth: 100,
       align: 'right',
-      format: (value) => <NmLink sx={{textTransform: 'none'}} to={`/networks/${value}`}>{value}</NmLink>,
+      format: (value) => (
+        <NmLink sx={{ textTransform: 'none' }} to={`/networks/${value}`}>
+          {value}
+        </NmLink>
+      ),
     },
     {
       id: 'isegressgateway',
@@ -155,31 +182,33 @@ export const NetworkNodes: React.FC = () => {
   ]
 
   if (network.ispointtosite) {
-    columns.push(
-      {
-        id: 'ishub',
-        labelKey: 'node.statushub',
-        minWidth: 30,
-        align: 'center',
-        format: (_, row) => (
-          <HubButton
-            node={row} 
-            createText={`${i18n.t('node.createhub')} : ${row.name}`}
-            disabledText={`${i18n.t('node.onehub')} : ${row.name}`}
-            SignalIcon={<Hub />}
-          />
-        ),
-      },
-    )
+    columns.push({
+      id: 'ishub',
+      labelKey: 'node.statushub',
+      minWidth: 30,
+      align: 'center',
+      format: (_, row) => (
+        <HubButton
+          node={row}
+          createText={`${i18n.t('node.createhub')} : ${row.name}`}
+          disabledText={`${i18n.t('node.onehub')} : ${row.name}`}
+          SignalIcon={<Hub />}
+        />
+      ),
+    })
   }
 
-  const handleFilter = (event: {target: {value: string}}) => {
+  const handleFilter = (event: { target: { value: string } }) => {
     const { value } = event.target
     const searchTerm = value.trim()
     if (!!!searchTerm) {
       setFilterNodes(listOfNodes)
     } else {
-      setFilterNodes(listOfNodes.filter(node => `${node.name}${node.address}${node.network}`.includes(searchTerm)))
+      setFilterNodes(
+        listOfNodes.filter((node) =>
+          `${node.name}${node.address}${node.network}`.includes(searchTerm)
+        )
+      )
     }
   }
 
@@ -222,24 +251,28 @@ export const NetworkNodes: React.FC = () => {
               <Grid item xs={8}>
                 <Grid container justifyContent="center" alignItems="center">
                   <Grid item xs={1}>
-                    <Tooltip title={`${t('network.graph')}`} placement='top' aria-label='view node graph'>
+                    <Tooltip
+                      title={`${t('network.graph')}`}
+                      placement="top"
+                      aria-label="view node graph"
+                    >
                       <IconButton component={Link} to={`/graphs/${netid}`}>
                         <AccountTree />
                       </IconButton>
                     </Tooltip>
                   </Grid>
                   <Grid item xs={4}>
-                  <TextField
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position='start'>
-                          <Search />
-                        </InputAdornment>
-                      ),
-                    }}
-                    label={`${t('common.search')} ${t('node.nodes')}`} 
-                    onChange={handleFilter} 
-                  />
+                    <TextField
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <Search />
+                          </InputAdornment>
+                        ),
+                      }}
+                      label={`${t('common.search')} ${t('node.nodes')}`}
+                      onChange={handleFilter}
+                    />
                   </Grid>
                   <Grid item xs={6}>
                     <NetworkSelect selectAll />
@@ -259,9 +292,16 @@ export const NetworkNodes: React.FC = () => {
         <hr />
         <NmTable
           columns={columns}
-          rows={filterNodes.length && filterNodes.length < listOfNodes.length ? filterNodes : listOfNodes}
-          actions={[(row) => ({
-              tooltip: !row.isserver ? t('common.delete') : t('common.disabled'),
+          rows={
+            filterNodes.length && filterNodes.length < listOfNodes.length
+              ? filterNodes
+              : listOfNodes
+          }
+          actions={[
+            (row) => ({
+              tooltip: !row.isserver
+                ? t('common.delete')
+                : t('common.disabled'),
               disabled: row.isserver,
               icon: <Delete />,
               onClick: () => {
