@@ -41,6 +41,9 @@ import { MultiCopy } from '~components/CopyText'
 const styles = {
   multiCopy: {
     marginLeft: '-.5rem',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    width: '100%',
   } as any,
 }
 
