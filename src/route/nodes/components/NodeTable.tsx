@@ -11,7 +11,7 @@ import { AltRoute, CallMerge, CallSplit, Delete } from '@mui/icons-material'
 import { i18n } from '../../../i18n/i18n'
 import { deleteNode } from '~store/modules/node/actions'
 import CustomizedDialogs from '~components/dialog/CustomDialog'
-import CopyText from '~components/CopyText'
+import { MultiCopy } from '~components/CopyText'
 
 export const NodeTable: React.FC<{ nodes: Node[] }> = ({ nodes }) => {
   const { t } = useTranslation()
@@ -42,14 +42,7 @@ export const NodeTable: React.FC<{ nodes: Node[] }> = ({ nodes }) => {
       minWidth: 130,
       align: 'right',
       format: (_, node) => (
-        <>
-          <CopyText
-            value={`${!!node.address ? node.address : ''}${' '}${
-              !!node.address6 ? node.address6 : ''
-            }`}
-            type="subtitle2"
-          />
-        </>
+        <MultiCopy type="subtitle2" values={[node.address, node.address6]} />
       ),
     },
     {

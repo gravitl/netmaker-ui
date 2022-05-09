@@ -1,4 +1,4 @@
-import { Tooltip } from '@mui/material'
+import { Grid, Tooltip } from '@mui/material'
 import Typography from '@mui/material/Typography'
 import { TypographyVariant } from '@mui/material'
 import copy from 'copy-to-clipboard'
@@ -24,5 +24,25 @@ export default function CopyText(Props: CopyProps) {
         </Button>
       </div>
     </Tooltip>
+  )
+}
+
+export interface MulitCopyProps {
+  color?: string
+  type: TypographyVariant
+  values: Array<string>
+}
+
+export function MultiCopy({ color, type, values }: MulitCopyProps) {
+  return (
+    <Grid container>
+      {values.map((value) =>
+        !!value ? (
+          <Grid item xs={12} key={value}>
+            <CopyText type={type} value={value} color={color} />
+          </Grid>
+        ) : null
+      )}
+    </Grid>
   )
 }
