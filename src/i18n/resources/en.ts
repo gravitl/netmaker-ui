@@ -96,6 +96,7 @@ export const en: LanguageResource = {
     enable: 'Enable',
     togglelite: 'Use Light Mode',
     toggledark: 'Use Dark Mode',
+    copytext: 'Copy',
   },
   dashboard: {
     title: 'Netmaker Dashboard',
@@ -193,6 +194,7 @@ export const en: LanguageResource = {
     defaultacl: 'Default Access Control',
     isipv6: 'IPv6',
     isipv4: 'IPv4',
+    
   },
   helper: {
     egress: 'Enter your network interface name, i.e. "eth0"',

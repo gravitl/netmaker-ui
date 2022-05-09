@@ -94,6 +94,7 @@ export interface LanguageResource {
     enable: string
     togglelite: string
     toggledark: string
+    copytext: string
   }
   dashboard: {
     title: string
@@ -196,6 +197,7 @@ export interface LanguageResource {
     defaultacl: string
     isipv6: string
     isipv4: string
+    
   }
   node: {
     nodes: string

@@ -6,7 +6,6 @@ export const BACKEND_URL =
 
 export const DEBUG = BACKEND_URL.includes('localhost')
 
-
 const extractVersion = (v: string | undefined) => {
   if (!!!v) {
     return 'latest'
