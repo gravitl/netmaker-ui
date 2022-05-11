@@ -43,6 +43,7 @@ export interface LanguageResource {
     clientjoin: string
     manual: string
     joincommand: string
+    clickinstall: string
   }
   breadcrumbs: {
     home: string
@@ -96,7 +97,6 @@ export interface LanguageResource {
     togglelite: string
     toggledark: string
     copytext: string
-    clickinstall: string
   }
   dashboard: {
     title: string

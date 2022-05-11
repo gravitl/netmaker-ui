@@ -44,7 +44,8 @@ export const en: LanguageResource = {
     windows: 'Windows (PowerShell Admin)',
     clientjoin: 'Client Join Commands',
     manual: 'Manual Install',
-    joincommand: 'Join Command',
+    joincommand: 'Standard',
+    clickinstall: 'View Netclient Install Instructions',
   },
   breadcrumbs: {
     home: 'Home',
@@ -98,7 +99,6 @@ export const en: LanguageResource = {
     togglelite: 'Use Light Mode',
     toggledark: 'Use Dark Mode',
     copytext: 'Copy',
-    clickinstall: 'Click here for Netclient install instructions',
   },
   dashboard: {
     title: 'Netmaker Dashboard',
