@@ -351,7 +351,7 @@ export default function CustomDrawer() {
             component={'a'}
             href="https://docs.netmaker.org"
             target="_blank"
-            rel="noopener noreferer"
+            rel="noopener noreferrer"
           >
             <ListItemIcon aria-label={String(t('header.docs'))}>
               <LibraryBooks />
