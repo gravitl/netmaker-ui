@@ -44,7 +44,7 @@ export const en: LanguageResource = {
     windows: 'Windows (PowerShell Admin)',
     clientjoin: 'Client Join Commands',
     manual: 'Manual Install',
-    joincommand: 'Standard',
+    joincommand: 'Join Command',
     clickinstall: 'View Netclient Install Instructions',
   },
   breadcrumbs: {
