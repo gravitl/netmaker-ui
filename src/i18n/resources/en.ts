@@ -211,7 +211,7 @@ export const en: LanguageResource = {
   node: {
     nodes: 'Nodes',
     node: 'Node',
-    id: 'Id',
+    id: 'ID',
     accesskey: 'Access Key',
     lastpeerupdate: 'Last Peer Update',
     keyupdatetimestamp: 'Key Update',
