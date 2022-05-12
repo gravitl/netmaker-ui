@@ -40,8 +40,10 @@ export interface LanguageResource {
     installCommand: string
     dockerrun: string
     windows: string
-    clientinstall: string
+    clientjoin: string
     manual: string
+    joincommand: string
+    clickinstall: string
   }
   breadcrumbs: {
     home: string
@@ -197,7 +199,6 @@ export interface LanguageResource {
     defaultacl: string
     isipv6: string
     isipv4: string
-    
   }
   node: {
     nodes: string
