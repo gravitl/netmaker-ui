@@ -100,6 +100,7 @@ export default function AccessKeyDetails(Props: {
                   <Button
                     variant="outlined"
                     sx={{ color: 'inherit' }}
+                    rel="noopener noreferrer"
                     href="https://docs.netmaker.org/client-install.html"
                   >
                     <h3>{t('accesskey.clickinstall')}</h3>
