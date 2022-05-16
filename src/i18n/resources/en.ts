@@ -42,8 +42,10 @@ export const en: LanguageResource = {
     installCommand: 'Linux, FreeBSD, Mac',
     dockerrun: 'Docker',
     windows: 'Windows (PowerShell Admin)',
-    clientinstall: 'Client Install Commands',
+    clientjoin: 'Client Join Commands',
     manual: 'Manual Install',
+    joincommand: 'Join Command',
+    clickinstall: 'View Netclient Install Instructions',
   },
   breadcrumbs: {
     home: 'Home',
@@ -96,6 +98,7 @@ export const en: LanguageResource = {
     enable: 'Enable',
     togglelite: 'Use Light Mode',
     toggledark: 'Use Dark Mode',
+    copytext: 'Copy',
   },
   dashboard: {
     title: 'Netmaker Dashboard',
@@ -208,7 +211,7 @@ export const en: LanguageResource = {
   node: {
     nodes: 'Nodes',
     node: 'Node',
-    id: 'Id',
+    id: 'ID',
     accesskey: 'Access Key',
     lastpeerupdate: 'Last Peer Update',
     keyupdatetimestamp: 'Key Update',

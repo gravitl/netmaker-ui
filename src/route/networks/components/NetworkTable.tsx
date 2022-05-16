@@ -5,6 +5,8 @@ import { Network } from '../../../store/modules/network'
 import { datePickerConverter } from '../../../util/unixTime'
 import { NmTable, TableColumns } from '../../../components/Table'
 import { Autorenew, Delete } from '@mui/icons-material'
+import CopyText from '../../../components/CopyText'
+
 import { useTranslation } from 'react-i18next'
 import {
   deleteNetwork,
@@ -18,19 +20,25 @@ const columns: TableColumns<Network> = [
     label: 'NetId',
     minWidth: 170,
     sortable: true,
-    format: (value) => <NmLink sx={{textTransform: 'none'}} to={`/networks/${value}`}>{value}</NmLink>,
+    format: (value) => (
+      <NmLink sx={{ textTransform: 'none' }} to={`/networks/${value}`}>
+        {value}
+      </NmLink>
+    ),
   },
   {
     id: 'addressrange',
     labelKey: 'network.addressrange',
     minWidth: 100,
     sortable: true,
+    format: (value) => <CopyText value={value} type="subtitle2" />,
   },
   {
     id: 'addressrange6',
     labelKey: 'network.addressrange6',
     minWidth: 100,
     sortable: true,
+    format: (value) => <CopyText value={value} type="subtitle2" />,
   },
   {
     id: 'networklastmodified',
@@ -48,7 +56,9 @@ const columns: TableColumns<Network> = [
   },
 ]
 
-export const NetworkTable: React.FC<{networks: Network[]}> = ({networks}) => {
+export const NetworkTable: React.FC<{ networks: Network[] }> = ({
+  networks,
+}) => {
   // const networks = useSelector(networkSelectors.getNetworks)
   const { t } = useTranslation()
   const dispatch = useDispatch()
@@ -92,7 +102,7 @@ export const NetworkTable: React.FC<{networks: Network[]}> = ({networks}) => {
 
   return (
     <>
-    <hr />
+      <hr />
       <NmTable
         columns={columns}
         rows={networks}
@@ -121,8 +131,12 @@ export const NetworkTable: React.FC<{networks: Network[]}> = ({networks}) => {
           open={open}
           handleClose={handleClose}
           handleAccept={handleAccept}
-          message={refresh ? t('network.refreshconfirm') : t('network.deleteconfirm')}
-          title={`${refresh ? t('network.refresh') : t('common.delete')} ${selectedNet}`}
+          message={
+            refresh ? t('network.refreshconfirm') : t('network.deleteconfirm')
+          }
+          title={`${
+            refresh ? t('network.refresh') : t('common.delete')
+          } ${selectedNet}`}
         />
       )}
     </>
