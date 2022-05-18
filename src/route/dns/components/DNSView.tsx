@@ -14,6 +14,7 @@ import { useDispatch } from 'react-redux'
 import { deleteDnsEntry } from '~store/modules/network/actions'
 import { Delete } from '@mui/icons-material'
 import CustomizedDialogs from '~components/dialog/CustomDialog'
+import CopyText from '~components/CopyText'
 
 const columns: TableColumns<Node> = [
   {
@@ -23,9 +24,7 @@ const columns: TableColumns<Node> = [
     align: 'center',
     sortable: true,
     format: (_, node) => (
-      <Typography variant="body1">
-        {node.name}.{node.network}
-      </Typography>
+      <CopyText value={`${node.name}.${node.network}`} type="subtitle2" />
     ),
   },
   {
@@ -34,6 +33,7 @@ const columns: TableColumns<Node> = [
     minWidth: 100,
     align: 'center',
     sortable: true,
+    format: (_, node) => <CopyText value={node.address} type="subtitle2" />,
   },
 ]
 
@@ -45,9 +45,7 @@ const dnsColumns: TableColumns<DNS> = [
     align: 'center',
     sortable: true,
     format: (_, entry) => (
-      <Typography variant="body1">
-        {entry.name}.{entry.network}
-      </Typography>
+      <CopyText value={`${entry.name}.${entry.network}`} type="subtitle2" />
     ),
   },
   {
@@ -56,6 +54,7 @@ const dnsColumns: TableColumns<DNS> = [
     minWidth: 170,
     align: 'center',
     sortable: true,
+    format: (_, node) => <CopyText value={node.address} type="subtitle2" />,
   },
 ]
 
@@ -96,9 +95,7 @@ export const DNSView: React.FC = () => {
         alignItems="flex-start"
       >
         <Grid item xs={12} sx={{ margin: '0.5em 0em 1em 0em' }}>
-          {serverConfig.DNSMode &&
-            <NetworkSelect />
-          }
+          {serverConfig.DNSMode && <NetworkSelect />}
         </Grid>
         <Grid item xs={12} sx={{ margin: '0.5em 0em 1em 0em' }}>
           <div style={centerText as any}>
@@ -136,9 +133,7 @@ export const DNSView: React.FC = () => {
           alignItems="flex-start"
         >
           <Grid item xs={12} sx={{ margin: '0.5em 0em 1em 0em' }}>
-            {serverConfig.DNSMode &&
-              <NetworkSelect />
-            }
+            {serverConfig.DNSMode && <NetworkSelect />}
             <hr />
           </Grid>
           <Grid
