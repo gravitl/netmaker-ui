@@ -33,7 +33,7 @@ const columns: TableColumns<Node> = [
     minWidth: 100,
     align: 'center',
     sortable: true,
-    format: (_, node) => <CopyText value={node.address} type="subtitle2" />,
+    format: (value) => <CopyText value={value} type="subtitle2" />,
   },
 ]
 
@@ -54,7 +54,7 @@ const dnsColumns: TableColumns<DNS> = [
     minWidth: 170,
     align: 'center',
     sortable: true,
-    format: (_, node) => <CopyText value={node.address} type="subtitle2" />,
+    format: (value) => <CopyText value={value} type="subtitle2" />,
   },
 ]
 
