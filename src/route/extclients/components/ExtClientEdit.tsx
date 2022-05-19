@@ -105,6 +105,7 @@ export const ExtClientEdit: React.FC<{}> = () => {
               submitProps={{
                 variant: 'contained',
                 fullWidth: true,
+                type: 'submit',
               }}
             >
               <NmFormInputText
