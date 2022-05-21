@@ -242,7 +242,7 @@ export interface LanguageResource {
     egressgatewayranges: string
     allowedips: string
     udpholepunch: string
-    isstatic: string
+    dynamicendpoint: string
     mtu: string
     relayaddrs: string
     os: string

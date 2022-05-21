@@ -250,7 +250,7 @@ export const en: LanguageResource = {
     egressgatewayranges: 'Egress Gateway Ranges (Comma Separated)',
     allowedips: 'Allowed IPs (Comma Separated)',
     udpholepunch: 'UDP Hole Punching',
-    isstatic: 'Is Static',
+    dynamicendpoint: 'Dynamic Endpoint',
     mtu: 'MTU',
     relayaddrs: 'Relay Addresses (Comma Separated)',
     os: 'Node Operating System',

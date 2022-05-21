@@ -283,8 +283,8 @@ export const NodeEdit: React.FC<{
           <Grid container justifyContent="space-between" alignItems="center">
             <Grid item xs={10} sm={4} md={2} sx={rowMargin}>
               <NmFormInputSwitch
-                label={String(t('node.isstatic'))}
-                name={'isstatic'}
+                label={String(t('node.dynamicendpoint'))}
+                name={'dynamicendpoint'}
                 defaultValue={node.isstatic}
               />
             </Grid>
