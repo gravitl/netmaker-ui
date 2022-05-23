@@ -106,6 +106,58 @@ export const NodeEdit: React.FC<{
           </div>
         </Grid>
         <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
+          <Tooltip
+            title={
+              !node?.isstatic
+                ? String(t('node.endpointenable'))
+                : String(t('node.endpointdisable'))
+            }
+          >
+            <span>
+              <NmFormInputText
+                defaultValue={node.endpoint}
+                name={'endpoint'}
+                label={String(t('node.endpoint'))}
+                disabled={!node?.isstatic}
+              />
+            </span>
+          </Tooltip>
+        </Grid>
+
+        <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
+          <NmFormInputSwitch
+            label={String(t('node.isstatic'))}
+            name={'isstatic'}
+            defaultValue={node.isstatic}
+            disabled={!node?.udpholepunch}
+          />
+        </Grid>
+        <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
+          <NmFormInputText
+            defaultValue={String(node.listenport)}
+            name={'listenport'}
+            label={String(t('node.listenport'))}
+            type="number"
+            disabled={node.isserver || node.udpholepunch}
+          />
+        </Grid>
+        <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
+          <Tooltip
+            title={
+              !network?.defaultudpholepunch ? String(t('node.udpdisabled')) : ''
+            }
+          >
+            <span>
+              <NmFormInputSwitch
+                label={String(t('node.udpholepunch'))}
+                name={'udpholepunch'}
+                defaultValue={node.udpholepunch}
+                disabled={!network?.defaultudpholepunch}
+              />
+            </span>
+          </Tooltip>
+        </Grid>
+        <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <NmFormInputText
             name={'address'}
             label={String(t('node.address'))}
@@ -135,15 +187,7 @@ export const NodeEdit: React.FC<{
             label={String(t('node.name'))}
           />
         </Grid>
-        <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-          <NmFormInputText
-            defaultValue={String(node.listenport)}
-            name={'listenport'}
-            label={String(t('node.listenport'))}
-            type="number"
-            disabled={node.isserver}
-          />
-        </Grid>
+
         <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <NmFormInputText
             disabled
@@ -152,13 +196,7 @@ export const NodeEdit: React.FC<{
             label={String(t('node.publickey'))}
           />
         </Grid>
-        <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-          <NmFormInputText
-            defaultValue={node.endpoint}
-            name={'endpoint'}
-            label={String(t('node.endpoint'))}
-          />
-        </Grid>
+
         <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <NmFormInputText
             defaultValue={node.postup}
@@ -279,55 +317,28 @@ export const NodeEdit: React.FC<{
             name={'mtu'}
           />
         </Grid>
-        <Grid item xs={12}>
-          <Grid container justifyContent="space-between" alignItems="center">
-            <Grid item xs={10} sm={4} md={2} sx={rowMargin}>
-              <NmFormInputSwitch
-                label={String(t('node.isstatic'))}
-                name={'isstatic'}
-                defaultValue={node.isstatic}
-              />
-            </Grid>
-            <Grid item xs={10} sm={4} md={2} sx={rowMargin}>
-              <Tooltip
-                title={
-                  !network?.defaultudpholepunch
-                    ? String(t('node.udpdisabled'))
-                    : ''
-                }
-              >
-                <span>
-                  <NmFormInputSwitch
-                    label={String(t('node.udpholepunch'))}
-                    name={'udpholepunch'}
-                    defaultValue={node.udpholepunch}
-                    disabled={!network?.defaultudpholepunch}
-                  />
-                </span>
-              </Tooltip>
-            </Grid>
-            <Grid item xs={10} sm={4} md={2} sx={rowMargin}>
-              <NmFormInputSwitch
-                label={String(t('node.dnson'))}
-                name={'dnson'}
-                defaultValue={node.dnson}
-              />
-            </Grid>
-            <Grid item xs={10} sm={4} md={2} sx={rowMargin}>
-              <NmFormInputSwitch
-                label={String(t('node.islocal'))}
-                name={'islocal'}
-                defaultValue={node.islocal}
-              />
-            </Grid>
-            <Grid item xs={10} sm={4} md={2} sx={rowMargin}>
-              <NmFormInputSwitch
-                label={String(t('node.ishub'))}
-                name={'ishub'}
-                defaultValue={node.ishub}
-                disabled={!network?.ispointtosite}
-              />
-            </Grid>
+        <Grid container justifyContent="space-between" alignItems="center">
+          <Grid item xs={10} sm={4} md={2} sx={rowMargin}>
+            <NmFormInputSwitch
+              label={String(t('node.dnson'))}
+              name={'dnson'}
+              defaultValue={node.dnson}
+            />
+          </Grid>
+          <Grid item xs={10} sm={4} md={2} sx={rowMargin}>
+            <NmFormInputSwitch
+              label={String(t('node.islocal'))}
+              name={'islocal'}
+              defaultValue={node.islocal}
+            />
+          </Grid>
+          <Grid item xs={10} sm={4} md={2} sx={rowMargin}>
+            <NmFormInputSwitch
+              label={String(t('node.ishub'))}
+              name={'ishub'}
+              defaultValue={node.ishub}
+              disabled={!network?.ispointtosite}
+            />
           </Grid>
         </Grid>
       </Grid>

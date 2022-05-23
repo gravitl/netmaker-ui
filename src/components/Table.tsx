@@ -83,22 +83,23 @@ export function NmTable<T>({
   const setQueryParams = (page: number, rowsPerPage: number) => {
     history.push(`${url}?page=${page}&rowsPerPage=${rowsPerPage}`)
     if (!!user && !!rowsPerPage) {
-      dispatch(setUserSettings({
-        rowsPerPage,
-        username: user.name,
-        mode: userSettings.mode,
-      }))
+      dispatch(
+        setUserSettings({
+          rowsPerPage,
+          username: user.name,
+          mode: userSettings.mode,
+        })
+      )
     }
   }
-  
 
   rowsPerPageOptions = rowsPerPageOptions || [10, 25, 100, 250]
   const page = query.has('page') ? Number(query.get('page')) : 0
   const rowsPerPage = query.has('rowsPerPage')
     ? Number(query.get('rowsPerPage'))
-    : !!userSettings && !!userSettings.rowsPerPage 
-    ? userSettings.rowsPerPage 
-    :rowsPerPageOptions[0]
+    : !!userSettings && !!userSettings.rowsPerPage
+    ? userSettings.rowsPerPage
+    : rowsPerPageOptions[0]
 
   const handleChangePage = (
     _: React.MouseEvent<HTMLButtonElement, MouseEvent> | null,

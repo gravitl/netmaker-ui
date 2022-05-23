@@ -32,8 +32,7 @@ export const NodeId: React.FC = () => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
 
-  const { netid, nodeId } =
-    useParams<{ nodeId: string; netid: string }>()
+  const { netid, nodeId } = useParams<{ nodeId: string; netid: string }>()
   const node = useNodeById(decodeURIComponent(nodeId))
   const network = useNetwork(netid)
   const user = useSelector(authSelectors.getUser)
@@ -119,31 +118,86 @@ export const NodeId: React.FC = () => {
           <Grid item xs={12}>
             <div style={{ textAlign: 'center', margin: '1em 0 1em 0' }}>
               <Typography variant="h5">
-                {`${t('node.details')} : ${node.name}${node.ispending === 'yes' ? ` (${t('common.pending')})` : ''}`}
+                {`${t('node.details')} : ${node.name}${
+                  node.ispending === 'yes' ? ` (${t('common.pending')})` : ''
+                }`}
               </Typography>
             </div>
           </Grid>
           <Grid item xs={6} sm={6} md={6} sx={rowMargin}>
-            <div style={{display: 'flex', alignItems: 'space-between', justifyContent: 'center'}}>
-              <NmLink to={`${url}/edit`} variant="outlined" style={{width: '50%', margin: '4px'}}>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'space-between',
+                justifyContent: 'center',
+              }}
+            >
+              <NmLink
+                to={`${url}/edit`}
+                variant="outlined"
+                style={{ width: '50%', margin: '4px' }}
+              >
                 {t('common.edit')}
               </NmLink>
-              <NmLink to={`/acls/${netid}/${nodeId}`} variant="outlined" style={{width: '50%', margin: '4px'}}>
+              <NmLink
+                to={`/acls/${netid}/${nodeId}`}
+                variant="outlined"
+                style={{ width: '50%', margin: '4px' }}
+              >
                 {t('header.acls')}
               </NmLink>
-              <Button disabled={node.isserver} variant="outlined" color='warning' style={{width: '50%', margin: '4px'}} onClick={handleOpen}>
+              <Button
+                disabled={node.isserver}
+                variant="outlined"
+                color="warning"
+                style={{ width: '50%', margin: '4px' }}
+                onClick={handleOpen}
+              >
                 {t('common.delete')}
               </Button>
-              {network.allowmanualsignup && node.ispending === 'yes' && user?.isAdmin ?
-                <Button variant="outlined" color='secondary' style={{width: '50%', margin: '4px'}} onClick={handleApproveOpen}>
+              {network.allowmanualsignup &&
+              node.ispending === 'yes' &&
+              user?.isAdmin ? (
+                <Button
+                  variant="outlined"
+                  color="secondary"
+                  style={{ width: '50%', margin: '4px' }}
+                  onClick={handleApproveOpen}
+                >
                   {t('node.approve')}
                 </Button>
-              : null}
+              ) : null}
             </div>
           </Grid>
-          <Grid item xs={6} sm={3} sx={rowMargin}>
+          <Grid item xs={6} sm={3} sx={rowMargin}></Grid>
+          <Grid item xs={6} sm={3} sx={rowMargin}></Grid>
+          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
+            <TextField
+              disabled
+              value={node.endpoint}
+              label={String(t('node.endpoint'))}
+            />
           </Grid>
-          <Grid item xs={6} sm={3} sx={rowMargin}>
+          <Grid item xs={10} sm={4} md={3} sx={rowMargin}>
+            <FormControlLabel
+              label={String(t('node.isstatic'))}
+              control={<SwitchField checked={node.isstatic} disabled />}
+              disabled
+            />
+          </Grid>
+          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
+            <TextField
+              disabled
+              value={node.listenport}
+              label={String(t('node.listenport'))}
+            />
+          </Grid>
+          <Grid item xs={10} sm={4} md={3} sx={rowMargin}>
+            <FormControlLabel
+              label={String(t('node.udpholepunch'))}
+              control={<SwitchField checked={node.udpholepunch} disabled />}
+              disabled
+            />
           </Grid>
           <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
             <TextField
@@ -167,15 +221,13 @@ export const NodeId: React.FC = () => {
             />
           </Grid>
           <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-            <TextField disabled value={node.name} label={String(t('node.name'))} />
-          </Grid>
-          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
             <TextField
               disabled
-              value={node.listenport}
-              label={String(t('node.listenport'))}
+              value={node.name}
+              label={String(t('node.name'))}
             />
           </Grid>
+
           <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
             <TextField
               disabled
@@ -183,15 +235,13 @@ export const NodeId: React.FC = () => {
               label={String(t('node.publickey'))}
             />
           </Grid>
+
           <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
             <TextField
               disabled
-              value={node.endpoint}
-              label={String(t('node.endpoint'))}
+              value={node.postup}
+              label={String(t('node.postup'))}
             />
-          </Grid>
-          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-            <TextField disabled value={node.postup} label={String(t('node.postup'))} />
           </Grid>
           <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
             <TextField
@@ -264,7 +314,11 @@ export const NodeId: React.FC = () => {
             <TextField disabled value={node.os} label={String(t('node.os'))} />
           </Grid>
           <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-            <TextField disabled value={node.mtu} label={String(t('node.mtu'))} />
+            <TextField
+              disabled
+              value={node.mtu}
+              label={String(t('node.mtu'))}
+            />
           </Grid>
           <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
             <TextField
@@ -274,21 +328,7 @@ export const NodeId: React.FC = () => {
             />
           </Grid>
           <Grid item xs={12}>
-            <Grid container justifyContent='space-between' alignItems='center'>
-              <Grid item xs={10} sm={4} md={2} sx={rowMargin}>
-                <FormControlLabel
-                  label={String(t('node.isstatic'))}
-                  control={<SwitchField checked={node.isstatic} disabled />}
-                  disabled
-                />
-              </Grid>
-              <Grid item xs={10} sm={4} md={2} sx={rowMargin}>
-                <FormControlLabel
-                  label={String(t('node.udpholepunch'))}
-                  control={<SwitchField checked={node.udpholepunch} disabled />}
-                  disabled
-                />
-              </Grid>
+            <Grid container justifyContent="space-between" alignItems="center">
               <Grid item xs={10} sm={4} md={2} sx={rowMargin}>
                 <FormControlLabel
                   label={String(t('node.dnson'))}
