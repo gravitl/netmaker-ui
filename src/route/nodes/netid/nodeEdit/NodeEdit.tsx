@@ -106,12 +106,22 @@ export const NodeEdit: React.FC<{
           </div>
         </Grid>
         <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-          <NmFormInputText
-            defaultValue={node.endpoint}
-            name={'endpoint'}
-            label={String(t('node.endpoint'))}
-            disabled={!node?.isstatic}
-          />
+          <Tooltip
+            title={
+              !node?.isstatic
+                ? String(t('node.endpointenable'))
+                : String(t('node.endpointdisable'))
+            }
+          >
+            <span>
+              <NmFormInputText
+                defaultValue={node.endpoint}
+                name={'endpoint'}
+                label={String(t('node.endpoint'))}
+                disabled={!node?.isstatic}
+              />
+            </span>
+          </Tooltip>
         </Grid>
 
         <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
@@ -119,6 +129,7 @@ export const NodeEdit: React.FC<{
             label={String(t('node.isstatic'))}
             name={'isstatic'}
             defaultValue={node.isstatic}
+            disabled={!node?.udpholepunch}
           />
         </Grid>
         <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
@@ -127,7 +138,7 @@ export const NodeEdit: React.FC<{
             name={'listenport'}
             label={String(t('node.listenport'))}
             type="number"
-            disabled={!!node?.udpholepunch}
+            disabled={node.isserver || node.udpholepunch}
           />
         </Grid>
         <Grid item xs={6} sm={4} md={3} sx={rowMargin}>

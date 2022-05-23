@@ -277,6 +277,8 @@ export interface LanguageResource {
     onehub: string
     createhub: string
     updatenode: string
+    endpointenable: string
+    endpointdisable: string
     state: {
       error: string
       warning: string

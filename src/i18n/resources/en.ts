@@ -285,6 +285,8 @@ export const en: LanguageResource = {
     onehub: 'This node is currently the hub',
     createhub: 'Make this node the hub',
     updatenode: 'Update Node',
+    endpointenable: 'Endpoint is set dynamically',
+    endpointdisable: 'Endpoint is set manually',
     state: {
       error: 'ERROR',
       warning: 'WARNING',
