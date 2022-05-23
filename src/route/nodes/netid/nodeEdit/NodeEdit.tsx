@@ -110,6 +110,7 @@ export const NodeEdit: React.FC<{
             defaultValue={node.endpoint}
             name={'endpoint'}
             label={String(t('node.endpoint'))}
+            disabled={!node?.isstatic}
           />
         </Grid>
 
@@ -306,21 +307,21 @@ export const NodeEdit: React.FC<{
           />
         </Grid>
         <Grid container justifyContent="space-between" alignItems="center">
-          <Grid item xs={10} sm={4} md={3} sx={rowMargin}>
+          <Grid item xs={10} sm={4} md={2} sx={rowMargin}>
             <NmFormInputSwitch
               label={String(t('node.dnson'))}
               name={'dnson'}
               defaultValue={node.dnson}
             />
           </Grid>
-          <Grid item xs={10} sm={4} md={3} sx={rowMargin}>
+          <Grid item xs={10} sm={4} md={2} sx={rowMargin}>
             <NmFormInputSwitch
               label={String(t('node.islocal'))}
               name={'islocal'}
               defaultValue={node.islocal}
             />
           </Grid>
-          <Grid item xs={10} sm={4} md={3} sx={rowMargin}>
+          <Grid item xs={10} sm={4} md={2} sx={rowMargin}>
             <NmFormInputSwitch
               label={String(t('node.ishub'))}
               name={'ishub'}
