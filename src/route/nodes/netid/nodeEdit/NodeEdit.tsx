@@ -127,7 +127,7 @@ export const NodeEdit: React.FC<{
             name={'listenport'}
             label={String(t('node.listenport'))}
             type="number"
-            disabled={node.isserver}
+            disabled={!!node?.udpholepunch}
           />
         </Grid>
         <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
