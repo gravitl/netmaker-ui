@@ -109,8 +109,8 @@ export const NodeEdit: React.FC<{
           <Tooltip
             title={
               !node?.isstatic
-                ? String(t('node.endpointenable'))
-                : String(t('node.endpointdisable'))
+                ? String(t('node.endpointdisable'))
+                : String(t('node.endpointenable'))
             }
           >
             <span>
@@ -128,8 +128,8 @@ export const NodeEdit: React.FC<{
           <NmFormInputSwitch
             label={String(t('node.isstatic'))}
             name={'isstatic'}
-            defaultValue={node.isstatic}
-            disabled={!node?.udpholepunch}
+            defaultValue={!node.isstatic}
+            
           />
         </Grid>
         <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
