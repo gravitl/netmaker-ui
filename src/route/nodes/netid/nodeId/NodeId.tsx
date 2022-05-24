@@ -83,6 +83,7 @@ export const NodeId: React.FC = () => {
   const rowMargin = {
     margin: '1em 0 1em 0',
   }
+  const isIPDynamic = !node.isstatic
 
   return (
     <Switch>
@@ -181,7 +182,7 @@ export const NodeId: React.FC = () => {
           <Grid item xs={10} sm={4} md={3} sx={rowMargin}>
             <FormControlLabel
               label={String(t('node.isstatic'))}
-              control={<SwitchField checked={node.isstatic} disabled />}
+              control={<SwitchField checked={isIPDynamic} disabled />}
               disabled
             />
           </Grid>
