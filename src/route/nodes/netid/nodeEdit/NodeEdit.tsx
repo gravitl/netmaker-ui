@@ -24,8 +24,7 @@ export const NodeEdit: React.FC<{
   const dispatch = useDispatch()
 
   const serverConfig = useSelector(serverSelectors.getServerConfig)
-  const { netid } = useParams<{ netid: string }>()
-  const { nodeId } = useParams<{ nodeId: string }>()
+  const { netid, nodeId } = useParams<{ nodeId: string; netid: string }>()
   const node = useNodeById(decodeURIComponent(nodeId))
   const network = useNetwork(netid)
 
@@ -42,13 +41,11 @@ export const NodeEdit: React.FC<{
 
   const onSubmit = useCallback(
     (data: Node) => {
-      const node = {
-        ...data,
-      }
+      
       if (typeof data.relayaddrs === 'string') {
         const newRelayAddrs = getCommaSeparatedArray(String(data.relayaddrs))
         if (newRelayAddrs.length) {
-          node.relayaddrs = newRelayAddrs
+          data.relayaddrs = newRelayAddrs
         }
       }
       if (typeof data.egressgatewayranges === 'string') {
@@ -56,37 +53,40 @@ export const NodeEdit: React.FC<{
           String(data.egressgatewayranges)
         )
         if (newEgressRanges.length) {
-          node.egressgatewayranges = newEgressRanges
+          data.egressgatewayranges = newEgressRanges
         }
       }
       if (typeof data.allowedips === 'string') {
         const newAllowedIps = getCommaSeparatedArray(String(data.allowedips))
         if (newAllowedIps.length) {
-          node.allowedips = newAllowedIps
+          data.allowedips = newAllowedIps
         }
       }
       if (expTime && expTime !== data.expdatetime) {
-        node.expdatetime = expTime
+        data.expdatetime = expTime
       }
-
+      
       dispatch(
         updateNode.request({
           token: '',
           netid: netid,
-          node,
+          node: {...data, 
+          isstatic: !data.isstatic},
         })
       )
     },
     [dispatch, netid, expTime]
   )
 
-  if (!node) {
+  if (!!!node) {
     return <div>Not Found</div>
   }
-
+  
+  const isIPDynamic = !node.isstatic
+  
   return (
     <NmForm
-      initialState={node}
+      initialState={{...node, isstatic: !node.isstatic}}
       onSubmit={onSubmit}
       onCancel={onCancel}
       submitProps={{
@@ -104,6 +104,56 @@ export const NodeEdit: React.FC<{
               }`}
             </Typography>
           </div>
+        </Grid>
+        <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
+          <Tooltip
+            title={
+              node.isstatic
+                ? String(t('node.endpointdisable'))
+                : String(t('node.endpointenable'))
+            }
+          >
+            <span>
+              <NmFormInputText
+                defaultValue={node.endpoint}
+                name={'endpoint'}
+                label={String(t('node.endpoint'))}
+                disabled={isIPDynamic}
+              />
+            </span>
+          </Tooltip>
+        </Grid>
+        <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
+          <NmFormInputSwitch
+            label={String(t('node.isstatic'))}
+            name={'isstatic'}
+            defaultValue={isIPDynamic}
+          />
+        </Grid>
+        <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
+          <NmFormInputText
+            defaultValue={String(node.listenport)}
+            name={'listenport'}
+            label={String(t('node.listenport'))}
+            type="number"
+            disabled={node.isserver || node.udpholepunch}
+          />
+        </Grid>
+        <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
+          <Tooltip
+            title={
+              !network?.defaultudpholepunch ? String(t('node.udpdisabled')) : ''
+            }
+          >
+            <span>
+              <NmFormInputSwitch
+                label={String(t('node.udpholepunch'))}
+                name={'udpholepunch'}
+                defaultValue={node.udpholepunch}
+                disabled={!network?.defaultudpholepunch}
+              />
+            </span>
+          </Tooltip>
         </Grid>
         <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <NmFormInputText
@@ -135,15 +185,7 @@ export const NodeEdit: React.FC<{
             label={String(t('node.name'))}
           />
         </Grid>
-        <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-          <NmFormInputText
-            defaultValue={String(node.listenport)}
-            name={'listenport'}
-            label={String(t('node.listenport'))}
-            type="number"
-            disabled={node.isserver}
-          />
-        </Grid>
+
         <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <NmFormInputText
             disabled
@@ -152,13 +194,7 @@ export const NodeEdit: React.FC<{
             label={String(t('node.publickey'))}
           />
         </Grid>
-        <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-          <NmFormInputText
-            defaultValue={node.endpoint}
-            name={'endpoint'}
-            label={String(t('node.endpoint'))}
-          />
-        </Grid>
+
         <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <NmFormInputText
             defaultValue={node.postup}
@@ -279,55 +315,28 @@ export const NodeEdit: React.FC<{
             name={'mtu'}
           />
         </Grid>
-        <Grid item xs={12}>
-          <Grid container justifyContent="space-between" alignItems="center">
-            <Grid item xs={10} sm={4} md={2} sx={rowMargin}>
-              <NmFormInputSwitch
-                label={String(t('node.isstatic'))}
-                name={'isstatic'}
-                defaultValue={node.isstatic}
-              />
-            </Grid>
-            <Grid item xs={10} sm={4} md={2} sx={rowMargin}>
-              <Tooltip
-                title={
-                  !network?.defaultudpholepunch
-                    ? String(t('node.udpdisabled'))
-                    : ''
-                }
-              >
-                <span>
-                  <NmFormInputSwitch
-                    label={String(t('node.udpholepunch'))}
-                    name={'udpholepunch'}
-                    defaultValue={node.udpholepunch}
-                    disabled={!network?.defaultudpholepunch}
-                  />
-                </span>
-              </Tooltip>
-            </Grid>
-            <Grid item xs={10} sm={4} md={2} sx={rowMargin}>
-              <NmFormInputSwitch
-                label={String(t('node.dnson'))}
-                name={'dnson'}
-                defaultValue={node.dnson}
-              />
-            </Grid>
-            <Grid item xs={10} sm={4} md={2} sx={rowMargin}>
-              <NmFormInputSwitch
-                label={String(t('node.islocal'))}
-                name={'islocal'}
-                defaultValue={node.islocal}
-              />
-            </Grid>
-            <Grid item xs={10} sm={4} md={2} sx={rowMargin}>
-              <NmFormInputSwitch
-                label={String(t('node.ishub'))}
-                name={'ishub'}
-                defaultValue={node.ishub}
-                disabled={!network?.ispointtosite}
-              />
-            </Grid>
+        <Grid container justifyContent="space-between" alignItems="center">
+          <Grid item xs={10} sm={4} md={2} sx={rowMargin}>
+            <NmFormInputSwitch
+              label={String(t('node.dnson'))}
+              name={'dnson'}
+              defaultValue={node.dnson}
+            />
+          </Grid>
+          <Grid item xs={10} sm={4} md={2} sx={rowMargin}>
+            <NmFormInputSwitch
+              label={String(t('node.islocal'))}
+              name={'islocal'}
+              defaultValue={node.islocal}
+            />
+          </Grid>
+          <Grid item xs={10} sm={4} md={2} sx={rowMargin}>
+            <NmFormInputSwitch
+              label={String(t('node.ishub'))}
+              name={'ishub'}
+              defaultValue={node.ishub}
+              disabled={!network?.ispointtosite}
+            />
           </Grid>
         </Grid>
       </Grid>
