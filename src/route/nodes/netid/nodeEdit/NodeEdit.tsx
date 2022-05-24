@@ -24,8 +24,7 @@ export const NodeEdit: React.FC<{
   const dispatch = useDispatch()
 
   const serverConfig = useSelector(serverSelectors.getServerConfig)
-  const { netid } = useParams<{ netid: string }>()
-  const { nodeId } = useParams<{ nodeId: string }>()
+  const { netid, nodeId } = useParams<{ nodeId: string; netid: string }>()
   const node = useNodeById(decodeURIComponent(nodeId))
   const network = useNetwork(netid)
 
@@ -42,13 +41,11 @@ export const NodeEdit: React.FC<{
 
   const onSubmit = useCallback(
     (data: Node) => {
-      const node = {
-        ...data,
-      }
+      
       if (typeof data.relayaddrs === 'string') {
         const newRelayAddrs = getCommaSeparatedArray(String(data.relayaddrs))
         if (newRelayAddrs.length) {
-          node.relayaddrs = newRelayAddrs
+          data.relayaddrs = newRelayAddrs
         }
       }
       if (typeof data.egressgatewayranges === 'string') {
@@ -56,37 +53,40 @@ export const NodeEdit: React.FC<{
           String(data.egressgatewayranges)
         )
         if (newEgressRanges.length) {
-          node.egressgatewayranges = newEgressRanges
+          data.egressgatewayranges = newEgressRanges
         }
       }
       if (typeof data.allowedips === 'string') {
         const newAllowedIps = getCommaSeparatedArray(String(data.allowedips))
         if (newAllowedIps.length) {
-          node.allowedips = newAllowedIps
+          data.allowedips = newAllowedIps
         }
       }
       if (expTime && expTime !== data.expdatetime) {
-        node.expdatetime = expTime
+        data.expdatetime = expTime
       }
-
+      
       dispatch(
         updateNode.request({
           token: '',
           netid: netid,
-          node,
+          node: {...data, 
+          isstatic: !data.isstatic},
         })
       )
     },
     [dispatch, netid, expTime]
   )
 
-  if (!node) {
+  if (!!!node) {
     return <div>Not Found</div>
   }
-
+  
+  const isIPDynamic = !node.isstatic
+  
   return (
     <NmForm
-      initialState={node}
+      initialState={{...node, isstatic: !node.isstatic}}
       onSubmit={onSubmit}
       onCancel={onCancel}
       submitProps={{
@@ -108,7 +108,7 @@ export const NodeEdit: React.FC<{
         <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <Tooltip
             title={
-              !node?.isstatic
+              node.isstatic
                 ? String(t('node.endpointdisable'))
                 : String(t('node.endpointenable'))
             }
@@ -118,18 +118,16 @@ export const NodeEdit: React.FC<{
                 defaultValue={node.endpoint}
                 name={'endpoint'}
                 label={String(t('node.endpoint'))}
-                disabled={!node?.isstatic}
+                disabled={isIPDynamic}
               />
             </span>
           </Tooltip>
         </Grid>
-
         <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <NmFormInputSwitch
             label={String(t('node.isstatic'))}
             name={'isstatic'}
-            defaultValue={!node.isstatic}
-            
+            defaultValue={isIPDynamic}
           />
         </Grid>
         <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
