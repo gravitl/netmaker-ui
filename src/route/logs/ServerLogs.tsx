@@ -21,6 +21,10 @@ export const ServerLogs: React.FC = () => {
     title: t('pro.logs'),
   })
 
+  const refreshLogs = () => {
+      setCurrentLogs([])
+  }
+
   const titleStyle = {
     textAlign: 'center',
   } as any
