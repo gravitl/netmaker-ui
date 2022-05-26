@@ -40,9 +40,9 @@ function* handleGetServerLogsRequest(
       '/logs',
       {}
     )
-    yield put(getServerConfig['success'](response.data))
+    yield put(getServerLogs['success'](response.data))
   } catch (e: unknown) {
-    yield put(getServerConfig['failure'](e as Error))
+    yield put(getServerLogs['failure'](e as Error))
   }
 }
 

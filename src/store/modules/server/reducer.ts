@@ -6,7 +6,7 @@ import { ServerConfig } from './types'
 export const reducer = createReducer({
   config: {} as ServerConfig,
   isFetching: false,
-  logs: '',
+  logs: [] as string[],
 })
   .handleAction(getServerConfig['request'], (state, _) =>
     produce(state, (draftState) => {
@@ -59,12 +59,12 @@ export const reducer = createReducer({
   .handleAction(getServerLogs['success'], (state, payload) => 
     produce(state, (draftState) => {
       draftState.isFetching = false
-      draftState.logs = payload.payload.logs
+      draftState.logs = payload.payload.split('\n')
     })
   )
   .handleAction(getServerLogs['failure'], (state, _) => 
     produce(state, (draftState) => {
       draftState.isFetching = false
-      draftState.logs = ''
+      draftState.logs = []
     })
   )

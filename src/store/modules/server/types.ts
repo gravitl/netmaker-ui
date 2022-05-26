@@ -57,10 +57,6 @@ export interface GetServerConfigPayload {
 }
 
 export interface LogsPayload {
-  Request: {
-    token: string
-  }
-  Response: {
-    logs: string
-  }
+  Request: undefined
+  Response: string
 }
