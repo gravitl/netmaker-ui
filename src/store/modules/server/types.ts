@@ -55,3 +55,12 @@ export interface GetServerConfigPayload {
     RCE: string
   }
 }
+
+export interface LogsPayload {
+  Request: {
+    token: string
+  }
+  Response: {
+    logs: string
+  }
+}

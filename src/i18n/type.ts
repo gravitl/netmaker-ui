@@ -1,4 +1,7 @@
 export interface LanguageResource {
+  pro: {
+    logs: string
+  }
   header: {
     login: string
     logout: string

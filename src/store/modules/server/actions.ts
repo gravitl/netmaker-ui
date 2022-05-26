@@ -1,5 +1,5 @@
 import { createAsyncAction } from 'typesafe-actions'
-import { GetServerConfigPayload } from './types'
+import { GetServerConfigPayload, LogsPayload } from './types'
 
 export const getServerConfig = createAsyncAction(
   'api_getServerConfig_Request',
@@ -8,5 +8,15 @@ export const getServerConfig = createAsyncAction(
 )<
   GetServerConfigPayload['Request'],
   GetServerConfigPayload['Response'],
+  Error
+>()
+
+export const getServerLogs = createAsyncAction(
+  'api_getServerLogs_Request',
+  'api_getServerLogs_Success',
+  'api_getServerLogs_Failure',
+)<
+  LogsPayload['Request'],
+  LogsPayload['Response'],
   Error
 >()

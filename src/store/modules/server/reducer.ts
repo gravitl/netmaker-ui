@@ -1,11 +1,12 @@
 import { produce } from 'immer'
 import { createReducer } from 'typesafe-actions'
-import { getServerConfig } from './actions'
+import { getServerConfig, getServerLogs } from './actions'
 import { ServerConfig } from './types'
 
 export const reducer = createReducer({
   config: {} as ServerConfig,
   isFetching: false,
+  logs: '',
 })
   .handleAction(getServerConfig['request'], (state, _) =>
     produce(state, (draftState) => {
@@ -48,5 +49,22 @@ export const reducer = createReducer({
     produce(state, (draftState) => {
       draftState.isFetching = false
       draftState.config = {} as ServerConfig
+    })
+  )
+  .handleAction(getServerLogs['request'], (state, _) => 
+    produce(state, (draftState) => {
+      draftState.isFetching = true
+    })
+  )
+  .handleAction(getServerLogs['success'], (state, payload) => 
+    produce(state, (draftState) => {
+      draftState.isFetching = false
+      draftState.logs = payload.payload.logs
+    })
+  )
+  .handleAction(getServerLogs['failure'], (state, _) => 
+    produce(state, (draftState) => {
+      draftState.isFetching = false
+      draftState.logs = ''
     })
   )

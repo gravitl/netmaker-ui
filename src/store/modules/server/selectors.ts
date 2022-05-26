@@ -10,3 +10,7 @@ export const isFetchingServerConfig = createSelector(
   getServer,
   (server) => server.isFetching
 )
+export const getServerLogs = createSelector(
+  getServer,
+  (server) => server.logs
+)
