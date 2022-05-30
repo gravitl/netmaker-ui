@@ -92,7 +92,7 @@ export const ServerLogs: React.FC = () => {
           <Grid container justifyContent="center" alignItems="center">
             <Grid item xs={11}>
               {isFetching && <LinearProgress />}
-              {currentLogs.map((log) => (
+              {filterLogs.map((log) => ( 
                 <Typography variant="body2">{log}</Typography>
               ))}
             </Grid>
