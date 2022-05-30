@@ -1,4 +1,12 @@
-import { Container, Grid, IconButton, Typography, InputAdornment, TextField, Tooltip } from '@mui/material'
+import {
+  Container,
+  Grid,
+  IconButton,
+  Typography,
+  InputAdornment,
+  TextField,
+  Tooltip,
+} from '@mui/material'
 import React from 'react'
 import { useRouteMatch, Switch, Route } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
@@ -35,7 +43,10 @@ export const ServerLogs: React.FC = () => {
     if (!!!currentLogs.length) {
       dispatch(getServerLogs.request())
     }
-    if (currentLogs.length !== serverLogs.length || currentLogs !== serverLogs) {
+    if (
+      currentLogs.length !== serverLogs.length ||
+      currentLogs !== serverLogs
+    ) {
       setCurrentLogs(serverLogs)
     }
   }, [dispatch, currentLogs, serverLogs])
@@ -46,58 +57,50 @@ export const ServerLogs: React.FC = () => {
     if (!!!searchTerm) {
       setFilterLogs(serverLogs)
     } else {
-      setFilterLogs(serverLogs.filter(log => log.includes(searchTerm)))
+      setFilterLogs(serverLogs.filter((log) => log.includes(searchTerm)))
     }
   }
-
 
   return (
     <Container>
       <Switch>
         <Route exact path={path}>
-          <Grid
-            container
-            direction="row"
-            justifyContent="center"
-            alignItems="center"
-          >
+          <Grid container justifyContent="space-around" alignItems="center">
             <Grid item xs={4}>
-              <Grid container justifyContent='space-around' alignItems='center'>
-                <div style={titleStyle}>
-                  <Typography variant="h5">
-                    {t('pro.logs')}
-                  </Typography>
-                </div>
+                <h2>{t('pro.logs')}</h2>
+            </Grid>
+            <Grid item xs={6}>
+            <Grid container justifyContent="space-around" alignItems="center">
+              <Grid item xs={4}>
+                <TextField
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <Search />
+                      </InputAdornment>
+                    ),
+                  }}
+                  label={`${t('common.search')} ${t('pro.logs')}`}
+                  onChange={handleFilter}
+                />
               </Grid>
-              <Grid item xs={5}>
-                <Grid container justifyContent='space-around' alignItems='center'>
-                  <TextField
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position='start'>
-                          <Search />
-                        </InputAdornment>
-                      ),
-                    }}
-                    label={`${t('common.search')} ${t('pro.logs')}`}
-                    onChange={handleFilter} />
-
-                </Grid>
-                <Grid item xs={5}>
-                  <IconButton color='primary' onClick={refreshLogs}>
-                    <Sync />
-                  </IconButton>
-                </Grid>
-              </Grid>
+              <Grid item xs={4}>
+                <IconButton color="primary" onClick={refreshLogs}>
+                  <Sync />
+                </IconButton>
               </Grid>
             </Grid>
-            <Grid item xs={12}>
-              {isFetching && <LinearProgress />}
-              {currentLogs.map(log => <Typography variant='body2'>
-                {log}
-              </Typography>)}
-            </Grid>
+          </Grid>
+          </Grid>
           
+        <Grid container justifyContent="center" alignItems="center">
+          <Grid item xs={11}>
+            {isFetching && <LinearProgress />}
+            {currentLogs.map((log) => (
+              <Typography variant="body2">{log}</Typography>
+            ))}
+          </Grid>
+          </Grid>
         </Route>
       </Switch>
     </Container>
