@@ -35,10 +35,6 @@ export const ServerLogs: React.FC = () => {
     setCurrentLogs([])
   }
 
-  const titleStyle = {
-    textAlign: 'center',
-  } as any
-
   React.useEffect(() => {
     if (!!!currentLogs.length) {
       dispatch(getServerLogs.request())
@@ -67,39 +63,39 @@ export const ServerLogs: React.FC = () => {
         <Route exact path={path}>
           <Grid container justifyContent="space-around" alignItems="center">
             <Grid item xs={4}>
-                <h2>{t('pro.logs')}</h2>
+              <h2>{t('pro.logs')}</h2>
             </Grid>
             <Grid item xs={6}>
-            <Grid container justifyContent="space-around" alignItems="center">
-              <Grid item xs={4}>
-                <TextField
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <Search />
-                      </InputAdornment>
-                    ),
-                  }}
-                  label={`${t('common.search')} ${t('pro.logs')}`}
-                  onChange={handleFilter}
-                />
-              </Grid>
-              <Grid item xs={4}>
-                <IconButton color="primary" onClick={refreshLogs}>
-                  <Sync />
-                </IconButton>
+              <Grid container justifyContent="space-around" alignItems="center">
+                <Grid item xs={4}>
+                  <TextField
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <Search />
+                        </InputAdornment>
+                      ),
+                    }}
+                    label={`${t('common.search')} ${t('pro.logs')}`}
+                    onChange={handleFilter}
+                  />
+                </Grid>
+                <Grid item xs={4}>
+                  <IconButton color="primary" onClick={refreshLogs}>
+                    <Sync />
+                  </IconButton>
+                </Grid>
               </Grid>
             </Grid>
           </Grid>
-          </Grid>
-          
-        <Grid container justifyContent="center" alignItems="center">
-          <Grid item xs={11}>
-            {isFetching && <LinearProgress />}
-            {currentLogs.map((log) => (
-              <Typography variant="body2">{log}</Typography>
-            ))}
-          </Grid>
+
+          <Grid container justifyContent="center" alignItems="center">
+            <Grid item xs={11}>
+              {isFetching && <LinearProgress />}
+              {currentLogs.map((log) => (
+                <Typography variant="body2">{log}</Typography>
+              ))}
+            </Grid>
           </Grid>
         </Route>
       </Switch>
