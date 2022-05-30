@@ -5,7 +5,7 @@ import {
   Typography,
   InputAdornment,
   TextField,
-  Tooltip,
+  
 } from '@mui/material'
 import React from 'react'
 import { useRouteMatch, Switch, Route } from 'react-router-dom'
@@ -16,6 +16,7 @@ import { serverSelectors } from '~store/selectors'
 import { LinearProgress } from '@mui/material'
 import { getServerLogs } from '~store/modules/server/actions'
 import { Search, Sync } from '@mui/icons-material'
+import { authSelectors } from '~store/selectors'
 
 export const ServerLogs: React.FC = () => {
   const { path, url } = useRouteMatch()
@@ -25,6 +26,7 @@ export const ServerLogs: React.FC = () => {
   const [currentLogs, setCurrentLogs] = React.useState([] as string[])
   const dispatch = useDispatch()
   const [filterLogs, setFilterLogs] = React.useState(serverLogs)
+  const inDarkMode = useSelector(authSelectors.isInDarkMode)
 
   useLinkBreadcrumb({
     link: url,
@@ -90,11 +92,13 @@ export const ServerLogs: React.FC = () => {
           </Grid>
 
           <Grid container justifyContent="center" alignItems="center">
-            <Grid item xs={11}>
+            <Grid item xs={11} style={{backgroundColor: inDarkMode ? '#272727' : ''}}>
+              
               {isFetching && <LinearProgress />}
               {filterLogs.map((log) => ( 
                 <Typography variant="body2">{log}</Typography>
               ))}
+              
             </Grid>
           </Grid>
         </Route>
