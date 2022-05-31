@@ -5,7 +5,7 @@ import {
   Typography,
   InputAdornment,
   TextField,
-  
+  Paper,
 } from '@mui/material'
 import React from 'react'
 import { useRouteMatch, Switch, Route } from 'react-router-dom'
@@ -92,13 +92,17 @@ export const ServerLogs: React.FC = () => {
           </Grid>
 
           <Grid container justifyContent="center" alignItems="center">
-            <Grid item xs={11} style={{backgroundColor: inDarkMode ? '#272727' : ''}}>
-              
-              {isFetching && <LinearProgress />}
-              {filterLogs.map((log) => ( 
-                <Typography variant="body2">{log}</Typography>
-              ))}
-              
+            <Grid
+              item
+              xs={11}
+              style={{ backgroundColor: inDarkMode ? '#272727' : '' }}
+            >
+              <Paper style={{ maxHeight: '50vh', overflow: 'auto' }}>
+                {isFetching && <LinearProgress />}
+                {filterLogs.map((log) => (
+                  <Typography variant="body2">{log}</Typography>
+                ))}
+              </Paper>
             </Grid>
           </Grid>
         </Route>
