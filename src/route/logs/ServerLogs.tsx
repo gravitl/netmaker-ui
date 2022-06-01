@@ -59,6 +59,11 @@ export const ServerLogs: React.FC = () => {
     }
   }
 
+  const showlogs =
+    filterLogs.length && filterLogs.length < currentLogs.length
+      ? filterLogs
+      : currentLogs
+
   return (
     <Container>
       <Switch>
@@ -99,7 +104,7 @@ export const ServerLogs: React.FC = () => {
             >
               <Paper style={{ maxHeight: '50vh', overflow: 'auto' }}>
                 {isFetching && <LinearProgress />}
-                {filterLogs.map((log) => (
+                {showlogs.map((log) => (
                   <Typography variant="body2">{log}</Typography>
                 ))}
               </Paper>
