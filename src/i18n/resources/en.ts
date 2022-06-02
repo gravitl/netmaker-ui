@@ -1,6 +1,9 @@
 import { LanguageResource } from '../type'
 
 export const en: LanguageResource = {
+  pro: {
+    logs: 'Server Logs'
+  },
   header: {
     login: 'Login',
     logout: 'Logout',

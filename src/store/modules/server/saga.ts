@@ -1,5 +1,5 @@
 import { all, put, select, takeEvery } from 'redux-saga/effects'
-import { getServerConfig } from './actions'
+import { getServerConfig, getServerLogs } from './actions'
 import { login } from '../auth/actions'
 import { getToken } from '../auth/selectors'
 import { getType } from 'typesafe-actions'
@@ -31,12 +31,31 @@ function* handleGetServerConfigRequest(
   }
 }
 
+function* handleGetServerLogsRequest(
+  _: ReturnType<typeof getServerLogs['request']>
+) {
+  try {
+    const response: AxiosResponse = yield apiRequestWithAuthSaga(
+      'get',
+      '/logs',
+      {}
+    )
+    yield put(getServerLogs['success'](response.data))
+  } catch (e: unknown) {
+    yield put(getServerLogs['failure'](e as Error))
+  }
+}
+
 export function* saga() {
   yield all([
     takeEvery(login['success'], handleLoginSuccess),
     takeEvery(
       getType(getServerConfig['request']),
       handleGetServerConfigRequest
+    ),
+    takeEvery(
+      getType(getServerLogs['request']),
+      handleGetServerLogsRequest
     ),
     handleLoginSuccess(),
   ])

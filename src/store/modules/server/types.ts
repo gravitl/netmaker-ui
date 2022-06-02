@@ -55,3 +55,8 @@ export interface GetServerConfigPayload {
     RCE: string
   }
 }
+
+export interface LogsPayload {
+  Request: undefined
+  Response: string
+}
