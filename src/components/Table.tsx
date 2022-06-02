@@ -46,6 +46,7 @@ export interface Props<Row> {
   getRowId: (row: Row) => React.Key
   rowsPerPageOptions?: Array<number>
   actions?: Array<(row: Row) => ActionIconProps>
+  tableId?: string;
 }
 
 function renderActionIcon(
@@ -65,12 +66,17 @@ function renderActionIcon(
   )
 }
 
+/**
+ * @param tableId Needed when we have two tables in the same route, 
+ * e.g. `_extClients`
+ */
 export function NmTable<T>({
   actions,
   columns,
   rows,
   getRowId,
   rowsPerPageOptions,
+  tableId = '',
 }: Props<T>) {
   const { url } = useRouteMatch()
   const history = useHistory()
@@ -81,7 +87,7 @@ export function NmTable<T>({
   const userSettings = useSelector(authSelectors.getUserSettings)
 
   const setQueryParams = (page: number, rowsPerPage: number) => {
-    history.push(`${url}?page=${page}&rowsPerPage=${rowsPerPage}`)
+    history.push(`${url}?page${tableId}=${page}&rowsPerPage${tableId}=${rowsPerPage}`)
     if (!!user && !!rowsPerPage) {
       dispatch(
         setUserSettings({
@@ -94,11 +100,11 @@ export function NmTable<T>({
   }
 
   rowsPerPageOptions = rowsPerPageOptions || [10, 25, 100, 250]
-  const page = query.has('page') ? Number(query.get('page')) : 0
-  const rowsPerPage = query.has('rowsPerPage')
-    ? Number(query.get('rowsPerPage'))
-    : !!userSettings && !!userSettings.rowsPerPage
-    ? userSettings.rowsPerPage
+  const page = query.has(`page${tableId}`) ? Number(query.get(`page${tableId}`)) : 0
+  const rowsPerPage = query.has(`rowsPerPage${tableId}`)
+    ? Number(query.get(`rowsPerPage${tableId}`))
+    : !!userSettings && !!userSettings.rowsPerPage 
+    ? userSettings.rowsPerPage 
     : rowsPerPageOptions[0]
 
   const handleChangePage = (
