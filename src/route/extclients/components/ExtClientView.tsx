@@ -266,6 +266,7 @@ export const ExtClientView: React.FC = () => {
                   },
                 }),
               ]}
+              tableId='_gateways'
             />
           </Grid>
           <Grid
@@ -288,6 +289,7 @@ export const ExtClientView: React.FC = () => {
                 )
               })}
               getRowId={(row) => row.clientid}
+              tableId='_extClients'
             />
           </Grid>
         </Grid>
