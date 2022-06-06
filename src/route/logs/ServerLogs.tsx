@@ -6,6 +6,7 @@ import {
   InputAdornment,
   TextField,
   Paper,
+  Tooltip,
 } from '@mui/material'
 import React from 'react'
 import { useRouteMatch, Switch, Route } from 'react-router-dom'
@@ -88,9 +89,11 @@ export const ServerLogs: React.FC = () => {
                   />
                 </Grid>
                 <Grid item xs={4}>
-                  <IconButton color="primary" onClick={refreshLogs}>
-                    <Sync />
-                  </IconButton>
+                  <Tooltip title={`${t('pro.refresh')}`} placement="top">
+                    <IconButton color="primary" onClick={refreshLogs}>
+                      <Sync />
+                    </IconButton>
+                  </Tooltip>
                 </Grid>
               </Grid>
             </Grid>
