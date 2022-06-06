@@ -1,7 +1,7 @@
 export interface LanguageResource {
   pro: {
     logs: string
-    
+    refresh: string
   }
   header: {
     login: string
