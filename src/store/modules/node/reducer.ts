@@ -16,6 +16,7 @@ import {
   getExternalClientConf,
   getExternalClients,
   getNodes,
+  setNodeSort,
   setShouldLogout,
   updateExternalClient,
   updateNode,
@@ -47,15 +48,26 @@ export const reducer = createReducer({
       draftState.isFetchingClients = true
     })
   )
+
+  .handleAction(setNodeSort, (state, action) =>
+    produce(state, (draftState) => {
+      if (action.payload.value === 'name') {
+        draftState.nodeSort = { value: 'name', ascending: true }
+      }
+    })
+  )
+
   .handleAction(getNodes['success'], (state, action) =>
     produce(state, (draftState) => {
       if (!!action.payload && action.payload.length) {
         draftState.nodes = action.payload.map(nodePayloadToNode)
-        draftState.nodes = draftState.nodes.sort((a, b) => a.name.localeCompare(b.name))
+        draftState.nodes = draftState.nodes.sort((a, b) =>
+          a.name.localeCompare(b.name)
+        )
       } else {
         draftState.nodes = []
       }
-     
+
       draftState.isFetching = false
     })
   )
@@ -69,11 +81,12 @@ export const reducer = createReducer({
     produce(state, (draftState) => {
       draftState.nodes = []
       draftState.isFetching = false
-      if (!!action.payload && !!action.payload.message) { // && action.payload.message.includes("unauth")) {
+      if (!!action.payload && !!action.payload.message) {
+        // && action.payload.message.includes("unauth")) {
         // if (action.payload.message.includes("Network Error")) {
         //   draftState.shouldSignOut = 'network'
         // }
-        if (action.payload.message.includes("status code 401")) {
+        if (action.payload.message.includes('status code 401')) {
           draftState.shouldSignOut = 'auth'
         }
       }
@@ -86,9 +99,13 @@ export const reducer = createReducer({
       )
       if (~index) {
         const newNode = nodePayloadToNode(action.payload)
-        if (newNode.ishub && draftState.nodes[index].ishub !== newNode.ishub) { // set all other nodes on same network as not hub
+        if (newNode.ishub && draftState.nodes[index].ishub !== newNode.ishub) {
+          // set all other nodes on same network as not hub
           for (let i = 0; i < draftState.nodes.length; i++) {
-            if (i !== index && draftState.nodes[i].network === newNode.network) {
+            if (
+              i !== index &&
+              draftState.nodes[i].network === newNode.network
+            ) {
               draftState.nodes[i].ishub = false
             }
           }
@@ -156,9 +173,12 @@ export const reducer = createReducer({
       )
       if (~index) {
         draftState.nodes[index] = nodePayloadToNode(action.payload)
-        draftState.externalClients = draftState.externalClients.filter(client =>  
-          !(client.ingressgatewayid === draftState.nodes[index].id && 
-            client.network === draftState.nodes[index].network)
+        draftState.externalClients = draftState.externalClients.filter(
+          (client) =>
+            !(
+              client.ingressgatewayid === draftState.nodes[index].id &&
+              client.network === draftState.nodes[index].network
+            )
         )
       }
     })
