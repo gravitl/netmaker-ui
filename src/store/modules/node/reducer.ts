@@ -16,11 +16,12 @@ import {
   getExternalClientConf,
   getExternalClients,
   getNodes,
+  setNodeSort,
   setShouldLogout,
   updateExternalClient,
   updateNode,
 } from './actions'
-import { Node } from './types'
+import { Node, NodeSort } from './types'
 import { download, nodePayloadToNode } from './utils'
 
 export const reducer = createReducer({
@@ -30,6 +31,7 @@ export const reducer = createReducer({
   isFetchingClients: false as boolean,
   qrData: '' as string,
   shouldSignOut: '' as shouldSignOut,
+  nodeSort: { value: 'name', ascending: true } as NodeSort,
 })
   .handleAction(setShouldLogout, (state, action) =>
     produce(state, (draftState) => {
@@ -46,15 +48,33 @@ export const reducer = createReducer({
       draftState.isFetchingClients = true
     })
   )
+  .handleAction(setNodeSort, (state, action) =>
+    produce(state, (draftState) => {
+        draftState.nodeSort = action.payload
+        const { value, ascending } = action.payload
+        draftState.nodes = draftState.nodes.sort((a, b) =>
+          a[value].localeCompare(b[value])
+        )
+        if (!ascending) {
+          draftState.nodes = draftState.nodes.reverse()
+        }
+    })
+  )
   .handleAction(getNodes['success'], (state, action) =>
     produce(state, (draftState) => {
       if (!!action.payload && action.payload.length) {
         draftState.nodes = action.payload.map(nodePayloadToNode)
-        draftState.nodes = draftState.nodes.sort((a, b) => a.name.localeCompare(b.name))
+        const { value, ascending } = state.nodeSort
+        draftState.nodes = draftState.nodes.sort((a, b) =>
+          a[value].localeCompare(b[value])
+        )
+        if (!ascending) {
+          draftState.nodes = draftState.nodes.reverse()
+        }
       } else {
         draftState.nodes = []
       }
-     
+
       draftState.isFetching = false
     })
   )
@@ -68,11 +88,12 @@ export const reducer = createReducer({
     produce(state, (draftState) => {
       draftState.nodes = []
       draftState.isFetching = false
-      if (!!action.payload && !!action.payload.message) { // && action.payload.message.includes("unauth")) {
+      if (!!action.payload && !!action.payload.message) {
+        // && action.payload.message.includes("unauth")) {
         // if (action.payload.message.includes("Network Error")) {
         //   draftState.shouldSignOut = 'network'
         // }
-        if (action.payload.message.includes("status code 401")) {
+        if (action.payload.message.includes('status code 401')) {
           draftState.shouldSignOut = 'auth'
         }
       }
@@ -85,9 +106,13 @@ export const reducer = createReducer({
       )
       if (~index) {
         const newNode = nodePayloadToNode(action.payload)
-        if (newNode.ishub && draftState.nodes[index].ishub !== newNode.ishub) { // set all other nodes on same network as not hub
+        if (newNode.ishub && draftState.nodes[index].ishub !== newNode.ishub) {
+          // set all other nodes on same network as not hub
           for (let i = 0; i < draftState.nodes.length; i++) {
-            if (i !== index && draftState.nodes[i].network === newNode.network) {
+            if (
+              i !== index &&
+              draftState.nodes[i].network === newNode.network
+            ) {
               draftState.nodes[i].ishub = false
             }
           }
@@ -155,9 +180,12 @@ export const reducer = createReducer({
       )
       if (~index) {
         draftState.nodes[index] = nodePayloadToNode(action.payload)
-        draftState.externalClients = draftState.externalClients.filter(client =>  
-          !(client.ingressgatewayid === draftState.nodes[index].id && 
-            client.network === draftState.nodes[index].network)
+        draftState.externalClients = draftState.externalClients.filter(
+          (client) =>
+            !(
+              client.ingressgatewayid === draftState.nodes[index].id &&
+              client.network === draftState.nodes[index].network
+            )
         )
       }
     })

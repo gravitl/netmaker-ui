@@ -99,6 +99,9 @@ export const en: LanguageResource = {
     togglelite: 'Use Light Mode',
     toggledark: 'Use Dark Mode',
     copytext: 'Copy',
+    ascend: 'Sort Ascending',
+    descend: 'Sort Descending ',
+    sortby: 'Sort by',
   },
   dashboard: {
     title: 'Netmaker Dashboard',
