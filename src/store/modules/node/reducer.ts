@@ -20,7 +20,7 @@ import {
   updateExternalClient,
   updateNode,
 } from './actions'
-import { Node } from './types'
+import { Node, NodeSort } from './types'
 import { download, nodePayloadToNode } from './utils'
 
 export const reducer = createReducer({
@@ -30,6 +30,7 @@ export const reducer = createReducer({
   isFetchingClients: false as boolean,
   qrData: '' as string,
   shouldSignOut: '' as shouldSignOut,
+  nodeSort: { value: 'name', ascending: true } as NodeSort,
 })
   .handleAction(setShouldLogout, (state, action) =>
     produce(state, (draftState) => {
