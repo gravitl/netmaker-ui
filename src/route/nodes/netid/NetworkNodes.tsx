@@ -38,11 +38,13 @@ import { CreateEgress } from './components/CreateEgress'
 import { TableToggleButton } from './components/TableToggleButton'
 import { CreateRelay } from './components/CreateRelay'
 import { NetworkSelect } from '../../../components/NetworkSelect'
-import { useDispatch } from 'react-redux'
-import { deleteNode } from '~store/modules/node/actions'
+import { useDispatch, useSelector } from 'react-redux'
+import { deleteNode, setNodeSort } from '~store/modules/node/actions'
 import CustomizedDialogs from '~components/dialog/CustomDialog'
 import { HubButton } from './components/HubButton'
 import { MultiCopy } from '~components/CopyText'
+import { nodeSelectors } from '~store/selectors'
+import { Tablefilter } from '~components/filter/Tablefilter'
 
 export const NetworkNodes: React.FC = () => {
   const { path, url } = useRouteMatch()
@@ -50,6 +52,7 @@ export const NetworkNodes: React.FC = () => {
   const { netid } = useParams<{ netid: string }>()
   const network = useNetwork(netid)
   const listOfNodes = useNodesByNetworkId(netid) || []
+  const nodeSort = useSelector(nodeSelectors.getNodeSort)
   const [filterNodes, setFilterNodes] = React.useState(listOfNodes)
   const [selected, setSelected] = React.useState({} as Node)
   const dispatch = useDispatch()
@@ -232,6 +235,16 @@ export const NetworkNodes: React.FC = () => {
     }
   }
 
+  const handleNodeSortSelect = (selection: string) => {
+    if (selection === 'address' || 
+      selection === 'name' || 
+      selection === 'network') {
+      dispatch(setNodeSort({
+        ...nodeSort, 
+        value: selection }))
+    }
+  }
+
   return (
     <Switch>
       <Route exact path={path}>
@@ -261,7 +274,19 @@ export const NetworkNodes: React.FC = () => {
                       </IconButton>
                     </Tooltip>
                   </Grid>
-                  <Grid item xs={4}>
+                  <Grid item xs={3}>
+                  <Tablefilter
+                    values={['address', 'name', 'network']}
+                    ascending={nodeSort.ascending}
+                    onSelect={handleNodeSortSelect}
+                    onAscendClick={() => { dispatch(setNodeSort({
+                      ...nodeSort, 
+                      ascending: !nodeSort.ascending }))
+                    }}
+                    currentValue={nodeSort.value}
+                  />
+                </Grid>
+                  <Grid item xs={3}>
                     <TextField
                       InputProps={{
                         startAdornment: (
@@ -274,7 +299,7 @@ export const NetworkNodes: React.FC = () => {
                       onChange={handleFilter}
                     />
                   </Grid>
-                  <Grid item xs={6}>
+                  <Grid item xs={3}>
                     <NetworkSelect selectAll />
                   </Grid>
                   <Grid item xs={1}>

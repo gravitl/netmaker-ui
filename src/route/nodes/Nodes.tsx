@@ -7,7 +7,7 @@ import {
   Tooltip,
 } from '@mui/material'
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { nodeSelectors } from '~store/selectors'
 import { useRouteMatch, Switch, Route, useHistory } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
@@ -15,14 +15,17 @@ import { NodeTable } from './components/NodeTable'
 import { NetworkSelect } from '../../components/NetworkSelect'
 import { Search, Sync } from '@mui/icons-material'
 import { NetworkNodes } from './netid/NetworkNodes'
-import { Tablefilter } from '../networks/components/Tablefilter'
+import { Tablefilter } from '~components/filter/Tablefilter'
+import { setNodeSort } from '~store/modules/node/actions'
 
 export const Nodes: React.FC = () => {
   const { path } = useRouteMatch()
   const { t } = useTranslation()
   const listOfNodes = useSelector(nodeSelectors.getNodes)
+  const nodeSort = useSelector(nodeSelectors.getNodeSort)
   const [filterNodes, setFilterNodes] = React.useState(listOfNodes)
   const history = useHistory()
+  const dispatch = useDispatch()
 
   const syncNodes = () => {
     history.push('/nodes')
@@ -42,6 +45,16 @@ export const Nodes: React.FC = () => {
     }
   }
 
+  const handleNodeSortSelect = (selection: string) => {
+    if (selection === 'address' || 
+      selection === 'name' || 
+      selection === 'network') {
+      dispatch(setNodeSort({
+        ...nodeSort, 
+        value: selection }))
+    }
+  }
+
   return (
     <Container>
       <Switch>
@@ -52,7 +65,19 @@ export const Nodes: React.FC = () => {
             </Grid>
             <Grid item xs={7}>
               <Grid container justifyContent="space-around" alignItems="center">
-                <Grid item xs={4}>
+                <Grid item xs={3.5}>
+                  <Tablefilter
+                    values={['address', 'name', 'network']}
+                    ascending={nodeSort.ascending}
+                    onSelect={handleNodeSortSelect}
+                    onAscendClick={() => { dispatch(setNodeSort({
+                      ...nodeSort, 
+                      ascending: !nodeSort.ascending }))
+                    }}
+                    currentValue={nodeSort.value}
+                  />
+                </Grid>
+                <Grid item xs={3}>
                   <TextField
                     InputProps={{
                       startAdornment: (
@@ -65,7 +90,7 @@ export const Nodes: React.FC = () => {
                     onChange={handleFilter}
                   />
                 </Grid>
-                <Grid item xs={3}>
+                <Grid item xs={2}>
                   <NetworkSelect />
                 </Grid>
                 <Grid item xs={1}>
@@ -74,9 +99,6 @@ export const Nodes: React.FC = () => {
                       <Sync />
                     </IconButton>
                   </Tooltip>
-                </Grid>
-                <Grid item xs={3}>
-                  <Tablefilter />
                 </Grid>
               </Grid>
             </Grid>
