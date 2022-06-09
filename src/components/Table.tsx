@@ -46,7 +46,7 @@ export interface Props<Row> {
   getRowId: (row: Row) => React.Key
   rowsPerPageOptions?: Array<number>
   actions?: Array<(row: Row) => ActionIconProps>
-  tableId?: string;
+  tableId?: string
 }
 
 function renderActionIcon(
@@ -67,7 +67,7 @@ function renderActionIcon(
 }
 
 /**
- * @param tableId Needed when we have two tables in the same route, 
+ * @param tableId Needed when we have two tables in the same route,
  * e.g. `_extClients`
  */
 export function NmTable<T>({
@@ -87,7 +87,9 @@ export function NmTable<T>({
   const userSettings = useSelector(authSelectors.getUserSettings)
 
   const setQueryParams = (page: number, rowsPerPage: number) => {
-    history.push(`${url}?page${tableId}=${page}&rowsPerPage${tableId}=${rowsPerPage}`)
+    history.push(
+      `${url}?page${tableId}=${page}&rowsPerPage${tableId}=${rowsPerPage}`
+    )
     if (!!user && !!rowsPerPage) {
       dispatch(
         setUserSettings({
@@ -100,11 +102,13 @@ export function NmTable<T>({
   }
 
   rowsPerPageOptions = rowsPerPageOptions || [10, 25, 100, 250]
-  const page = query.has(`page${tableId}`) ? Number(query.get(`page${tableId}`)) : 0
+  const page = query.has(`page${tableId}`)
+    ? Number(query.get(`page${tableId}`))
+    : 0
   const rowsPerPage = query.has(`rowsPerPage${tableId}`)
     ? Number(query.get(`rowsPerPage${tableId}`))
-    : !!userSettings && !!userSettings.rowsPerPage 
-    ? userSettings.rowsPerPage 
+    : !!userSettings && !!userSettings.rowsPerPage
+    ? userSettings.rowsPerPage
     : rowsPerPageOptions[0]
 
   const handleChangePage = (
@@ -121,8 +125,20 @@ export function NmTable<T>({
   }
 
   return (
-    <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-      <TableContainer sx={{ height: 'auto', maxHeight: '32rem' }}>
+    <Paper
+      sx={{ width: '100%', overflow: 'hidden' }}
+      style={{ paddingLeft: '2rem', paddingRight: '2rem' }}
+    >
+      <TableContainer
+        sx={{ height: 'auto', maxHeight: '32rem' }}
+        style={{
+          justifyContent: 'flex-start',
+          overflowX: 'auto',
+          marginRight: 'auto',
+          marginLeft: 'auto',
+          padding: '10px',
+        }}
+      >
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
