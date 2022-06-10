@@ -10,7 +10,10 @@ import {
   NmFormInputText,
 } from '../../../components/form'
 import { useLinkBreadcrumb } from '../../../components/PathBreadcrumbs'
-import { createNetwork, getNetworks } from '../../../store/modules/network/actions'
+import {
+  createNetwork,
+  getNetworks,
+} from '../../../store/modules/network/actions'
 import { randomNetworkName, randomCIDR, randomCIDR6 } from '~util/fields'
 import { useHistory } from 'react-router'
 
@@ -57,9 +60,9 @@ export const NetworkCreate: React.FC = () => {
   const dispatch = useDispatch()
   const history = useHistory()
   const classes = useStyles()
-  const [ viewLocal, setViewLocal ] = React.useState(false)
-  const [ useIpv4, setUseIpv4 ] = React.useState(true)
-  const [ useIpv6, setUseIpv6 ] = React.useState(false)
+  const [viewLocal, setViewLocal] = React.useState(false)
+  const [useIpv4, setUseIpv4] = React.useState(true)
+  const [useIpv6, setUseIpv6] = React.useState(false)
 
   const onSubmit = useCallback(
     (data: CreateNetwork) => {
@@ -76,9 +79,7 @@ export const NetworkCreate: React.FC = () => {
           defaultacl: data.defaultacl ? 'yes' : 'no',
         })
       )
-      dispatch(
-        getNetworks.request()
-      )
+      dispatch(getNetworks.request())
       history.push('/networks')
     },
     [dispatch, history]
@@ -103,119 +104,223 @@ export const NetworkCreate: React.FC = () => {
   }
 
   return (
-    <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-    <NmForm
-      initialState={initialState}
-      onSubmit={onSubmit}
-      submitProps={{
-        variant: 'contained',
-        fullWidth: true,
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
       }}
-      submitText={t('network.create')}
-      ref={formRef}
     >
-      <Grid container justifyContent="center" alignItems="center">
-        <Grid item xs={12} sm={6} md={7} className={classes.center + ' ' + classes.rowMargin}>
-          <Button
-            onClick={() => {
-              formRef.current?.reset(
-                {
-                  ...formRef.current?.values,
-                  netid: randomNetworkName(),
-                  addressrange: useIpv4 ?  randomCIDR() : '',
-                  addressrange6: useIpv6 ? randomCIDR6() : '',
-                  defaultudpholepunch: true,
-                },
-                { keepDefaultValues: true }
-              )
-            }}
-            style={{width: '33%'}}
-            variant="outlined"
+      <NmForm
+        initialState={initialState}
+        onSubmit={onSubmit}
+        submitProps={{
+          variant: 'contained',
+          fullWidth: true,
+        }}
+        submitText={t('network.create')}
+        ref={formRef}
+      >
+        <Grid container justifyContent="center" alignItems="center">
+          <Grid
+            item
+            xs={12}
+            sm={6}
+            md={7}
+            className={classes.center + ' ' + classes.rowMargin}
           >
-            {t('common.autofill')}
-          </Button>
-        </Grid>
-        <Grid item xs={12} sm={12} md={7} className={classes.center + ' ' + classes.rowMargin}>
-          <NmFormInputText
-            style={{width: '90%'}}
-            name={'netid'}
-            label={`${t('network.netid')} (${t('common.max')} 12 ${t('common.chars')})`}
-          />
-        </Grid>
-        <Grid item xs={12} sm={12} md={10} className={classes.rowMargin} style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-          <div onClick={handleViewIpv4}>
-            <NmFormInputSwitch
-              name={'isipv4'}
-              label={String(t('network.isipv4'))}
-            />
-          </div>
-          {useIpv4 &&
+            <Button
+              onClick={() => {
+                formRef.current?.reset(
+                  {
+                    ...formRef.current?.values,
+                    netid: randomNetworkName(),
+                    addressrange: useIpv4 ? randomCIDR() : '',
+                    addressrange6: useIpv6 ? randomCIDR6() : '',
+                    defaultudpholepunch: true,
+                  },
+                  { keepDefaultValues: true }
+                )
+              }}
+              style={{ width: '33%' }}
+              variant="outlined"
+            >
+              {t('common.autofill')}
+            </Button>
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            sm={12}
+            md={7}
+            className={classes.center + ' ' + classes.rowMargin}
+          >
             <NmFormInputText
-              style={{width: '60%'}}
-              name={'addressrange'}
-              label={String(t('network.addressrange'))}
+              style={{ width: '90%' }}
+              name={'netid'}
+              label={`${t('network.netid')} (${t('common.max')} 12 ${t(
+                'common.chars'
+              )})`}
             />
-          }
-        </Grid>
-        <Grid item xs={12} sm={12} md={10} className={classes.rowMargin} style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-          <div  onClick={handleViewIpv6}>
-            <NmFormInputSwitch
-              name={'isipv6'}
-              label={String(t('network.isipv6'))}
-            />
-          </div>
-          {useIpv6 &&
-            <NmFormInputText
-              style={{width: '60%'}}
-              name={'addressrange6'}
-              label={String(t('network.addressrange6'))}
-            />
-          }
-        </Grid>
-        {/* <Grid item xs={12} sm={12} md={7} className={classes.center + ' ' + classes.rowMargin}>
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            sm={12}
+            md={10}
+            className={classes.rowMargin}
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <div onClick={handleViewIpv4}>
+              <NmFormInputSwitch
+                name={'isipv4'}
+                label={String(t('network.isipv4'))}
+              />
+            </div>
+            {useIpv4 && (
+              <NmFormInputText
+                style={{ width: '60%' }}
+                name={'addressrange'}
+                label={String(t('network.addressrange'))}
+              />
+            )}
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            sm={12}
+            md={10}
+            className={classes.rowMargin}
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <div onClick={handleViewIpv6}>
+              <NmFormInputSwitch
+                name={'isipv6'}
+                label={String(t('network.isipv6'))}
+              />
+            </div>
+            {useIpv6 && (
+              <NmFormInputText
+                style={{ width: '60%' }}
+                name={'addressrange6'}
+                label={String(t('network.addressrange6'))}
+              />
+            )}
+          </Grid>
+          {/* <Grid item xs={12} sm={12} md={7} className={classes.center + ' ' + classes.rowMargin}>
           <NmFormInputText
             style={{width: '90%'}}
             name={'addressrange'}
             label={String(t('network.addressrange'))}
           />
         </Grid> */}
-        <Grid item xs={12} sm={10} md={10} className={classes.center + ' ' + classes.rowMargin} style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-          <Tooltip title={t('helper.udpholepunching') as string} placement='top'>
-            <div>
-              <NmFormInputSwitch name={'defaultudpholepunch'} label={String(t('network.defaultudpholepunch'))} />
-            </div>
-          </Tooltip>
+          <Grid
+            item
+            xs={12}
+            sm={10}
+            md={10}
+            className={classes.center + ' ' + classes.rowMargin}
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <Tooltip
+              title={t('helper.udpholepunching') as string}
+              placement="top"
+            >
+              <div>
+                <NmFormInputSwitch
+                  name={'defaultudpholepunch'}
+                  label={String(t('network.defaultudpholepunch'))}
+                />
+              </div>
+            </Tooltip>
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            sm={10}
+            md={10}
+            className={classes.center + ' ' + classes.rowMargin}
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <Tooltip title={t('helper.defaultacl') as string} placement="top">
+              <div>
+                <NmFormInputSwitch
+                  name={'defaultacl'}
+                  label={String(t('network.defaultacl'))}
+                />
+              </div>
+            </Tooltip>
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            sm={10}
+            md={10}
+            className={classes.center + ' ' + classes.rowMargin}
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <Tooltip
+              title={t('helper.ispointtosite') as string}
+              placement="top"
+            >
+              <div>
+                <NmFormInputSwitch
+                  name={'ispointtosite'}
+                  label={String(t('network.ispointtosite'))}
+                />
+              </div>
+            </Tooltip>
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            sm={12}
+            md={10}
+            className={classes.center + ' ' + classes.rowMargin}
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <Tooltip title={t('helper.islocal') as string} placement="top">
+              <div onClick={handleViewLocal}>
+                <NmFormInputSwitch
+                  name={'islocal'}
+                  label={String(t('network.islocal'))}
+                />
+              </div>
+            </Tooltip>
+            {viewLocal && (
+              <NmFormInputText
+                style={{ width: '60%' }}
+                name={'localrange'}
+                label={String(t('network.localrange'))}
+              />
+            )}
+          </Grid>
         </Grid>
-        <Grid item xs={12} sm={10} md={10} className={classes.center + ' ' + classes.rowMargin} style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-          <Tooltip title={t('helper.defaultacl') as string} placement='top'>
-            <div>
-              <NmFormInputSwitch name={'defaultacl'} label={String(t('network.defaultacl'))} />
-            </div>
-          </Tooltip>
-        </Grid>
-        <Grid item xs={12} sm={10} md={10} className={classes.center + ' ' + classes.rowMargin} style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-          <Tooltip title={t('helper.ispointtosite') as string} placement='top'>
-            <div>
-              <NmFormInputSwitch name={'ispointtosite'} label={String(t('network.ispointtosite'))} />
-            </div>
-          </Tooltip>
-        </Grid>
-        <Grid item xs={12} sm={12} md={10} className={classes.center + ' ' + classes.rowMargin} style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-          <Tooltip title={t('helper.islocal') as string} placement='top'>
-            <div onClick={handleViewLocal}>
-              <NmFormInputSwitch name={'islocal'} label={String(t('network.islocal'))}/>
-            </div>
-          </Tooltip>
-          {viewLocal &&
-            <NmFormInputText
-              style={{width: '60%'}}
-              name={'localrange'}
-              label={String(t('network.localrange'))}
-            />
-          }
-        </Grid>
-      </Grid>
-    </NmForm>
+      </NmForm>
     </div>
   )
 }
