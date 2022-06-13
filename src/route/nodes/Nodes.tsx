@@ -46,12 +46,17 @@ export const Nodes: React.FC = () => {
   }
 
   const handleNodeSortSelect = (selection: string) => {
-    if (selection === 'address' || 
-      selection === 'name' || 
-      selection === 'network') {
-      dispatch(setNodeSort({
-        ...nodeSort, 
-        value: selection }))
+    if (
+      selection === 'address' ||
+      selection === 'name' ||
+      selection === 'network'
+    ) {
+      dispatch(
+        setNodeSort({
+          ...nodeSort,
+          value: selection,
+        })
+      )
     }
   }
 
@@ -60,24 +65,28 @@ export const Nodes: React.FC = () => {
       <Switch>
         <Route exact path={path}>
           <Grid container justifyContent="space-around" alignItems="center">
-            <Grid item xs={3}>
+            <Grid item xs={3} md={3}>
               <h2>{t('node.nodes')}</h2>
             </Grid>
-            <Grid item xs={7}>
+            <Grid item xs={10} md={7}>
               <Grid container justifyContent="space-around" alignItems="center">
-                <Grid item xs={3.5}>
+                <Grid item xs={10} md={3.5}>
                   <Tablefilter
                     values={['address', 'name', 'network']}
                     ascending={nodeSort.ascending}
                     onSelect={handleNodeSortSelect}
-                    onAscendClick={() => { dispatch(setNodeSort({
-                      ...nodeSort, 
-                      ascending: !nodeSort.ascending }))
+                    onAscendClick={() => {
+                      dispatch(
+                        setNodeSort({
+                          ...nodeSort,
+                          ascending: !nodeSort.ascending,
+                        })
+                      )
                     }}
                     currentValue={nodeSort.value}
                   />
                 </Grid>
-                <Grid item xs={3}>
+                <Grid item xs={10} md={3} display="flex">
                   <TextField
                     InputProps={{
                       startAdornment: (
@@ -90,10 +99,10 @@ export const Nodes: React.FC = () => {
                     onChange={handleFilter}
                   />
                 </Grid>
-                <Grid item xs={2}>
+                <Grid item xs={8} md={3} display="flex" paddingBottom="1rem">
                   <NetworkSelect />
                 </Grid>
-                <Grid item xs={1}>
+                <Grid item xs={1} md={1} display="flex">
                   <Tooltip title={t('node.sync') as string} placement="top">
                     <IconButton color="primary" onClick={syncNodes}>
                       <Sync />
