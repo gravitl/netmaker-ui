@@ -56,7 +56,7 @@ export const ServerLogs: React.FC = () => {
     if (!!!searchTerm) {
       setFilterLogs(serverLogs)
     } else {
-      setFilterLogs(serverLogs.filter((log) => log.includes(searchTerm)))
+      setFilterLogs(serverLogs.filter((log) => log.toLowerCase().includes(searchTerm.toLowerCase())))
     }
   }
 
