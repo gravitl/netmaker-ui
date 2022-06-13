@@ -14,3 +14,11 @@ export const getServerLogs = createSelector(
   getServer,
   (server) => server.logs
 )
+export const getMetrics = createSelector(
+  getServer,
+  (server) => server.metrics
+)
+export const getNodeMetrics = createSelector(
+  getServer,
+  (server) => server.nodeMetrics
+)

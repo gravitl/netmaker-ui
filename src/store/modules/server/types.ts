@@ -60,3 +60,46 @@ export interface LogsPayload {
   Request: undefined
   Response: string
 }
+
+type MutableRequired<T> = { -readonly [P in keyof T]-?: T[P] };
+
+
+export type MetricID = string
+
+export type MetricsTable =  MutableRequired<{ [ID: MetricID] : NodeMetric}>
+
+export interface NodeMetricsContainer {
+  Connectivity: MetricsTable
+}
+
+export interface MetricsContainer {
+  Nodes: MetricsTable
+}
+
+export interface NodeMetric {
+  Uptime: number
+	TotalTime: number
+	Latency: number
+	TotalReceived: number
+	ReceivedHourly: number
+	TotalSent: number
+	SentHourly: number
+	ActualUptime: number
+	PercentUp: number
+	Connected: boolean
+}
+
+export interface NodeMetricsID {
+  ID: string
+  Network: string
+}
+
+export interface NodeMetrics {
+  Request: NodeMetricsID
+  Response: NodeMetricsContainer
+}
+
+export interface Metrics {
+  Request: string | undefined
+  Response: MetricsContainer
+}
