@@ -42,15 +42,17 @@ export const Networks: React.FC = () => {
           <Grid
             container
             direction="row"
-            justifyContent="space-between"
+            justifyContent="right"
             alignItems="center"
           >
             <Grid item xs={8} md={5}>
+              <div style={{textAlign: "center"}}>
               <h2>{t('network.networks')}</h2>
+              </div>
             </Grid>
-            <Grid item xs={8} md={5}>
+            <Grid item xs={10} md={5} style={{textAlign: "center"}}>
               <Grid container justifyContent="space-around" alignItems="center">
-                <Grid item xs={8} md={5}>
+                <Grid item xs={6} md={5}>
                   <TextField
                     InputProps={{
                       startAdornment: (
@@ -63,7 +65,7 @@ export const Networks: React.FC = () => {
                     onChange={handleFilter}
                   />
                 </Grid>
-                <Grid item xs={8} md={5}>
+                <Grid item xs={5.5} md={5}>
                   <NmLink
                     variant="contained"
                     to={{ pathname: '/networks/create' }}

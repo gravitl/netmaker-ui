@@ -70,6 +70,29 @@ export const Nodes: React.FC = () => {
             </Grid>
             <Grid item xs={10} md={7}>
               <Grid container justifyContent="space-around" alignItems="center">
+                        <Grid item xs={10} md={3}>
+                          <TextField
+                            InputProps={{
+                              startAdornment: (
+                                <InputAdornment position="start">
+                                  <Search />
+                                </InputAdornment>
+                              ),
+                            }}
+                            label={`${t('common.search')} ${t('node.nodes')}`}
+                            onChange={handleFilter}
+                          />
+                        </Grid>
+                        <Grid item xs={8} md={3}  paddingBottom="1rem">
+                  <NetworkSelect />
+                </Grid>
+                <Grid item xs={1} md={1} >
+                  <Tooltip title={t('node.sync') as string} placement="top">
+                    <IconButton color="primary" onClick={syncNodes}>
+                      <Sync />
+                    </IconButton>
+                  </Tooltip>
+                </Grid>
                 <Grid item xs={10} md={3.5}>
                   <Tablefilter
                     values={['address', 'name', 'network']}
@@ -86,29 +109,8 @@ export const Nodes: React.FC = () => {
                     currentValue={nodeSort.value}
                   />
                 </Grid>
-                <Grid item xs={10} md={3} display="flex">
-                  <TextField
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <Search />
-                        </InputAdornment>
-                      ),
-                    }}
-                    label={`${t('common.search')} ${t('node.nodes')}`}
-                    onChange={handleFilter}
-                  />
-                </Grid>
-                <Grid item xs={8} md={3} display="flex" paddingBottom="1rem">
-                  <NetworkSelect />
-                </Grid>
-                <Grid item xs={1} md={1} display="flex">
-                  <Tooltip title={t('node.sync') as string} placement="top">
-                    <IconButton color="primary" onClick={syncNodes}>
-                      <Sync />
-                    </IconButton>
-                  </Tooltip>
-                </Grid>
+                
+                
               </Grid>
             </Grid>
           </Grid>

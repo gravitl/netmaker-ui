@@ -38,8 +38,10 @@ export const ExtClients: React.FC = () => {
                 </Typography>
               </div>
             </Grid>
+            <Grid item xs={8}>
+              <NetworkSelect />
+            </Grid>
           </Grid>
-          <NetworkSelect />
         </Route>
         <Route path={`${path}/:netid/:clientid/qr`}>
           <QrCodeView />
