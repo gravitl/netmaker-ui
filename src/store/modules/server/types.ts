@@ -61,12 +61,9 @@ export interface LogsPayload {
   Response: string
 }
 
-type MutableRequired<T> = { -readonly [P in keyof T]-?: T[P] };
-
-
 export type MetricID = string
 
-export type MetricsTable =  MutableRequired<{ [ID: MetricID] : NodeMetric}>
+export type MetricsTable =  Map<string, NodeMetric>
 
 export interface NodeMetricsContainer {
   Connectivity: MetricsTable

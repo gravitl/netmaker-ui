@@ -3,7 +3,8 @@ import { LanguageResource } from '../type'
 export const en: LanguageResource = {
   pro: {
     logs: 'Server Logs',
-    refresh: 'Refresh Logs',
+    refresh: 'Refresh',
+    metrics: 'Metrics',
   },
   header: {
     login: 'Login',

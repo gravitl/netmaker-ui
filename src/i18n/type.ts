@@ -2,6 +2,7 @@ export interface LanguageResource {
   pro: {
     logs: string
     refresh: string
+    metrics: string
   }
   header: {
     login: string

@@ -24,6 +24,7 @@ import Info from '@mui/icons-material/Info'
 import Dashboard from '@mui/icons-material/Dashboard'
 import UsersIcon from '@mui/icons-material/People'
 import LogsIcon from '@mui/icons-material/Terminal'
+import MetricsIcon from '@mui/icons-material/Insights'
 import LibraryBooks from '@mui/icons-material/LibraryBooks'
 import Person from '@mui/icons-material/Person'
 import VpnKey from '@mui/icons-material/VpnKey'
@@ -339,6 +340,12 @@ export default function CustomDrawer() {
                   <LogsIcon />
                 </ListItemIcon>
                 <ListItemText primary={t('pro.logs')} />
+              </ListItemButton>
+              <ListItemButton component={Link} to="/metrics">
+                <ListItemIcon aria-label={String(t('pro.metrics'))}>
+                  <MetricsIcon />
+                </ListItemIcon>
+                <ListItemText primary={t('pro.metrics')} />
               </ListItemButton>
             </List>
             <Divider />

@@ -16,6 +16,7 @@ import { DNS } from './dns/DNS'
 import { Graphs } from './graph/Graphs'
 import { NodeAcls } from './node_acls/NodeACLs'
 import { ServerLogs } from './logs/ServerLogs'
+import { Metrics } from './metrics/Metrics'
 
 function NoMatch() {
   const location = useLocation()
@@ -71,6 +72,9 @@ function Routes() {
           </PrivateRoute>
           <PrivateRoute path="/logs">
             <ServerLogs />
+          </PrivateRoute>
+          <PrivateRoute path="/metrics">
+            <Metrics />
           </PrivateRoute>
           <PrivateRoute
             path="/users"

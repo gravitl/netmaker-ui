@@ -79,12 +79,15 @@ export const reducer = createReducer({
     produce(state, (draftState) => {
       draftState.isFetching = false
       draftState.metrics = payload.payload
+      console.log("GOT METRICS: ")
+      console.log(payload.payload)
     })
   )
   .handleAction(getMetrics['failure'], (state, _) => 
     produce(state, (draftState) => {
       draftState.isFetching = false
       draftState.metrics = undefined
+      console.log("COULD NOT GET METRICS")
     })
   )
   .handleAction(getNodeMetrics['request'], (state, _) => 
