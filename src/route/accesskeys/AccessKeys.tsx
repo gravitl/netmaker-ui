@@ -37,8 +37,12 @@ export const AccessKeys: React.FC = () => {
                 </Typography>
               </div>
             </Grid>
+            <Grid item xs={8}>
+              <NetworkSelect selectAll />
+            </Grid>
           </Grid>
-          <NetworkSelect selectAll />
+
+          
         </Route>
         <Route path={`${path}/:netid/details/:keyname`}>
           <AccessKeyView />
