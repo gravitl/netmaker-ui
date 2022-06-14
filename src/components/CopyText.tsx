@@ -18,7 +18,11 @@ export default function CopyText(Props: CopyProps) {
     <Tooltip title={`${t('common.copytext')}`} placement="bottom">
       <div onClick={() => copy(Props.value)}>
         <Button variant="text" sx={{ color: 'inherit' }}>
-          <Typography variant={Props.type} color={Props.color}>
+          <Typography
+            variant={Props.type}
+            color={Props.color}
+            style={{ textTransform: 'none' }}
+          >
             {Props.value}
           </Typography>
         </Button>
