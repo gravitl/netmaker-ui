@@ -23,35 +23,50 @@ export const AccessKeyTable: React.FC<{}> = () => {
   const { url } = useRouteMatch()
 
   if (!!!network) {
-    return <Grid container justifyContent="space-between" alignItems="center">
-      <Grid item xs={6}>
-        <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-          <Typography variant="h4">
+    return (
+      <Grid container justifyContent="space-between" alignItems="center">
+        <Grid item xs={6}>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <Typography variant="h4">
               {`${netid}, ${t('network.none')}`}
-          </Typography>
-        </div>
+            </Typography>
+          </div>
+        </Grid>
+        <Grid item xs={5}>
+          <NetworkSelect />
+        </Grid>
       </Grid>
-      <Grid item xs={5}>
-        <NetworkSelect />
-      </Grid>
-    </Grid>
-}
+    )
+  }
 
   const columns: TableColumns<AccessKey> = [
     {
-        id: 'name',
-        label: t('accesskey.accesskey'),
-        minWidth: 170,
-        sortable: true,
-        format: (value) => <NmLink sx={{textTransform: 'none'}} to={`/access-keys/${netid}/details/${value}`}>{value}</NmLink>,
-        align: 'center',
+      id: 'name',
+      label: t('accesskey.accesskey'),
+      minWidth: 170,
+      sortable: true,
+      format: (value) => (
+        <NmLink
+          sx={{ textTransform: 'none' }}
+          to={`/access-keys/${netid}/details/${value}`}
+        >
+          {value}
+        </NmLink>
+      ),
+      align: 'center',
     },
     {
-        id: 'uses',
-        labelKey: 'accesskey.uses',
-        minWidth: 100,
-        sortable: true,
-        align: 'center',
+      id: 'uses',
+      labelKey: 'accesskey.uses',
+      minWidth: 100,
+      sortable: true,
+      align: 'center',
     },
   ]
 
@@ -77,27 +92,33 @@ export const AccessKeyTable: React.FC<{}> = () => {
 
   return (
     <Grid container>
-      <Grid item xs={12}>
-        <Grid container justifyContent="space-between" alignItems="center">
-          <Grid item xs={5}>
+      <Grid item xs={12} md={12}>
+        <Grid container 
+              direction="row"
+              display={'flex'}
+              justifyContent="space-between"
+              alignItems="center"
+              marginLeft="4rem"
+               >     
+          <Grid item xs={8} md={5}>
             <div style={{ textAlign: 'center' }}>
               <Typography variant="h4">
                 {`${t('accesskey.viewing')} ${netid}`}
               </Typography>
             </div>
           </Grid>
-          <Grid item xs={3}>
+          <Grid item xs={10} md={3}>
             <NetworkSelect />
           </Grid>
-          <Grid item xs={3}>
+          <Grid item xs={8} md={3}>
             <Button
-                fullWidth
-                variant="contained"
-                onClick={() => history.push(`${url}/create`)}
+              fullWidth
+              variant="contained"
+              onClick={() => history.push(`${url}/create`)}
             >
-                {`${t('common.create')} ${t('accesskey.accesskey')}`}
+              {`${t('common.create')} ${t('accesskey.accesskey')}`}
             </Button>
-        </Grid>
+          </Grid>
         </Grid>
         <hr />
       </Grid>
@@ -118,11 +139,11 @@ export const AccessKeyTable: React.FC<{}> = () => {
       />
       {selectedKey && (
         <CustomDialog
-            open={open}
-            handleClose={handleClose}
-            handleAccept={handleDeleteAccesKey}
-            message={t('accesskey.deleteconfirm')}
-            title={`${t('common.delete')} ${selectedKey}`}
+          open={open}
+          handleClose={handleClose}
+          handleAccept={handleDeleteAccesKey}
+          message={t('accesskey.deleteconfirm')}
+          title={`${t('common.delete')} ${selectedKey}`}
         />
       )}
     </Grid>

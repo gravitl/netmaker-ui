@@ -97,6 +97,9 @@ export interface LanguageResource {
     togglelite: string
     toggledark: string
     copytext: string
+    ascend: string
+    descend: string
+    sortby: string
   }
   dashboard: {
     title: string
