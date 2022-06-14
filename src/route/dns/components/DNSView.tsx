@@ -94,7 +94,7 @@ export const DNSView: React.FC = () => {
         justifyContent="space-between"
         alignItems="flex-start"
       >
-        <Grid item xs={12} sx={{ margin: '0.5em 0em 1em 0em' }}>
+        <Grid item xs={8} sx={{ margin: '0.5em 0em 1em 0em' }}>
           {serverConfig.DNSMode && <NetworkSelect />}
         </Grid>
         <Grid item xs={12} sx={{ margin: '0.5em 0em 1em 0em' }}>
@@ -132,8 +132,12 @@ export const DNSView: React.FC = () => {
           justifyContent="space-between"
           alignItems="flex-start"
         >
-          <Grid item xs={12} sx={{ margin: '0.5em 0em 1em 0em' }}>
+          <Grid item xs={6} sx={{ margin: '0.5em 0em 1em 0em' }}>
+            <div style={{textAlign: 'center'}}>
             {serverConfig.DNSMode && <NetworkSelect />}
+            </div>
+          </Grid>
+          <Grid item xs={12}>
             <hr />
           </Grid>
           <Grid
