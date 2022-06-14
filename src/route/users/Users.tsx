@@ -21,19 +21,22 @@ export const Users: React.FC = () => {
     <Container>
       <Switch>
         <Route exact path={path}>
-          <Grid
-            container
-            direction="row"
-            justifyContent="space-between"
-            alignItems="center"
-          >
-            <Grid item>
-              <h2>{t('users.header')}</h2>
-            </Grid>
-            <Grid item>
-              <NmLink variant="contained" to={{ pathname: '/users/create' }}>
-                {t('users.create.button')}
-              </NmLink>
+          <Grid item xs={10}>
+            <Grid
+              container
+              direction="row"
+              display={'flex'}
+              justifyContent="flex-end"
+              alignItems="center"
+            >
+              <Grid item xs={8}>
+                <h2>{t('users.header')}</h2>
+              </Grid>
+              <Grid item xs={1}>
+                <NmLink variant="contained" to={{ pathname: '/users/create' }}>
+                  {t('users.create.button')}
+                </NmLink>
+              </Grid>
             </Grid>
           </Grid>
           <UserTable />

@@ -4,6 +4,7 @@ import { useHistory, useParams } from 'react-router-dom'
 import { networkSelectors } from '../store/selectors'
 import { useTranslation } from 'react-i18next'
 import CustomSelect from '~components/select/CustomSelect'
+import { FormControl, Grid } from '@mui/material'
 
 export const NetworkSelect: React.FC<{
   selectAll? : boolean
@@ -18,7 +19,9 @@ export const NetworkSelect: React.FC<{
   }
 
   return (
-    <div style={{textAlign: 'center', display: 'flex', justifyContent: 'center', alignItems: 'center', paddingBottom: '1em'}}>
+    <Grid container justifyContent="space-around" alignItems="center">
+     <Grid item xs={12}>
+      <FormControl fullWidth >
       <CustomSelect
         placeholder={`${t('common.select')} ${t('network.network')}`}
         onSelect={(selected) => {
@@ -33,6 +36,9 @@ export const NetworkSelect: React.FC<{
         }}
         items={networkNames}
       />
-    </div>
+      </FormControl>
+      </Grid>
+    </Grid>
+
   )
 }

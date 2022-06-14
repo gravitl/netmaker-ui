@@ -23,12 +23,7 @@ export const DNS: React.FC = () => {
   } as any
 
   const DnsTitle = () => (
-    <Grid
-      container
-      direction="row"
-      justifyContent="center"
-      alignItems="center"
-    >
+    <Grid container direction="row" justifyContent="center" alignItems="center">
       <Grid item xs={5}>
         <div style={titleStyle}>
           <Typography variant="h5">
@@ -36,28 +31,21 @@ export const DNS: React.FC = () => {
           </Typography>
         </div>
       </Grid>
-    </Grid>)
+    </Grid>
+  )
 
   return (
     <Container>
       <Switch>
         <Route exact path={path}>
           <DnsTitle />
-          {hasDNS &&
-            <NetworkSelect />
-          }
+          {hasDNS && <NetworkSelect />}
         </Route>
         <Route path={`${path}/:netid/create`}>
-          {!hasDNS ?
-            <DnsTitle /> :
-            <DNSEntryCreate />
-          }
+          {!hasDNS ? <DnsTitle /> : <DNSEntryCreate />}
         </Route>
         <Route path={`${path}/:netid`}>
-          {!hasDNS ?
-            <DnsTitle /> :
-            <DNSView />
-          }
+          {!hasDNS ? <DnsTitle /> : <DNSView />}
         </Route>
       </Switch>
     </Container>

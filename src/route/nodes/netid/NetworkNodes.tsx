@@ -236,12 +236,17 @@ export const NetworkNodes: React.FC = () => {
   }
 
   const handleNodeSortSelect = (selection: string) => {
-    if (selection === 'address' || 
-      selection === 'name' || 
-      selection === 'network') {
-      dispatch(setNodeSort({
-        ...nodeSort, 
-        value: selection }))
+    if (
+      selection === 'address' ||
+      selection === 'name' ||
+      selection === 'network'
+    ) {
+      dispatch(
+        setNodeSort({
+          ...nodeSort,
+          value: selection,
+        })
+      )
     }
   }
 
@@ -254,16 +259,16 @@ export const NetworkNodes: React.FC = () => {
           justifyContent="space-between"
           alignItems="center"
         >
-          <Grid item xs={12}>
+          <Grid item xs={10} md={12}>
             <Grid container justifyContent="space-between" alignItems="center">
-              <Grid item xs={4}>
+              <Grid item xs={10} md={4}>
                 <Typography variant="h4">
                   {`${netid} ${t('node.nodes')}`}
                 </Typography>
               </Grid>
-              <Grid item xs={8}>
+              <Grid item xs={10} md={8}>
                 <Grid container justifyContent="center" alignItems="center">
-                  <Grid item xs={1}>
+                  <Grid item xs={3} md={1}>
                     <Tooltip
                       title={`${t('network.graph')}`}
                       placement="top"
@@ -274,19 +279,23 @@ export const NetworkNodes: React.FC = () => {
                       </IconButton>
                     </Tooltip>
                   </Grid>
-                  <Grid item xs={3}>
-                  <Tablefilter
-                    values={['address', 'name', 'network']}
-                    ascending={nodeSort.ascending}
-                    onSelect={handleNodeSortSelect}
-                    onAscendClick={() => { dispatch(setNodeSort({
-                      ...nodeSort, 
-                      ascending: !nodeSort.ascending }))
-                    }}
-                    currentValue={nodeSort.value}
-                  />
-                </Grid>
-                  <Grid item xs={3}>
+                  <Grid item xs={6} md={3}>
+                    <Tablefilter
+                      values={['address', 'name', 'network']}
+                      ascending={nodeSort.ascending}
+                      onSelect={handleNodeSortSelect}
+                      onAscendClick={() => {
+                        dispatch(
+                          setNodeSort({
+                            ...nodeSort,
+                            ascending: !nodeSort.ascending,
+                          })
+                        )
+                      }}
+                      currentValue={nodeSort.value}
+                    />
+                  </Grid>
+                  <Grid item xs={8} md={3}>
                     <TextField
                       InputProps={{
                         startAdornment: (
@@ -299,10 +308,10 @@ export const NetworkNodes: React.FC = () => {
                       onChange={handleFilter}
                     />
                   </Grid>
-                  <Grid item xs={3}>
+                  <Grid item xs={8} md={3} paddingBottom="1rem">
                     <NetworkSelect selectAll />
                   </Grid>
-                  <Grid item xs={1}>
+                  <Grid item xs={1} md={1}>
                     <Tooltip title={t('node.sync') as string} placement="top">
                       <IconButton color="primary" onClick={syncNodes}>
                         <Sync />
