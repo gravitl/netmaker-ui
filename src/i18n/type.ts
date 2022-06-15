@@ -105,6 +105,7 @@ export interface LanguageResource {
     ascend: string
     descend: string
     sortby: string
+    disconnected: string
   }
   dashboard: {
     title: string

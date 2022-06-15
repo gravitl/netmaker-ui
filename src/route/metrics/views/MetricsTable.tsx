@@ -23,7 +23,6 @@ import {
 } from '@mui/icons-material'
 import { useRouteMatch, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 import { useDispatch, useSelector } from 'react-redux'
 import { serverSelectors, nodeSelectors, authSelectors } from '~store/selectors'
 import { getMetrics } from '~store/modules/server/actions'
@@ -36,6 +35,10 @@ type HoveredNode = {
   nodeID2: string
 }
 
+const titleStyle = {
+  textAlign: 'center',
+} as any
+
 export const MetricsTable: React.FC = () => {
   const { url } = useRouteMatch()
   const { t } = useTranslation()
@@ -43,7 +46,6 @@ export const MetricsTable: React.FC = () => {
   const metrics = useSelector(serverSelectors.getMetrics)
   const isProcessing = useSelector(serverSelectors.isFetchingServerConfig)
   const { netid } = useParams<{ netid: string }>()
-  const { nodeid } = useParams<{ nodeid: string }>()
   const allNodes = useSelector(nodeSelectors.getNodes)
   const inDarkMode = useSelector(authSelectors.isInDarkMode)
   const [currentMetrics, setCurrentMetrics] = React.useState({} as MetricsContainer)
@@ -53,25 +55,21 @@ export const MetricsTable: React.FC = () => {
   } as HoveredNode)
   var nodeNameMap: Map<string, string> = new Map()
 
-  useLinkBreadcrumb({
-    link: url,
-    title: t('pro.metrics'),
-  })
-
   React.useEffect(() => {
-      if (!!!Object.keys(currentMetrics).length) {
-          dispatch(getMetrics.request(undefined))
-      }
+      if (!!!Object.keys(currentMetrics).length || !!!metrics ||
+        Object.keys(currentMetrics).length !== Object.keys(metrics).length) {
+        console.log("Fetching metrics")
+        dispatch(getMetrics.request(netid))
+      } 
       if (!!metrics &&
           Object.keys(currentMetrics).length !== Object.keys(metrics).length) {
+            console.log("Setting metrics", JSON.stringify(metrics))
           setCurrentMetrics(metrics)
       }
-  }, [dispatch, currentMetrics, metrics])
-
-  // if (!!currentMetrics && !!currentMetrics.nodes) {
-  //   // Object.keys(currentMetrics.nodes).map(metric => console.log(currentMetrics.nodes.get(metric)))
-  //   console.log(currentMetrics)
-  // }
+      if (!!!metrics) {
+        setCurrentMetrics({} as MetricsContainer)
+      }
+  }, [dispatch, currentMetrics, metrics, netid])
 
   allNodes.map((node) => nodeNameMap.set(node.id, node.name))
 
@@ -82,16 +80,24 @@ export const MetricsTable: React.FC = () => {
     zIndex: 1,
   }
 
+  const getTimeMinHrs = (duration: number) => {
+    const minutes = duration / 60000000000
+    const hours = Math.floor(minutes / 60)
+    const remainingMinutes = Math.ceil(((minutes / 60) % 1) * 60)
+    return `${hours}h${remainingMinutes}m`
+  }
+
   const getMetricsCellRender = (currMetric: NodeMetric | undefined, nodeID: string, loopID: string) => {
     // if it's this node's index, render disabled thing
     if (nodeID === loopID) {
       // looking at self
       return <DisabledIcon color="inherit" />
     }
+    
     return (
       <IconButton onTouchMove={(e) => console.log(JSON.stringify(currMetric))}>
         {!!currMetric && currMetric.connected ? (
-          <Tooltip title={`Percent UP ${currMetric.percentup}`}>
+          <Tooltip title={`UP = ${getTimeMinHrs(currMetric.actualuptime)} : ${currMetric.percentup.toFixed(2)}% \t Latency = ${currMetric.latency}`}>
             <CheckCircle htmlColor="#2800ee" />
           </Tooltip>
         ) : (
@@ -128,7 +134,20 @@ export const MetricsTable: React.FC = () => {
   }
 
   return (
-    <Grid container>
+    <Grid
+      container
+      justifyContent='center'
+      alignItems='center'
+    >
+      {!!netid && 
+        <Grid item xs={6}>
+          <div style={titleStyle}>
+            <Typography variant="h5">
+              {`${t('pro.metrics')} : ${netid}`}
+            </Typography>
+          </div>
+        </Grid>
+      }
       <Grid item xs={12}>
         <Paper sx={{ width: '100%', overflow: 'hidden' }}>
           <TableContainer sx={{ maxHeight: 600 }}>

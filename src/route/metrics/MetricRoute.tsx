@@ -49,9 +49,27 @@ export const MetricRoute: React.FC = () => {
         <Route path={`${path}/:netid/create`}>
           <AccessKeyCreate />
         </Route> */}
-        {/* <Route path={`${path}`}>
-          <Metrics />
-        </Route> */}
+        <Route path={`${path}/:netid/:nodeid`}>
+          <MetricsTable />
+        </Route>
+        <Route path={`${path}/:netid`}>
+          <Grid
+              container
+              direction="row"
+              justifyContent="center"
+              alignItems="center"
+            >
+            <Grid item xs={6}>
+              <NetworkSelect selectAll />
+            </Grid>
+            <Grid item xs={12}>
+            <hr />
+            </Grid>
+            <Grid item xs={11.5}>
+                <MetricsTable />
+            </Grid>
+          </Grid>
+        </Route>
       </Switch>
     </Container>
   )

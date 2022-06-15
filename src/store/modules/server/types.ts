@@ -99,6 +99,6 @@ export interface NodeMetrics {
 }
 
 export interface Metrics {
-  Request: NodeMetricsID | undefined
+  Request: string | undefined
   Response: MetricsContainer
 }

@@ -1,4 +1,4 @@
-import { createAsyncAction } from 'typesafe-actions'
+import { createAction, createAsyncAction } from 'typesafe-actions'
 import { GetServerConfigPayload, LogsPayload, NodeMetrics, Metrics } from './types'
 
 export const getServerConfig = createAsyncAction(
@@ -40,3 +40,5 @@ export const getMetrics = createAsyncAction(
   Metrics['Response'],
   Error
 >()
+
+export const clearCurrentMetrics = createAction('clearCurrentMetrics')<void>()

@@ -1,6 +1,6 @@
 import { produce } from 'immer'
 import { createReducer } from 'typesafe-actions'
-import { getMetrics, getNodeMetrics, getServerConfig, getServerLogs } from './actions'
+import { clearCurrentMetrics, getMetrics, getNodeMetrics, getServerConfig, getServerLogs } from './actions'
 import { ServerConfig, NodeMetricsContainer, MetricsContainer } from './types'
 
 export const reducer = createReducer({
@@ -102,6 +102,13 @@ export const reducer = createReducer({
   .handleAction(getNodeMetrics['failure'], (state, _) => 
     produce(state, (draftState) => {
       draftState.isFetching = false
+      draftState.nodeMetrics = undefined
+    })
+  )
+  .handleAction(clearCurrentMetrics, (state, _) =>
+    produce(state, (draftState) => {
+      draftState.isFetching = false
+      draftState.metrics = undefined
       draftState.nodeMetrics = undefined
     })
   )
