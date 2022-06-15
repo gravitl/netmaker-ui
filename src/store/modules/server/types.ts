@@ -63,27 +63,29 @@ export interface LogsPayload {
 
 export type MetricID = string
 
-export type MetricsTable =  Map<string, NodeMetric>
+export type NodeMetricsTable = Record<string, NodeMetric>
+
+export type MetricsTable = Record<string, NodeMetricsContainer>
 
 export interface NodeMetricsContainer {
-  Connectivity: MetricsTable
+  connectivity: NodeMetricsTable
 }
 
 export interface MetricsContainer {
-  Nodes: MetricsTable
+  nodes: MetricsTable
 }
 
 export interface NodeMetric {
-  Uptime: number
-	TotalTime: number
-	Latency: number
-	TotalReceived: number
-	ReceivedHourly: number
-	TotalSent: number
-	SentHourly: number
-	ActualUptime: number
-	PercentUp: number
-	Connected: boolean
+  uptime: number
+	totaltime: number
+	latency: number
+	totalreceived: number
+	receivedhourly: number
+	totalsent: number
+	senthourly: number
+	actualuptime: number
+	percentup: number
+	connected: boolean
 }
 
 export interface NodeMetricsID {
@@ -97,6 +99,6 @@ export interface NodeMetrics {
 }
 
 export interface Metrics {
-  Request: string | undefined
+  Request: NodeMetricsID | undefined
   Response: MetricsContainer
 }

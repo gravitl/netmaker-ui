@@ -79,8 +79,6 @@ export const reducer = createReducer({
     produce(state, (draftState) => {
       draftState.isFetching = false
       draftState.metrics = payload.payload
-      console.log("GOT METRICS: ")
-      console.log(payload.payload)
     })
   )
   .handleAction(getMetrics['failure'], (state, _) => 
