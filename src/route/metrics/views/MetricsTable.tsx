@@ -28,11 +28,17 @@ import { serverSelectors, nodeSelectors, authSelectors } from '~store/selectors'
 import { getMetrics } from '~store/modules/server/actions'
 import { NodeMetric, MetricsContainer } from '~store/types'
 import { NmLink } from '~components/Link'
+import { getTimeMinHrs } from '../util'
   
 const HIGHLIGHT = '#D7BE69'
 type HoveredNode = {
   nodeID1: string
   nodeID2: string
+}
+
+type NameAndNetwork = {
+  name: string
+  network: string
 }
 
 const titleStyle = {
@@ -53,7 +59,8 @@ export const MetricsTable: React.FC = () => {
     nodeID1: '',
     nodeID2: '',
   } as HoveredNode)
-  var nodeNameMap: Map<string, string> = new Map()
+  
+  var nodeNameMap: Map<string, NameAndNetwork> = new Map()
 
   React.useEffect(() => {
       if (!!!Object.keys(currentMetrics).length || !!!metrics ||
@@ -71,20 +78,13 @@ export const MetricsTable: React.FC = () => {
       }
   }, [dispatch, currentMetrics, metrics, netid])
 
-  allNodes.map((node) => nodeNameMap.set(node.id, node.name))
+  allNodes.map((node) => nodeNameMap.set(node.id, {name: node.name, network: node.network}))
 
   const stickyColStyle = {
     position: 'sticky',
     left: 0,
     background: '#E8E8E8',
     zIndex: 1,
-  }
-
-  const getTimeMinHrs = (duration: number) => {
-    const minutes = duration / 60000000000
-    const hours = Math.floor(minutes / 60)
-    const remainingMinutes = Math.ceil(((minutes / 60) % 1) * 60)
-    return `${hours}h${remainingMinutes}m`
   }
 
   const getMetricsCellRender = (currMetric: NodeMetric | undefined, nodeID: string, loopID: string) => {
@@ -97,7 +97,7 @@ export const MetricsTable: React.FC = () => {
     return (
       <IconButton onTouchMove={(e) => console.log(JSON.stringify(currMetric))}>
         {!!currMetric && currMetric.connected ? (
-          <Tooltip title={`UP = ${getTimeMinHrs(currMetric.actualuptime)} : ${currMetric.percentup.toFixed(2)}% \t Latency = ${currMetric.latency}`}>
+          <Tooltip title={`UP = ${getTimeMinHrs(currMetric.actualuptime).hours}h${getTimeMinHrs(currMetric.actualuptime).min}m : ${currMetric.percentup.toFixed(2)}% \t Latency = ${currMetric.latency}`}>
             <CheckCircle htmlColor="#2800ee" />
           </Tooltip>
         ) : (
@@ -109,7 +109,7 @@ export const MetricsTable: React.FC = () => {
     )
   }
 
-  if (isProcessing) {
+  if (isProcessing || !!!nodeNameMap) {
     // || (!isProcessing && (!!!currentMetrics || !!!currentMetrics.nodes || !!!currentMetrics.nodes.size))) {
     return (
       <Grid container justifyContent="center" alignItems="center">
@@ -139,7 +139,7 @@ export const MetricsTable: React.FC = () => {
       justifyContent='center'
       alignItems='center'
     >
-      {!!netid && 
+      {!!netid && !!nodeNameMap &&
         <Grid item xs={6}>
           <div style={titleStyle}>
             <Typography variant="h5">
@@ -168,18 +168,16 @@ export const MetricsTable: React.FC = () => {
                           background:
                             hoveredCell.nodeID2 === nodeID ? HIGHLIGHT : '',
                         }}
-                        to={`/metrics/${netid}/${nodeID}`}
+                        to={`/metrics/${netid || nodeNameMap.get(nodeID)?.network}/${nodeID}`}
                       >
-                        {nodeNameMap.get(nodeID)}
+                        {nodeNameMap.get(nodeID)?.name}
                       </NmLink>
                     </TableCell>
                   ))}
                 </TableRow>
               </TableHead>
               <TableBody>
-                {!!currentMetrics && !!currentMetrics.nodes && Object.keys(currentMetrics.nodes).map((metricsID, index) => {
-                  // console.log("ALL METRICS ", JSON.stringify(currentMetrics.nodes))
-                
+                {!!currentMetrics && !!currentMetrics.nodes && Object.keys(currentMetrics.nodes).map((metricsID, index) => {                
                   const currMetric = currentMetrics.nodes[metricsID]
                   return (
                     nodeNameMap.size === 0 ||
@@ -212,9 +210,9 @@ export const MetricsTable: React.FC = () => {
                           <NmLink
                             sx={{ textTransform: 'none' }}
                             // disabled={!!nodeid}
-                            to={`${url}/${metricsID}`}
+                            to={`${url}/${netid || nodeNameMap.get(metricsID)?.network}/${metricsID}`}
                           >
-                            {nodeNameMap.get(metricsID)}
+                            {nodeNameMap.get(metricsID)?.name}
                           </NmLink>
                         </TableCell>
                         {Object.keys(currentMetrics.nodes).map((loopID) => (

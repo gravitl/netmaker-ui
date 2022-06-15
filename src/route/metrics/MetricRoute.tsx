@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 import { NetworkSelect } from '~components/NetworkSelect'
 import { MetricsTable } from './views/MetricsTable'
+import { NodeMetrics } from './views/NodeMetrics'
 
 export const MetricRoute: React.FC = () => {
   const { path } = useRouteMatch()
@@ -43,22 +44,16 @@ export const MetricRoute: React.FC = () => {
             </Grid>
           </Grid>
         </Route>
-        {/* <Route path={`${path}/:netid/details/:keyname`}>
-          <AccessKeyView />
-        </Route>
-        <Route path={`${path}/:netid/create`}>
-          <AccessKeyCreate />
-        </Route> */}
         <Route path={`${path}/:netid/:nodeid`}>
-          <MetricsTable />
+          <NodeMetrics />
         </Route>
         <Route path={`${path}/:netid`}>
           <Grid
-              container
-              direction="row"
-              justifyContent="center"
-              alignItems="center"
-            >
+            container
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+          >
             <Grid item xs={6}>
               <NetworkSelect selectAll />
             </Grid>
