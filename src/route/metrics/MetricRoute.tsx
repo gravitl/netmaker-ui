@@ -39,6 +39,9 @@ export const MetricRoute: React.FC = () => {
             <Grid item xs={6}>
               <NetworkSelect selectAll />
             </Grid>
+            <Grid item xs={12}>
+              <hr />
+            </Grid>
             <Grid item xs={11.5}>
                 <MetricsTable />
             </Grid>

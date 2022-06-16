@@ -3,6 +3,15 @@ export interface LanguageResource {
     logs: string
     refresh: string
     metrics: string
+    metrickeys: {
+      latency: string
+      uptime: string
+      totaltime: string
+      percentup: string
+      connected: string
+      totalsent: string
+      totalreceived: string
+    }
   }
   header: {
     login: string

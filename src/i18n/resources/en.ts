@@ -5,6 +5,15 @@ export const en: LanguageResource = {
     logs: 'Server Logs',
     refresh: 'Refresh',
     metrics: 'Metrics',
+    metrickeys: {
+      latency: 'Latency (ms)',
+      uptime: 'Uptime',
+      totaltime: 'Duration',
+      percentup: 'Percent UP',
+      connected: 'Connected',
+      totalsent: 'Total Sent (B)',
+      totalreceived: 'Total Received (B)',
+    }
   },
   header: {
     login: 'Login',

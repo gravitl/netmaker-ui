@@ -1,6 +1,7 @@
 import {
     Grid,
     IconButton,
+    InputAdornment,
     LinearProgress,
     Paper,
     Table,
@@ -9,6 +10,7 @@ import {
     TableContainer,
     TableHead,
     TableRow,
+    TextField,
     Tooltip,
     Typography,
   } from '@mui/material'
@@ -18,6 +20,7 @@ import {
   CheckCircle,
   NotInterested as NotAllowedIcon,
   RemoveCircleOutline as DisabledIcon,
+  Search,
   // RestartAlt,
   // Search,
 } from '@mui/icons-material'
@@ -58,24 +61,43 @@ export const MetricsTable: React.FC = () => {
     nodeID1: '',
     nodeID2: '',
   } as HoveredNode)
+  const [filterNodes, setFilterNodes] = React.useState(allNodes)
   
   var nodeNameMap: Map<string, NameAndNetwork> = new Map()
+
+  const isNodeFiltered = (id: string) => {
+    return !!~filterNodes.findIndex(node => node.id === id)
+  }
+
+  const handleFilter = (event: { target: { value: string } }) => {
+    const { value } = event.target
+    const searchTerm = value.trim()
+    if (!!!searchTerm) {
+      setFilterNodes(allNodes)
+    } else {
+      setFilterNodes(
+        allNodes.filter((node) =>
+          `${node.name}${node.address}${node.id}${node.network}`.includes(searchTerm)
+        )
+      )
+    }
+  }
 
   React.useEffect(() => {
       if (!!!Object.keys(currentMetrics).length || !!!metrics ||
         Object.keys(currentMetrics).length !== Object.keys(metrics).length) {
-        console.log("Fetching metrics")
         dispatch(getMetrics.request(netid))
+        setFilterNodes(allNodes)
       } 
       if (!!metrics &&
           Object.keys(currentMetrics).length !== Object.keys(metrics).length) {
-            console.log("Setting metrics", JSON.stringify(metrics))
           setCurrentMetrics(metrics)
+          setFilterNodes(allNodes)
       }
       if (!!!metrics) {
         setCurrentMetrics({} as MetricsContainer)
       }
-  }, [dispatch, currentMetrics, metrics, netid])
+  }, [dispatch, currentMetrics, metrics, netid, allNodes])
 
   allNodes.map((node) => nodeNameMap.set(node.id, {name: node.name, network: node.network}))
 
@@ -139,7 +161,7 @@ export const MetricsTable: React.FC = () => {
       alignItems='center'
     >
       {!!netid && !!nodeNameMap &&
-        <Grid item xs={6}>
+        <Grid item xs={8} md={6}>
           <div style={titleStyle}>
             <Typography variant="h5">
               {`${t('pro.metrics')} : ${netid}`}
@@ -147,6 +169,21 @@ export const MetricsTable: React.FC = () => {
           </div>
         </Grid>
       }
+      <Grid item xs={6} md={5.5}>
+        <div style={titleStyle}>
+          <TextField
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Search />
+                </InputAdornment>
+              ),
+            }}
+            label={`${t('common.search')} ${t('node.nodes')}`}
+            onChange={handleFilter}
+          />
+        </div>
+      </Grid> 
       <Grid item xs={12}>
         <Paper sx={{ width: '100%', overflow: 'hidden' }}>
           <TableContainer sx={{ maxHeight: 600 }}>
@@ -178,8 +215,8 @@ export const MetricsTable: React.FC = () => {
                 {!!currentMetrics && !!currentMetrics.nodes && Object.keys(currentMetrics.nodes).map((metricsID, index) => {                
                   const currMetric = currentMetrics.nodes[metricsID]
                   return (
-                    nodeNameMap.size === 0 ||
-                    nodeNameMap.has(metricsID) ? (
+                    (nodeNameMap.size === 0 ||
+                    nodeNameMap.has(metricsID)) && isNodeFiltered(metricsID) ? (
                       <TableRow
                         key={metricsID}
                         sx={{
