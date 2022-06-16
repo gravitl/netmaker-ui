@@ -1,12 +1,14 @@
 import { produce } from 'immer'
 import { createReducer } from 'typesafe-actions'
-import { getServerConfig, getServerLogs } from './actions'
-import { ServerConfig } from './types'
+import { clearCurrentMetrics, getMetrics, getNodeMetrics, getServerConfig, getServerLogs } from './actions'
+import { ServerConfig, NodeMetricsContainer, MetricsContainer } from './types'
 
 export const reducer = createReducer({
   config: {} as ServerConfig,
   isFetching: false,
   logs: [] as string[],
+  nodeMetrics: {} as NodeMetricsContainer | undefined,
+  metrics: {} as MetricsContainer | undefined,
 })
   .handleAction(getServerConfig['request'], (state, _) =>
     produce(state, (draftState) => {
@@ -66,5 +68,46 @@ export const reducer = createReducer({
     produce(state, (draftState) => {
       draftState.isFetching = false
       draftState.logs = []
+    })
+  )
+  .handleAction(getMetrics['request'], (state, _) => 
+    produce(state, (draftState) => {
+      draftState.isFetching = true
+    })
+  )
+  .handleAction(getMetrics['success'], (state, payload) => 
+    produce(state, (draftState) => {
+      draftState.isFetching = false
+      draftState.metrics = payload.payload
+    })
+  )
+  .handleAction(getMetrics['failure'], (state, _) => 
+    produce(state, (draftState) => {
+      draftState.isFetching = false
+      draftState.metrics = undefined
+    })
+  )
+  .handleAction(getNodeMetrics['request'], (state, _) => 
+    produce(state, (draftState) => {
+      draftState.isFetching = true
+    })
+  )
+  .handleAction(getNodeMetrics['success'], (state, payload) => 
+    produce(state, (draftState) => {
+      draftState.isFetching = false
+      draftState.nodeMetrics = payload.payload
+    })
+  )
+  .handleAction(getNodeMetrics['failure'], (state, _) => 
+    produce(state, (draftState) => {
+      draftState.isFetching = false
+      draftState.nodeMetrics = undefined
+    })
+  )
+  .handleAction(clearCurrentMetrics, (state, _) =>
+    produce(state, (draftState) => {
+      draftState.isFetching = false
+      draftState.metrics = undefined
+      draftState.nodeMetrics = undefined
     })
   )

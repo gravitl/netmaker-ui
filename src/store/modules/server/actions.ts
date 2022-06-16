@@ -1,5 +1,5 @@
-import { createAsyncAction } from 'typesafe-actions'
-import { GetServerConfigPayload, LogsPayload } from './types'
+import { createAction, createAsyncAction } from 'typesafe-actions'
+import { GetServerConfigPayload, LogsPayload, NodeMetrics, Metrics } from './types'
 
 export const getServerConfig = createAsyncAction(
   'api_getServerConfig_Request',
@@ -20,3 +20,25 @@ export const getServerLogs = createAsyncAction(
   LogsPayload['Response'],
   Error
 >()
+
+export const getNodeMetrics = createAsyncAction(
+  'api_getNodeMetrics_Request',
+  'api_getNodeMetrics_Success',
+  'api_getNodeMetrics_Failure',
+)<
+  NodeMetrics['Request'],
+  NodeMetrics['Response'],
+  Error
+>()
+
+export const getMetrics = createAsyncAction(
+  'api_getMetrics_Request',
+  'api_getMetrics_Success',
+  'api_getMetrics_Failure',
+)<
+  Metrics['Request'],
+  Metrics['Response'],
+  Error
+>()
+
+export const clearCurrentMetrics = createAction('clearCurrentMetrics')<void>()

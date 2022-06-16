@@ -2,6 +2,16 @@ export interface LanguageResource {
   pro: {
     logs: string
     refresh: string
+    metrics: string
+    metrickeys: {
+      latency: string
+      uptime: string
+      totaltime: string
+      percentup: string
+      connected: string
+      totalsent: string
+      totalreceived: string
+    }
   }
   header: {
     login: string
@@ -104,6 +114,7 @@ export interface LanguageResource {
     ascend: string
     descend: string
     sortby: string
+    disconnected: string
   }
   dashboard: {
     title: string

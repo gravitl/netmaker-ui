@@ -3,7 +3,17 @@ import { LanguageResource } from '../type'
 export const en: LanguageResource = {
   pro: {
     logs: 'Server Logs',
-    refresh: 'Refresh Logs',
+    refresh: 'Refresh',
+    metrics: 'Metrics',
+    metrickeys: {
+      latency: 'Latency (ms)',
+      uptime: 'Uptime',
+      totaltime: 'Duration',
+      percentup: 'Percent UP',
+      connected: 'Connected',
+      totalsent: 'Total Sent (B)',
+      totalreceived: 'Total Received (B)',
+    }
   },
   header: {
     login: 'Login',
@@ -106,6 +116,7 @@ export const en: LanguageResource = {
     ascend: 'Sort Ascending',
     descend: 'Sort Descending ',
     sortby: 'Sort by',
+    disconnected: 'Disconnected',
   },
   dashboard: {
     title: 'Netmaker Dashboard',
