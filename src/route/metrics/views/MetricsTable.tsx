@@ -116,7 +116,7 @@ export const MetricsTable: React.FC = () => {
     }
     
     return (
-      <IconButton onTouchMove={(e) => console.log(JSON.stringify(currMetric))}>
+      <IconButton>
         {!!currMetric && currMetric.connected ? (
           <Tooltip title={`UP = ${getTimeMinHrs(currMetric.actualuptime).hours}h${getTimeMinHrs(currMetric.actualuptime).min}m : ${currMetric.percentup.toFixed(2)}% \t Latency = ${currMetric.latency}`}>
             <CheckCircle htmlColor="#2800ee" />

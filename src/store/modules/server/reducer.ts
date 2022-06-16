@@ -85,7 +85,6 @@ export const reducer = createReducer({
     produce(state, (draftState) => {
       draftState.isFetching = false
       draftState.metrics = undefined
-      console.log("COULD NOT GET METRICS")
     })
   )
   .handleAction(getNodeMetrics['request'], (state, _) => 

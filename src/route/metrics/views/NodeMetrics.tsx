@@ -98,7 +98,6 @@ export const NodeMetrics: React.FC = () => {
     }
     if (!!metrics &&
         Object.keys(currentNodeMetrics).length !== Object.keys(metrics).length) {
-          console.log("Setting metrics", JSON.stringify(metrics))
         setCurrentNodeMetrics(metrics)
         setCurrentPeerMetrics([])
     }
