@@ -37,9 +37,7 @@ const labels = ['Sent'];
 
 export const getData = (totalSent: number, duration: number) => { 
   const { hours, min } = getTimeMinHrs(duration)
-  console.log(hours, min)
   const totalTimeHours = hours + (min/60)
-  console.log("Total hours: ", totalTimeHours)
   const sentPerHour = !!!duration ? 0 : totalSent / totalTimeHours
   return ({
     labels,

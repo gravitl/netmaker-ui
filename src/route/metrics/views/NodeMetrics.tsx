@@ -10,9 +10,12 @@ import { SentChart } from './charts/SentChart'
 import { ReceivedChart } from './charts/ReceivedChart'
 import { useSelector, useDispatch } from 'react-redux'
 import { serverSelectors } from '~store/selectors'
-import { NodeMetricsContainer } from '~store/types'
+import { NodeMetric, NodeMetricsContainer } from '~store/types'
 import { useNodesByNetworkId } from '~util/network'
 import { getNodeMetrics } from '~store/modules/server/actions'
+import { NmTable, TableColumns } from '~components/Table'
+import { Modify } from 'src/types/react-app-env'
+import MetricButton from '../components/MetricButton'
 
 const styles = {
   center: {
@@ -23,7 +26,16 @@ const styles = {
     justifyContent: 'flex-start',
     alignItems: 'center',
   },
+  halfSize: {
+    minWidth: '10rem',
+    width: '50%'
+  }
 } as any
+
+type NodeMetricID = Modify<NodeMetric, {
+  id: string
+  name: string
+}>
 
 export const NodeMetrics: React.FC = () => {
   const { path, url } = useRouteMatch()
@@ -33,6 +45,7 @@ export const NodeMetrics: React.FC = () => {
   const allNodes = useNodesByNetworkId(netid)
   const metrics = useSelector(serverSelectors.getNodeMetrics)
   const [currentNodeMetrics, setCurrentNodeMetrics] = React.useState({} as NodeMetricsContainer)
+  const [currentPeerMetrics, setCurrentPeerMetrics] = React.useState([] as NodeMetricID[])
   var nodeNameMap: Map<string, string> = new Map()
 
   useLinkBreadcrumb({
@@ -45,33 +58,55 @@ export const NodeMetrics: React.FC = () => {
       title: netid,
   })
 
+  if (!!allNodes) {
+    allNodes.map((node) => nodeNameMap.set(node.id, node.name))
+  }
+
   console.log("PATH", path)
   console.log("URL", url)
 
   React.useEffect(() => {
-    if (!!!Object.keys(currentNodeMetrics).length || !!!metrics ||
-      Object.keys(currentNodeMetrics).length !== Object.keys(metrics).length) {
+    if (!!!currentNodeMetrics || !!!Object.keys(currentNodeMetrics).length || !!!metrics ||
+      Object.keys(currentNodeMetrics).length !== Object.keys(metrics).length || 
+      (!!Object.keys(currentNodeMetrics.connectivity).length && 
+      !!~Object.keys(currentNodeMetrics.connectivity).findIndex((currID) => currID === nodeid))) {
       dispatch(getNodeMetrics.request({ ID: nodeid, Network: netid }))
+      setCurrentPeerMetrics([])
     }
     if (!!metrics &&
         Object.keys(currentNodeMetrics).length !== Object.keys(metrics).length) {
           console.log("Setting metrics", JSON.stringify(metrics))
         setCurrentNodeMetrics(metrics)
+        setCurrentPeerMetrics([])
+    }
+    if (!!Object.keys(currentNodeMetrics).length && !!!currentPeerMetrics.length && 
+        !!Object.keys(currentNodeMetrics.connectivity).length &&
+        !!nodeNameMap && !!nodeNameMap.get && nodeNameMap.size === allNodes?.length) {
+      Object.keys(currentNodeMetrics.connectivity).map(peerID => {
+        const name = nodeNameMap.get(peerID)
+        const newPeerMetrics = [] as NodeMetricID[] 
+        if (!!name) {
+          newPeerMetrics.push(
+            {...currentNodeMetrics.connectivity[peerID], id: peerID, name}
+          )
+        }
+        setCurrentPeerMetrics(newPeerMetrics)
+        return null
+      })
     }
     if (!!!metrics) {
       setCurrentNodeMetrics({} as NodeMetricsContainer)
     }
-  }, [dispatch, currentNodeMetrics, metrics, netid, nodeid])
-
-  if (!!allNodes) {
-    allNodes.map((node) => nodeNameMap.set(node.id, node.name))
-  }
+  // eslint-disable-next-line
+  }, [dispatch, currentNodeMetrics, metrics, netid, nodeid, allNodes, currentPeerMetrics])
 
   let totalSent = 0
   let duration = 0
+  let totalReceived = 0
   if (!!currentNodeMetrics && !!currentNodeMetrics.connectivity && !!Object.keys(currentNodeMetrics.connectivity).length) {
     Object.keys(currentNodeMetrics.connectivity).map(peerID => {
       totalSent += currentNodeMetrics.connectivity[peerID].totalsent
+      totalReceived += currentNodeMetrics.connectivity[peerID].totalreceived
       if (!!!duration && currentNodeMetrics.connectivity[peerID].connected) {
         duration = currentNodeMetrics.connectivity[peerID].actualuptime
       }
@@ -79,29 +114,79 @@ export const NodeMetrics: React.FC = () => {
     })
   }
 
+  const columns: TableColumns<NodeMetricID> = [
+    {
+      id: 'name',
+      label: t('node.name'),
+      minWidth: 170,
+      sortable: true,
+      format: (_, node) => (
+        <MetricButton
+          link={`/metrics/${netid}/${node.id}`}
+          text={node.name}
+          sx={{ textTransform: 'none' }}
+        />
+      ),
+      align: 'center',
+    },
+    {
+      id: 'percentup',
+      labelKey: 'accesskey.uses',
+      minWidth: 200,
+      sortable: true,
+      align: 'center',
+      format: (_, node) => (
+        <div style={styles.halfSize}>
+          <UptimeChart actualUptime={node.actualuptime} chartData={[node.percentup, 100 - node.percentup]}/>
+        </div>
+      ),
+    },
+    {
+      id: 'latency',
+      label: 'Latency (ms)',
+      minWidth: 100,
+      align: 'center',
+      format: (value) => (
+        <Typography variant='h5'>
+          {value}
+        </Typography>
+      )
+    },
+    {
+      id: 'totalsent',
+      label: 'Total Sent (B)',
+      minWidth: 100,
+      align: 'center',
+      format: (value) => (
+        <Typography variant='h5'>
+          {value}
+        </Typography>
+      )
+    },
+    {
+      id: 'totalreceived',
+      label: 'Total Received (B)',
+      minWidth: 100,
+      align: 'center',
+      format: (value) => (
+        <Typography variant='h5'>
+          {value}
+        </Typography>
+      )
+    }
+  ]
+
   return (
     <Grid 
       container 
       justifyContent="center" 
       alignItems="center"
     >
-      <Grid item xs={8} style={styles.center}>
+      <Grid item xs={12} sm={10} md={8} style={styles.center}>
         <h1>Hello Metrics</h1>
       </Grid>
       <Grid item xs={12}>
         <hr />
-      </Grid>
-      <Grid item xs={10} sm={3} md={3} style={styles.start}>
-        <Grid container justifyContent='center' alignItems='center'>
-          <Grid item xs={6} style={styles.center}>
-            <Typography variant='h4'>
-              Uptime
-            </Typography>
-          </Grid>
-          <Grid item xs={10}>
-            <UptimeChart chartData={[50,50]}/>
-          </Grid>
-        </Grid>
       </Grid>
       <Grid item xs={10} sm={4.5} md={4.5} style={styles.start}>
         <Grid container direction='column' justifyContent='flex-start' alignItems='center'>
@@ -110,7 +195,7 @@ export const NodeMetrics: React.FC = () => {
               Data Sent
             </Typography>
           </Grid>
-          <Grid item xs={10}>
+          <Grid item xs={12}>
             <SentChart totalSent={totalSent} duration={duration}/>
           </Grid>
         </Grid>
@@ -122,8 +207,8 @@ export const NodeMetrics: React.FC = () => {
               Data Received
             </Typography>
           </Grid>
-          <Grid item xs={10}>
-            <ReceivedChart />
+          <Grid item xs={12}>
+            <ReceivedChart totalReceived={totalReceived} duration={duration} />
           </Grid>
         </Grid>
       </Grid>
@@ -134,8 +219,12 @@ export const NodeMetrics: React.FC = () => {
               Peer Connections
             </Typography>
           </Grid>
-          <Grid item xs={10}>
-            Show Connections
+          <Grid item xs={12}>
+          <NmTable
+            columns={columns}
+            rows={currentPeerMetrics}
+            getRowId={(row) => row.name}
+          />
           </Grid>
         </Grid>
       </Grid>

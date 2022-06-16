@@ -21,14 +21,14 @@ import {
   // RestartAlt,
   // Search,
 } from '@mui/icons-material'
-import { useRouteMatch, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { serverSelectors, nodeSelectors, authSelectors } from '~store/selectors'
 import { getMetrics } from '~store/modules/server/actions'
 import { NodeMetric, MetricsContainer } from '~store/types'
-import { NmLink } from '~components/Link'
 import { getTimeMinHrs } from '../util'
+import MetricButton from '../components/MetricButton'
   
 const HIGHLIGHT = '#D7BE69'
 type HoveredNode = {
@@ -46,7 +46,6 @@ const titleStyle = {
 } as any
 
 export const MetricsTable: React.FC = () => {
-  const { url } = useRouteMatch()
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const metrics = useSelector(serverSelectors.getMetrics)
@@ -162,16 +161,15 @@ export const MetricsTable: React.FC = () => {
                   <TableCell>{t('node.name')}</TableCell>
                   {!!currentMetrics && !!currentMetrics.nodes && Object.keys(currentMetrics.nodes).map((nodeID) => (
                     <TableCell align="center" key={nodeID}>
-                      <NmLink
+                      <MetricButton
                         sx={{
                           textTransform: 'none',
                           background:
                             hoveredCell.nodeID2 === nodeID ? HIGHLIGHT : '',
                         }}
-                        to={`/metrics/${netid || nodeNameMap.get(nodeID)?.network}/${nodeID}`}
-                      >
-                        {nodeNameMap.get(nodeID)?.name}
-                      </NmLink>
+                        link={`/metrics/${netid || nodeNameMap.get(nodeID)?.network}/${nodeID}`}
+                        text={nodeNameMap.get(nodeID)?.name}
+                      />
                     </TableCell>
                   ))}
                 </TableRow>
@@ -207,13 +205,11 @@ export const MetricsTable: React.FC = () => {
                           component="th"
                           scope="row"
                         >
-                          <NmLink
+                          <MetricButton
+                            link={`/metrics/${netid || nodeNameMap.get(metricsID)?.network}/${metricsID}`}
+                            text={nodeNameMap.get(metricsID)?.name}
                             sx={{ textTransform: 'none' }}
-                            // disabled={!!nodeid}
-                            to={`${url}/${netid || nodeNameMap.get(metricsID)?.network}/${metricsID}`}
-                          >
-                            {nodeNameMap.get(metricsID)?.name}
-                          </NmLink>
+                          />
                         </TableCell>
                         {Object.keys(currentMetrics.nodes).map((loopID) => (
                           <TableCell

@@ -9,6 +9,7 @@ import {
   Legend,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
+import { getTimeMinHrs } from '../../util';
 
 ChartJS.register(
   CategoryScale,
@@ -50,6 +51,31 @@ export const data = {
   ],
 };
 
-export function ReceivedChart() {
-  return <Bar options={options} data={data} />;
+export const getData = (totalReceived: number, duration: number) => { 
+  const { hours, min } = getTimeMinHrs(duration)
+  const totalTimeHours = hours + (min/60)
+  const receivedPerHour = !!!duration ? 0 : totalReceived / totalTimeHours
+  return ({
+    labels,
+    datasets: [
+      {
+        label: 'Received',
+        data: [totalReceived],
+        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+      },
+      {
+        label: 'Received per Hour',
+        data: [receivedPerHour],
+        backgroundColor: 'rgba(53, 162, 235, 0.5)',
+      },
+    ],
+})}
+
+type ReceivedProps = {
+  totalReceived: number
+  duration: number
+}
+
+export function ReceivedChart({ totalReceived, duration }: ReceivedProps) {
+  return <Bar options={options} data={getData(totalReceived, duration)} />;
 }
