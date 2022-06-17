@@ -147,6 +147,13 @@ export const NodeId: React.FC = () => {
               >
                 {t('header.acls')}
               </NmLink>
+              <NmLink
+                to={`/metrics/NodeMetrics${netid}/${nodeId}`}
+                variant="outlined"
+                style={{ width: '50%', margin: '4px' }}
+              >
+                {t('pro.metrics')}
+              </NmLink>
               <Button
                 disabled={node.isserver}
                 variant="outlined"

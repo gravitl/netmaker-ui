@@ -5,6 +5,8 @@ export const en: LanguageResource = {
     logs: 'Server Logs',
     refresh: 'Refresh',
     metrics: 'Metrics',
+    admin: 'Admin',
+    admintools: 'Admin Tools',
     metrickeys: {
       latency: 'Latency (ms)',
       uptime: 'Uptime',
@@ -13,7 +15,7 @@ export const en: LanguageResource = {
       connected: 'Connected',
       totalsent: 'Total Sent (B)',
       totalreceived: 'Total Received (B)',
-    }
+    },
   },
   header: {
     login: 'Login',
