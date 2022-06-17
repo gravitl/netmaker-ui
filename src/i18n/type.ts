@@ -3,6 +3,8 @@ export interface LanguageResource {
     logs: string
     refresh: string
     metrics: string
+    admin: string
+    admintools: string
     metrickeys: {
       latency: string
       uptime: string
@@ -146,6 +148,7 @@ export interface LanguageResource {
     network: string
     tokenexpire: string
     unauthorized: string
+    overload: string
   }
   extclient: {
     extclients: string

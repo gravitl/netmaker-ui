@@ -22,3 +22,7 @@ export const getNodeMetrics = createSelector(
   getServer,
   (server) => server.nodeMetrics
 )
+export const getAttempts = createSelector(
+  getServer,
+  (server) => server.attempts
+)

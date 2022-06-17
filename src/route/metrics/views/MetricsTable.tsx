@@ -30,7 +30,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { serverSelectors, nodeSelectors, authSelectors } from '~store/selectors'
 import { getMetrics } from '~store/modules/server/actions'
 import { NodeMetric, MetricsContainer } from '~store/types'
-import { getTimeMinHrs } from '../util'
+import { getTimeMinHrs, MAX_ATTEMPTS } from '../util'
 import MetricButton from '../components/MetricButton'
   
 const HIGHLIGHT = '#D7BE69'
@@ -56,6 +56,7 @@ export const MetricsTable: React.FC = () => {
   const { netid } = useParams<{ netid: string }>()
   const allNodes = useSelector(nodeSelectors.getNodes)
   const inDarkMode = useSelector(authSelectors.isInDarkMode)
+  const attempts = useSelector(serverSelectors.getAttempts)
   const [currentMetrics, setCurrentMetrics] = React.useState({} as MetricsContainer)
   const [hoveredCell, setHoveredCell] = React.useState({
     nodeID1: '',
@@ -84,8 +85,9 @@ export const MetricsTable: React.FC = () => {
   }
 
   React.useEffect(() => {
-      if (!!!Object.keys(currentMetrics).length || !!!metrics ||
+      if ((!!!Object.keys(currentMetrics).length && !isProcessing) || !!!metrics ||
         Object.keys(currentMetrics).length !== Object.keys(metrics).length) {
+        if (attempts < MAX_ATTEMPTS)
         dispatch(getMetrics.request(netid))
         setFilterNodes(allNodes)
       } 
@@ -97,7 +99,7 @@ export const MetricsTable: React.FC = () => {
       if (!!!metrics) {
         setCurrentMetrics({} as MetricsContainer)
       }
-  }, [dispatch, currentMetrics, metrics, netid, allNodes])
+  }, [dispatch, currentMetrics, metrics, netid, allNodes, isProcessing, attempts])
 
   allNodes.map((node) => nodeNameMap.set(node.id, {name: node.name, network: node.network}))
 
@@ -184,7 +186,8 @@ export const MetricsTable: React.FC = () => {
           />
         </div>
       </Grid> 
-      <Grid item xs={12}>
+      <Grid item xs={12} style={titleStyle}>
+      {attempts >= MAX_ATTEMPTS && <Typography color="red">{t('error.overload')}</Typography> }
         <Paper sx={{ width: '100%', overflow: 'hidden' }}>
           <TableContainer sx={{ maxHeight: 600 }}>
             <Table
