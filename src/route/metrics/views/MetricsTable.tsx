@@ -84,7 +84,7 @@ export const MetricsTable: React.FC = () => {
   }
 
   React.useEffect(() => {
-      if (!!!Object.keys(currentMetrics).length || !!!metrics ||
+      if ((!!!Object.keys(currentMetrics).length && !isProcessing) || !!!metrics ||
         Object.keys(currentMetrics).length !== Object.keys(metrics).length) {
         dispatch(getMetrics.request(netid))
         setFilterNodes(allNodes)
@@ -97,7 +97,7 @@ export const MetricsTable: React.FC = () => {
       if (!!!metrics) {
         setCurrentMetrics({} as MetricsContainer)
       }
-  }, [dispatch, currentMetrics, metrics, netid, allNodes])
+  }, [dispatch, currentMetrics, metrics, netid, allNodes, isProcessing])
 
   allNodes.map((node) => nodeNameMap.set(node.id, {name: node.name, network: node.network}))
 

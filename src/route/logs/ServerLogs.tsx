@@ -39,7 +39,7 @@ export const ServerLogs: React.FC = () => {
   }
 
   React.useEffect(() => {
-    if (!!!currentLogs.length) {
+    if (!!!currentLogs.length && !isFetching) {
       dispatch(getServerLogs.request())
     }
     if (
@@ -48,7 +48,7 @@ export const ServerLogs: React.FC = () => {
     ) {
       setCurrentLogs(serverLogs)
     }
-  }, [dispatch, currentLogs, serverLogs])
+  }, [dispatch, currentLogs, serverLogs, isFetching])
 
   const handleFilter = (event: { target: { value: string } }) => {
     const { value } = event.target
@@ -56,7 +56,11 @@ export const ServerLogs: React.FC = () => {
     if (!!!searchTerm) {
       setFilterLogs(serverLogs)
     } else {
-      setFilterLogs(serverLogs.filter((log) => log.toLowerCase().includes(searchTerm.toLowerCase())))
+      setFilterLogs(
+        serverLogs.filter((log) =>
+          log.toLowerCase().includes(searchTerm.toLowerCase())
+        )
+      )
     }
   }
 

@@ -148,7 +148,7 @@ export const NodeId: React.FC = () => {
                 {t('header.acls')}
               </NmLink>
               <NmLink
-                to={`/metrics/NodeMetrics${netid}/${nodeId}`}
+                to={`/metrics/${netid}/${nodeId}`}
                 variant="outlined"
                 style={{ width: '50%', margin: '4px' }}
               >

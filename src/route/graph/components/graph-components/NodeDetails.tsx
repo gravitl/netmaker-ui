@@ -216,7 +216,7 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({
         <Tooltip title={`${t('pro.metrics')}`} placement="top">
           <IconButton
             component={Link}
-            to={`/metrics/NodeMetrics${data.id}/${data.id}`}
+            to={`/metrics/${data.network}/${data.id}`}
             aria-label="view-metrics"
           >
             <MetricsIcon />
