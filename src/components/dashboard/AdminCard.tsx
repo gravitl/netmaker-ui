@@ -15,6 +15,7 @@ import Typography from '@mui/material/Typography'
 import { useTranslation } from 'react-i18next'
 import { KeyboardArrowRight } from '@mui/icons-material'
 import { Button, Grid, useTheme } from '@mui/material'
+import BottomIcon from '@mui/icons-material/HomeRepairService';
 
 const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
   '&.MuiSpeedDial-directionRight': {
@@ -63,7 +64,7 @@ export default function AdminCard() {
   return (
     <Button
       component={Link}
-      to={'/users'}
+      to={'/users/admin'}
       color={'inherit'}
       fullWidth
       style={{ textTransform: 'none' }}
@@ -109,6 +110,16 @@ export default function AdminCard() {
                 ))}
               </StyledSpeedDial>
             </Grid>
+            <Grid item xs={1}>
+                <Avatar
+                  sx={{ bgcolor: grey[900] }}
+                  aria-label={String(t('common.count'))}
+                >
+                  <Typography variant="body1" color='white'>
+                   <BottomIcon />
+                  </Typography>
+                </Avatar>
+              </Grid>
           </Grid>
         </CardActions>
       </Card>

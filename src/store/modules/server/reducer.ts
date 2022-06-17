@@ -9,6 +9,7 @@ export const reducer = createReducer({
   logs: [] as string[],
   nodeMetrics: {} as NodeMetricsContainer | undefined,
   metrics: {} as MetricsContainer | undefined,
+  attempts: 0,
 })
   .handleAction(getServerConfig['request'], (state, _) =>
     produce(state, (draftState) => {
@@ -56,12 +57,14 @@ export const reducer = createReducer({
   .handleAction(getServerLogs['request'], (state, _) => 
     produce(state, (draftState) => {
       draftState.isFetching = true
+      draftState.attempts++
     })
   )
   .handleAction(getServerLogs['success'], (state, payload) => 
     produce(state, (draftState) => {
       draftState.isFetching = false
       draftState.logs = payload.payload.split('\n')
+      draftState.attempts = 0
     })
   )
   .handleAction(getServerLogs['failure'], (state, _) => 
@@ -73,12 +76,14 @@ export const reducer = createReducer({
   .handleAction(getMetrics['request'], (state, _) => 
     produce(state, (draftState) => {
       draftState.isFetching = true
+      draftState.attempts++
     })
   )
   .handleAction(getMetrics['success'], (state, payload) => 
     produce(state, (draftState) => {
       draftState.isFetching = false
       draftState.metrics = payload.payload
+      draftState.attempts = 0
     })
   )
   .handleAction(getMetrics['failure'], (state, _) => 
@@ -90,12 +95,14 @@ export const reducer = createReducer({
   .handleAction(getNodeMetrics['request'], (state, _) => 
     produce(state, (draftState) => {
       draftState.isFetching = true
+      draftState.attempts++
     })
   )
   .handleAction(getNodeMetrics['success'], (state, payload) => 
     produce(state, (draftState) => {
       draftState.isFetching = false
       draftState.nodeMetrics = payload.payload
+      draftState.attempts = 0
     })
   )
   .handleAction(getNodeMetrics['failure'], (state, _) => 

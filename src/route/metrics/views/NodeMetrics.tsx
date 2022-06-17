@@ -21,6 +21,7 @@ import { NmTable, TableColumns } from '~components/Table'
 import { Modify } from 'src/types/react-app-env'
 import MetricButton from '../components/MetricButton'
 import { Search } from '@mui/icons-material'
+import { MAX_ATTEMPTS } from '../util'
 
 const styles = {
   center: {
@@ -55,6 +56,7 @@ export const NodeMetrics: React.FC = () => {
   const allNodes = useNodesByNetworkId(netid)
   const metrics = useSelector(serverSelectors.getNodeMetrics)
   const isFetching = useSelector(serverSelectors.isFetchingServerConfig)
+  const attempts = useSelector(serverSelectors.getAttempts)
   const [currentNodeMetrics, setCurrentNodeMetrics] = React.useState(
     {} as NodeMetricsContainer
   )
@@ -76,11 +78,6 @@ export const NodeMetrics: React.FC = () => {
 
   if (!!allNodes) {
     allNodes.map((node) => nodeNameMap.set(node.id, node.name))
-  }
-
-  const isNodeFiltered = (id: string) => {
-    if (!!filterNodes) return !!~filterNodes.findIndex((node) => node.id === id)
-    return false
   }
 
   const handleFilter = (event: { target: { value: string } }) => {
@@ -112,7 +109,7 @@ export const NodeMetrics: React.FC = () => {
           (currID) => currID === nodeid
         ))
     ) {
-      dispatch(getNodeMetrics.request({ ID: nodeid, Network: netid }))
+      if (attempts < MAX_ATTEMPTS) dispatch(getNodeMetrics.request({ ID: nodeid, Network: netid }))
       setCurrentPeerMetrics([])
     }
     if (
@@ -156,6 +153,8 @@ export const NodeMetrics: React.FC = () => {
     nodeid,
     allNodes,
     currentPeerMetrics,
+    attempts,
+    isFetching,
   ])
 
   let totalSent = 0
@@ -232,10 +231,13 @@ export const NodeMetrics: React.FC = () => {
   return (
     <Grid container justifyContent="center" alignItems="center">
       <Grid item xs={12} sm={10} md={8} style={styles.center}>
-        <h1>Hello Metrics</h1>
+        <Typography variant='h3'>
+          {t('pro.metrics')}
+        </Typography>
       </Grid>
-      <Grid item xs={12}>
+      <Grid item xs={12} style={styles.center}>
         <hr />
+        {attempts >= MAX_ATTEMPTS && <Typography color="red">{t('error.overload')}</Typography> }
         {isFetching && <LinearProgress />}
       </Grid>
       <Grid item xs={10} sm={4.5} md={4.5} style={styles.start}>

@@ -18,6 +18,7 @@ import { LinearProgress } from '@mui/material'
 import { getServerLogs } from '~store/modules/server/actions'
 import { Search, Sync } from '@mui/icons-material'
 import { authSelectors } from '~store/selectors'
+import { MAX_ATTEMPTS } from '../metrics/util'
 
 export const ServerLogs: React.FC = () => {
   const { path, url } = useRouteMatch()
@@ -28,6 +29,7 @@ export const ServerLogs: React.FC = () => {
   const dispatch = useDispatch()
   const [filterLogs, setFilterLogs] = React.useState(serverLogs)
   const inDarkMode = useSelector(authSelectors.isInDarkMode)
+  const attempts = useSelector(serverSelectors.getAttempts)
 
   useLinkBreadcrumb({
     link: url,
@@ -40,6 +42,7 @@ export const ServerLogs: React.FC = () => {
 
   React.useEffect(() => {
     if (!!!currentLogs.length && !isFetching) {
+      if (attempts < MAX_ATTEMPTS)
       dispatch(getServerLogs.request())
     }
     if (
@@ -48,7 +51,7 @@ export const ServerLogs: React.FC = () => {
     ) {
       setCurrentLogs(serverLogs)
     }
-  }, [dispatch, currentLogs, serverLogs, isFetching])
+  }, [dispatch, currentLogs, serverLogs, isFetching, attempts])
 
   const handleFilter = (event: { target: { value: string } }) => {
     const { value } = event.target
@@ -75,7 +78,9 @@ export const ServerLogs: React.FC = () => {
         <Route exact path={path}>
           <Grid container justifyContent="space-around" alignItems="center">
             <Grid item xs={4}>
-              <h2>{t('pro.logs')}</h2>
+              <Typography variant='h3'>
+                {t('pro.logs')}
+              </Typography>
             </Grid>
             <Grid item xs={6}>
               <Grid container justifyContent="space-around" alignItems="center">
@@ -110,6 +115,7 @@ export const ServerLogs: React.FC = () => {
               style={{ backgroundColor: inDarkMode ? '#272727' : '' }}
             >
               <Paper style={{ maxHeight: '50vh', overflow: 'auto' }}>
+                {attempts >= MAX_ATTEMPTS && <Typography color="red">{t('error.overload')}</Typography> }
                 {isFetching && <LinearProgress />}
                 {showlogs.map((log) => (
                   <Typography variant="body2">{log}</Typography>
