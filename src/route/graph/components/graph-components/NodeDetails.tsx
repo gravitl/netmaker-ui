@@ -313,8 +313,20 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({
             <ListItemIcon>
               <ArrowRightAlt />
             </ListItemIcon>
-            <ListItemText primary={altData.id} secondary={'ID'} />
+            <ListItemText primary={altData.id} secondary={t('node.id')} />
           </ListItem>
+          {!!altData.address &&  <ListItem>
+            <ListItemIcon>
+              <ArrowRightAlt />
+            </ListItemIcon>
+            <ListItemText primary={altData.address} secondary={t('node.address')} />
+          </ListItem>}
+          {!!altData.address6 &&  <ListItem>
+            <ListItemIcon>
+              <ArrowRightAlt />
+            </ListItemIcon>
+            <ListItemText primary={altData.address6} secondary={t('node.address6')} />
+          </ListItem>}
           <ListItem>
             <ListItemIcon>
               <ArrowRightAlt />

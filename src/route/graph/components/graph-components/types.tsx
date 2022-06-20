@@ -4,12 +4,16 @@ export interface DataNode {
     id: string
     name: string
     lastCheckin: number | undefined
+    address?: string
+    address6?: string
 }
 
 export interface AltDataNode {
     id: string
     name: string
     type: 'extclient' | 'cidr' 
+    address?: string
+    address6?: string
 }
 
 export interface Edge {

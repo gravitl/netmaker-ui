@@ -163,6 +163,8 @@ export const NetworkGraph: React.FC = () => {
           id: clients[i].clientid,
           name: clients[i].clientid,
           lastCheckin: undefined,
+          address: clients[i].address,
+          address6: clients[i].address6,
         })
         data.edges.push({
           from: clients[i].clientid,
