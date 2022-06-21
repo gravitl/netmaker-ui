@@ -13,7 +13,7 @@ import { UptimeChart } from './charts/Uptime'
 import { SentChart } from './charts/SentChart'
 import { ReceivedChart } from './charts/ReceivedChart'
 import { useSelector, useDispatch } from 'react-redux'
-import { serverSelectors } from '~store/selectors'
+import { nodeSelectors, serverSelectors } from '~store/selectors'
 import { NodeMetric, NodeMetricsContainer } from '~store/types'
 import { useNodesByNetworkId } from '~util/network'
 import { getNodeMetrics } from '~store/modules/server/actions'
@@ -54,6 +54,7 @@ export const NodeMetrics: React.FC = () => {
   const { t } = useTranslation()
   const { netid, nodeid } = useParams<{ nodeid: string; netid: string }>()
   const allNodes = useNodesByNetworkId(netid)
+  const extClients = useSelector(nodeSelectors.getExtClients)
   const metrics = useSelector(serverSelectors.getNodeMetrics)
   const isFetching = useSelector(serverSelectors.isFetchingServerConfig)
   const attempts = useSelector(serverSelectors.getAttempts)
@@ -78,6 +79,9 @@ export const NodeMetrics: React.FC = () => {
 
   if (!!allNodes) {
     allNodes.map((node) => nodeNameMap.set(node.id, node.name))
+  }
+  if (!!extClients) {
+    extClients.map((client) => nodeNameMap.set(client.clientid, client.clientid))
   }
 
   const handleFilter = (event: { target: { value: string } }) => {
