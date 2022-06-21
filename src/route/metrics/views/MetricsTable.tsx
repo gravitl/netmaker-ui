@@ -55,6 +55,7 @@ export const MetricsTable: React.FC = () => {
   const isProcessing = useSelector(serverSelectors.isFetchingServerConfig)
   const { netid } = useParams<{ netid: string }>()
   const allNodes = useSelector(nodeSelectors.getNodes)
+  const extClients = useSelector(nodeSelectors.getExtClients)
   const inDarkMode = useSelector(authSelectors.isInDarkMode)
   const attempts = useSelector(serverSelectors.getAttempts)
   const [currentMetrics, setCurrentMetrics] = React.useState({} as MetricsContainer)
@@ -101,7 +102,13 @@ export const MetricsTable: React.FC = () => {
       }
   }, [dispatch, currentMetrics, metrics, netid, allNodes, isProcessing, attempts])
 
-  allNodes.map((node) => nodeNameMap.set(node.id, {name: node.name, network: node.network}))
+
+  if (!!allNodes) {
+    allNodes.map((node) => nodeNameMap.set(node.id, {name: node.name, network: node.network}))
+  }
+  if (!!extClients) {
+    extClients.map((client) => nodeNameMap.set(client.clientid, {name: client.clientid, network: client.network}))
+  }
 
   const stickyColStyle = {
     position: 'sticky',
@@ -133,7 +140,6 @@ export const MetricsTable: React.FC = () => {
   }
 
   if (isProcessing || !!!nodeNameMap) {
-    // || (!isProcessing && (!!!currentMetrics || !!!currentMetrics.nodes || !!!currentMetrics.nodes.size))) {
     return (
       <Grid container justifyContent="center" alignItems="center">
         <Grid item xs={12}>
@@ -265,7 +271,9 @@ export const MetricsTable: React.FC = () => {
                             key={`${loopID}-2`}
                             align="center"
                           >
-                            {getMetricsCellRender(currMetric.connectivity[loopID], metricsID, loopID)}
+                            {!!currMetric &&
+                            !!currMetric.connectivity &&
+                            getMetricsCellRender(currMetric.connectivity[loopID], metricsID, loopID)}
                           </TableCell>
                         ))}
                       </TableRow>

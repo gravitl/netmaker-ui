@@ -14,7 +14,7 @@ import LocalizationProvider from '@mui/lab/LocalizationProvider'
 
 import Routes from './route/root'
 import { PathBreadcrumbsProvider } from './components/PathBreadcrumbs'
-import { getNodes } from '~store/modules/node/actions'
+import { getExternalClients, getNodes } from '~store/modules/node/actions'
 
 function App() {
   const dispatch = useDispatch()
