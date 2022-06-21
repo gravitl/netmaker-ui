@@ -102,6 +102,38 @@ export const NodeMetrics: React.FC = () => {
     }
   }
 
+  const handleGetBytesLabel = (bytes: number) => {
+    if (bytes > 1000000000000) {
+      return 'TiB'
+    }
+    if (bytes > 1000000000) {
+      return 'GiB'
+    }
+    if (bytes > 1000000) {
+      return 'MiB'
+    }
+    if (bytes > 1000) {
+      return 'KiB'
+    }
+    return 'B'
+  }
+
+  const handleGetBytesValue = (bytes: number) => {
+    if (bytes > 1000000000000) {
+      return (bytes / 1000000000000).toFixed(2)
+    }
+    if (bytes > 1000000000) {
+      return (bytes / 1000000000).toFixed(2)
+    }
+    if (bytes > 1000000) {
+      return (bytes / 1000000).toFixed(2)
+    }
+    if (bytes > 1000) {
+      return (bytes / 1000).toFixed(2)
+    }
+    return bytes
+  }
+
   React.useEffect(() => {
     if (
       (!!!currentNodeMetrics && !isFetching) ||
@@ -121,7 +153,6 @@ export const NodeMetrics: React.FC = () => {
       Object.keys(currentNodeMetrics).length !== Object.keys(metrics).length
     ) {
       setCurrentNodeMetrics(metrics)
-      setCurrentPeerMetrics([])
     }
     if (
       !!Object.keys(currentNodeMetrics).length &&
@@ -131,9 +162,9 @@ export const NodeMetrics: React.FC = () => {
       !!nodeNameMap.get &&
       nodeNameMap.size === allNodes?.length
     ) {
+      const newPeerMetrics = [] as NodeMetricID[]
       Object.keys(currentNodeMetrics.connectivity).map((peerID) => {
         const name = nodeNameMap.get(peerID)
-        const newPeerMetrics = [] as NodeMetricID[]
         if (!!name) {
           newPeerMetrics.push({
             ...currentNodeMetrics.connectivity[peerID],
@@ -141,9 +172,9 @@ export const NodeMetrics: React.FC = () => {
             name,
           })
         }
-        setCurrentPeerMetrics(newPeerMetrics)
         return null
       })
+      setCurrentPeerMetrics(newPeerMetrics)
     }
     if (!!!metrics) {
       setCurrentNodeMetrics({} as NodeMetricsContainer)
@@ -221,14 +252,14 @@ export const NodeMetrics: React.FC = () => {
       labelKey: 'pro.metrickeys.totalsent',
       minWidth: 100,
       align: 'center',
-      format: (value) => <Typography variant="h5">{value}</Typography>,
+      format: (value) => <Typography variant="h5">{handleGetBytesValue(value)} ({handleGetBytesLabel(value)})</Typography>,
     },
     {
       id: 'totalreceived',
       labelKey: 'pro.metrickeys.totalreceived',
       minWidth: 100,
       align: 'center',
-      format: (value) => <Typography variant="h5">{value}</Typography>,
+      format: (value) => <Typography variant="h5">{handleGetBytesValue(value)} ({handleGetBytesLabel(value)})</Typography>,
     },
   ]
 
@@ -301,6 +332,8 @@ export const NodeMetrics: React.FC = () => {
             </div>
           </Grid>
           <Grid item xs={12} style={styles.topMargin}>
+            {console.log("Filter nodes:", filterNodes)}
+            {console.log("current peer metrics:", currentPeerMetrics)}
             {!!filterNodes && filterNodes.length ? (
               <NmTable
                 columns={columns}

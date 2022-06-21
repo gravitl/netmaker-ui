@@ -18,7 +18,7 @@ const styles = {
     top: "50%",
     left: "50%",
     position: "absolute",
-    transform: "translate(-50%, 25%)"
+    transform: "translate(-50%, -25%)"
   },
   relative: {
     position: "relative"
@@ -26,11 +26,12 @@ const styles = {
 } as any
 
 const options = {
-    legend: {
-        display: false,
-        position: "right"
+    plugins: {
+      legend: {
+        display: false
+      },
     },
-    cutout: 45,
+    cutout: 55,
     elements: {
         arc: {
           borderWidth: 0,
@@ -67,7 +68,7 @@ export const UptimeChart = (props: Props) => {
       <div style={styles.relative}>
         <Doughnut data={formatData(props.chartData)} options={options} />
         {!!timeString && <div style={styles.doughContainer}>
-          <Typography variant='inherit'>
+          <Typography variant='subtitle1'>
             {timeString}
           </Typography>
         </div>}
