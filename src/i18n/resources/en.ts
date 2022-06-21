@@ -13,8 +13,8 @@ export const en: LanguageResource = {
       totaltime: 'Duration',
       percentup: 'Percent UP',
       connected: 'Connected',
-      totalsent: 'Total Sent (B)',
-      totalreceived: 'Total Received (B)',
+      totalsent: 'Total Sent',
+      totalreceived: 'Total Received',
     },
   },
   header: {
