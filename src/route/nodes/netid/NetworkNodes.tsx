@@ -259,16 +259,16 @@ export const NetworkNodes: React.FC = () => {
           justifyContent="space-between"
           alignItems="center"
         >
-          <Grid item xs={10} md={12}>
-            <Grid container justifyContent="space-between" alignItems="center">
-              <Grid item xs={10} md={4}>
+          <Grid item xs={12} md={12}>
+            <Grid container justifyContent="space-around" alignItems="center">
+              <Grid item xs={8} md={4}>
                 <Typography variant="h4">
                   {`${netid} ${t('node.nodes')}`}
                 </Typography>
               </Grid>
-              <Grid item xs={10} md={8}>
+              <Grid item xs={12} md={8}>
                 <Grid container justifyContent="center" alignItems="center">
-                  <Grid item xs={3} md={1}>
+                  <Grid item xs={2} md={1}>
                     <Tooltip
                       title={`${t('network.graph')}`}
                       placement="top"
@@ -279,7 +279,7 @@ export const NetworkNodes: React.FC = () => {
                       </IconButton>
                     </Tooltip>
                   </Grid>
-                  <Grid item xs={6} md={3}>
+                  <Grid item xs={5} md={3}>
                     <Tablefilter
                       values={['address', 'name', 'network']}
                       ascending={nodeSort.ascending}
@@ -308,7 +308,7 @@ export const NetworkNodes: React.FC = () => {
                       onChange={handleFilter}
                     />
                   </Grid>
-                  <Grid item xs={8} md={3} paddingBottom="1rem">
+                  <Grid item xs={7.5} md={3} paddingBottom="1rem">
                     <NetworkSelect selectAll />
                   </Grid>
                   <Grid item xs={1} md={1}>
