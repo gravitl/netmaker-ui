@@ -1,19 +1,19 @@
 import {
-    Grid,
-    IconButton,
-    InputAdornment,
-    LinearProgress,
-    Paper,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow,
-    TextField,
-    Tooltip,
-    Typography,
-  } from '@mui/material'
+  Grid,
+  IconButton,
+  InputAdornment,
+  LinearProgress,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TextField,
+  Tooltip,
+  Typography,
+} from '@mui/material'
 import React from 'react'
 import {
   // Block,
@@ -32,7 +32,7 @@ import { getMetrics } from '~store/modules/server/actions'
 import { NodeMetric, MetricsContainer } from '~store/types'
 import { getTimeMinHrs, MAX_ATTEMPTS } from '../util'
 import MetricButton from '../components/MetricButton'
-  
+
 const HIGHLIGHT = '#D7BE69'
 type HoveredNode = {
   nodeID1: string
@@ -58,17 +58,19 @@ export const MetricsTable: React.FC = () => {
   const extClients = useSelector(nodeSelectors.getExtClients)
   const inDarkMode = useSelector(authSelectors.isInDarkMode)
   const attempts = useSelector(serverSelectors.getAttempts)
-  const [currentMetrics, setCurrentMetrics] = React.useState({} as MetricsContainer)
+  const [currentMetrics, setCurrentMetrics] = React.useState(
+    {} as MetricsContainer
+  )
   const [hoveredCell, setHoveredCell] = React.useState({
     nodeID1: '',
     nodeID2: '',
   } as HoveredNode)
   const [filterNodes, setFilterNodes] = React.useState(allNodes)
-  
+
   var nodeNameMap: Map<string, NameAndNetwork> = new Map()
 
   const isNodeFiltered = (id: string) => {
-    return !!~filterNodes.findIndex(node => node.id === id)
+    return !!~filterNodes.findIndex((node) => node.id === id)
   }
 
   const handleFilter = (event: { target: { value: string } }) => {
@@ -79,35 +81,55 @@ export const MetricsTable: React.FC = () => {
     } else {
       setFilterNodes(
         allNodes.filter((node) =>
-          `${node.name}${node.address}${node.id}${node.network}`.includes(searchTerm)
+          `${node.name}${node.address}${node.id}${node.network}`.includes(
+            searchTerm
+          )
         )
       )
     }
   }
 
   React.useEffect(() => {
-      if ((!!!Object.keys(currentMetrics).length && !isProcessing) || !!!metrics ||
-        Object.keys(currentMetrics).length !== Object.keys(metrics).length) {
-        if (attempts < MAX_ATTEMPTS)
-        dispatch(getMetrics.request(netid))
-        setFilterNodes(allNodes)
-      } 
-      if (!!metrics &&
-          Object.keys(currentMetrics).length !== Object.keys(metrics).length) {
-          setCurrentMetrics(metrics)
-          setFilterNodes(allNodes)
-      }
-      if (!!!metrics) {
-        setCurrentMetrics({} as MetricsContainer)
-      }
-  }, [dispatch, currentMetrics, metrics, netid, allNodes, isProcessing, attempts])
-
+    if (
+      (!!!Object.keys(currentMetrics).length && !isProcessing) ||
+      !!!metrics ||
+      Object.keys(currentMetrics).length !== Object.keys(metrics).length
+    ) {
+      if (attempts < MAX_ATTEMPTS) dispatch(getMetrics.request(netid))
+      setFilterNodes(allNodes)
+    }
+    if (
+      !!metrics &&
+      Object.keys(currentMetrics).length !== Object.keys(metrics).length
+    ) {
+      setCurrentMetrics(metrics)
+      setFilterNodes(allNodes)
+    }
+    if (!!!metrics) {
+      setCurrentMetrics({} as MetricsContainer)
+    }
+  }, [
+    dispatch,
+    currentMetrics,
+    metrics,
+    netid,
+    allNodes,
+    isProcessing,
+    attempts,
+  ])
 
   if (!!allNodes) {
-    allNodes.map((node) => nodeNameMap.set(node.id, {name: node.name, network: node.network}))
+    allNodes.map((node) =>
+      nodeNameMap.set(node.id, { name: node.name, network: node.network })
+    )
   }
   if (!!extClients) {
-    extClients.map((client) => nodeNameMap.set(client.clientid, {name: client.clientid, network: client.network}))
+    extClients.map((client) =>
+      nodeNameMap.set(client.clientid, {
+        name: client.clientid,
+        network: client.network,
+      })
+    )
   }
 
   const stickyColStyle = {
@@ -117,17 +139,27 @@ export const MetricsTable: React.FC = () => {
     zIndex: 1,
   }
 
-  const getMetricsCellRender = (currMetric: NodeMetric | undefined, nodeID: string, loopID: string) => {
+  const getMetricsCellRender = (
+    currMetric: NodeMetric | undefined,
+    nodeID: string,
+    loopID: string
+  ) => {
     // if it's this node's index, render disabled thing
     if (nodeID === loopID) {
       // looking at self
       return <DisabledIcon color="inherit" />
     }
-    
+
     return (
       <IconButton>
         {!!currMetric && currMetric.connected ? (
-          <Tooltip title={`UP = ${getTimeMinHrs(currMetric.actualuptime).hours}h${getTimeMinHrs(currMetric.actualuptime).min}m : ${currMetric.percentup.toFixed(2)}% \t Latency = ${currMetric.latency}`}>
+          <Tooltip
+            title={`UP = ${getTimeMinHrs(currMetric.actualuptime).hours}h${
+              getTimeMinHrs(currMetric.actualuptime).min
+            }m : ${currMetric.percentup.toFixed(2)}% \t Latency = ${
+              currMetric.latency
+            }`}
+          >
             <CheckCircle htmlColor="#2800ee" />
           </Tooltip>
         ) : (
@@ -161,14 +193,27 @@ export const MetricsTable: React.FC = () => {
       </Grid>
     )
   }
+  if (
+    !!!metrics ||
+    !!!Object.keys(currentMetrics).length ||
+    !!!Object.keys(currentMetrics.nodes).length
+  )
+    return (
+      <Grid
+        container
+        justifyContent="center"
+        alignItems="center"
+        textAlign="center"
+      >
+        <Grid item xs={12} style={{ marginTop: '5rem' }}>
+          <Typography variant="h3">{t('pro.nometrics')}</Typography>
+        </Grid>
+      </Grid>
+    )
 
   return (
-    <Grid
-      container
-      justifyContent='center'
-      alignItems='center'
-    >
-      {!!netid && !!nodeNameMap &&
+    <Grid container justifyContent="center" alignItems="center">
+      {!!netid && !!nodeNameMap && (
         <Grid item xs={8} md={6}>
           <div style={titleStyle}>
             <Typography variant="h5">
@@ -176,7 +221,7 @@ export const MetricsTable: React.FC = () => {
             </Typography>
           </div>
         </Grid>
-      }
+      )}
       <Grid item xs={6} md={5.5}>
         <div style={titleStyle}>
           <TextField
@@ -191,9 +236,11 @@ export const MetricsTable: React.FC = () => {
             onChange={handleFilter}
           />
         </div>
-      </Grid> 
+      </Grid>
       <Grid item xs={12} style={titleStyle}>
-      {attempts >= MAX_ATTEMPTS && <Typography color="red">{t('error.overload')}</Typography> }
+        {attempts >= MAX_ATTEMPTS && (
+          <Typography color="red">{t('error.overload')}</Typography>
+        )}
         <Paper sx={{ width: '100%', overflow: 'hidden' }}>
           <TableContainer sx={{ maxHeight: 600 }}>
             <Table
@@ -205,27 +252,33 @@ export const MetricsTable: React.FC = () => {
               <TableHead>
                 <TableRow>
                   <TableCell>{t('node.name')}</TableCell>
-                  {!!currentMetrics && !!currentMetrics.nodes && Object.keys(currentMetrics.nodes).map((nodeID) => (
-                    <TableCell align="center" key={nodeID}>
-                      <MetricButton
-                        sx={{
-                          textTransform: 'none',
-                          background:
-                            hoveredCell.nodeID2 === nodeID ? HIGHLIGHT : '',
-                        }}
-                        link={`/metrics/${netid || nodeNameMap.get(nodeID)?.network}/${nodeID}`}
-                        text={nodeNameMap.get(nodeID)?.name}
-                      />
-                    </TableCell>
-                  ))}
+                  {!!currentMetrics &&
+                    !!currentMetrics.nodes &&
+                    Object.keys(currentMetrics.nodes).map((nodeID) => (
+                      <TableCell align="center" key={nodeID}>
+                        <MetricButton
+                          sx={{
+                            textTransform: 'none',
+                            background:
+                              hoveredCell.nodeID2 === nodeID ? HIGHLIGHT : '',
+                          }}
+                          link={`/metrics/${
+                            netid || nodeNameMap.get(nodeID)?.network
+                          }/${nodeID}`}
+                          text={nodeNameMap.get(nodeID)?.name}
+                        />
+                      </TableCell>
+                    ))}
                 </TableRow>
               </TableHead>
               <TableBody>
-                {!!currentMetrics && !!currentMetrics.nodes && Object.keys(currentMetrics.nodes).map((metricsID, index) => {                
-                  const currMetric = currentMetrics.nodes[metricsID]
-                  return (
-                    (nodeNameMap.size === 0 ||
-                    nodeNameMap.has(metricsID)) && isNodeFiltered(metricsID) ? (
+                {!!currentMetrics &&
+                  !!currentMetrics.nodes &&
+                  Object.keys(currentMetrics.nodes).map((metricsID, index) => {
+                    const currMetric = currentMetrics.nodes[metricsID]
+                    return (nodeNameMap.size === 0 ||
+                      nodeNameMap.has(metricsID)) &&
+                      isNodeFiltered(metricsID) ? (
                       <TableRow
                         key={metricsID}
                         sx={{
@@ -252,7 +305,9 @@ export const MetricsTable: React.FC = () => {
                           scope="row"
                         >
                           <MetricButton
-                            link={`/metrics/${netid || nodeNameMap.get(metricsID)?.network}/${metricsID}`}
+                            link={`/metrics/${
+                              netid || nodeNameMap.get(metricsID)?.network
+                            }/${metricsID}`}
                             text={nodeNameMap.get(metricsID)?.name}
                             sx={{ textTransform: 'none' }}
                           />
@@ -272,18 +327,22 @@ export const MetricsTable: React.FC = () => {
                             align="center"
                           >
                             {!!currMetric &&
-                            !!currMetric.connectivity &&
-                            getMetricsCellRender(currMetric.connectivity[loopID], metricsID, loopID)}
+                              !!currMetric.connectivity &&
+                              getMetricsCellRender(
+                                currMetric.connectivity[loopID],
+                                metricsID,
+                                loopID
+                              )}
                           </TableCell>
                         ))}
                       </TableRow>
                     ) : null
-                )})}
+                  })}
               </TableBody>
             </Table>
           </TableContainer>
         </Paper>
-        </Grid>
       </Grid>
+    </Grid>
   )
 }

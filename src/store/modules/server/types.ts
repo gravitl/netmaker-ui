@@ -77,15 +77,15 @@ export interface MetricsContainer {
 
 export interface NodeMetric {
   uptime: number
-	totaltime: number
-	latency: number
-	totalreceived: number
-	receivedhourly: number
-	totalsent: number
-	senthourly: number
-	actualuptime: number
-	percentup: number
-	connected: boolean
+  totaltime: number
+  latency: number
+  totalreceived: number
+  receivedhourly: number
+  totalsent: number
+  senthourly: number
+  actualuptime: number
+  percentup: number
+  connected: boolean
 }
 
 export interface NodeMetricsID {
