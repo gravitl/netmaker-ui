@@ -5,6 +5,7 @@ export interface LanguageResource {
     metrics: string
     admin: string
     admintools: string
+    nometrics: string
     metrickeys: {
       latency: string
       uptime: string
