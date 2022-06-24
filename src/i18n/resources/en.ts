@@ -90,6 +90,7 @@ export const en: LanguageResource = {
     max: 'Max',
     min: 'Min',
     chars: 'characters',
+	lowercase: 'lowercase',
     optional: 'optional',
     submitchanges: 'Submit Changes',
     loading: 'Loading',
