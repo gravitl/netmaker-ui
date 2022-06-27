@@ -314,16 +314,16 @@ export const NodesACLTable: React.FC<{}> = () => {
 
   return (
     <Grid container>
-      <Grid item xs={12}>
-        <Grid container justifyContent="space-between" alignItems="center">
-          <Grid item xs={4}>
+      <Grid item xs={12} md={12}>
+        <Grid container justifyContent="space-around" alignItems="center">
+          <Grid item xs={8} md={3}>
             <div style={{ textAlign: 'center' }}>
               <Typography variant="h4">
                 {`${t('acls.networkview')} ${netid}`}
               </Typography>
             </div>
           </Grid>
-          <Grid item xs={2}>
+          <Grid item xs={8} md={3}>
             <TextField
               InputProps={{
                 startAdornment: (
@@ -336,10 +336,10 @@ export const NodesACLTable: React.FC<{}> = () => {
               onChange={handleFilter}
             />
           </Grid>
-          <Grid item xs={2}>
+          <Grid item xs={8} md={3} style={{paddingBottom:'1rem'}} >
             <NetworkSelect />
           </Grid>
-          <Grid item xs={3}>
+          <Grid item xs={8} md={2}>
             <div
               style={{
                 display: 'flex',
@@ -391,12 +391,12 @@ export const NodesACLTable: React.FC<{}> = () => {
         </Grid>
         <hr />
       </Grid>
-      <Grid item xs={12}>
+      <Grid item xs={12} md={12}>
         <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-          <TableContainer sx={{ maxHeight: 600 }}>
+          <TableContainer sx={{ maxHeight: 600, display: 'flex' }}>
             <Table
               stickyHeader
-              sx={{ minWidth: 650 }}
+              sx={{ minWidth: '75vw', width: '100%'}}
               size="small"
               aria-label="acl-table"
             >
@@ -482,7 +482,7 @@ export const NodesACLTable: React.FC<{}> = () => {
         </Paper>
       </Grid>
       {!!nodeid && (
-        <Grid item xs={4}>
+        <Grid item xs={4} md={4}>
           <NmLink
             variant="outlined"
             sx={{ textTransform: 'none', marginTop: '2rem' }}
