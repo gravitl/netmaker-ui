@@ -100,6 +100,7 @@ export interface LanguageResource {
     ascend: string
     descend: string
     sortby: string
+    lowercase: string
   }
   dashboard: {
     title: string

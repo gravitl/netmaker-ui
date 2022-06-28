@@ -158,7 +158,7 @@ export const NetworkCreate: React.FC = () => {
             <NmFormInputText
               style={{ width: '90%' }}
               name={'netid'}
-              label={`${t('network.netid')} (${t('common.max')} 12 ${t(
+              label={`${t('network.netid')} (${t('common.max')} 12 ${t('common.lowercase')} ${t(
                 'common.chars'
               )})`}
             />
