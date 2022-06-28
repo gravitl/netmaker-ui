@@ -313,8 +313,38 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({
             <ListItemIcon>
               <ArrowRightAlt />
             </ListItemIcon>
-            <ListItemText primary={altData.id} secondary={'ID'} />
+            <ListItemText primary={altData.id} secondary={t('node.id')} />
           </ListItem>
+          {!!altData.address && (
+            <ListItem>
+              <ListItemIcon>
+                <ArrowRightAlt />
+              </ListItemIcon>
+              <ListItemText
+                primary={
+                  <div style={styles.multiCopy}>
+                    <MultiCopy type="caption" values={[altData.address]} />
+                  </div>
+                }
+                secondary={t('node.address')}
+              />
+            </ListItem>
+          )}
+          {!!altData.address6 && (
+            <ListItem>
+              <ListItemIcon>
+                <ArrowRightAlt />
+              </ListItemIcon>
+              <ListItemText
+                primary={
+                  <div style={styles.multiCopy}>
+                    <MultiCopy type="caption" values={[altData.address6]} />
+                  </div>
+                }
+                secondary={t('node.address6')}
+              />
+            </ListItem>
+          )}
           <ListItem>
             <ListItemIcon>
               <ArrowRightAlt />
