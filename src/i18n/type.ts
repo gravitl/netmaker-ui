@@ -165,6 +165,8 @@ export interface LanguageResource {
     islocal: string
     ispointtosite: string
     defaultacl: string
+    ipv4: string
+    ipv6: string
   }
   network: {
     allowmanualsignup: string

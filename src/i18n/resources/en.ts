@@ -90,7 +90,7 @@ export const en: LanguageResource = {
     max: 'Max',
     min: 'Min',
     chars: 'characters',
-	lowercase: 'lowercase',
+    lowercase: 'lowercase',
     optional: 'optional',
     submitchanges: 'Submit Changes',
     loading: 'Loading',
@@ -211,6 +211,8 @@ export const en: LanguageResource = {
       'Create a network in which all clients have only one, central peer',
     defaultacl:
       "Indicates the default ACL value for a node when it joins in respect to it's peers (enabled or disabled)",
+    ipv4: 'Adds private IPv4 to all nodes in a network',
+    ipv6: 'Adds private IPv6 to all nodes in a network',
   },
   node: {
     nodes: 'Nodes',
