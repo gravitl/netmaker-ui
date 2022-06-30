@@ -283,6 +283,10 @@ export interface LanguageResource {
     updatenode: string
     endpointenable: string
     endpointdisable: string
+    healthy: string
+    error: string
+    warning: string
+    connected: string
     state: {
       error: string
       warning: string

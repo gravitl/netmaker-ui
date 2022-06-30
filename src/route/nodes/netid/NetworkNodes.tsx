@@ -113,9 +113,15 @@ export const NetworkNodes: React.FC = () => {
       minWidth: 100,
       align: 'right',
       format: (value) => (
-        <NmLink sx={{ textTransform: 'none' }} to={`/networks/${value}`}>
-          {value}
-        </NmLink>
+        <Tooltip
+          disableTouchListener={true}
+          title={`${t('node.connected') as string}${value}`}
+          placement="top"
+        >
+          <NmLink sx={{ textTransform: 'none' }} to={`/networks/${value}`}>
+            {value}
+          </NmLink>
+        </Tooltip>
       ),
     },
     {
@@ -176,10 +182,22 @@ export const NetworkNodes: React.FC = () => {
       format: (lastcheckin) => {
         const time = Date.now() / 1000
         if (time - lastcheckin >= 1800)
-          return <Chip color="error" label="ERROR" />
+          return (
+            <Tooltip title={t('node.error') as string} placement="top">
+              <Chip color="error" label="ERROR" />
+            </Tooltip>
+          )
         if (time - lastcheckin >= 300)
-          return <Chip color="warning" label="WARNING" />
-        return <Chip color="success" label="HEALTHY" />
+          return (
+            <Tooltip title={t('node.warning') as string} placement="top">
+              <Chip color="warning" label="WARNING" />
+            </Tooltip>
+          )
+        return (
+          <Tooltip title={t('node.healthy') as string} placement="top">
+            <Chip color="success" label="HEALTHY" />
+          </Tooltip>
+        )
       },
     },
   ]
