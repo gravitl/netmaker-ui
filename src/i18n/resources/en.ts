@@ -213,6 +213,29 @@ export const en: LanguageResource = {
       "Indicates the default ACL value for a node when it joins in respect to it's peers (enabled or disabled)",
     ipv4: 'Adds private IPv4 to all nodes in a network',
     ipv6: 'Adds private IPv6 to all nodes in a network',
+    whatisipv4: 'IPv4 address range',
+    whatisipv6: 'IPv6 address range',
+    localrange:
+      'Specifies the local range that nodes will base their Endpoint off of',
+    defaultinterface:
+      'The default network interface name configured on each node. This defaults to “nm-<network name>”',
+    defaultlistenport:
+      'Default WireGuard port each node will attempt to use. Nodes will iterate up until they find a free port.',
+    defaultpostup:
+      'Default post-up command to run on each node (after interface has been configured). Disabled by default to prevent RCE vulnerabilities.',
+    defaultpostdown:
+      'Default post-down command to run on each node (after interface has been removed). Disabled by default to prevent RCE vulnerabilities.',
+    keepalive:
+      'How often nodes should send packets to keep connection alive with all peers (in seconds)',
+    extclient:
+      'If set, adds a “DNS=<value>” line to each ext client config. Set to add DNS to clients',
+    mtu: 'Allows you to determine the biggest data size permitted on your connection, can be useful to set lower in certain difficult environments such as Kubernetes',
+    nokeysignup:
+      'Allows nodes to join the network without a valid Access Key, nodes will need to be approved by admin in UI',
+    pointtosite:
+      'Creates a network in which all clients have only one, central peer',
+    defaultaccesscontrol:
+      'If on all nodes can reach all other nodes by default, if off no node can reach all other nodes',
   },
   node: {
     nodes: 'Nodes',

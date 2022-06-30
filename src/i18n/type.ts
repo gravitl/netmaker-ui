@@ -167,6 +167,19 @@ export interface LanguageResource {
     defaultacl: string
     ipv4: string
     ipv6: string
+    whatisipv4: string
+    whatisipv6: string
+    localrange: string
+    defaultinterface: string
+    defaultlistenport: string
+    defaultpostup: string
+    defaultpostdown: string
+    keepalive: string
+    extclient: string
+    mtu: string
+    nokeysignup: string
+    pointtosite: string
+    defaultaccesscontrol: string
   }
   network: {
     allowmanualsignup: string
