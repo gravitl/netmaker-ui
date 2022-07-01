@@ -148,26 +148,27 @@ export const NodeEdit: React.FC<{
             </span>
           </Tooltip>
         </Grid>
-        <Tooltip title={String(t('helper.dynamicport'))} placement="top">
-          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-            <Tooltip
-              title={
-                !network?.defaultudpholepunch
-                  ? String(t('node.udpdisabled'))
-                  : ''
-              }
-            >
-              <span>
-                <NmFormInputSwitch
-                  label={String(t('node.udpholepunch'))}
-                  name={'udpholepunch'}
-                  defaultValue={node.udpholepunch}
-                  disabled={!network?.defaultudpholepunch}
-                />
-              </span>
-            </Tooltip>
-          </Grid>
-        </Tooltip>
+
+        <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
+          <Tooltip
+            title={
+              !network?.defaultudpholepunch
+                ? String(t('node.udpdisabled'))
+                : String(t('helper.dynamicport'))
+            }
+            placement="top"
+          >
+            <span>
+              <NmFormInputSwitch
+                label={String(t('node.udpholepunch'))}
+                name={'udpholepunch'}
+                defaultValue={node.udpholepunch}
+                disabled={!network?.defaultudpholepunch}
+              />
+            </span>
+          </Tooltip>
+        </Grid>
+
         <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <Tooltip title={String(t('helper.whatisipv4'))} placement="top">
             <span>
