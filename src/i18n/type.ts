@@ -180,6 +180,26 @@ export interface LanguageResource {
     nokeysignup: string
     pointtosite: string
     defaultaccesscontrol: string
+    dynamicendpoint: string
+    dynamicport: string
+    localaddress: string
+    nodename: string
+    publickey: string
+    nodepostup: string
+    nodepostdown: string
+    allowedips: string
+    persistentkeepalive: string
+    relayaddress: string
+    nodeexpires: string
+    lastcheckin: string
+    macaddress: string
+    network: string
+    egressrange: string
+    nodeos: string
+    nodelocalrange: string
+    isdnson: string
+    networkhub: string
+    nodeislocal: string
   }
   network: {
     allowmanualsignup: string
