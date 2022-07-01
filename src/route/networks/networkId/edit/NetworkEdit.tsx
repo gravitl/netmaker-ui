@@ -1,5 +1,5 @@
 import React from 'react'
-import { Grid, Typography } from '@mui/material'
+import { Grid, Tooltip, Typography } from '@mui/material'
 import { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
@@ -44,11 +44,11 @@ export const NetworkEdit: React.FC<{
   )
 
   if (!!!network) {
-    return <div style={{ textAlign: 'center', margin: '1em 0 1em 0' }}>
-        <Typography variant="h5">
-          {`${t('error.notfound')}`}
-        </Typography>
+    return (
+      <div style={{ textAlign: 'center', margin: '1em 0 1em 0' }}>
+        <Typography variant="h5">{`${t('error.notfound')}`}</Typography>
       </div>
+    )
   }
 
   const centerStyle = {
@@ -66,8 +66,8 @@ export const NetworkEdit: React.FC<{
         variant: 'contained',
         fullWidth: true,
         style: {
-          width: '50%'
-        }
+          width: '50%',
+        },
       }}
       sx={{
         '& .MuiTextField-root': { m: 1, width: '25ch' },
@@ -82,115 +82,150 @@ export const NetworkEdit: React.FC<{
             </Typography>
           </div>
         </Grid>
-        <Grid item xs={12} sm={4} md={3}>
-          <NmFormInputText
-            name={'addressrange'}
-            label={String(t('network.addressrange'))}
-            disabled={!network.isipv4} 
-          />
-        </Grid>
-        <Grid item xs={12} sm={4} md={3}>
-          <NmFormInputText
-            name={'addressrange6'}
-            label={String(t('network.addressrange6'))}
-            disabled={!network.isipv6}
-          />
-        </Grid>
-        <Grid item xs={12} sm={4} md={3}>
-          <NmFormInputText
-            name={'localrange'}
-            label={String(t('network.localrange'))}
-          />
-        </Grid>
-        <Grid item xs={12} sm={4} md={3}>
-          <NmFormInputText
-            name={'defaultinterface'}
-            label={String(t('network.defaultinterface'))}
-          />
-        </Grid>
-        <Grid item xs={12} sm={4} md={3}>
-          <NmFormInputText
-            name={'defaultlistenport'}
-            label={String(t('network.defaultlistenport'))}
-            type="number"
-          />
-        </Grid>
-        <Grid item xs={12} sm={4} md={3}>
-          <NmFormInputText
-            name={'defaultpostup'}
-            label={String(t('network.defaultpostup'))}
-            disabled={!serverConfig.RCE}
-          />
-        </Grid>
-        <Grid item xs={12} sm={4} md={3}>
-          <NmFormInputText
-            name={'defaultpostdown'}
-            label={String(t('network.defaultpostdown'))}
-            disabled={!serverConfig.RCE}
-          />
-        </Grid>
-        <Grid item xs={12} sm={4} md={3}>
-          <NmFormInputText
-            name={'defaultkeepalive'}
-            label={String(t('network.defaultkeepalive'))}
-            type="number"
-          />
-        </Grid>
-        <Grid item xs={12} sm={4} md={3}>
-          <NmFormInputText
-            name={'defaultextclientdns'}
-            label={String(t('network.defaultextclientdns'))}
-          />
-        </Grid>
-        <Grid item xs={12} sm={4} md={3}>
-          <NmFormInputText
-            name={'defaultmtu'}
-            label={String(t('network.defaultmtu'))}
-            type="number"
-          />
-        </Grid>
-        <Grid item xs={12} sm={6} md={3}>
-              <div style={centerStyle}>
+        <Tooltip title={t('helper.whatisipv4') as string} placement="top">
+          <Grid item xs={12} sm={4} md={3}>
+            <NmFormInputText
+              name={'addressrange'}
+              label={String(t('network.addressrange'))}
+              disabled={!network.isipv4}
+            />
+          </Grid>
+        </Tooltip>
+        <Tooltip title={t('helper.whatisipv6') as string} placement="top">
+          <Grid item xs={12} sm={4} md={3}>
+            <NmFormInputText
+              name={'addressrange6'}
+              label={String(t('network.addressrange6'))}
+              disabled={!network.isipv6}
+            />
+          </Grid>
+        </Tooltip>
+        <Tooltip title={t('helper.localrange') as string} placement="top">
+          <Grid item xs={12} sm={4} md={3}>
+            <NmFormInputText
+              name={'localrange'}
+              label={String(t('network.localrange'))}
+            />
+          </Grid>
+        </Tooltip>
+        <Tooltip title={t('helper.defaultinterface') as string} placement="top">
+          <Grid item xs={12} sm={4} md={3}>
+            <NmFormInputText
+              name={'defaultinterface'}
+              label={String(t('network.defaultinterface'))}
+            />
+          </Grid>
+        </Tooltip>
+        <Tooltip
+          title={t('helper.defaultlistenport') as string}
+          placement="top"
+        >
+          <Grid item xs={12} sm={4} md={3}>
+            <NmFormInputText
+              name={'defaultlistenport'}
+              label={String(t('network.defaultlistenport'))}
+              type="number"
+            />
+          </Grid>
+        </Tooltip>
+        <Tooltip title={t('helper.defaultpostup') as string} placement="top">
+          <Grid item xs={12} sm={4} md={3}>
+            <NmFormInputText
+              name={'defaultpostup'}
+              label={String(t('network.defaultpostup'))}
+              disabled={!serverConfig.RCE}
+            />
+          </Grid>
+        </Tooltip>
+        <Tooltip title={t('helper.defaultpostdown') as string} placement="top">
+          <Grid item xs={12} sm={4} md={3}>
+            <NmFormInputText
+              name={'defaultpostdown'}
+              label={String(t('network.defaultpostdown'))}
+              disabled={!serverConfig.RCE}
+            />
+          </Grid>
+        </Tooltip>
+        <Tooltip title={t('helper.keepalive') as string} placement="top">
+          <Grid item xs={12} sm={4} md={3}>
+            <NmFormInputText
+              name={'defaultkeepalive'}
+              label={String(t('network.defaultkeepalive'))}
+              type="number"
+            />
+          </Grid>
+        </Tooltip>
+        <Tooltip title={t('helper.extclient') as string} placement="top">
+          <Grid item xs={12} sm={4} md={3}>
+            <NmFormInputText
+              name={'defaultextclientdns'}
+              label={String(t('network.defaultextclientdns'))}
+            />
+          </Grid>
+        </Tooltip>
+        <Tooltip title={t('helper.mtu') as string} placement="top">
+          <Grid item xs={12} sm={4} md={3}>
+            <NmFormInputText
+              name={'defaultmtu'}
+              label={String(t('network.defaultmtu'))}
+              type="number"
+            />
+          </Grid>
+        </Tooltip>
+        <Tooltip title={t('helper.ipv4') as string} placement="top">
+          <Grid item xs={12} sm={6} md={3}>
+            <div style={centerStyle}>
               <NmFormInputSwitch
                 name={'isipv4'}
                 label={String(t('network.isipv4'))}
                 disabled
               />
-              </div>
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
-              <div style={centerStyle}>
-                <NmFormInputSwitch
-                  name={'isipv6'}
-                  label={String(t('network.isipv6'))}
-                  disabled
-                />
-              </div>
-            </Grid>
-        <Grid item xs={12} sm={4} md={3}>
-          <NmFormInputSwitch
-            name={'allowmanualsignup'}
-            label={'Allow Node Signup Without Keys'}
-          />
-        </Grid>
-        <Grid item xs={12} sm={4} md={2}>
-          <NmFormInputSwitch
-            name={'defaultudpholepunch'}
-            label={String(t('network.defaultudpholepunch'))}
-          />
-        </Grid>
-        <Grid item xs={12} sm={4} md={2}>
-          <NmFormInputSwitch
-            name={'ispointtosite'}
-            label={String(t('network.ispointtosite'))}
-          />
-        </Grid>
-        <Grid item xs={12} sm={6} md={3}>
-          <NmFormInputSwitch
-            name={'defaultacl'}
-            label={String(t('network.defaultacl'))}
-          />
-        </Grid>
+            </div>
+          </Grid>
+        </Tooltip>
+        <Tooltip title={t('helper.ipv6') as string} placement="top">
+          <Grid item xs={12} sm={6} md={3}>
+            <div style={centerStyle}>
+              <NmFormInputSwitch
+                name={'isipv6'}
+                label={String(t('network.isipv6'))}
+                disabled
+              />
+            </div>
+          </Grid>
+        </Tooltip>
+        <Tooltip title={t('helper.nokeysignup') as string}>
+          <Grid item xs={12} sm={4} md={3}>
+            <NmFormInputSwitch
+              name={'allowmanualsignup'}
+              label={'Allow Node Signup Without Keys'}
+            />
+          </Grid>
+        </Tooltip>
+        <Tooltip title={t('helper.udpholepunching') as string}>
+          <Grid item xs={12} sm={4} md={2}>
+            <NmFormInputSwitch
+              name={'defaultudpholepunch'}
+              label={String(t('network.defaultudpholepunch'))}
+            />
+          </Grid>
+        </Tooltip>
+        <Tooltip title={t('helper.pointtosite') as string}>
+          <Grid item xs={12} sm={4} md={2}>
+            <NmFormInputSwitch
+              name={'ispointtosite'}
+              label={String(t('network.ispointtosite'))}
+            />
+          </Grid>
+        </Tooltip>
+        <Tooltip title={t('helper.defaultaccesscontrol') as string}>
+          <Grid item xs={12} sm={6} md={3}>
+            <NmFormInputSwitch
+              name={'defaultacl'}
+              label={String(t('network.defaultacl'))}
+            />
+          </Grid>
+        </Tooltip>
       </Grid>
     </NmForm>
   )

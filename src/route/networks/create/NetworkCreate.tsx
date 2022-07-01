@@ -158,9 +158,9 @@ export const NetworkCreate: React.FC = () => {
             <NmFormInputText
               style={{ width: '90%' }}
               name={'netid'}
-              label={`${t('network.netid')} (${t('common.max')} 12 ${t('common.lowercase')} ${t(
-                'common.chars'
-              )})`}
+              label={`${t('network.netid')} (${t('common.max')} 12 ${t(
+                'common.lowercase'
+              )} ${t('common.chars')})`}
             />
           </Grid>
           <Grid
@@ -175,12 +175,14 @@ export const NetworkCreate: React.FC = () => {
               alignItems: 'center',
             }}
           >
-            <div onClick={handleViewIpv4}>
-              <NmFormInputSwitch
-                name={'isipv4'}
-                label={String(t('network.isipv4'))}
-              />
-            </div>
+            <Tooltip title={t('helper.ipv4') as string}>
+              <div onClick={handleViewIpv4}>
+                <NmFormInputSwitch
+                  name={'isipv4'}
+                  label={String(t('network.isipv4'))}
+                />
+              </div>
+            </Tooltip>
             {useIpv4 && (
               <NmFormInputText
                 style={{ width: '60%' }}
@@ -201,12 +203,14 @@ export const NetworkCreate: React.FC = () => {
               alignItems: 'center',
             }}
           >
-            <div onClick={handleViewIpv6}>
-              <NmFormInputSwitch
-                name={'isipv6'}
-                label={String(t('network.isipv6'))}
-              />
-            </div>
+            <Tooltip title={t('helper.ipv6') as string}>
+              <div onClick={handleViewIpv6}>
+                <NmFormInputSwitch
+                  name={'isipv6'}
+                  label={String(t('network.isipv6'))}
+                />
+              </div>
+            </Tooltip>
             {useIpv6 && (
               <NmFormInputText
                 style={{ width: '60%' }}
