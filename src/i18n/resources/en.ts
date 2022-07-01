@@ -261,14 +261,14 @@ export const en: LanguageResource = {
     lastcheckin:
       'Unix timestamp of the last time the node checked in with the server. Used to determine generic health of node',
     macaddress:
-      'he hardware mac address of the machine. Used to be used as the unique ID, but is being depreciated',
+      'The hardware mac address of the machine. Used to be used as the unique ID, but is being deprecated',
     network: 'The network this node belongs too',
     egressrange:
       'If Egress is enabled, the gateway ranges that this machine routes to.',
     nodeos: 'The operating system of the node',
     nodelocalrange:
       'If IsLocal has been enabled on the network, this is the local range in which the node will look for a private address from the local interfaces, to use as an endpoint',
-    isdnson: 'he node will setup DNS entries for its peers locally',
+    isdnson: 'The node will setup DNS entries for its peers locally',
     networkhub:
       'On a point-to-site network, this node is the only one all peers connect to',
     nodeislocal:

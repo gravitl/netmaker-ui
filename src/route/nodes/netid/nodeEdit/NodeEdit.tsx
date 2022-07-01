@@ -121,26 +121,33 @@ export const NodeEdit: React.FC<{
             </span>
           </Tooltip>
         </Grid>
-        <Tooltip title={String(t('helper.dynamicendpoint'))} placement="top">
-          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-            <NmFormInputSwitch
-              label={String(t('node.isstatic'))}
-              name={'isstatic'}
-              defaultValue={isIPDynamic}
-            />
-          </Grid>
-        </Tooltip>
-        <Tooltip title={String(t('helper.defaultlistenport'))} placement="top">
-          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-            <NmFormInputText
-              defaultValue={String(node.listenport)}
-              name={'listenport'}
-              label={String(t('node.listenport'))}
-              type="number"
-              disabled={node.isserver || node.udpholepunch}
-            />
-          </Grid>
-        </Tooltip>
+        <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
+          <Tooltip title={String(t('helper.dynamicendpoint'))} placement="top">
+            <span>
+              <NmFormInputSwitch
+                label={String(t('node.isstatic'))}
+                name={'isstatic'}
+                defaultValue={isIPDynamic}
+              />
+            </span>
+          </Tooltip>
+        </Grid>
+        <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
+          <Tooltip
+            title={String(t('helper.defaultlistenport'))}
+            placement="top"
+          >
+            <span>
+              <NmFormInputText
+                defaultValue={String(node.listenport)}
+                name={'listenport'}
+                label={String(t('node.listenport'))}
+                type="number"
+                disabled={node.isserver || node.udpholepunch}
+              />
+            </span>
+          </Tooltip>
+        </Grid>
         <Tooltip title={String(t('helper.dynamicport'))} placement="top">
           <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
             <Tooltip
@@ -161,105 +168,117 @@ export const NodeEdit: React.FC<{
             </Tooltip>
           </Grid>
         </Tooltip>
-        <Tooltip title={String(t('helper.whatisipv4'))} placement="top">
-          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-            <NmFormInputText
-              name={'address'}
-              label={String(t('node.address'))}
-              defaultValue={node.address}
-              disabled={node.isserver}
-            />
-          </Grid>
-        </Tooltip>
-        <Tooltip title={String(t('helper.whatisipv6'))} placement="top">
-          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-            <NmFormInputText
-              defaultValue={node.address6}
-              name={'address6'}
-              label={String(t('node.address6'))}
-              disabled={!network?.isipv6}
-            />
-          </Grid>
-        </Tooltip>
-        <Tooltip title={String(t('helper.localaddress'))} placement="top">
-          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
+        <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
+          <Tooltip title={String(t('helper.whatisipv4'))} placement="top">
+            <span>
+              <NmFormInputText
+                name={'address'}
+                label={String(t('node.address'))}
+                defaultValue={node.address}
+                disabled={node.isserver}
+              />
+            </span>
+          </Tooltip>
+        </Grid>
+        <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
+          <Tooltip title={String(t('helper.whatisipv6'))} placement="top">
+            <span>
+              <NmFormInputText
+                defaultValue={node.address6}
+                name={'address6'}
+                label={String(t('node.address6'))}
+                disabled={!network?.isipv6}
+              />
+            </span>
+          </Tooltip>
+        </Grid>
+        <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
+          <Tooltip title={String(t('helper.localaddress'))} placement="top">
             <NmFormInputText
               defaultValue={node.localaddress}
               name={'localaddress'}
               label={String(t('node.localaddress'))}
             />
-          </Grid>
-        </Tooltip>
-        <Tooltip title={String(t('helper.nodename'))} placement="top">
-          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
+          </Tooltip>
+        </Grid>
+        <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
+          <Tooltip title={String(t('helper.nodename'))} placement="top">
             <NmFormInputText
               defaultValue={node.name}
               name={'name'}
               label={String(t('node.name'))}
             />
-          </Grid>
-        </Tooltip>
-        <Tooltip title={String(t('helper.publickey'))} placement="top">
-          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-            <NmFormInputText
-              disabled
-              defaultValue={t('node.publickey')}
-              name={'publickey'}
-              label={String(t('node.publickey'))}
-            />
-          </Grid>
-        </Tooltip>
-        <Tooltip title={String(t('helper.nodepostup'))} placement="top">
-          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-            <NmFormInputText
-              defaultValue={node.postup}
-              name={'postup'}
-              label={String(t('node.postup'))}
-              disabled={!serverConfig.RCE}
-            />
-          </Grid>
-        </Tooltip>
-        <Tooltip title={String(t('helper.nodepostdown'))} placement="top">
-          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-            <NmFormInputText
-              defaultValue={node.postdown}
-              label={String(t('node.postdown'))}
-              name={'postdown'}
-              disabled={!serverConfig.RCE}
-            />
-          </Grid>
-        </Tooltip>
-        <Tooltip title={String(t('helper.allowedips'))} placement="top">
-          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
+          </Tooltip>
+        </Grid>
+        <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
+          <Tooltip title={String(t('helper.publickey'))} placement="top">
+            <span>
+              <NmFormInputText
+                disabled
+                defaultValue={t('node.publickey')}
+                name={'publickey'}
+                label={String(t('node.publickey'))}
+              />
+            </span>
+          </Tooltip>
+        </Grid>
+        <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
+          <Tooltip title={String(t('helper.nodepostup'))} placement="top">
+            <span>
+              <NmFormInputText
+                defaultValue={node.postup}
+                name={'postup'}
+                label={String(t('node.postup'))}
+                disabled={!serverConfig.RCE}
+              />
+            </span>
+          </Tooltip>
+        </Grid>
+        <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
+          <Tooltip title={String(t('helper.nodepostdown'))} placement="top">
+            <span>
+              <NmFormInputText
+                defaultValue={node.postdown}
+                label={String(t('node.postdown'))}
+                name={'postdown'}
+                disabled={!serverConfig.RCE}
+              />
+            </span>
+          </Tooltip>
+        </Grid>
+        <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
+          <Tooltip title={String(t('helper.allowedips'))} placement="top">
             <NmFormInputText
               defaultValue={node.allowedips ? node.allowedips.join(',') : ''}
               label={String(t('node.allowedips'))}
               name={'allowedips'}
             />
-          </Grid>
-        </Tooltip>
-        <Tooltip
-          title={String(t('helper.persistentkeepalive'))}
-          placement="top"
-        >
-          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
+          </Tooltip>
+        </Grid>
+        <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
+          <Tooltip
+            title={String(t('helper.persistentkeepalive'))}
+            placement="top"
+          >
             <NmFormInputText
               defaultValue={node.persistentkeepalive}
               label={String(t('node.persistentkeepalive'))}
               name={'persistentkeepalive'}
             />
-          </Grid>
-        </Tooltip>
-        <Tooltip title={String(t('helper.relayaddress'))} placement="top">
-          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-            <NmFormInputText
-              disabled={!node.isrelay}
-              defaultValue={node.relayaddrs ? node.relayaddrs.join(',') : ''}
-              label={String(t('node.relayaddrs'))}
-              name={'relayaddrs'}
-            />
-          </Grid>
-        </Tooltip>
+          </Tooltip>
+        </Grid>
+        <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
+          <Tooltip title={String(t('helper.relayaddress'))} placement="top">
+            <span>
+              <NmFormInputText
+                disabled={!node.isrelay}
+                defaultValue={node.relayaddrs ? node.relayaddrs.join(',') : ''}
+                label={String(t('node.relayaddrs'))}
+                name={'relayaddrs'}
+              />
+            </span>
+          </Tooltip>
+        </Grid>
         <Tooltip title={String(t('helper.nodeexpires'))} placement="top">
           <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -286,110 +305,126 @@ export const NodeEdit: React.FC<{
             </LocalizationProvider>
           </Grid>
         </Tooltip>
-        <Tooltip title={String(t('helper.lastcheckin'))} placement="top">
-          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
+        <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
+          <Tooltip title={String(t('helper.lastcheckin'))} placement="top">
             <TextField
               disabled
               value={datePickerConverter(node.lastcheckin)}
               label={String(t('node.lastcheckin'))}
               name={'lastcheckin'}
             />
-          </Grid>
-        </Tooltip>
-        <Tooltip title={String(t('helper.macaddress'))} placement="top">
-          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-            <NmFormInputText
-              disabled
-              defaultValue={node.macaddress}
-              label={String(t('node.macaddress'))}
-              name={'macaddress'}
-            />
-          </Grid>
-        </Tooltip>
-        <Tooltip title={String(t('helper.network'))} placement="top">
-          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-            <NmFormInputText
-              disabled
-              defaultValue={node.network}
-              label={String(t('node.network'))}
-              name={'network'}
-            />
-          </Grid>
-        </Tooltip>
-        <Tooltip title={String(t('helper.egressrange'))} placement="top">
-          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-            <NmFormInputText
-              disabled={!node.isegressgateway}
-              defaultValue={
-                node.egressgatewayranges
-                  ? node.egressgatewayranges.join(',')
-                  : ''
-              }
-              label={String(t('node.egressgatewayranges'))}
-              name={'egressgatewayranges'}
-            />
-          </Grid>
-        </Tooltip>
-        <Tooltip title={String(t('helper.nodelocalrange'))} placement="top">
-          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-            <NmFormInputText
-              defaultValue={node.localrange}
-              label={String(t('node.localrange'))}
-              name={'localrange'}
-              disabled={!node.islocal}
-            />
-          </Grid>
-        </Tooltip>
-        <Tooltip title={String(t('helper.nodeos'))} placement="top">
-          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-            <NmFormInputText
-              disabled
-              defaultValue={node.os}
-              label={String(t('node.os'))}
-              name={'os'}
-            />
-          </Grid>
-        </Tooltip>
-        <Tooltip title={String(t('helper.mtu'))} placement="top">
-          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
+          </Tooltip>
+        </Grid>
+        <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
+          <Tooltip title={String(t('helper.macaddress'))} placement="top">
+            <span>
+              <NmFormInputText
+                disabled
+                defaultValue={node.macaddress}
+                label={String(t('node.macaddress'))}
+                name={'macaddress'}
+              />
+            </span>
+          </Tooltip>
+        </Grid>
+        <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
+          <Tooltip title={String(t('helper.network'))} placement="top">
+            <span>
+              <NmFormInputText
+                disabled
+                defaultValue={node.network}
+                label={String(t('node.network'))}
+                name={'network'}
+              />
+            </span>
+          </Tooltip>
+        </Grid>
+        <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
+          <Tooltip title={String(t('helper.egressrange'))} placement="top">
+            <span>
+              <NmFormInputText
+                disabled={!node.isegressgateway}
+                defaultValue={
+                  node.egressgatewayranges
+                    ? node.egressgatewayranges.join(',')
+                    : ''
+                }
+                label={String(t('node.egressgatewayranges'))}
+                name={'egressgatewayranges'}
+              />
+            </span>
+          </Tooltip>
+        </Grid>
+        <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
+          <Tooltip title={String(t('helper.nodelocalrange'))} placement="top">
+            <span>
+              <NmFormInputText
+                defaultValue={node.localrange}
+                label={String(t('node.localrange'))}
+                name={'localrange'}
+                disabled={!node.islocal}
+              />
+            </span>
+          </Tooltip>
+        </Grid>
+        <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
+          <Tooltip title={String(t('helper.nodeos'))} placement="top">
+            <span>
+              <NmFormInputText
+                disabled
+                defaultValue={node.os}
+                label={String(t('node.os'))}
+                name={'os'}
+              />
+            </span>
+          </Tooltip>
+        </Grid>
+        <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
+          <Tooltip title={String(t('helper.mtu'))} placement="top">
             <NmFormInputText
               type="number"
               defaultValue={String(node.mtu)}
               label={String(t('node.mtu'))}
               name={'mtu'}
             />
-          </Grid>
-        </Tooltip>
+          </Tooltip>
+        </Grid>
 
         <Grid container justifyContent="space-between" alignItems="center">
-          <Tooltip title={String(t('helper.isdnson'))} placement="top">
-            <Grid item xs={10} sm={4} md={2} sx={rowMargin}>
-              <NmFormInputSwitch
-                label={String(t('node.dnson'))}
-                name={'dnson'}
-                defaultValue={node.dnson}
-              />
-            </Grid>
-          </Tooltip>
-          <Tooltip title={String(t('helper.nodeislocal'))} placement="top">
-            <Grid item xs={10} sm={4} md={2} sx={rowMargin}>
-              <NmFormInputSwitch
-                label={String(t('node.islocal'))}
-                name={'islocal'}
-                defaultValue={node.islocal}
-              />
-            </Grid>
-          </Tooltip>
-          <Tooltip title={String(t('helper.networkhub'))} placement="top">
-            <Grid item xs={10} sm={4} md={2} sx={rowMargin}>
-              <NmFormInputSwitch
-                label={String(t('node.ishub'))}
-                name={'ishub'}
-                defaultValue={node.ishub}
-                disabled={!network?.ispointtosite}
-              />
-            </Grid>
-          </Tooltip>
+          <Grid item xs={10} sm={4} md={2} sx={rowMargin}>
+            <Tooltip title={String(t('helper.isdnson'))} placement="top">
+              <span>
+                <NmFormInputSwitch
+                  label={String(t('node.dnson'))}
+                  name={'dnson'}
+                  defaultValue={node.dnson}
+                />
+              </span>
+            </Tooltip>
+          </Grid>
+          <Grid item xs={10} sm={4} md={2} sx={rowMargin}>
+            <Tooltip title={String(t('helper.nodeislocal'))} placement="top">
+              <span>
+                <NmFormInputSwitch
+                  label={String(t('node.islocal'))}
+                  name={'islocal'}
+                  defaultValue={node.islocal}
+                />
+              </span>
+            </Tooltip>
+          </Grid>
+          <Grid item xs={10} sm={4} md={2} sx={rowMargin}>
+            <Tooltip title={String(t('helper.networkhub'))} placement="top">
+              <span>
+                <NmFormInputSwitch
+                  label={String(t('node.ishub'))}
+                  name={'ishub'}
+                  defaultValue={node.ishub}
+                  disabled={!network?.ispointtosite}
+                />
+              </span>
+            </Tooltip>
+          </Grid>
         </Grid>
       </Grid>
     </NmForm>
