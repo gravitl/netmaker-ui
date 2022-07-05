@@ -280,32 +280,34 @@ export const NodeEdit: React.FC<{
             </span>
           </Tooltip>
         </Grid>
-        <Tooltip title={String(t('helper.nodeexpires'))} placement="top">
-          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <DateTimePicker
-                renderInput={(props) => (
-                  <TextField
-                    fullWidth={false}
-                    sx={{ maxWidth: '15rem' }}
-                    {...props}
-                  />
-                )}
-                label={String(t('node.expdatetime'))}
-                value={
-                  expTime
-                    ? datePickerConverter(expTime)
-                    : datePickerConverter(node.expdatetime)
-                }
-                onChange={(newValue: string | null) => {
-                  if (!!newValue) {
-                    setExpTime(new Date(newValue).getTime() / 1000)
+        <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
+          <Tooltip title={String(t('helper.nodeexpires'))} placement="top">
+            <span>
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <DateTimePicker
+                  renderInput={(props) => (
+                    <TextField
+                      fullWidth={false}
+                      sx={{ maxWidth: '15rem' }}
+                      {...props}
+                    />
+                  )}
+                  label={String(t('node.expdatetime'))}
+                  value={
+                    expTime
+                      ? datePickerConverter(expTime)
+                      : datePickerConverter(node.expdatetime)
                   }
-                }}
-              />
-            </LocalizationProvider>
-          </Grid>
-        </Tooltip>
+                  onChange={(newValue: string | null) => {
+                    if (!!newValue) {
+                      setExpTime(new Date(newValue).getTime() / 1000)
+                    }
+                  }}
+                />
+              </LocalizationProvider>
+            </span>
+          </Tooltip>
+        </Grid>
         <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <Tooltip title={String(t('helper.lastcheckin'))} placement="top">
             <TextField
