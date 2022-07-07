@@ -16,7 +16,10 @@ import { useSelector, useDispatch } from 'react-redux'
 import { nodeSelectors, serverSelectors } from '~store/selectors'
 import { NodeMetric, NodeMetricsContainer } from '~store/types'
 import { useNodesByNetworkId } from '~util/network'
-import { getNodeMetrics } from '~store/modules/server/actions'
+import {
+  clearCurrentMetrics,
+  getNodeMetrics,
+} from '~store/modules/server/actions'
 import { NmTable, TableColumns } from '~components/Table'
 import { Modify } from 'src/types/react-app-env'
 import MetricButton from '../components/MetricButton'
@@ -58,6 +61,7 @@ export const NodeMetrics: React.FC = () => {
   const metrics = useSelector(serverSelectors.getNodeMetrics)
   const isFetching = useSelector(serverSelectors.isFetchingServerConfig)
   const attempts = useSelector(serverSelectors.getAttempts)
+  const [initialLoad, setInitialLoad] = React.useState(true)
   const [currentNodeMetrics, setCurrentNodeMetrics] = React.useState(
     {} as NodeMetricsContainer
   )
@@ -81,7 +85,9 @@ export const NodeMetrics: React.FC = () => {
     allNodes.map((node) => nodeNameMap.set(node.id, node.name))
   }
   if (!!extClients) {
-    extClients.map((client) => nodeNameMap.set(client.clientid, client.clientid))
+    extClients.map((client) =>
+      nodeNameMap.set(client.clientid, client.clientid)
+    )
   }
 
   const handleFilter = (event: { target: { value: string } }) => {
@@ -135,6 +141,16 @@ export const NodeMetrics: React.FC = () => {
   }
 
   React.useEffect(() => {
+    if (initialLoad) {
+      dispatch(clearCurrentMetrics())
+      setInitialLoad(false)
+    }
+    window.onpopstate = () => {
+      if (!!metrics) {
+        dispatch(clearCurrentMetrics())
+      }
+    }
+
     if (
       (!!!currentNodeMetrics && !isFetching) ||
       !!!Object.keys(currentNodeMetrics).length ||
@@ -145,7 +161,8 @@ export const NodeMetrics: React.FC = () => {
           (currID) => currID === nodeid
         ))
     ) {
-      if (attempts < MAX_ATTEMPTS) dispatch(getNodeMetrics.request({ ID: nodeid, Network: netid }))
+      if (attempts < MAX_ATTEMPTS)
+        dispatch(getNodeMetrics.request({ ID: nodeid, Network: netid }))
       setCurrentPeerMetrics([])
     }
     if (
@@ -252,27 +269,35 @@ export const NodeMetrics: React.FC = () => {
       labelKey: 'pro.metrickeys.totalsent',
       minWidth: 100,
       align: 'center',
-      format: (value) => <Typography variant="h5">{handleGetBytesValue(value)} ({handleGetBytesLabel(value)})</Typography>,
+      format: (value) => (
+        <Typography variant="h5">
+          {handleGetBytesValue(value)} ({handleGetBytesLabel(value)})
+        </Typography>
+      ),
     },
     {
       id: 'totalreceived',
       labelKey: 'pro.metrickeys.totalreceived',
       minWidth: 100,
       align: 'center',
-      format: (value) => <Typography variant="h5">{handleGetBytesValue(value)} ({handleGetBytesLabel(value)})</Typography>,
+      format: (value) => (
+        <Typography variant="h5">
+          {handleGetBytesValue(value)} ({handleGetBytesLabel(value)})
+        </Typography>
+      ),
     },
   ]
 
   return (
     <Grid container justifyContent="center" alignItems="center">
       <Grid item xs={12} sm={10} md={8} style={styles.center}>
-        <Typography variant='h3'>
-          {t('pro.metrics')}
-        </Typography>
+        <Typography variant="h3">{t('pro.metrics')}</Typography>
       </Grid>
       <Grid item xs={12} style={styles.center}>
         <hr />
-        {attempts >= MAX_ATTEMPTS && <Typography color="red">{t('error.overload')}</Typography> }
+        {attempts >= MAX_ATTEMPTS && (
+          <Typography color="red">{t('error.overload')}</Typography>
+        )}
         {isFetching && <LinearProgress />}
       </Grid>
       <Grid item xs={10} sm={4.5} md={4.5} style={styles.start}>
@@ -332,8 +357,8 @@ export const NodeMetrics: React.FC = () => {
             </div>
           </Grid>
           <Grid item xs={12} style={styles.topMargin}>
-            {console.log("Filter nodes:", filterNodes)}
-            {console.log("current peer metrics:", currentPeerMetrics)}
+            {console.log('Filter nodes:', filterNodes)}
+            {console.log('current peer metrics:', currentPeerMetrics)}
             {!!filterNodes && filterNodes.length ? (
               <NmTable
                 columns={columns}
