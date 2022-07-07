@@ -100,6 +100,7 @@ export interface LanguageResource {
     ascend: string
     descend: string
     sortby: string
+    lowercase: string
   }
   dashboard: {
     title: string
@@ -164,6 +165,41 @@ export interface LanguageResource {
     islocal: string
     ispointtosite: string
     defaultacl: string
+    ipv4: string
+    ipv6: string
+    whatisipv4: string
+    whatisipv6: string
+    localrange: string
+    defaultinterface: string
+    defaultlistenport: string
+    defaultpostup: string
+    defaultpostdown: string
+    keepalive: string
+    extclient: string
+    mtu: string
+    nokeysignup: string
+    pointtosite: string
+    defaultaccesscontrol: string
+    dynamicendpoint: string
+    dynamicport: string
+    localaddress: string
+    nodename: string
+    publickey: string
+    nodepostup: string
+    nodepostdown: string
+    allowedips: string
+    persistentkeepalive: string
+    relayaddress: string
+    nodeexpires: string
+    lastcheckin: string
+    macaddress: string
+    network: string
+    egressrange: string
+    nodeos: string
+    nodelocalrange: string
+    isdnson: string
+    networkhub: string
+    nodeislocal: string
   }
   network: {
     allowmanualsignup: string
@@ -282,6 +318,10 @@ export interface LanguageResource {
     updatenode: string
     endpointenable: string
     endpointdisable: string
+    healthy: string
+    error: string
+    warning: string
+    connected: string
     state: {
       error: string
       warning: string
