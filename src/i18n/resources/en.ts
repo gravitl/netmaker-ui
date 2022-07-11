@@ -107,6 +107,7 @@ export const en: LanguageResource = {
     max: 'Max',
     min: 'Min',
     chars: 'characters',
+    lowercase: 'lowercase',
     optional: 'optional',
     submitchanges: 'Submit Changes',
     loading: 'Loading',
@@ -229,6 +230,68 @@ export const en: LanguageResource = {
       'Create a network in which all clients have only one, central peer',
     defaultacl:
       "Indicates the default ACL value for a node when it joins in respect to it's peers (enabled or disabled)",
+    ipv4: 'Adds private IPv4 to all nodes in a network',
+    ipv6: 'Adds private IPv6 to all nodes in a network',
+    whatisipv4: 'IPv4 address range',
+    whatisipv6: 'IPv6 address range',
+    localrange:
+      'Specifies the local range that nodes will base their Endpoint off of',
+    defaultinterface:
+      'The default network interface name configured on each node. This defaults to “nm-<network name>”',
+    defaultlistenport:
+      'Default WireGuard port each node will attempt to use. Nodes will iterate up until they find a free port.',
+    defaultpostup:
+      'Default post-up command to run on each node (after interface has been configured). Disabled by default to prevent RCE vulnerabilities.',
+    defaultpostdown:
+      'Default post-down command to run on each node (after interface has been removed). Disabled by default to prevent RCE vulnerabilities.',
+    keepalive:
+      'How often nodes should send packets to keep connection alive with all peers (in seconds)',
+    extclient:
+      'If set, adds a “DNS=<value>” line to each ext client config. Set to add DNS to clients',
+    mtu: 'Allows you to determine the biggest data size permitted on your connection, can be useful to set lower in certain difficult environments such as Kubernetes',
+    nokeysignup:
+      'Allows nodes to join the network without a valid Access Key, nodes will need to be approved by admin in UI',
+    pointtosite:
+      'Creates a network in which all clients have only one, central peer',
+    defaultaccesscontrol:
+      'If on all nodes can reach all other nodes by default, if off no node can reach all other nodes',
+    dynamicendpoint:
+      'When on, clients will first reach out to the server. The server will keep track of public addresses / ports and send these to all other clients in the network.',
+    dynamicport:
+      'If on the port is dynamically created, if off you set the port to any reasonable value you would like for your local machine',
+    localaddress:
+      'The “locally reachable” address of the node. Other nodes will take note of this to see if this node is on the same network. If so, they will use this address instead of the public “Endpoint” ',
+    nodename:
+      'The name of the node within the network. Hostname by default but can be anything (within the character limits)',
+    publickey:
+      '(Uneditable) The public key of the node, distributed to other peers in the network',
+    nodepostup:
+      'Uneditable by default to disable RCE. Commands to run after the interface is created. If an ingress or egress gateway are created, this field will populate automatically with appropriate iptables commands.',
+    nodepostdown:
+      'Uneditable by default to disable RCE. Commands to run after the interface is brought down. If an ingress or egress gateway are created, this field will populate automatically with appropriate iptables commands.',
+    allowedips:
+      'Additional private addresses given to the node (in addition to the IPAddress and IPv6Address).',
+    persistentkeepalive:
+      'How often packets are sent to keep connections open with other peers',
+    relayaddress:
+      'If “Relay” is enabled on this node, this field can be edited to add and remove nodes from the relay. So if you are currently relaying just one node but wish to relay an additional node, just add it’s private IP here',
+    nodeexpires:
+      'If a node should become invalid after a length of time, you can set it in this field, after which time, it will lose access to the network and will not populate to other nodes',
+    lastcheckin:
+      'Unix timestamp of the last time the node checked in with the server. Used to determine generic health of node',
+    macaddress:
+      'The hardware mac address of the machine. Used to be used as the unique ID, but is being deprecated',
+    network: 'The network this node belongs too',
+    egressrange:
+      'If Egress is enabled, the gateway ranges that this machine routes to.',
+    nodeos: 'The operating system of the node',
+    nodelocalrange:
+      'If IsLocal has been enabled on the network, this is the local range in which the node will look for a private address from the local interfaces, to use as an endpoint',
+    isdnson: 'The node will setup DNS entries for its peers locally',
+    networkhub:
+      'On a point-to-site network, this node is the only one all peers connect to',
+    nodeislocal:
+      'If on, will only communicate over the local address (Assumes IsLocal turned to {yes} on the network level.)',
   },
   node: {
     nodes: 'Nodes',
@@ -309,6 +372,10 @@ export const en: LanguageResource = {
     updatenode: 'Update Node',
     endpointenable: 'Endpoint is set dynamically',
     endpointdisable: 'Endpoint is set manually',
+    healthy: 'Node has great connectivity',
+    error: 'Node has no Connectivity',
+    warning: 'Node has connectivity issues',
+    connected: 'Node is connected to ',
     state: {
       error: 'ERROR',
       warning: 'WARNING',
