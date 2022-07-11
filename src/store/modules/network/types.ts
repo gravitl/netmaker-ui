@@ -25,6 +25,7 @@ export interface Network {
   defaultextclientdns: string
   defaultmtu: number
   defaultacl: boolean
+  prosettings: ProSettings | undefined
 }
 
 export type NetworkPayload = Modify<
@@ -157,4 +158,12 @@ export interface DeleteAccessKeyPayload {
     netid: string
     name: string
   }
+}
+
+export interface ProSettings {
+  defaultaccesslevel: number
+  defaultusernodelimit: number
+  defaultuserclientlimit: number
+  allowedusers: string[]
+  allowedgroups: string[]
 }
