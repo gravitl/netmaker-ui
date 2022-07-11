@@ -1,4 +1,21 @@
 export interface LanguageResource {
+  pro: {
+    logs: string
+    refresh: string
+    metrics: string
+    admin: string
+    admintools: string
+    nometrics: string
+    metrickeys: {
+      latency: string
+      uptime: string
+      totaltime: string
+      percentup: string
+      connected: string
+      totalsent: string
+      totalreceived: string
+    }
+  }
   header: {
     login: string
     logout: string
@@ -101,6 +118,7 @@ export interface LanguageResource {
     descend: string
     sortby: string
     lowercase: string
+    disconnected: string
   }
   dashboard: {
     title: string
@@ -132,6 +150,7 @@ export interface LanguageResource {
     network: string
     tokenexpire: string
     unauthorized: string
+    overload: string
   }
   extclient: {
     extclients: string

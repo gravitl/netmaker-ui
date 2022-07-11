@@ -9,6 +9,7 @@ import ExtClientsCard from '~components/dashboard/ExtClientsCard'
 import AccessKeysCard from '~components/dashboard/AccessKeyCard'
 import DNSCard from '~components/dashboard/DNSCard'
 import UserCard from '~components/dashboard/UserCard'
+import AdminCard from '~components/dashboard/AdminCard'
 import { useSelector } from 'react-redux'
 import { authSelectors } from '~store/types'
 import ACLCard from '~components/dashboard/ACLCard'
@@ -53,12 +54,15 @@ export const Dashboard: React.FC = () => {
             </Grid>
             {user?.isAdmin && (
               <>
-              <Grid item xs={12} sm={6} md={5}>
-                <ACLCard />
-              </Grid>
-              <Grid item xs={12} sm={6} md={5}>
-                <UserCard />
-              </Grid>
+                <Grid item xs={12} sm={6} md={3.75}>
+                  <ACLCard />
+                </Grid>
+                <Grid item xs={12} sm={6} md={3.75}>
+                  <UserCard />
+                </Grid>
+                <Grid item xs={12} sm={6} md={3.75}>
+                  <AdminCard />
+                </Grid>
               </>
             )}
           </Grid>

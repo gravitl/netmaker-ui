@@ -1,6 +1,23 @@
 import { LanguageResource } from '../type'
 
 export const en: LanguageResource = {
+  pro: {
+    logs: 'Server Logs',
+    refresh: 'Refresh',
+    metrics: 'Metrics',
+    admin: 'Admin',
+    admintools: 'Admin Tools',
+    nometrics: 'No Metrics Available',
+    metrickeys: {
+      latency: 'Latency (ms)',
+      uptime: 'Uptime',
+      totaltime: 'Duration',
+      percentup: 'Percent UP',
+      connected: 'Connected',
+      totalsent: 'Total Sent',
+      totalreceived: 'Total Received',
+    },
+  },
   header: {
     login: 'Login',
     logout: 'Logout',
@@ -103,6 +120,7 @@ export const en: LanguageResource = {
     ascend: 'Sort Ascending',
     descend: 'Sort Descending ',
     sortby: 'Sort by',
+    disconnected: 'Disconnected',
   },
   dashboard: {
     title: 'Netmaker Dashboard',
@@ -134,6 +152,7 @@ export const en: LanguageResource = {
     network: 'Could not reach server',
     tokenexpire: 'Session has expired',
     unauthorized: 'Unauthorized access attempted',
+    overload: 'Too many failed requests, refresh to retry',
   },
   extclient: {
     extclients: 'External Clients',
