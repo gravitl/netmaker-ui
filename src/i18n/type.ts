@@ -474,6 +474,7 @@ export interface LanguageResource {
         dns: string
         user: string
         node: string
+        usergroups: string
       }
       failure: {
         accesskey: string
@@ -484,6 +485,7 @@ export interface LanguageResource {
         dns: string
         user: string
         node: string
+        usergroups: string
       }
     }
     login: {
