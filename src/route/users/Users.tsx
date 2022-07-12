@@ -21,7 +21,7 @@ export const Users: React.FC = () => {
     <Container>
       <Switch>
         <Route exact path={path}>
-          <Grid item xs={10}>
+          <Grid item xs={12}>
             <Grid
               container
               direction="row"
@@ -32,9 +32,14 @@ export const Users: React.FC = () => {
               <Grid item xs={8}>
                 <h2>{t('users.header')}</h2>
               </Grid>
-              <Grid item xs={1}>
+              <Grid item xs={1.5}>
                 <NmLink variant="contained" to={{ pathname: '/users/create' }}>
                   {t('users.create.button')}
+                </NmLink>
+              </Grid>
+              <Grid item xs={1.5}>
+                <NmLink variant="contained" color='warning' to={{ pathname: '/usergroups' }}>
+                  {t('pro.label.usergroups')}
                 </NmLink>
               </Grid>
             </Grid>

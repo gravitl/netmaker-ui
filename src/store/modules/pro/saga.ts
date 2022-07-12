@@ -72,8 +72,8 @@ function* handleCreateUserGroup(
       error: createUserGroup['failure'],
       params: {
         pending: i18n.t('common.pending', {}),
-        success: i18n.t('toast.delete.success.usergroups', {}),
-        error: e => `${i18n.t('toast.delete.failure.usergroups')} : ${e.response.data.Message}`,
+        success: i18n.t('toast.create.success.usergroups', {}),
+        error: e => `${i18n.t('toast.create.failure.usergroups')} : ${e.response.data.Message}`,
       },
     })
 

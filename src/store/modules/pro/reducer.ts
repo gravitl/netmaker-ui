@@ -5,27 +5,24 @@ import {
   deleteUserGroup,
   createUserGroup,
 } from './actions'
-import {
-  UserGroups
-} from './types'
 
 export const reducer = createReducer({
   isProcessing: false as boolean,
-  userGroups: new Set<string>() as UserGroups,
+  userGroups: [] as string[],
 })
 .handleAction(getUserGroups['success'], (state, payload) =>
   produce(state, (draftState) => {
     draftState.isProcessing = false
-    if (!!payload) {
-      draftState.userGroups = payload.payload
-      console.log("RECEIVED:", payload.payload)
+    if (!!payload && !!payload.payload) {
+      draftState.userGroups = []
+      Object.keys(payload.payload).map(group => draftState.userGroups.push(group))
     }
   })
 )
 .handleAction(getUserGroups['failure'], (state, _) =>
   produce(state, (draftState) => {
     draftState.isProcessing = false
-    draftState.userGroups = new Set<string>()
+    draftState.userGroups = []
   })
 )
 .handleAction(getUserGroups['request'], (state, _) =>
@@ -46,7 +43,7 @@ export const reducer = createReducer({
 .handleAction(deleteUserGroup['success'], (state, payload) =>
   produce(state, (draftState) => {
     draftState.isProcessing = false
-    draftState.userGroups?.delete(payload.payload.groupName)
+    draftState.userGroups = draftState.userGroups.filter(group => group !== payload.payload.groupName)
   })
 )
 .handleAction(createUserGroup['request'], (state, _) =>
@@ -62,6 +59,6 @@ export const reducer = createReducer({
 .handleAction(createUserGroup['success'], (state, payload) =>
   produce(state, (draftState) => {
     draftState.isProcessing = false
-    draftState.userGroups?.add(payload.payload.groupName)
+    draftState.userGroups.push(payload.payload.groupName)
   })
 )

@@ -17,6 +17,10 @@ export const en: LanguageResource = {
       totalsent: 'Total Sent',
       totalreceived: 'Total Received',
     },
+    label: {
+      usergroup: 'User Group',
+      usergroups: 'User Groups',
+    },
   },
   header: {
     login: 'Login',

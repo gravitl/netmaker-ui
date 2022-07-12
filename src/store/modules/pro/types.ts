@@ -1,4 +1,6 @@
-export type UserGroups = Set<string> | undefined
+import { MutableRequired } from "../acls"
+
+export type UserGroups =  MutableRequired<{ [groupName: string] : void}>
 
 export interface UserGroupsPayload {
     Request: void
