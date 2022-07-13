@@ -37,6 +37,7 @@ export const reducer = createReducer({
       if (!!action.payload && action.payload.length) {
         draftState.networks = action.payload.map(networkPayloadToNetwork)
         draftState.networks = draftState.networks.sort((a, b) => a.netid.localeCompare(b.netid))
+        console.log(draftState.networks[0])
       } else {
         draftState.networks = []
       }

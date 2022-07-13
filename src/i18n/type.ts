@@ -15,6 +15,10 @@ export interface LanguageResource {
       totalsent: string
       totalreceived: string
     }
+    label: {
+      usergroup: string
+      usergroups: string
+    }
   }
   header: {
     login: string
@@ -474,6 +478,7 @@ export interface LanguageResource {
         dns: string
         user: string
         node: string
+        usergroups: string
       }
       failure: {
         accesskey: string
@@ -484,6 +489,7 @@ export interface LanguageResource {
         dns: string
         user: string
         node: string
+        usergroups: string
       }
     }
     login: {

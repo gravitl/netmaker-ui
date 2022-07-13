@@ -17,6 +17,10 @@ export const en: LanguageResource = {
       totalsent: 'Total Sent',
       totalreceived: 'Total Received',
     },
+    label: {
+      usergroup: 'User Group',
+      usergroups: 'User Groups',
+    },
   },
   header: {
     login: 'Login',
@@ -513,6 +517,7 @@ export const en: LanguageResource = {
         dns: 'Successfully removed the DNS Entry!',
         user: 'Successfully deleted User!',
         node: 'Successfully deleted Node!',
+        usergroups: 'Successfully deleted User Group!',
       },
       failure: {
         accesskey: 'Failed to remove Access Key.',
@@ -523,6 +528,7 @@ export const en: LanguageResource = {
         dns: 'Failed to remove the DNS Entry.',
         user: 'Failed to remove User.',
         node: 'Failed to remove Node.',
+        usergroups: 'Failed to remove User Group.'
       },
     },
     login: {

@@ -8,6 +8,9 @@ import SpeedDial from '@mui/material/SpeedDial'
 import SpeedDialAction from '@mui/material/SpeedDialAction'
 import PreviewIcon from '@mui/icons-material/Preview'
 import CreateIcon from '@mui/icons-material/AddBox'
+import GroupsIcon from '@mui/icons-material/Groups'
+// import GroupsAddIcon from '@mui/icons-material/GroupAdd'
+
 import { grey } from '@mui/material/colors'
 import { useSelector } from 'react-redux'
 import { authSelectors } from '~store/types'
@@ -61,6 +64,14 @@ export default function UserCard() {
         </Link>
       ),
       name: t('common.create'),
+    },
+    {
+      icon: (
+        <Link color="primary" to="/usergroups">
+          <GroupsIcon />
+        </Link>
+      ),
+      name: `${t('common.manage')} ${t('pro.label.usergroups')}`,
     },
   ]
 
