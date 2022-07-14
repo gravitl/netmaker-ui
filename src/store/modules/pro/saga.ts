@@ -1,4 +1,4 @@
-import { all, fork, put, takeEvery, select } from 'redux-saga/effects'
+import { all, fork, put, takeEvery } from 'redux-saga/effects'
 import {
   getUserGroups,
   deleteUserGroup,
@@ -13,17 +13,8 @@ import { apiRequestWithAuthSaga } from '../api/saga'
 import { generatorToastSaga } from '../toast/saga'
 import { i18n } from '../../../i18n/i18n'
 import { getType } from 'typesafe-actions'
-import { getToken } from '../auth/selectors'
 
 const userGroups = 'usergroups'
-
-function* handleLoginSuccess() {
-  const token: ReturnType<typeof getToken> = yield select(getToken)
-  if (token) {
-    yield put(getUserGroups.request())
-    yield put(getNetworkUsers.request())
-  }
-}
 
 function* handleGetUserGroupsRequest(
   action: ReturnType<typeof getUserGroups['request']>
@@ -120,9 +111,9 @@ function* handleDeleteNetworkUser(
       error: deleteNetworkUser['failure'],
       params: {
         pending: i18n.t('common.pending', {}),
-        success: i18n.t('toast.delete.success.usergroups', {}),
+        success: i18n.t('toast.delete.success.networkuser', {}),
         error: (e) =>
-          `${i18n.t('toast.delete.failure.usergroups')} : ${
+          `${i18n.t('toast.delete.failure.networkuser')} : ${
             e.response.data.Message
           }`,
       },
@@ -178,6 +169,5 @@ export function* saga() {
     takeEvery(getType(getNetworkUsers['request']), handleGetNetworkUsers),
     takeEvery(getType(deleteNetworkUser['request']), handleDeleteNetworkUser),
     takeEvery(getType(updateNetworkUser['request']), handleUpdateNetworkUser),
-    handleLoginSuccess(),
   ])
 }

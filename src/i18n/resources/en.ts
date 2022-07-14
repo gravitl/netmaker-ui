@@ -20,6 +20,8 @@ export const en: LanguageResource = {
     label: {
       usergroup: 'User Group',
       usergroups: 'User Groups',
+      networkuser: 'Network User',
+      networkusers: 'Network Users',
     },
   },
   header: {
@@ -475,6 +477,7 @@ export const en: LanguageResource = {
         user: 'User Updated!',
         approve: 'Node Approved!',
         nodeacl: 'ACL Updated!',
+        networkuser: 'Network User Updated!',
       },
       failure: {
         node: 'Node updated failed!',
@@ -483,6 +486,7 @@ export const en: LanguageResource = {
         user: 'Failed to update user!',
         approve: 'Failed to approve node!',
         nodeacl: 'Failed to update ACL!',
+        networkuser: 'Failed to update Network User!'
       },
     },
     create: {
@@ -518,6 +522,7 @@ export const en: LanguageResource = {
         user: 'Successfully deleted User!',
         node: 'Successfully deleted Node!',
         usergroups: 'Successfully deleted User Group!',
+        networkuser: 'Successfully deleted Network User!',
       },
       failure: {
         accesskey: 'Failed to remove Access Key.',
@@ -528,7 +533,8 @@ export const en: LanguageResource = {
         dns: 'Failed to remove the DNS Entry.',
         user: 'Failed to remove User.',
         node: 'Failed to remove Node.',
-        usergroups: 'Failed to remove User Group.'
+        usergroups: 'Failed to remove User Group.',
+        networkuser: 'Failed to remove Network User.',
       },
     },
     login: {

@@ -21,12 +21,16 @@ import {
 import { NetworkPayload, GetAccessKeysPayload } from './types'
 import { apiRequestWithAuthSaga } from '../api/saga'
 import { DNS } from '~store/types'
+import { getNetworkUsers, getUserGroups } from '../pro/actions'
 
 function* handleLoginSuccess() {
   const token: ReturnType<typeof getToken> = yield select(getToken)
   if (token) {
     yield put(getNetworks.request())
     yield put(getDnsEntries.request())
+    // == pro requests ==
+    yield put(getUserGroups.request())
+    yield put(getNetworkUsers.request())
   }
 }
 

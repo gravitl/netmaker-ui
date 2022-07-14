@@ -18,6 +18,8 @@ export interface LanguageResource {
     label: {
       usergroup: string
       usergroups: string
+      networkuser: string
+      networkusers: string
     }
   }
   header: {
@@ -436,6 +438,7 @@ export interface LanguageResource {
         user: string
         approve: string
         nodeacl: string
+        networkuser: string
       }
       failure: {
         node: string
@@ -444,6 +447,7 @@ export interface LanguageResource {
         user: string
         approve: string
         nodeacl: string
+        networkuser: string
       }
     }
     create: {
@@ -479,6 +483,7 @@ export interface LanguageResource {
         user: string
         node: string
         usergroups: string
+        networkuser: string
       }
       failure: {
         accesskey: string
@@ -490,6 +495,7 @@ export interface LanguageResource {
         user: string
         node: string
         usergroups: string
+        networkuser: string
       }
     }
     login: {
