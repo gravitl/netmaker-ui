@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { Button, Grid, Tooltip } from '@mui/material'
@@ -8,6 +8,7 @@ import {
   NmForm,
   NmFormInputSwitch,
   NmFormInputText,
+  validate,
 } from '../../../components/form'
 import { useLinkBreadcrumb } from '../../../components/PathBreadcrumbs'
 import {
@@ -16,6 +17,7 @@ import {
 } from '../../../store/modules/network/actions'
 import { randomNetworkName, randomCIDR, randomCIDR6 } from '~util/fields'
 import { useHistory } from 'react-router'
+import { correctipv4cidrRegex, correctIpv6Regex } from '~util/regex'
 
 interface CreateNetwork {
   addressrange: string
@@ -84,6 +86,35 @@ export const NetworkCreate: React.FC = () => {
     },
     [dispatch, history]
   )
+  //create ip validation with messages
+  const createipValidation = useMemo(
+    () =>
+      validate<CreateNetwork>({
+        addressrange: (addressrange, formData) => {
+          if (!formData.isipv4) {
+            return undefined
+          }
+          return !correctipv4cidrRegex.test(addressrange)
+            ? {
+                message: t('network.validation.ipv4'),
+                type: 'value',
+              }
+            : undefined
+        },
+        addressrange6: (addressrange6, formData) => {
+          if (!formData.isipv6) {
+            return undefined
+          }
+          return !correctIpv6Regex.test(addressrange6)
+            ? {
+                message: t('network.validation.ipv6'),
+                type: 'value',
+              }
+            : undefined
+        },
+      }),
+    [t]
+  )
 
   const formRef = React.createRef<FormRef<CreateNetwork>>()
 
@@ -113,6 +144,7 @@ export const NetworkCreate: React.FC = () => {
     >
       <NmForm
         initialState={initialState}
+        resolver={createipValidation}
         onSubmit={onSubmit}
         submitProps={{
           variant: 'contained',

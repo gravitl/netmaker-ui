@@ -1,10 +1,15 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import { Grid, TextField, Typography, Tooltip } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import { useRouteMatch, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { updateNode } from '~modules/node/actions'
-import { NmForm, NmFormInputSwitch, NmFormInputText } from '~components/form'
+import {
+  NmForm,
+  NmFormInputSwitch,
+  NmFormInputText,
+  validate,
+} from '~components/form'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 import { getCommaSeparatedArray } from '~util/fields'
 import { useNodeById } from '~util/node'
@@ -15,6 +20,20 @@ import { datePickerConverter } from '~util/unixTime'
 import AdapterDateFns from '@mui/lab/AdapterDateFns'
 import LocalizationProvider from '@mui/lab/LocalizationProvider'
 import DateTimePicker from '@mui/lab/DateTimePicker'
+import {
+  correctipv4cidrRegex,
+  correctIpv6Regex,
+  ipv4addressregex,
+  ipv6addressregex,
+} from '~util/regex'
+
+const convertStringToArray = (commaSeparatedData: string) => {
+  const data = commaSeparatedData.split(',')
+  for (let i = 0; i < data.length; i++) {
+    data[i] = data[i].trim()
+  }
+  return data as any
+}
 
 export const NodeEdit: React.FC<{
   onCancel: () => void
@@ -27,6 +46,81 @@ export const NodeEdit: React.FC<{
   const { netid, nodeId } = useParams<{ nodeId: string; netid: string }>()
   const node = useNodeById(decodeURIComponent(nodeId))
   const network = useNetwork(netid)
+
+  const createipValidation = useMemo(
+    () =>
+      validate<Node>({
+        address: (address, formData) => {
+          if (!formData.address) {
+            return undefined
+          }
+          return !correctipv4cidrRegex.test(address)
+            ? {
+                message: t('network.validation.ipv4'),
+                type: 'value',
+              }
+            : undefined
+        },
+        address6: (address6, formData) => {
+          if (!formData.address6) {
+            return undefined
+          }
+          return !correctIpv6Regex.test(address6)
+            ? {
+                message: t('network.validation.ipv6'),
+                type: 'value',
+              }
+            : undefined
+        },
+        egressgatewayranges: (egressgatewayranges, formData) => {
+          if (!formData.isegressgateway) {
+            return undefined
+          }
+
+          if (typeof egressgatewayranges === 'string') {
+            egressgatewayranges = convertStringToArray(egressgatewayranges)
+          }
+
+          console.log(egressgatewayranges)
+          for (let i = 0; i < egressgatewayranges.length; i++) {
+            const correctIPv4 = correctipv4cidrRegex.test(
+              egressgatewayranges[i]
+            )
+            const correctIPv6 = correctIpv6Regex.test(egressgatewayranges[i])
+            if (!correctIPv4 && !correctIPv6) {
+              return {
+                message: t('node.validation.egressgatewayrange'),
+                type: 'value',
+              }
+            }
+          }
+          return undefined
+        },
+        relayaddrs: (relayaddrs, formData) => {
+          if (!formData.isrelay) {
+            return undefined
+          }
+
+          if (typeof relayaddrs === 'string') {
+            relayaddrs = convertStringToArray(relayaddrs)
+          }
+
+          console.log(relayaddrs)
+          for (let i = 0; i < relayaddrs.length; i++) {
+            const correctIPv4 = ipv4addressregex.test(relayaddrs[i])
+            const correctIPv6 = ipv6addressregex.test(relayaddrs[i])
+            if (!correctIPv4 && !correctIPv6) {
+              return {
+                message: t('node.validation.relayaddress'),
+                type: 'value',
+              }
+            }
+          }
+          return undefined
+        },
+      }),
+    [t]
+  )
 
   useLinkBreadcrumb({
     link: url,
@@ -84,6 +178,7 @@ export const NodeEdit: React.FC<{
 
   return (
     <NmForm
+      resolver={createipValidation}
       initialState={{ ...node, isstatic: !node.isstatic }}
       onSubmit={onSubmit}
       onCancel={onCancel}
