@@ -62,6 +62,8 @@ export const NetworkId: React.FC = () => {
   </div>
   }
 
+  const hasProSettings = !!network?.prosettings
+
   const buttonStyle = {
     width: '100%',
     margin: '4px',
@@ -278,6 +280,48 @@ export const NetworkId: React.FC = () => {
                   <SwitchField checked={network.defaultacl} disabled />
                 }
                 disabled
+              />
+            </Grid>
+            <Grid item xs={12} style={{marginTop: '1rem'}}></Grid>
+            <Grid item xs={12} sm={4} md={3.1}>
+              <TextField
+                disabled
+                value={hasProSettings ? network.prosettings?.defaultaccesslevel : 2}
+                label={String(t('pro.network.defaultaccesslevel'))}
+                type="number"
+              />
+            </Grid>
+            <Grid item xs={12} sm={4} md={3.1}>
+              <TextField
+                disabled
+                value={hasProSettings ? network.prosettings?.defaultusernodelimit : 0}
+                label={String(t('pro.network.defaultusernodelimit'))}
+                type="number"
+              />
+            </Grid>
+            <Grid item xs={12} sm={4} md={3.1}>
+              <TextField
+                disabled
+                value={hasProSettings ? network.prosettings?.defaultuserclientlimit : 0}
+                label={String(t('pro.network.defaultuserclientlimit'))}
+                type="number"
+              />
+            </Grid>
+            <Grid item xs={12} style={{marginTop: '1rem'}}></Grid>
+            <Grid item xs={12} sm={5} md={5} style={centerStyle}>
+              <TextField
+                fullWidth
+                disabled
+                value={hasProSettings ? network.prosettings?.allowedgroups.join(',') : ''}
+                label={String(t('pro.network.allowedgroups'))}
+              />
+            </Grid>
+            <Grid item xs={12} sm={5} md={5} style={centerStyle}>
+              <TextField
+                fullWidth
+                disabled
+                value={hasProSettings ? network.prosettings?.allowedusers.join(',') : ''}
+                label={String(t('pro.network.allowedusers'))}
               />
             </Grid>
           </Grid>

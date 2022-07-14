@@ -25,6 +25,13 @@ export const en: LanguageResource = {
     },
     networkusers: {
       none: 'No Network Users Found',
+    },
+    network: {
+      defaultaccesslevel: 'Default Access Level',
+      defaultusernodelimit: 'Default User Node Limit',
+      defaultuserclientlimit: 'Default User Client Limit',
+      allowedusers: 'Allowed Users',
+      allowedgroups: 'Allowed Groups',
     }
   },
   header: {

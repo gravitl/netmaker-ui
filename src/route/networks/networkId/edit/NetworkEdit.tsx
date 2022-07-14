@@ -226,6 +226,43 @@ export const NetworkEdit: React.FC<{
             />
           </Grid>
         </Tooltip>
+        <Grid item xs={12} style={{marginTop: '1rem'}}></Grid>
+        <Grid item xs={12} sm={4} md={3.1}>
+          <NmFormInputText
+            name='prosettings.defaultaccesslevel'
+            label={String(t('pro.network.defaultaccesslevel'))}
+            type="number"
+          />
+        </Grid>
+        <Grid item xs={12} sm={4} md={3.1}>
+          <NmFormInputText
+            name='prosettings.defaultusernodelimit'
+            label={String(t('pro.network.defaultusernodelimit'))}
+            type="number"
+          />
+        </Grid>
+        <Grid item xs={12} sm={4} md={3.1}>
+          <NmFormInputText
+            name='prosettings.defaultuserclientlimit'
+            label={String(t('pro.network.defaultuserclientlimit'))}
+            type="number"
+          />
+        </Grid>
+        <Grid item xs={12} style={{marginTop: '1rem'}}></Grid>
+        <Grid item xs={12} sm={5} md={5} style={centerStyle}>
+          <NmFormInputText
+            fullWidth
+            name='prosettings.allowedgroups'
+            label={String(t('pro.network.allowedgroups'))}
+          />
+        </Grid>
+        <Grid item xs={12} sm={5} md={5} style={centerStyle}>
+          <NmFormInputText
+            fullWidth
+            name='prosettings.allowedusers'
+            label={String(t('pro.network.allowedusers'))}
+          />
+        </Grid>
       </Grid>
     </NmForm>
   )
