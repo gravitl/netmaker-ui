@@ -23,6 +23,9 @@ export const en: LanguageResource = {
       networkuser: 'Network User',
       networkusers: 'Network Users',
     },
+    networkusers: {
+      none: 'No Network Users Found',
+    }
   },
   header: {
     login: 'Login',

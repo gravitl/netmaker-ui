@@ -21,6 +21,9 @@ export interface LanguageResource {
       networkuser: string
       networkusers: string
     }
+    networkusers: {
+      none: string
+    }
   }
   header: {
     login: string
