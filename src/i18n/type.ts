@@ -24,6 +24,13 @@ export interface LanguageResource {
     }
     networkusers: {
       none: string
+      deleteconfirm: string
+      accesslevel: string
+      nodelimit: string
+      clientlimit: string
+      groups: string
+      nodes: string
+      clients: string
     }
     network: {
       defaultaccesslevel: string

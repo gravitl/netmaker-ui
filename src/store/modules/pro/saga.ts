@@ -121,7 +121,7 @@ function* handleDeleteNetworkUser(
 
     yield apiRequestWithAuthSaga(
       'delete',
-      `/networkusers/${action.payload.networkUserID}`,
+      `/networkusers/${action.payload.networkName}/${action.payload.networkUserID}`,
       {}
     )
 
@@ -150,8 +150,8 @@ function* handleUpdateNetworkUser(
 
     yield apiRequestWithAuthSaga(
       'put',
-      '/networkusers',
-      { ...action.payload },
+      `/networkusers/${action.payload.networkName}`,
+      { ...action.payload.networkUser },
       {}
     )
 

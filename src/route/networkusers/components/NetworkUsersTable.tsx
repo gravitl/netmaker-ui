@@ -2,15 +2,16 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { NmLink } from '../../../components'
 import { NmTable, TableColumns } from '../../../components/Table'
-import { Delete } from '@mui/icons-material'
+import { Delete, Edit } from '@mui/icons-material'
 import { useTranslation } from 'react-i18next'
 import { useParams, useHistory, useRouteMatch } from 'react-router-dom'
 import CustomDialog from '~components/dialog/CustomDialog'
-import { Button, Grid, Typography } from '@mui/material'
+import { Grid, Typography } from '@mui/material'
 import { NetworkSelect } from '~components/NetworkSelect'
 import { NetworkUser } from '~store/types'
 import { deleteNetworkUser } from '~store/modules/pro/actions'
 import { proSelectors } from '~store/selectors'
+import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 
 export const NetworkUsersTable: React.FC<{}> = () => {
   const { t } = useTranslation()
@@ -21,6 +22,11 @@ export const NetworkUsersTable: React.FC<{}> = () => {
   const { netid } = useParams<{ netid: string }>()
   const { url } = useRouteMatch()
   const netUsers = useSelector(proSelectors.networkUsers)
+
+  useLinkBreadcrumb({
+    link: url,
+    title: netid,
+  })
 
   if (!!!netUsers[netid] || !!!netUsers[netid].length) {
     return (
@@ -65,7 +71,6 @@ export const NetworkUsersTable: React.FC<{}> = () => {
 
   const handleClose = () => {
     setOpen(false)
-    history.goBack()
   }
 
   const handleOpen = (selected: string) => {
@@ -89,28 +94,19 @@ export const NetworkUsersTable: React.FC<{}> = () => {
         <Grid container 
               direction="row"
               display={'flex'}
-              justifyContent="space-between"
+              justifyContent="space-evenly"
               alignItems="center"
               marginLeft="4rem"
                >     
-          <Grid item xs={8} md={5}>
+          <Grid item xs={8} md={6}>
             <div style={{ textAlign: 'center' }}>
               <Typography variant="h4">
-                {`${t('accesskey.viewing')} ${netid}`}
+                {`${netid} ${t('pro.label.networkusers')}`}
               </Typography>
             </div>
           </Grid>
-          <Grid item xs={10} md={3}>
+          <Grid item xs={10} md={5}>
             <NetworkSelect />
-          </Grid>
-          <Grid item xs={8} md={3}>
-            <Button
-              fullWidth
-              variant="contained"
-              onClick={() => history.push(`${url}/create`)}
-            >
-              {`${t('common.create')} ${t('accesskey.accesskey')}`}
-            </Button>
           </Grid>
         </Grid>
         <hr />
@@ -121,7 +117,15 @@ export const NetworkUsersTable: React.FC<{}> = () => {
         getRowId={(row) => row.id}
         actions={[
           (row) => ({
-            tooltip: t('common.delete'),
+            tooltip: `${t('common.edit')} ${row.id}`,
+            disabled: false,
+            icon: <Edit />,
+            onClick: () => {
+              history.push(`/networkusers/${netid}/${row.id}`)
+            },
+          }),
+          (row) => ({
+            tooltip: `${t('common.delete')} ${row.id}`,
             disabled: false,
             icon: <Delete />,
             onClick: () => {
@@ -135,7 +139,7 @@ export const NetworkUsersTable: React.FC<{}> = () => {
           open={open}
           handleClose={handleClose}
           handleAccept={handleDeleteNetworkUser}
-          message={t('accesskey.deleteconfirm')}
+          message={t('pro.networkusers.deleteconfirm')}
           title={`${t('common.delete')} ${selectedUserID}`}
         />
       )}
