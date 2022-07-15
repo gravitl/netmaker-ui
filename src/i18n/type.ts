@@ -6,6 +6,7 @@ export interface LanguageResource {
     admin: string
     admintools: string
     nometrics: string
+    choose: string
     metrickeys: {
       latency: string
       uptime: string
@@ -23,6 +24,13 @@ export interface LanguageResource {
     }
     networkusers: {
       none: string
+    }
+    network: {
+      defaultaccesslevel: string
+      defaultusernodelimit: string
+      defaultuserclientlimit: string
+      allowedusers: string
+      allowedgroups: string
     }
   }
   header: {

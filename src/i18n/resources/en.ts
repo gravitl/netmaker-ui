@@ -8,6 +8,7 @@ export const en: LanguageResource = {
     admin: 'Admin',
     admintools: 'Admin Tools',
     nometrics: 'No Metrics Available',
+    choose: 'Make Selection(s)',
     metrickeys: {
       latency: 'Latency (ms)',
       uptime: 'Uptime',
@@ -25,6 +26,13 @@ export const en: LanguageResource = {
     },
     networkusers: {
       none: 'No Network Users Found',
+    },
+    network: {
+      defaultaccesslevel: 'Default Access Level',
+      defaultusernodelimit: 'Default User Node Limit',
+      defaultuserclientlimit: 'Default User Client Limit',
+      allowedusers: 'Allowed Users',
+      allowedgroups: 'Allowed Groups',
     }
   },
   header: {
