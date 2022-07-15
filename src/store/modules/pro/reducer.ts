@@ -122,7 +122,6 @@ export const reducer = createReducer({
         // if the user exists, update it
         users[userIndex] = networkUser
       }
-      console.log('UPDATED USER:', users[userIndex])
       draftState.networkUsers[networkName] = users
     })
   )
