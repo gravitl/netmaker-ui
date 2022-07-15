@@ -29,7 +29,7 @@ export const Users: React.FC = () => {
               justifyContent="flex-end"
               alignItems="center"
             >
-              <Grid item xs={8}>
+              <Grid item xs={7}>
                 <h2>{t('users.header')}</h2>
               </Grid>
               <Grid item xs={1.5}>
@@ -40,6 +40,11 @@ export const Users: React.FC = () => {
               <Grid item xs={1.5}>
                 <NmLink variant="contained" color='warning' to={{ pathname: '/usergroups' }}>
                   {t('pro.label.usergroups')}
+                </NmLink>
+              </Grid>
+              <Grid item xs={2}>
+                <NmLink variant="contained" color='warning' to={{ pathname: '/networkusers' }}>
+                  {t('pro.label.networkusers')}
                 </NmLink>
               </Grid>
             </Grid>

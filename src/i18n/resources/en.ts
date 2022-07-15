@@ -26,6 +26,13 @@ export const en: LanguageResource = {
     },
     networkusers: {
       none: 'No Network Users Found',
+      deleteconfirm: 'Are you sure you want to remove this network user?',
+      accesslevel: 'User Access Level',
+      nodelimit: 'Node Limit',
+      clientlimit: 'Client Limit',
+      groups: 'User Groups',
+      nodes: 'User Nodes',
+      clients: 'User Ext. Clients',
     },
     network: {
       defaultaccesslevel: 'Default Access Level',

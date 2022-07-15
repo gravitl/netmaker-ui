@@ -5,6 +5,8 @@ import { useTranslation } from 'react-i18next'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 import { NetworkSelect } from '~components/NetworkSelect'
 import { NetworkUsersTable } from './components/NetworkUsersTable'
+import { NetworkUserEdit } from './components/NetworkUserEdit'
+import { UserGroupEdit } from './components/UserGroupEdit'
 
 export const NetworkUsers: React.FC = () => {
   const { path } = useRouteMatch()
@@ -39,6 +41,12 @@ export const NetworkUsers: React.FC = () => {
               <NetworkSelect selectAll />
             </Grid>
           </Grid>
+        </Route>
+        <Route path={`${path}/:netid/:clientid/groups`}>
+          <UserGroupEdit />
+        </Route>
+        <Route path={`${path}/:netid/:clientid`}>
+          <NetworkUserEdit />
         </Route>
         <Route path={`${path}/:netid`}>
           <NetworkUsersTable />

@@ -1,38 +1,32 @@
 import React, { useCallback } from 'react'
 import { Grid, useTheme, Typography, Box } from '@mui/material'
 import { useTranslation } from 'react-i18next'
-import { useNetwork } from '~util/network'
-import { updateNetwork } from '~store/modules/network/actions'
 import { useDispatch, useSelector } from 'react-redux'
-import { networkToNetworkPayload } from '~store/modules/network/utils'
 import { FormRef, NmForm, NmFormInputText } from '~components/form'
 import ChoicesSelect from './ChoicesSelect'
-import { proSelectors, authSelectors } from '~store/selectors'
+import { proSelectors } from '~store/selectors'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
-import { useRouteMatch, useHistory } from 'react-router-dom'
-import { Network } from '~store/types'
+import { useRouteMatch, useHistory, useParams } from 'react-router-dom'
+import { NetworkUser } from '~store/types'
+import { updateNetworkUser } from '~store/modules/pro/actions'
 
-export const NetworkListEdit: React.FC<{ netid: string, field: 'users' | 'groups' }> = ({
-  netid,
-  field,
-}) => {
-  const network = useNetwork(netid)
+export const UserGroupEdit: React.FC<{}> = () => {
   const { t } = useTranslation()
   const theme = useTheme()
   const dispatch = useDispatch()
   const groups = useSelector(proSelectors.userGroups)
-  const currentUsers = useSelector(authSelectors.getUsers)
-  // const users = useSelector(proSelectors.networkUsers)[netid]
-  let userNames = ['*'] as string[]
-  if (!!currentUsers && !!currentUsers.length) {
-    userNames = [...currentUsers.map(u => u.name), '*']
-  }
   const { url } = useRouteMatch()
+  const { netid, clientid } = useParams<{ netid: string; clientid: string }>()
   const history = useHistory()
+  const currentUsers = useSelector(proSelectors.networkUsers)
+  let currentClient = undefined as NetworkUser | undefined
+  if (!!currentUsers && !!currentUsers[netid]) {
+    currentClient = currentUsers[netid].filter(user => user.id === clientid)[0]
+  }
 
   useLinkBreadcrumb({
     link: url,
-    title: `${field === 'groups' ? t('pro.network.allowedgroups') : t('pro.network.allowedusers')}`,
+    title: t('pro.networkusers.groups'),
   })
 
   const updateChoices = (value: string) => {
@@ -50,47 +44,33 @@ export const NetworkListEdit: React.FC<{ netid: string, field: 'users' | 'groups
     choices: '',
   }
 
-  if (!!network && !!network.prosettings) {
-      if (field === 'groups') {
-        initialState.choices = network.prosettings.allowedgroups.join(',')
-      } else {
-        initialState.choices = network.prosettings.allowedusers.join(',')
-      }
+  if (!!currentClient) {
+    initialState.choices = currentClient.groups.join(',')
   }
 
   const onSubmit = useCallback(
     (data: Data) => {
-        if (!!network && !!network.prosettings) {
+        if (!!currentClient) {
             const newRanges = data.choices.split(',')
             for (let i = 0; i < newRanges.length; i++) {
                 newRanges[i] = newRanges[i].trim()
             }
-            let netCopy = {...network} as Network
-            if (field === 'groups') {
-                netCopy.prosettings = {
-                    ...network.prosettings,
-                    allowedgroups: newRanges
-                } 
-            } else {
-                netCopy.prosettings = {
-                    ...network.prosettings,
-                    allowedusers: newRanges
-                } 
-            }
-            const newNet = networkToNetworkPayload(netCopy)
-            
+            let newClient = {...currentClient}
+            newClient.groups = newRanges
+
             dispatch(
-                updateNetwork.request({
-                    network: newNet
+                updateNetworkUser.request({
+                    networkName: netid,
+                    networkUser: newClient,
                 })
             )
-            history.push(`/networks/${netid}`)
+            history.push(`/networkusers/${netid}`)
         }
     },
-    [dispatch, history, network, field, netid]
+    [dispatch, history, netid, currentClient]
   )
 
-  if (!!!network || !!!network.prosettings) {
+  if (!!!currentClient) {
     return (
         <div style={{ textAlign: 'center', margin: '1em 0 1em 0' }}>
           <Typography variant="h5">{`${t('error.notfound')}`}</Typography>
@@ -111,7 +91,7 @@ export const NetworkListEdit: React.FC<{ netid: string, field: 'users' | 'groups
         <Grid item xs={12}>
             <div style={{ textAlign: 'center', margin: '1em 0 1em 0' }}>
                 <Typography variant="h5">
-                    {`${t('common.edit')} ${network.netid} ${field === 'groups' ? t('pro.network.allowedgroups') : t('pro.network.allowedusers')}`}
+                    {`${t('common.edit')} ${currentClient.id} ${t('pro.networkusers.groups')}`}
                 </Typography>
             </div>
         </Grid>
@@ -141,12 +121,12 @@ export const NetworkListEdit: React.FC<{ netid: string, field: 'users' | 'groups
                         fullWidth
                         disabled
                         name={'choices'}
-                        label={String(t(`${field === 'groups' ? 'pro.network.allowedgroups' : 'pro.network.allowedusers'}`))}
+                        label={String(t('pro.networkusers.groups'))}
                         sx={{ height: '100%', margin: '1em 0 1em 0' }}
                     />
                 </Grid>
                 <Grid item xs={12} sm={5}>
-                    <ChoicesSelect options={field === 'groups' ? groups : userNames} onSelect={updateChoices} />
+                    <ChoicesSelect options={groups} onSelect={updateChoices} />
                 </Grid>
             </Grid>
             </NmForm>
