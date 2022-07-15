@@ -362,9 +362,9 @@ export const en: LanguageResource = {
     warning: 'Node has connectivity issues',
     connected: 'Node is connected to ',
     validation: {
-      relayaddress: 'Please enter a valid relay address range (ipv4 or ipv6)',
+      relayaddress: 'Please enter a valid relay address range (IPv4 or IPv6)',
       egressgatewayrange:
-        'Please enter a valid egress gateway range (ipv4 cidr or ipv6 cider)',
+        'Please enter a valid egress gateway range (IPv4 CIDR or IPv6 CIDR)',
     },
     state: {
       error: 'ERROR',

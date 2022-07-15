@@ -21,10 +21,10 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns'
 import LocalizationProvider from '@mui/lab/LocalizationProvider'
 import DateTimePicker from '@mui/lab/DateTimePicker'
 import {
-  correctipv4cidrRegex,
+  correctIPv4CidrRegex,
   correctIpv6Regex,
-  ipv4addressregex,
-  ipv6addressregex,
+  ipv4AddressRegex,
+  ipv6AddressRegex,
 } from '~util/regex'
 
 const convertStringToArray = (commaSeparatedData: string) => {
@@ -47,14 +47,14 @@ export const NodeEdit: React.FC<{
   const node = useNodeById(decodeURIComponent(nodeId))
   const network = useNetwork(netid)
 
-  const createipValidation = useMemo(
+  const createIPValidation = useMemo(
     () =>
       validate<Node>({
         address: (address, formData) => {
           if (!formData.address) {
             return undefined
           }
-          return !correctipv4cidrRegex.test(address)
+          return !correctIPv4CidrRegex.test(address)
             ? {
                 message: t('network.validation.ipv4'),
                 type: 'value',
@@ -81,9 +81,8 @@ export const NodeEdit: React.FC<{
             egressgatewayranges = convertStringToArray(egressgatewayranges)
           }
 
-          console.log(egressgatewayranges)
           for (let i = 0; i < egressgatewayranges.length; i++) {
-            const correctIPv4 = correctipv4cidrRegex.test(
+            const correctIPv4 = correctIPv4CidrRegex.test(
               egressgatewayranges[i]
             )
             const correctIPv6 = correctIpv6Regex.test(egressgatewayranges[i])
@@ -105,10 +104,9 @@ export const NodeEdit: React.FC<{
             relayaddrs = convertStringToArray(relayaddrs)
           }
 
-          console.log(relayaddrs)
           for (let i = 0; i < relayaddrs.length; i++) {
-            const correctIPv4 = ipv4addressregex.test(relayaddrs[i])
-            const correctIPv6 = ipv6addressregex.test(relayaddrs[i])
+            const correctIPv4 = ipv4AddressRegex.test(relayaddrs[i])
+            const correctIPv6 = ipv6AddressRegex.test(relayaddrs[i])
             if (!correctIPv4 && !correctIPv6) {
               return {
                 message: t('node.validation.relayaddress'),
@@ -178,7 +176,7 @@ export const NodeEdit: React.FC<{
 
   return (
     <NmForm
-      resolver={createipValidation}
+      resolver={createIPValidation}
       initialState={{ ...node, isstatic: !node.isstatic }}
       onSubmit={onSubmit}
       onCancel={onCancel}

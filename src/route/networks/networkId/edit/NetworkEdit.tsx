@@ -16,7 +16,7 @@ import { networkToNetworkPayload } from '~modules/network/utils'
 import { useRouteMatch } from 'react-router'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 import { serverSelectors } from '~store/selectors'
-import { correctipv4cidrRegex, correctIpv6Regex } from '~util/regex'
+import { correctIPv4CidrRegex, correctIpv6Regex } from '~util/regex'
 
 export const NetworkEdit: React.FC<{
   network: Network
@@ -36,7 +36,7 @@ export const NetworkEdit: React.FC<{
           if (!formData.isipv4) {
             return undefined
           }
-          return !correctipv4cidrRegex.test(addressrange)
+          return !correctIPv4CidrRegex.test(addressrange)
             ? {
                 message: t('network.validation.ipv4'),
                 type: 'value',
