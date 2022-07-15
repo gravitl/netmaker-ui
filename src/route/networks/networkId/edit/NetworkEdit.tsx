@@ -15,6 +15,7 @@ import { networkToNetworkPayload } from '~modules/network/utils'
 import { useRouteMatch } from 'react-router'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 import { serverSelectors } from '~store/selectors'
+import { NmLink } from '~components/Link'
 
 export const NetworkEdit: React.FC<{
   network: Network
@@ -249,19 +250,49 @@ export const NetworkEdit: React.FC<{
           />
         </Grid>
         <Grid item xs={12} style={{marginTop: '1rem'}}></Grid>
-        <Grid item xs={12} sm={5} md={5} style={centerStyle}>
-          <NmFormInputText
-            fullWidth
-            name='prosettings.allowedgroups'
-            label={String(t('pro.network.allowedgroups'))}
-          />
+        <Grid item xs={6} sm={5.75} md={5.5}>
+          <Grid container justifyContent={'space-evenly'}>
+            <Grid item xs={12} md={8} style={centerStyle}>
+              <NmFormInputText
+                fullWidth
+                name='prosettings.allowedgroups'
+                label={String(t('pro.network.allowedgroups'))}
+                disabled
+              />
+            </Grid>
+            <Grid item xs={8} md={4} style={centerStyle}>
+              <NmLink
+                sx={{ textTransform: 'none' }}
+                to={`/networks/${network.netid}/edit/groups`}
+                fullWidth
+                variant='outlined'
+              >
+                {`${t('common.edit')} ${t('pro.network.allowedgroups')}`}
+              </NmLink> 
+            </Grid>
+          </Grid>
         </Grid>
-        <Grid item xs={12} sm={5} md={5} style={centerStyle}>
-          <NmFormInputText
-            fullWidth
-            name='prosettings.allowedusers'
-            label={String(t('pro.network.allowedusers'))}
-          />
+        <Grid item xs={6} sm={5.75} md={5.5}>
+          <Grid container>
+            <Grid item xs={12} md={8} style={centerStyle}>
+            <NmFormInputText
+              fullWidth
+              name='prosettings.allowedusers'
+              label={String(t('pro.network.allowedusers'))}
+              disabled
+            />
+            </Grid>
+            <Grid item xs={8} md={4} style={centerStyle}>
+              <NmLink
+                variant='outlined'
+                fullWidth
+                sx={{ textTransform: 'none' }}
+                to={`/networks/${network.netid}/edit/networkusers`}
+              >
+                {`${t('common.edit')} ${t('pro.network.allowedusers')}`}
+              </NmLink> 
+            </Grid>
+          </Grid>
         </Grid>
       </Grid>
     </NmForm>

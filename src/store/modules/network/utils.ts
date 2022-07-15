@@ -45,6 +45,13 @@ export const networkPayloadToNetwork = (network: NetworkPayload): Network => {
     defaultudpholepunch: network.defaultudpholepunch === 'yes',
     ispointtosite: network.ispointtosite === 'yes',
     defaultacl: network.defaultacl === 'yes',
+    prosettings: !!network.prosettings ? {
+      defaultaccesslevel: Number(network.prosettings.defaultaccesslevel),
+      defaultuserclientlimit: Number(network.prosettings.defaultuserclientlimit),
+      defaultusernodelimit: Number(network.prosettings.defaultusernodelimit),
+      allowedgroups: network.prosettings.allowedgroups,
+      allowedusers: network.prosettings.allowedusers,
+    } : undefined
   }
 }
 

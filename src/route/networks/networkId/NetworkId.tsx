@@ -23,6 +23,7 @@ import { deleteNetwork } from '~modules/network/actions'
 import { NetworkEdit } from './edit/NetworkEdit'
 import { AccessKeys } from './accesskeys/AccessKeys'
 import { useNetwork } from '~util/network'
+import { NetworkListEdit } from './edit/NetworkListEdit'
 
 export const NetworkId: React.FC = () => {
   const { path, url } = useRouteMatch()
@@ -84,6 +85,12 @@ export const NetworkId: React.FC = () => {
       <Switch>
         <Route path={`${path}/accesskeys`}>
           <AccessKeys />
+        </Route>
+        <Route path={`${path}/edit/networkusers`}>
+          <NetworkListEdit netid={netid} field='users' />
+        </Route>
+        <Route path={`${path}/edit/groups`}>
+          <NetworkListEdit netid={netid} field='groups' />
         </Route>
         <Route path={`${path}/edit`}>
           {/* <NetworkModifiedStats netid={netid} /> */}

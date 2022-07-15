@@ -8,6 +8,7 @@ export const en: LanguageResource = {
     admin: 'Admin',
     admintools: 'Admin Tools',
     nometrics: 'No Metrics Available',
+    choose: 'Make Selection(s)',
     metrickeys: {
       latency: 'Latency (ms)',
       uptime: 'Uptime',
