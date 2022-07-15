@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import {
   Modal,
   Box,
@@ -16,7 +16,9 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { createEgressNode } from '~modules/node/actions'
 import { useNodeById } from '~util/node'
-import { NmForm, NmFormInputText } from '~components/form'
+import { NmForm, NmFormInputText, validate } from '~components/form'
+import { correctIPv4CidrRegex, correctIpv6Regex } from '~util/regex'
+import { convertStringToArray } from '~util/fields'
 
 const styles = {
   centerText: {
@@ -76,8 +78,7 @@ export function CreateEgress() {
   const history = useHistory()
   const theme = useTheme()
   const { t } = useTranslation()
-  const { netid, nodeId } =
-    useParams<{ netid: string; nodeId: string }>()
+  const { netid, nodeId } = useParams<{ netid: string; nodeId: string }>()
   const { url } = useRouteMatch()
   const node = useNodeById(nodeId)
   const dispatch = useDispatch()
@@ -117,6 +118,33 @@ export function CreateEgress() {
     },
     [dispatch, netid, nodeId, history]
   )
+  const createIPValidation = useMemo(
+    () =>
+      validate<EgressData>({
+        ranges: (ranges, formData) => {
+          if (!formData.ranges) {
+            return undefined
+          }
+
+          if (typeof ranges === 'string') {
+            ranges = convertStringToArray(ranges)
+          }
+
+          for (let i = 0; i < ranges.length; i++) {
+            const correctIPv4 = correctIPv4CidrRegex.test(ranges[i])
+            const correctIPv6 = correctIpv6Regex.test(ranges[i])
+            if (!correctIPv4 && !correctIPv6) {
+              return {
+                message: t('node.validation.egressgatewayrange'),
+                type: 'value',
+              }
+            }
+          }
+          return undefined
+        },
+      }),
+    [t]
+  )
 
   if (!node) {
     return <h2>{t('error.notfound')}</h2>
@@ -130,9 +158,15 @@ export function CreateEgress() {
         history.goBack()
       }}
     >
-      <Box style={{...styles.modal, backgroundColor: theme.palette.background.paper}}>
+      <Box
+        style={{
+          ...styles.modal,
+          backgroundColor: theme.palette.background.paper,
+        }}
+      >
         <NmForm
           initialState={initialState}
+          resolver={createIPValidation}
           onSubmit={onSubmit}
           submitProps={{
             fullWidth: true,

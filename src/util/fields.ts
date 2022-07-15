@@ -43,20 +43,36 @@ export const genRandomNumber = (size: number, inclusive: boolean) => {
 //   [...Array(size)].map(() => Math.floor(Math.random() * 16).toString(16)).join('');
 // }
 const genRandomHex = (size: number) => {
-  const result = [];
-  const hexRef = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+  const result = []
+  const hexRef = [
+    '0',
+    '1',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    '9',
+    'a',
+    'b',
+    'c',
+    'd',
+    'e',
+    'f',
+  ]
 
   for (let n = 0; n < size; n++) {
-    result.push(hexRef[Math.floor(Math.random() * 16)]);
+    result.push(hexRef[Math.floor(Math.random() * 16)])
   }
-  return result.join('');
+  return result.join('')
 }
 
 export const randomCIDR = () =>
   `10.${genRandomNumber(254, true)}.${genRandomNumber(254, true)}.0/24`
 
-export const randomCIDR6 = () => 
-  `${genRandomHex(4)}:4206:9753:2021::/64`
+export const randomCIDR6 = () => `${genRandomHex(4)}:4206:9753:2021::/64`
 
 export const randomNetworkName = () =>
   validNetworkNames[genRandomNumber(validNetworkNames.length, false)]
@@ -82,9 +98,16 @@ export const getCommaSeparatedArray = (values: string) => {
 // 0 - healthy
 export const isNodeHealthy = (lastCheckinTime: number) => {
   const time = Date.now() / 1000
-  if (time - lastCheckinTime >= 1800)
-    return 2
-  if (time - lastCheckinTime >= 300)
-    return 1
+  if (time - lastCheckinTime >= 1800) return 2
+  if (time - lastCheckinTime >= 300) return 1
   return 0
+}
+
+// convert array to a string with commas separating each element
+export const convertStringToArray = (commaSeparatedData: string) => {
+  const data = commaSeparatedData.split(',')
+  for (let i = 0; i < data.length; i++) {
+    data[i] = data[i].trim()
+  }
+  return data as any
 }
