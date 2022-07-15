@@ -26,14 +26,7 @@ import {
   ipv4AddressRegex,
   ipv6AddressRegex,
 } from '~util/regex'
-
-const convertStringToArray = (commaSeparatedData: string) => {
-  const data = commaSeparatedData.split(',')
-  for (let i = 0; i < data.length; i++) {
-    data[i] = data[i].trim()
-  }
-  return data as any
-}
+import { convertStringToArray } from '~util/fields'
 
 export const NodeEdit: React.FC<{
   onCancel: () => void

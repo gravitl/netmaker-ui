@@ -18,14 +18,7 @@ import { createEgressNode } from '~modules/node/actions'
 import { useNodeById } from '~util/node'
 import { NmForm, NmFormInputText, validate } from '~components/form'
 import { correctIPv4CidrRegex, correctIpv6Regex } from '~util/regex'
-
-const convertStringToArray = (commaSeparatedData: string) => {
-  const data = commaSeparatedData.split(',')
-  for (let i = 0; i < data.length; i++) {
-    data[i] = data[i].trim()
-  }
-  return data as any
-}
+import { convertStringToArray } from '~util/fields'
 
 const styles = {
   centerText: {
