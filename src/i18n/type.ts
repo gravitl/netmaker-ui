@@ -238,6 +238,10 @@ export interface LanguageResource {
     defaultacl: string
     isipv6: string
     isipv4: string
+    validation: {
+      ipv4: string
+      ipv6: string
+    }
   }
   node: {
     nodes: string
@@ -322,6 +326,10 @@ export interface LanguageResource {
     error: string
     warning: string
     connected: string
+    validation: {
+      relayaddress: string
+      egressgatewayrange: string
+    }
     state: {
       error: string
       warning: string
