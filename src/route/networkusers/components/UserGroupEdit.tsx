@@ -29,6 +29,16 @@ export const UserGroupEdit: React.FC<{}> = () => {
     title: t('pro.networkusers.groups'),
   })
 
+  useLinkBreadcrumb({
+    link: `/networkusers/${netid}/${clientid}`,
+    title: clientid,
+  })
+
+  useLinkBreadcrumb({
+    link: `/networkusers/${netid}`,
+    title: netid,
+  })
+
   const updateChoices = (value: string) => {
     formRef.current?.reset(
       { ...formRef.current?.values, choices: value },
