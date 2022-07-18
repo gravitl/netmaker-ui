@@ -22,6 +22,7 @@ export const Networks: React.FC = () => {
   })
 
   // by updating the filterNetworks, the table will update
+  //useeffect tells says that setfilternetworks needs to do something, it sets list of networks to it then recalls it after the list of networks has been updated causing the table to update
   React.useEffect(() => {
     setFilterNetworks(listOfNetworks)
   }, [listOfNetworks])
