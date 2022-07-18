@@ -4,9 +4,11 @@ import {
   TextField,
   Typography,
   LinearProgress,
+  Tooltip,
+  IconButton,
 } from '@mui/material'
 import React from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 import { UptimeChart } from './charts/Uptime'
@@ -23,7 +25,7 @@ import {
 import { NmTable, TableColumns } from '~components/Table'
 import { Modify } from 'src/types/react-app-env'
 import MetricButton from '../components/MetricButton'
-import { Search } from '@mui/icons-material'
+import { Search, Sync } from '@mui/icons-material'
 import { MAX_ATTEMPTS } from '../util'
 
 const styles = {
@@ -62,6 +64,7 @@ export const NodeMetrics: React.FC = () => {
   const isFetching = useSelector(serverSelectors.isFetchingServerConfig)
   const attempts = useSelector(serverSelectors.getAttempts)
   const [initialLoad, setInitialLoad] = React.useState(true)
+  const history = useHistory()
   const [currentNodeMetrics, setCurrentNodeMetrics] = React.useState(
     {} as NodeMetricsContainer
   )
@@ -70,6 +73,10 @@ export const NodeMetrics: React.FC = () => {
   )
   var nodeNameMap: Map<string, string> = new Map()
   const [filterNodes, setFilterNodes] = React.useState(allNodes)
+
+  const syncNodes = () => {
+    history.push(`/metrics/${netid}/${nodeid}`)
+  }
 
   useLinkBreadcrumb({
     link: `/nodes/${netid}/${nodeid}`,
@@ -355,6 +362,13 @@ export const NodeMetrics: React.FC = () => {
                 onChange={handleFilter}
               />
             </div>
+          </Grid>
+          <Grid item xs={1} md={1}>
+            <Tooltip title={t('node.sync') as string} placement="top">
+              <IconButton color="primary" onClick={syncNodes}>
+                <Sync />
+              </IconButton>
+            </Tooltip>
           </Grid>
           <Grid item xs={12} style={styles.topMargin}>
             {console.log('Filter nodes:', filterNodes)}
