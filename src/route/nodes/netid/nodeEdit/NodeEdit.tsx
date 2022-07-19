@@ -47,7 +47,7 @@ export const NodeEdit: React.FC<{
           if (!formData.address) {
             return undefined
           }
-          return !correctIPv4CidrRegex.test(address)
+          return !ipv4AddressRegex.test(address)
             ? {
                 message: t('network.validation.ipv4'),
                 type: 'value',
