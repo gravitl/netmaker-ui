@@ -45,6 +45,7 @@ import { HubButton } from './components/HubButton'
 import { MultiCopy } from '~components/CopyText'
 import { nodeSelectors } from '~store/selectors'
 import { Tablefilter } from '~components/filter/Tablefilter'
+import { useEffect, useState } from 'react'
 
 export const NetworkNodes: React.FC = () => {
   const { path, url } = useRouteMatch()
@@ -57,6 +58,25 @@ export const NetworkNodes: React.FC = () => {
   const [selected, setSelected] = React.useState({} as Node)
   const dispatch = useDispatch()
   const history = useHistory()
+  const [searchTerm, setSearchTerm] = useState(' ')
+
+  useEffect(() => {
+    if (!!!searchTerm) {
+      setFilterNodes(listOfNodes)
+    } else {
+      setFilterNodes(
+        listOfNodes.filter((node) =>
+          `${node.name}${node.address}${node.network}`.includes(searchTerm)
+        )
+      )
+    }
+  }, [listOfNodes, searchTerm])
+
+  const handleFilter = (event: { target: { value: string } }) => {
+    const { value } = event.target
+    const searchTerm = value.trim()
+    setSearchTerm(searchTerm)
+  }
 
   useLinkBreadcrumb({
     link: url,
@@ -217,20 +237,6 @@ export const NetworkNodes: React.FC = () => {
         />
       ),
     })
-  }
-
-  const handleFilter = (event: { target: { value: string } }) => {
-    const { value } = event.target
-    const searchTerm = value.trim()
-    if (!!!searchTerm) {
-      setFilterNodes(listOfNodes)
-    } else {
-      setFilterNodes(
-        listOfNodes.filter((node) =>
-          `${node.name}${node.address}${node.network}`.includes(searchTerm)
-        )
-      )
-    }
   }
 
   const handleClose = () => {
