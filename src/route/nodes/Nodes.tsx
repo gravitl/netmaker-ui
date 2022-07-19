@@ -32,7 +32,6 @@ export const Nodes: React.FC = () => {
     history.push('/nodes')
   }
 
-  //if length of listOfNodes increased then refresh list of nodes and dont refresh filterNodes
   const [searchTerm, setSearchTerm] = useState(' ')
 
   useEffect(() => {
