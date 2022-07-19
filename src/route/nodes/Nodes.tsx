@@ -17,6 +17,7 @@ import { Search, Sync } from '@mui/icons-material'
 import { NetworkNodes } from './netid/NetworkNodes'
 import { Tablefilter } from '~components/filter/Tablefilter'
 import { setNodeSort } from '~store/modules/node/actions'
+import { useEffect, useState } from 'react'
 
 export const Nodes: React.FC = () => {
   const { path } = useRouteMatch()
@@ -31,13 +32,10 @@ export const Nodes: React.FC = () => {
     history.push('/nodes')
   }
 
-  React.useEffect(() => {
-    setFilterNodes(listOfNodes)
-  }, [listOfNodes])
+  //if length of listOfNodes increased then refresh list of nodes and dont refresh filterNodes
+  const [searchTerm, setSearchTerm] = useState(' ')
 
-  const handleFilter = (event: { target: { value: string } }) => {
-    const { value } = event.target
-    const searchTerm = value.trim()
+  useEffect(() => {
     if (!!!searchTerm) {
       setFilterNodes(listOfNodes)
     } else {
@@ -47,6 +45,12 @@ export const Nodes: React.FC = () => {
         )
       )
     }
+  }, [listOfNodes, searchTerm])
+
+  const handleFilter = (event: { target: { value: string } }) => {
+    const { value } = event.target
+    const searchTerm = value.trim()
+    setSearchTerm(searchTerm)
   }
 
   const handleNodeSortSelect = (selection: string) => {
