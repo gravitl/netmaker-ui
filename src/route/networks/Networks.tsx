@@ -21,6 +21,12 @@ export const Networks: React.FC = () => {
     title: t('breadcrumbs.networks'),
   })
 
+  // by updating the filterNetworks, the table will update
+  //useeffect tells says that setfilternetworks needs to do something, it sets list of networks to it then recalls it after the list of networks has been updated causing the table to update
+  React.useEffect(() => {
+    setFilterNetworks(listOfNetworks)
+  }, [listOfNetworks])
+
   const handleFilter = (event: { target: { value: string } }) => {
     const { value } = event.target
     const searchTerm = value.trim()
@@ -46,11 +52,11 @@ export const Networks: React.FC = () => {
             alignItems="center"
           >
             <Grid item xs={8} md={5}>
-              <div style={{textAlign: "center"}}>
-              <h2>{t('network.networks')}</h2>
+              <div style={{ textAlign: 'center' }}>
+                <h2>{t('network.networks')}</h2>
               </div>
             </Grid>
-            <Grid item xs={10} md={5} style={{textAlign: "center"}}>
+            <Grid item xs={10} md={5} style={{ textAlign: 'center' }}>
               <Grid container justifyContent="space-around" alignItems="center">
                 <Grid item xs={6} md={5}>
                   <TextField
