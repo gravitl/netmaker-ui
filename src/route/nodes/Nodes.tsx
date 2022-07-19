@@ -31,6 +31,10 @@ export const Nodes: React.FC = () => {
     history.push('/nodes')
   }
 
+  React.useEffect(() => {
+    setFilterNodes(listOfNodes)
+  }, [listOfNodes])
+
   const handleFilter = (event: { target: { value: string } }) => {
     const { value } = event.target
     const searchTerm = value.trim()
