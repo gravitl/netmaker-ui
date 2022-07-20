@@ -243,6 +243,10 @@ export const en: LanguageResource = {
     defaultacl: 'Default Access Control',
     isipv6: 'IPv6',
     isipv4: 'IPv4',
+    validation: {
+      ipv4: 'Please enter a valid IPv4 address',
+      ipv6: 'Please enter a valid IPv6 address',
+    },
   },
   helper: {
     egress: 'Enter your network interface name, i.e. "eth0"',
@@ -400,6 +404,11 @@ export const en: LanguageResource = {
     error: 'Node has no Connectivity',
     warning: 'Node has connectivity issues',
     connected: 'Node is connected to ',
+    validation: {
+      relayaddress: 'Please enter a valid relay address range (IPv4 or IPv6)',
+      egressgatewayrange:
+        'Please enter a valid egress gateway range (IPv4 CIDR or IPv6 CIDR)',
+    },
     state: {
       error: 'ERROR',
       warning: 'WARNING',
