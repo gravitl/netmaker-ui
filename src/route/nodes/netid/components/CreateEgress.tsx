@@ -106,13 +106,13 @@ export function CreateEgress() {
   interface EgressData {
     ranges: string
     iface: string
-    natEnabled: string
+    natEnabled: boolean
   }
 
   const initialState: EgressData = {
     ranges: '',
     iface: '',
-    natEnabled: "yes",
+    natEnabled: true,
   }
 
   const onSubmit = useCallback(
