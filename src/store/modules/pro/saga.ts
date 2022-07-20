@@ -6,9 +6,10 @@ import {
   getNetworkUsers,
   deleteNetworkUser,
   updateNetworkUser,
+  getNetworkUserData,
 } from './actions'
 import { AxiosResponse } from 'axios'
-import { NetworksUsersMap, UserGroups } from './types'
+import { NetworksUsersMap, NetworkUserDataMap, UserGroups } from './types'
 import { apiRequestWithAuthSaga } from '../api/saga'
 import { generatorToastSaga } from '../toast/saga'
 import { i18n } from '../../../i18n/i18n'
@@ -87,6 +88,18 @@ function* handleCreateUserGroup(
     yield put(createUserGroup['success']({ ...action.payload }))
   } catch (e: unknown) {
     yield put(createUserGroup['failure'](e as Error))
+  }
+}
+
+function* handleGetNetworkUserData(
+  action: ReturnType<typeof getNetworkUserData['request']>
+) {
+  try {
+    const response: AxiosResponse<NetworkUserDataMap> =
+      yield apiRequestWithAuthSaga('get', `/networkusers/data/${action.payload.networkUserID}/me`, {})
+    yield put(getNetworkUserData['success'](response.data))
+  } catch (e: unknown) {
+    yield put(getNetworkUserData['failure'](e as Error))
   }
 }
 
@@ -169,5 +182,6 @@ export function* saga() {
     takeEvery(getType(getNetworkUsers['request']), handleGetNetworkUsers),
     takeEvery(getType(deleteNetworkUser['request']), handleDeleteNetworkUser),
     takeEvery(getType(updateNetworkUser['request']), handleUpdateNetworkUser),
+    takeEvery(getType(getNetworkUserData['request']), handleGetNetworkUserData),
   ])
 }

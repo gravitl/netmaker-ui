@@ -7,14 +7,35 @@ import {
   getNetworkUsers,
   deleteNetworkUser,
   updateNetworkUser,
+  getNetworkUserData,
 } from './actions'
-import { NetworksUsersMap } from './types'
+import { NetworksUsersMap, NetworkUserDataMap } from './types'
 
 export const reducer = createReducer({
   isProcessing: false as boolean,
   userGroups: [] as string[],
   networkUsers: {} as NetworksUsersMap,
+  networkUserData: {} as NetworkUserDataMap,
 })
+.handleAction(getNetworkUserData['success'], (state, payload) =>
+    produce(state, (draftState) => {
+      draftState.isProcessing = false
+      if (!!payload && !!payload.payload) {
+        draftState.networkUserData = payload.payload
+      }
+    })
+  )
+  .handleAction(getNetworkUserData['failure'], (state, _) =>
+    produce(state, (draftState) => {
+      draftState.isProcessing = false
+      draftState.networkUserData = {}
+    })
+  )
+  .handleAction(getNetworkUserData['request'], (state, _) =>
+    produce(state, (draftState) => {
+      draftState.isProcessing = true
+    })
+  )
   .handleAction(getUserGroups['success'], (state, payload) =>
     produce(state, (draftState) => {
       draftState.isProcessing = false
