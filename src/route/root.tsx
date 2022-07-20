@@ -18,6 +18,7 @@ import { NodeAcls } from './node_acls/NodeACLs'
 import { ServerLogs } from './logs/ServerLogs'
 import { MetricRoute } from './metrics/MetricRoute'
 import { UserGroups } from './usergroups/UserGroups'
+import { NetworkUsers } from './networkusers/NetworkUsers'
 
 function NoMatch() {
   const location = useLocation()
@@ -79,6 +80,9 @@ function Routes() {
           </PrivateRoute>
           <PrivateRoute path="/usergroups">
             <UserGroups />
+          </PrivateRoute>
+          <PrivateRoute path="/networkusers">
+            <NetworkUsers />
           </PrivateRoute>
           <PrivateRoute
             path="/users"

@@ -6,6 +6,7 @@ export interface LanguageResource {
     admin: string
     admintools: string
     nometrics: string
+    choose: string
     metrickeys: {
       latency: string
       uptime: string
@@ -18,6 +19,25 @@ export interface LanguageResource {
     label: {
       usergroup: string
       usergroups: string
+      networkuser: string
+      networkusers: string
+    }
+    networkusers: {
+      none: string
+      deleteconfirm: string
+      accesslevel: string
+      nodelimit: string
+      clientlimit: string
+      groups: string
+      nodes: string
+      clients: string
+    }
+    network: {
+      defaultaccesslevel: string
+      defaultusernodelimit: string
+      defaultuserclientlimit: string
+      allowedusers: string
+      allowedgroups: string
     }
   }
   header: {
@@ -436,6 +456,7 @@ export interface LanguageResource {
         user: string
         approve: string
         nodeacl: string
+        networkuser: string
       }
       failure: {
         node: string
@@ -444,6 +465,7 @@ export interface LanguageResource {
         user: string
         approve: string
         nodeacl: string
+        networkuser: string
       }
     }
     create: {
@@ -479,6 +501,7 @@ export interface LanguageResource {
         user: string
         node: string
         usergroups: string
+        networkuser: string
       }
       failure: {
         accesskey: string
@@ -490,6 +513,7 @@ export interface LanguageResource {
         user: string
         node: string
         usergroups: string
+        networkuser: string
       }
     }
     login: {

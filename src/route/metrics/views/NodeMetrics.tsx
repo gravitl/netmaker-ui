@@ -371,8 +371,6 @@ export const NodeMetrics: React.FC = () => {
             </Tooltip>
           </Grid>
           <Grid item xs={12} style={styles.topMargin}>
-            {console.log('Filter nodes:', filterNodes)}
-            {console.log('current peer metrics:', currentPeerMetrics)}
             {!!filterNodes && filterNodes.length ? (
               <NmTable
                 columns={columns}

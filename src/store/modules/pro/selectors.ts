@@ -8,7 +8,9 @@ export const isProcessing = createSelector(
   (pro) => pro.isProcessing
 )
 
-export const userGroups = createSelector(
+export const userGroups = createSelector(getProState, (pro) => pro.userGroups)
+
+export const networkUsers = createSelector(
   getProState,
-  (pro) => pro.userGroups
+  (pro) => pro.networkUsers
 )
