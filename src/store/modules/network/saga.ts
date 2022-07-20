@@ -2,7 +2,7 @@ import { AxiosResponse } from 'axios'
 import { all, fork, put, select, takeEvery, call } from 'redux-saga/effects'
 import { getType } from 'typesafe-actions'
 import { login } from '../auth/actions'
-import { getToken } from '../auth/selectors'
+import { getToken, getUser } from '../auth/selectors'
 import { generatorToastSaga } from '../toast/saga'
 import { i18n } from '../../../i18n/i18n'
 import {
@@ -21,12 +21,23 @@ import {
 import { NetworkPayload, GetAccessKeysPayload } from './types'
 import { apiRequestWithAuthSaga } from '../api/saga'
 import { DNS } from '~store/types'
+import { getNetworkUserData, getNetworkUsers, getUserGroups } from '../pro/actions'
 
 function* handleLoginSuccess() {
   const token: ReturnType<typeof getToken> = yield select(getToken)
   if (token) {
     yield put(getNetworks.request())
     yield put(getDnsEntries.request())
+    // == pro requests ==
+    const user: ReturnType<typeof getUser> = yield select(getUser)
+    if (!!user) {
+      if (!!user.isAdmin) {
+        yield put(getUserGroups.request())
+        yield put(getNetworkUsers.request())
+      } else {
+        yield put(getNetworkUserData.request({networkUserID: user.name}))
+      }
+    }
   }
 }
 

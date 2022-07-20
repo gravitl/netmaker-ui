@@ -1,6 +1,47 @@
 import { LanguageResource } from '../type'
 
 export const en: LanguageResource = {
+  pro: {
+    logs: 'Server Logs',
+    refresh: 'Refresh',
+    metrics: 'Metrics',
+    admin: 'Admin',
+    admintools: 'Admin Tools',
+    nometrics: 'No Metrics Available',
+    choose: 'Make Selection(s)',
+    metrickeys: {
+      latency: 'Latency (ms)',
+      uptime: 'Uptime',
+      totaltime: 'Duration',
+      percentup: 'Percent UP',
+      connected: 'Connected',
+      totalsent: 'Total Sent',
+      totalreceived: 'Total Received',
+    },
+    label: {
+      usergroup: 'User Group',
+      usergroups: 'User Groups',
+      networkuser: 'Network User',
+      networkusers: 'Network Users',
+    },
+    networkusers: {
+      none: 'No Network Users Found',
+      deleteconfirm: 'Are you sure you want to remove this network user?',
+      accesslevel: 'User Access Level',
+      nodelimit: 'Node Limit',
+      clientlimit: 'Client Limit',
+      groups: 'User Groups',
+      nodes: 'User Nodes',
+      clients: 'User Ext. Clients',
+    },
+    network: {
+      defaultaccesslevel: 'Default Access Level',
+      defaultusernodelimit: 'Default User Node Limit',
+      defaultuserclientlimit: 'Default User Client Limit',
+      allowedusers: 'Allowed Users',
+      allowedgroups: 'Allowed Groups',
+    }
+  },
   header: {
     login: 'Login',
     logout: 'Logout',
@@ -103,6 +144,7 @@ export const en: LanguageResource = {
     ascend: 'Sort Ascending',
     descend: 'Sort Descending ',
     sortby: 'Sort by',
+    disconnected: 'Disconnected',
   },
   dashboard: {
     title: 'Netmaker Dashboard',
@@ -134,6 +176,7 @@ export const en: LanguageResource = {
     network: 'Could not reach server',
     tokenexpire: 'Session has expired',
     unauthorized: 'Unauthorized access attempted',
+    overload: 'Too many failed requests, refresh to retry',
   },
   extclient: {
     extclients: 'External Clients',
@@ -461,6 +504,7 @@ export const en: LanguageResource = {
         user: 'User Updated!',
         approve: 'Node Approved!',
         nodeacl: 'ACL Updated!',
+        networkuser: 'Network User Updated!',
       },
       failure: {
         node: 'Node updated failed!',
@@ -469,6 +513,7 @@ export const en: LanguageResource = {
         user: 'Failed to update user!',
         approve: 'Failed to approve node!',
         nodeacl: 'Failed to update ACL!',
+        networkuser: 'Failed to update Network User!'
       },
     },
     create: {
@@ -503,6 +548,8 @@ export const en: LanguageResource = {
         dns: 'Successfully removed the DNS Entry!',
         user: 'Successfully deleted User!',
         node: 'Successfully deleted Node!',
+        usergroups: 'Successfully deleted User Group!',
+        networkuser: 'Successfully deleted Network User!',
       },
       failure: {
         accesskey: 'Failed to remove Access Key.',
@@ -513,6 +560,8 @@ export const en: LanguageResource = {
         dns: 'Failed to remove the DNS Entry.',
         user: 'Failed to remove User.',
         node: 'Failed to remove Node.',
+        usergroups: 'Failed to remove User Group.',
+        networkuser: 'Failed to remove Network User.',
       },
     },
     login: {
