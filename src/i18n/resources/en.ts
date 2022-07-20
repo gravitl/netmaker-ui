@@ -42,6 +42,13 @@ export const en: LanguageResource = {
       allowedusers: 'Allowed Users',
       allowedgroups: 'Allowed Groups',
     },
+    helpers: {
+      accesslevel:
+        ' 0 - NET ADMIN, 1 - NODE/REMOTE ACCESS, 2 - REMOTE ACCESS, 3 - NO_ACCESS',
+      usernodelimit: 'The number of nodes a user may create on the network',
+      userclientlimit:
+        'Number of External Client configurations a user can create on a network if Ingress gateways present',
+    },
   },
   header: {
     login: 'Login',
@@ -247,6 +254,9 @@ export const en: LanguageResource = {
     validation: {
       ipv4: 'Please enter a valid IPv4 address',
       ipv6: 'Please enter a valid IPv6 address',
+      accesslevel: 'Value must be Between 0 and 3 see tooltip for more info',
+      nodelimit: 'Value must be 0 or greater',
+      clientlimit: 'Value must be 0 or greater',
     },
   },
   helper: {

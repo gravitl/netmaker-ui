@@ -21,7 +21,11 @@ import {
 import { NetworkPayload, GetAccessKeysPayload } from './types'
 import { apiRequestWithAuthSaga } from '../api/saga'
 import { DNS } from '~store/types'
-import { getNetworkUserData, getNetworkUsers, getUserGroups } from '../pro/actions'
+import {
+  getNetworkUserData,
+  getNetworkUsers,
+  getUserGroups,
+} from '../pro/actions'
 
 function* handleLoginSuccess() {
   const token: ReturnType<typeof getToken> = yield select(getToken)
@@ -35,7 +39,7 @@ function* handleLoginSuccess() {
         yield put(getUserGroups.request())
         yield put(getNetworkUsers.request())
       } else {
-        yield put(getNetworkUserData.request({networkUserID: user.name}))
+        yield put(getNetworkUserData.request({ networkUserID: user.name }))
       }
     }
   }
@@ -218,14 +222,9 @@ function* handleCreateNetworkRequest(
       },
     })
 
-    const response: AxiosResponse<NetworkPayload> = yield apiRequestWithAuthSaga(
-      'post', 
-      '/networks', 
-      action.payload,
-      {}
-    )
+    const response: AxiosResponse<NetworkPayload> =
+      yield apiRequestWithAuthSaga('post', '/networks', action.payload, {})
     yield call(handleGetNetworksRequest)
-
     yield put(createNetwork['success'](response.data))
   } catch (e: unknown) {
     yield put(createNetwork['failure'](e as Error))

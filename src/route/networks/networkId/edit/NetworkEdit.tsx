@@ -259,35 +259,35 @@ export const NetworkEdit: React.FC<{
             />
           </Grid>
         </Tooltip>
-        <Grid item xs={12} style={{marginTop: '1rem'}}></Grid>
+        <Grid item xs={12} style={{ marginTop: '1rem' }}></Grid>
         <Grid item xs={12} sm={4} md={3.1}>
           <NmFormInputText
-            name='prosettings.defaultaccesslevel'
+            name="prosettings.defaultaccesslevel"
             label={String(t('pro.network.defaultaccesslevel'))}
             type="number"
           />
         </Grid>
         <Grid item xs={12} sm={4} md={3.1}>
           <NmFormInputText
-            name='prosettings.defaultusernodelimit'
+            name="prosettings.defaultusernodelimit"
             label={String(t('pro.network.defaultusernodelimit'))}
             type="number"
           />
         </Grid>
         <Grid item xs={12} sm={4} md={3.1}>
           <NmFormInputText
-            name='prosettings.defaultuserclientlimit'
+            name="prosettings.defaultuserclientlimit"
             label={String(t('pro.network.defaultuserclientlimit'))}
             type="number"
           />
         </Grid>
-        <Grid item xs={12} style={{marginTop: '1rem'}}></Grid>
+        <Grid item xs={12} style={{ marginTop: '1rem' }}></Grid>
         <Grid item xs={6} sm={5.75} md={5.5}>
           <Grid container justifyContent={'space-evenly'}>
             <Grid item xs={12} md={8} style={centerStyle}>
               <NmFormInputText
                 fullWidth
-                name='prosettings.allowedgroups'
+                name="prosettings.allowedgroups"
                 label={String(t('pro.network.allowedgroups'))}
                 disabled
               />
@@ -297,32 +297,32 @@ export const NetworkEdit: React.FC<{
                 sx={{ textTransform: 'none' }}
                 to={`/networks/${network.netid}/edit/groups`}
                 fullWidth
-                variant='outlined'
+                variant="outlined"
               >
                 {`${t('common.edit')} ${t('pro.network.allowedgroups')}`}
-              </NmLink> 
+              </NmLink>
             </Grid>
           </Grid>
         </Grid>
         <Grid item xs={6} sm={5.75} md={5.5}>
           <Grid container>
             <Grid item xs={12} md={8} style={centerStyle}>
-            <NmFormInputText
-              fullWidth
-              name='prosettings.allowedusers'
-              label={String(t('pro.network.allowedusers'))}
-              disabled
-            />
+              <NmFormInputText
+                fullWidth
+                name="prosettings.allowedusers"
+                label={String(t('pro.network.allowedusers'))}
+                disabled
+              />
             </Grid>
             <Grid item xs={8} md={4} style={centerStyle}>
               <NmLink
-                variant='outlined'
+                variant="outlined"
                 fullWidth
                 sx={{ textTransform: 'none' }}
                 to={`/networks/${network.netid}/edit/networkusers`}
               >
                 {`${t('common.edit')} ${t('pro.network.allowedusers')}`}
-              </NmLink> 
+              </NmLink>
             </Grid>
           </Grid>
         </Grid>
