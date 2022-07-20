@@ -4,6 +4,7 @@ import {
   NetworkUsersPayload,
   NetworkUserDelPayload,
   NetworkUserUpdatePayload,
+  NetworkUserGetPayload,
 } from '.'
 
 export const getUserGroups = createAsyncAction(
@@ -43,5 +44,15 @@ export const updateNetworkUser = createAsyncAction(
 )<
   NetworkUserUpdatePayload['Request'],
   NetworkUserUpdatePayload['Response'],
+  Error
+>()
+
+export const getNetworkUserData = createAsyncAction(
+  'Pro_getNetworkUserData_Request',
+  'Pro_getNetworkUserData_Success',
+  'Pro_getNetworkUserData_Failure'
+)<
+  NetworkUserGetPayload['Request'],
+  NetworkUserGetPayload['Response'],
   Error
 >()
