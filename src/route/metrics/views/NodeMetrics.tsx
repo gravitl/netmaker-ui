@@ -8,7 +8,7 @@ import {
   IconButton,
 } from '@mui/material'
 import React from 'react'
-import { useParams, useHistory } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 import { UptimeChart } from './charts/Uptime'
@@ -64,7 +64,6 @@ export const NodeMetrics: React.FC = () => {
   const isFetching = useSelector(serverSelectors.isFetchingServerConfig)
   const attempts = useSelector(serverSelectors.getAttempts)
   const [initialLoad, setInitialLoad] = React.useState(true)
-  const history = useHistory()
   const [currentNodeMetrics, setCurrentNodeMetrics] = React.useState(
     {} as NodeMetricsContainer
   )
@@ -74,8 +73,8 @@ export const NodeMetrics: React.FC = () => {
   var nodeNameMap: Map<string, string> = new Map()
   const [filterNodes, setFilterNodes] = React.useState(allNodes)
 
-  const syncNodes = () => {
-    history.push(`/metrics/${netid}/${nodeid}`)
+  const syncMetrics = () => {
+    dispatch(clearCurrentMetrics())
   }
 
   useLinkBreadcrumb({
@@ -364,8 +363,11 @@ export const NodeMetrics: React.FC = () => {
             </div>
           </Grid>
           <Grid item xs={1} md={1}>
-            <Tooltip title={t('node.sync') as string} placement="top">
-              <IconButton color="primary" onClick={syncNodes}>
+            <Tooltip
+              title={t('pro.metrickeys.syncmetrics') as string}
+              placement="top"
+            >
+              <IconButton color="primary" onClick={syncMetrics}>
                 <Sync />
               </IconButton>
             </Tooltip>

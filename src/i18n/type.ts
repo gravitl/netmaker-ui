@@ -15,6 +15,7 @@ export interface LanguageResource {
       connected: string
       totalsent: string
       totalreceived: string
+      syncmetrics: string
     }
     label: {
       usergroup: string
