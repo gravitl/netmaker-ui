@@ -19,7 +19,7 @@ export interface Network {
   islocal: boolean
   isipv4: boolean
   isipv6: boolean
-  ispointtosite: boolean 
+  ispointtosite: boolean
   localrange: string
   defaultudpholepunch: boolean
   defaultextclientdns: string
@@ -79,6 +79,7 @@ export interface CreateNetworkPayload {
     defaultudpholepunch: 'yes' | 'no'
     ispointtosite: 'yes' | 'no'
     defaultacl: 'yes' | 'no'
+    prosettings?: ProSettings
   }
   Response: NetworkPayload
 }

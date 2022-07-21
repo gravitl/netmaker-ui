@@ -40,6 +40,11 @@ export interface LanguageResource {
       allowedusers: string
       allowedgroups: string
     }
+    helpers: {
+      accesslevel: string
+      usernodelimit: string
+      userclientlimit: string
+    }
   }
   header: {
     login: string
@@ -285,6 +290,9 @@ export interface LanguageResource {
     validation: {
       ipv4: string
       ipv6: string
+      accesslevel: string
+      nodelimit: string
+      clientlimit: string
     }
   }
   node: {
