@@ -4,6 +4,8 @@ import {
   TextField,
   Typography,
   LinearProgress,
+  Tooltip,
+  IconButton,
 } from '@mui/material'
 import React from 'react'
 import { useParams } from 'react-router-dom'
@@ -23,7 +25,7 @@ import {
 import { NmTable, TableColumns } from '~components/Table'
 import { Modify } from 'src/types/react-app-env'
 import MetricButton from '../components/MetricButton'
-import { Search } from '@mui/icons-material'
+import { Search, Sync } from '@mui/icons-material'
 import { MAX_ATTEMPTS } from '../util'
 
 const styles = {
@@ -70,6 +72,10 @@ export const NodeMetrics: React.FC = () => {
   )
   var nodeNameMap: Map<string, string> = new Map()
   const [filterNodes, setFilterNodes] = React.useState(allNodes)
+
+  const syncMetrics = () => {
+    dispatch(clearCurrentMetrics())
+  }
 
   useLinkBreadcrumb({
     link: `/nodes/${netid}/${nodeid}`,
@@ -355,6 +361,16 @@ export const NodeMetrics: React.FC = () => {
                 onChange={handleFilter}
               />
             </div>
+          </Grid>
+          <Grid item xs={1} md={1}>
+            <Tooltip
+              title={t('pro.metrickeys.syncmetrics') as string}
+              placement="top"
+            >
+              <IconButton color="primary" onClick={syncMetrics}>
+                <Sync />
+              </IconButton>
+            </Tooltip>
           </Grid>
           <Grid item xs={12} style={styles.topMargin}>
             {!!filterNodes && filterNodes.length ? (

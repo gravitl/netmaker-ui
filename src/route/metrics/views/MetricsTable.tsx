@@ -21,6 +21,7 @@ import {
   NotInterested as NotAllowedIcon,
   RemoveCircleOutline as DisabledIcon,
   Search,
+  Sync,
   // RestartAlt,
   // Search,
 } from '@mui/icons-material'
@@ -32,6 +33,7 @@ import { getMetrics } from '~store/modules/server/actions'
 import { NodeMetric, MetricsContainer } from '~store/types'
 import { getTimeMinHrs, MAX_ATTEMPTS } from '../util'
 import MetricButton from '../components/MetricButton'
+import { clearCurrentMetrics } from '~store/modules/server/actions'
 
 const HIGHLIGHT = '#D7BE69'
 type HoveredNode = {
@@ -71,6 +73,10 @@ export const MetricsTable: React.FC = () => {
 
   const isNodeFiltered = (id: string) => {
     return !!~filterNodes.findIndex((node) => node.id === id)
+  }
+
+  const syncMetrics = () => {
+    dispatch(clearCurrentMetrics())
   }
 
   const handleFilter = (event: { target: { value: string } }) => {
@@ -236,6 +242,16 @@ export const MetricsTable: React.FC = () => {
             onChange={handleFilter}
           />
         </div>
+      </Grid>
+      <Grid item xs={1} md={1}>
+        <Tooltip
+          title={t('pro.metrickeys.syncmetrics') as string}
+          placement="top"
+        >
+          <IconButton color="primary" onClick={syncMetrics}>
+            <Sync />
+          </IconButton>
+        </Tooltip>
       </Grid>
       <Grid item xs={12} style={titleStyle}>
         {attempts >= MAX_ATTEMPTS && (

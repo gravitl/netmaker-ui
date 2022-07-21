@@ -17,6 +17,7 @@ export const en: LanguageResource = {
       connected: 'Connected',
       totalsent: 'Total Sent',
       totalreceived: 'Total Received',
+      syncmetrics: 'Refresh Metrics',
     },
     label: {
       usergroup: 'User Group',
@@ -40,7 +41,7 @@ export const en: LanguageResource = {
       defaultuserclientlimit: 'Default User Client Limit',
       allowedusers: 'Allowed Users',
       allowedgroups: 'Allowed Groups',
-    }
+    },
   },
   header: {
     login: 'Login',
@@ -513,7 +514,7 @@ export const en: LanguageResource = {
         user: 'Failed to update user!',
         approve: 'Failed to approve node!',
         nodeacl: 'Failed to update ACL!',
-        networkuser: 'Failed to update Network User!'
+        networkuser: 'Failed to update Network User!',
       },
     },
     create: {
