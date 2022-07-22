@@ -24,6 +24,7 @@ export const en: LanguageResource = {
       usergroups: 'User Groups',
       networkuser: 'Network User',
       networkusers: 'Network Users',
+      selectnetwork: 'Select Network',
     },
     networkusers: {
       none: 'No Network Users Found',

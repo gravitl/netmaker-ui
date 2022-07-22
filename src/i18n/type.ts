@@ -22,6 +22,7 @@ export interface LanguageResource {
       usergroups: string
       networkuser: string
       networkusers: string
+      selectnetwork: string
     }
     networkusers: {
       none: string

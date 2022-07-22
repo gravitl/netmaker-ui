@@ -35,15 +35,33 @@ export default function ProCustomSelect(Props: {
 
   return (
     <div>
-      <FormControl sx={{ m: 1, width: '25%', mt: 3 }}>
-        <InputLabel shrink htmlFor="select-multiple-native">
-          {t('common.select')}
+      <FormControl
+        variant="outlined"
+        sx={{
+          m: 1,
+          minWidth: '10rem',
+          width: '25%',
+          mt: 3,
+          '& .MuiNativeSelect-select': {
+            height: '90%',
+            minHeight: '40vh',
+          },
+        }}
+      >
+        <InputLabel
+          shrink
+          htmlFor="select-multiple-native"
+          style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#139da4' }}
+        >
+          {t('pro.label.selectnetwork')}
         </InputLabel>
         <Select
           style={{
-            fontSize: '1.25rem',
+            fontSize: '1.75rem',
+            height: '100%',
+            minHeight: '40vh',
           }}
-          label={t('common.select')}
+          label={t('pro.label.selectnetwork')}
           multiple
           native
           value={selectedItem}
@@ -58,6 +76,7 @@ export default function ProCustomSelect(Props: {
         >
           {Props.items.map((item) => (
             <option
+              className="selected"
               key={item}
               value={item}
               style={getStyles(item, selectedItem, theme)}

@@ -22,6 +22,14 @@ export const ProNetworkSelect: React.FC<{
     networkNames.push(t('common.selectall'))
   }
 
+  const createNetworks = () => {
+    const networks = []
+    for (let i = 0; i < 100; i++) {
+      networks.push('net')
+    }
+    return networks
+  }
+
   return (
     <Grid container justifyContent="space-around" alignItems="center">
       <Grid item xs={12}>
@@ -41,7 +49,7 @@ export const ProNetworkSelect: React.FC<{
                 )
               }
             }}
-            items={networkNames}
+            items={createNetworks()}
           />
         </FormControl>
       </Grid>
