@@ -8,6 +8,7 @@ import {
   FormControl,
   Typography,
   useTheme,
+  Tooltip,
 } from '@mui/material'
 import { useHistory } from 'react-router-dom'
 import { useRouteMatch, useParams } from 'react-router-dom'
@@ -16,9 +17,10 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { createEgressNode } from '~modules/node/actions'
 import { useNodeById } from '~util/node'
-import { NmForm, NmFormInputText, validate } from '~components/form'
+import { NmForm, NmFormInputText, validate, NmFormInputSwitch} from '~components/form'
 import { correctIPv4CidrRegex, correctIpv6Regex } from '~util/regex'
 import { convertStringToArray } from '~util/fields'
+import { makeStyles, createStyles } from '@mui/styles'
 
 const styles = {
   centerText: {
@@ -74,6 +76,18 @@ function HelperText(props: { text: string; focusText: string }) {
   return <FormHelperText>{helperText}</FormHelperText>
 }
 
+const useStyles = makeStyles(() =>
+  createStyles({
+    center: {
+      textAlign: 'center',
+    },
+    rowMargin: {
+      marginTop: '1em',
+      marginBottom: '1em',
+    },
+  })
+)
+
 export function CreateEgress() {
   const history = useHistory()
   const theme = useTheme()
@@ -82,6 +96,7 @@ export function CreateEgress() {
   const { url } = useRouteMatch()
   const node = useNodeById(nodeId)
   const dispatch = useDispatch()
+  const classes = useStyles()
 
   useLinkBreadcrumb({
     link: url,
@@ -91,11 +106,13 @@ export function CreateEgress() {
   interface EgressData {
     ranges: string
     iface: string
+    natEnabled: boolean
   }
 
   const initialState: EgressData = {
     ranges: '',
     iface: '',
+    natEnabled: true,
   }
 
   const onSubmit = useCallback(
@@ -111,6 +128,7 @@ export function CreateEgress() {
           payload: {
             ranges: newRanges,
             interface: data.iface,
+            natEnabled: data.natEnabled ? "yes" : "no" 
           },
         })
       )
@@ -211,6 +229,30 @@ export function CreateEgress() {
                   focusText={t('helper.egressiface')}
                 />
               </FormControl>
+            </Grid>
+            <Grid
+            item
+            xs={12}
+            sm={10}
+            md={10}
+            className={classes.center + ' ' + classes.rowMargin}
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            >
+              <Tooltip
+                  title={t('helper.defaultnatenabled') as string}
+                  placement="top"
+                >
+                  <div>
+                    <NmFormInputSwitch
+                      name={'natEnabled'}
+                      label={String(t('network.defaultnatenabled'))}
+                    />
+                  </div>
+              </Tooltip>
             </Grid>
           </Grid>
         </NmForm>
