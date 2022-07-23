@@ -4,8 +4,9 @@ import { useHistory, useParams } from 'react-router-dom'
 import { networkSelectors } from '../../store/selectors'
 import { useTranslation } from 'react-i18next'
 import ProCustomSelect from '~components/select/ProCustomSelect'
-import { FormControl, Grid } from '@mui/material'
+import { FormControl, Grid, Typography } from '@mui/material'
 import { clearCurrentMetrics } from '~store/modules/server/actions'
+import { proSelectors } from '~store/types'
 
 export const ProNetworkSelect: React.FC<{
   selectAll?: boolean
@@ -17,6 +18,7 @@ export const ProNetworkSelect: React.FC<{
   const history = useHistory()
   const { netid } = useParams<{ netid?: string }>()
   const dispatch = useDispatch()
+  const netUsers = useSelector(proSelectors.networkUsers)
 
   if (selectAll && !!netid) {
     networkNames.push(t('common.selectall'))
@@ -29,9 +31,19 @@ export const ProNetworkSelect: React.FC<{
     }
     return networks
   }
+  const titleStyle = {
+    textAlign: 'center',
+  } as any
 
   return (
-    <Grid container justifyContent="space-around" alignItems="center">
+    <Grid container justifyContent="center" alignItems="center">
+      <Grid item xs={12}>
+        <div style={titleStyle}>
+          <Typography variant="h5">
+            {`${t('pro.label.welcome')} ${netUsers}`}
+          </Typography>
+        </div>
+      </Grid>
       <Grid item xs={12}>
         <FormControl fullWidth>
           <ProCustomSelect

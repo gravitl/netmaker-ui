@@ -7,6 +7,7 @@ import { Login } from './login/Login'
 import { Networks } from './networks/Networks'
 import { PrivateRoute } from './PrivateRoute'
 import CustomDrawer from '~components/drawer/CustomDrawer'
+import ProCustomDrawer from '~components/prodashboards/prodrawer'
 import { Grid } from '@mui/material'
 import { AccessKeys } from './accesskeys/AccessKeys'
 import { ExtClients } from './extclients/ExtClients'
@@ -44,7 +45,7 @@ function Routes() {
   return (
     <Grid container justifyContent="right">
       <Grid item xs={12}>
-        <CustomDrawer />
+        <ProCustomDrawer />
       </Grid>
       <Grid item xs={12}>
         <Switch location={from || location}>

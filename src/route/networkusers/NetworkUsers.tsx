@@ -7,7 +7,6 @@ import { NetworkSelect } from '~components/NetworkSelect'
 import { NetworkUsersTable } from './components/NetworkUsersTable'
 import { NetworkUserEdit } from './components/NetworkUserEdit'
 import { UserGroupEdit } from './components/UserGroupEdit'
-import { ProNetworkSelect } from '~components/prodashboards/ProNetworkSelect'
 
 export const NetworkUsers: React.FC = () => {
   const { path } = useRouteMatch()
@@ -40,9 +39,6 @@ export const NetworkUsers: React.FC = () => {
             </Grid>
             <Grid item xs={8}>
               <NetworkSelect selectAll />
-            </Grid>
-            <Grid item xs={8}>
-              <ProNetworkSelect selectAll />
             </Grid>
           </Grid>
         </Route>
