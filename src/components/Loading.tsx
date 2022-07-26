@@ -3,12 +3,7 @@ import Typography from '@mui/material/Typography'
 import { LinearProgress } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 
-//write component that shows a loding screen that can be used in other components
-export interface LoadingProps {
-  loading: boolean
-}
-
-export default function Loading(Props: LoadingProps) {
+export default function Loading() {
   const { t } = useTranslation()
 
   return (
