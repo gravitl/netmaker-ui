@@ -22,6 +22,7 @@ export interface Network {
   ispointtosite: boolean 
   localrange: string
   defaultudpholepunch: boolean
+  defaultnatenabled: boolean
   defaultextclientdns: string
   defaultmtu: number
   defaultacl: boolean

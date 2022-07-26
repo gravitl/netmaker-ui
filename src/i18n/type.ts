@@ -162,6 +162,7 @@ export interface LanguageResource {
     egress: string
     egressiface: string
     udpholepunching: string
+    defaultnatenabled: string
     islocal: string
     ispointtosite: string
     defaultacl: string
@@ -223,6 +224,7 @@ export interface LanguageResource {
     defaultsaveconfig: string
     accesskeys: string
     defaultudpholepunch: string
+    defaultnatenabled: string
     islocal: string
     create: string
     netid: string
@@ -238,6 +240,10 @@ export interface LanguageResource {
     defaultacl: string
     isipv6: string
     isipv4: string
+    validation: {
+      ipv4: string
+      ipv6: string
+    }
   }
   node: {
     nodes: string
@@ -322,6 +328,10 @@ export interface LanguageResource {
     error: string
     warning: string
     connected: string
+    validation: {
+      relayaddress: string
+      egressgatewayrange: string
+    }
     state: {
       error: string
       warning: string
