@@ -211,6 +211,7 @@ export interface LanguageResource {
     egress: string
     egressiface: string
     udpholepunching: string
+    defaultnatenabled: string
     islocal: string
     ispointtosite: string
     defaultacl: string
@@ -272,6 +273,7 @@ export interface LanguageResource {
     defaultsaveconfig: string
     accesskeys: string
     defaultudpholepunch: string
+    defaultnatenabled: string
     islocal: string
     create: string
     netid: string

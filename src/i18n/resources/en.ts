@@ -234,6 +234,7 @@ export const en: LanguageResource = {
     defaultsaveconfig: 'Default Saveconfig',
     accesskeys: 'Access Keys',
     defaultudpholepunch: 'UDP Hole Punching',
+    defaultnatenabled: 'Enable NAT for egress traffic',
     islocal: 'Is Local Network',
     create: 'Create Network',
     netid: 'Network Name',
@@ -264,6 +265,8 @@ export const en: LanguageResource = {
     egressiface: 'Find your interface on linux with "ip link show"',
     udpholepunching:
       'This can enhance connectivity in cases where NAT may block communication.',
+    defaultnatenabled:
+      'Enable NAT\'ing if you wish traffic originating from your wireguard network to be source NAT\'ed to the IP of the egess node',
     islocal: 'Use if server is on same network (LAN) as you',
     ispointtosite:
       'Create a network in which all clients have only one, central peer',
