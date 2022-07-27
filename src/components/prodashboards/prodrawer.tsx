@@ -184,7 +184,7 @@ export const LoginLink: React.FC = ({ children }) => {
   )
 }
 
-export default function CustomDrawer() {
+export default function ProCustomDrawer() {
   const match = useRouteMatch('/login')
   const showAuthButton = !match
 
@@ -309,12 +309,66 @@ export default function CustomDrawer() {
               icon: <Language />,
               link: `/dns${!!netid ? `/${netid}` : ''}`,
             },
-          ].map((item) => (
-            <ListItemButton component={Link} to={item.link} key={item.text}>
-              <ListItemIcon>{item.icon}</ListItemIcon>
-              <ListItemText primary={item.text} />
-            </ListItemButton>
-          ))}
+          ].map((item) => {
+            if (item.text === 'Dashboard' && isLoggedIn) {
+              return (
+                <ListItemButton component={Link} to={item.link} key={item.text}>
+                  <ListItemIcon>{item.icon}</ListItemIcon>
+                  <ListItemText primary={item.text} />
+                </ListItemButton>
+              )
+            }
+            if (item.text === 'Networks' && isLoggedIn) {
+              return (
+                <ListItemButton component={Link} to={item.link} key={item.text}>
+                  <ListItemIcon>{item.icon}</ListItemIcon>
+                  <ListItemText primary={item.text} />
+                </ListItemButton>
+              )
+            }
+            if (item.text === 'Nodes' && isLoggedIn && user?.isAdmin) {
+              return (
+                <ListItemButton component={Link} to={item.link} key={item.text}>
+                  <ListItemIcon>{item.icon}</ListItemIcon>
+                  <ListItemText primary={item.text} />
+                </ListItemButton>
+              )
+            }
+            if (item.text === 'Graphs' && isLoggedIn && user?.isAdmin) {
+              return (
+                <ListItemButton component={Link} to={item.link} key={item.text}>
+                  <ListItemIcon>{item.icon}</ListItemIcon>
+                  <ListItemText primary={item.text} />
+                </ListItemButton>
+              )
+            }
+            if (item.text === 'Access Keys' && isLoggedIn && user?.isAdmin) {
+              return (
+                <ListItemButton component={Link} to={item.link} key={item.text}>
+                  <ListItemIcon>{item.icon}</ListItemIcon>
+                  <ListItemText primary={item.text} />
+                </ListItemButton>
+              )
+            }
+            if (item.text === 'Ext. Clients' && isLoggedIn && user?.isAdmin) {
+              return (
+                <ListItemButton component={Link} to={item.link} key={item.text}>
+                  <ListItemIcon>{item.icon}</ListItemIcon>
+                  <ListItemText primary={item.text} />
+                </ListItemButton>
+              )
+            }
+            if (item.text === 'DNS' && isLoggedIn && user?.isAdmin) {
+              return (
+                <ListItemButton component={Link} to={item.link} key={item.text}>
+                  <ListItemIcon>{item.icon}</ListItemIcon>
+                  <ListItemText primary={item.text} />
+                </ListItemButton>
+              )
+            }
+
+            return null
+          })}
         </List>
         {isLoggedIn && user!.isAdmin ? (
           <>

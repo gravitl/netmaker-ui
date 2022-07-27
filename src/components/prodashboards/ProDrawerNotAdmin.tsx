@@ -35,7 +35,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useRouteMatch, Link } from 'react-router-dom'
 import { authSelectors, serverSelectors } from '../../store/selectors'
 import { logout } from '../../store/modules/auth/actions'
-import { NmLink } from '../../components/Link'
+import { NmLink } from '../Link'
 import { UI_VERSION } from '../../config'
 import Logo from '../../netmaker-logo.png'
 import DarkLogo from '../../netmaker-logo-2.png'
@@ -184,7 +184,7 @@ export const LoginLink: React.FC = ({ children }) => {
   )
 }
 
-export default function CustomDrawer() {
+export default function ProDrawerNotAdmin() {
   const match = useRouteMatch('/login')
   const showAuthButton = !match
 
@@ -281,40 +281,14 @@ export default function CustomDrawer() {
         </DrawerHeader>
         <Divider />
         <List>
-          {[
-            { text: 'Dashboard', icon: <Dashboard />, link: '/' },
-            { text: 'Networks', icon: <Wifi />, link: '/networks' },
-            {
-              text: 'Nodes',
-              icon: <DeviceHub />,
-              link: `/nodes${!!netid ? `/${netid}` : ''}`,
-            },
-            {
-              text: 'Graphs',
-              icon: <AccountTree />,
-              link: `/graphs${!!netid ? `/${netid}` : ''}`,
-            },
-            {
-              text: 'Access Keys',
-              icon: <VpnKey />,
-              link: `/access-keys${!!netid ? `/${netid}` : ''}`,
-            },
-            {
-              text: 'Ext. Clients',
-              icon: <Devices />,
-              link: `/ext-clients${!!netid ? `/${netid}` : ''}`,
-            },
-            {
-              text: 'DNS',
-              icon: <Language />,
-              link: `/dns${!!netid ? `/${netid}` : ''}`,
-            },
-          ].map((item) => (
-            <ListItemButton component={Link} to={item.link} key={item.text}>
-              <ListItemIcon>{item.icon}</ListItemIcon>
-              <ListItemText primary={item.text} />
-            </ListItemButton>
-          ))}
+          {[{ text: 'Dashboard', icon: <Dashboard />, link: '/' }].map(
+            (item) => (
+              <ListItemButton component={Link} to={item.link} key={item.text}>
+                <ListItemIcon>{item.icon}</ListItemIcon>
+                <ListItemText primary={item.text} />
+              </ListItemButton>
+            )
+          )}
         </List>
         {isLoggedIn && user!.isAdmin ? (
           <>

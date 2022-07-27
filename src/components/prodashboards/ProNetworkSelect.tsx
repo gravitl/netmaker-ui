@@ -30,7 +30,7 @@ export const ProNetworkSelect: React.FC<{
   } as any
 
   return (
-    <Grid container justifyContent="center" alignItems="center">
+    <Grid container justifyContent="space-around" alignItems="center">
       <Grid item xs={12}>
         <div style={titleStyle}>
           <Typography variant="h5">
