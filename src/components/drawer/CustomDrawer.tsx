@@ -280,42 +280,46 @@ export default function CustomDrawer() {
           </IconButton>
         </DrawerHeader>
         <Divider />
-        <List>
-          {[
-            { text: 'Dashboard', icon: <Dashboard />, link: '/' },
-            { text: 'Networks', icon: <Wifi />, link: '/networks' },
-            {
-              text: 'Nodes',
-              icon: <DeviceHub />,
-              link: `/nodes${!!netid ? `/${netid}` : ''}`,
-            },
-            {
-              text: 'Graphs',
-              icon: <AccountTree />,
-              link: `/graphs${!!netid ? `/${netid}` : ''}`,
-            },
-            {
-              text: 'Access Keys',
-              icon: <VpnKey />,
-              link: `/access-keys${!!netid ? `/${netid}` : ''}`,
-            },
-            {
-              text: 'Ext. Clients',
-              icon: <Devices />,
-              link: `/ext-clients${!!netid ? `/${netid}` : ''}`,
-            },
-            {
-              text: 'DNS',
-              icon: <Language />,
-              link: `/dns${!!netid ? `/${netid}` : ''}`,
-            },
-          ].map((item) => (
-            <ListItemButton component={Link} to={item.link} key={item.text}>
-              <ListItemIcon>{item.icon}</ListItemIcon>
-              <ListItemText primary={item.text} />
-            </ListItemButton>
-          ))}
-        </List>
+        {user?.isAdmin && (
+          <>
+            <List>
+              {[
+                { text: 'Dashboard', icon: <Dashboard />, link: '/' },
+                { text: 'Networks', icon: <Wifi />, link: '/networks' },
+                {
+                  text: 'Nodes',
+                  icon: <DeviceHub />,
+                  link: `/nodes${!!netid ? `/${netid}` : ''}`,
+                },
+                {
+                  text: 'Graphs',
+                  icon: <AccountTree />,
+                  link: `/graphs${!!netid ? `/${netid}` : ''}`,
+                },
+                {
+                  text: 'Access Keys',
+                  icon: <VpnKey />,
+                  link: `/access-keys${!!netid ? `/${netid}` : ''}`,
+                },
+                {
+                  text: 'Ext. Clients',
+                  icon: <Devices />,
+                  link: `/ext-clients${!!netid ? `/${netid}` : ''}`,
+                },
+                {
+                  text: 'DNS',
+                  icon: <Language />,
+                  link: `/dns${!!netid ? `/${netid}` : ''}`,
+                },
+              ].map((item) => (
+                <ListItemButton component={Link} to={item.link} key={item.text}>
+                  <ListItemIcon>{item.icon}</ListItemIcon>
+                  <ListItemText primary={item.text} />
+                </ListItemButton>
+              ))}
+            </List>
+          </>
+        )}
         {isLoggedIn && user!.isAdmin ? (
           <>
             <Divider />

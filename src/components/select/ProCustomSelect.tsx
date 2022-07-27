@@ -39,7 +39,7 @@ export default function ProCustomSelect(Props: {
         variant="outlined"
         sx={{
           m: 1,
-          minWidth: '10rem',
+          minWidth: '12rem',
           width: '25%',
           mt: 3,
           '& .MuiNativeSelect-select': {

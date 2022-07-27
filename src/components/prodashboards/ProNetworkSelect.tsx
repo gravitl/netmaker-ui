@@ -6,7 +6,8 @@ import { useTranslation } from 'react-i18next'
 import ProCustomSelect from '~components/select/ProCustomSelect'
 import { FormControl, Grid, Typography } from '@mui/material'
 import { clearCurrentMetrics } from '~store/modules/server/actions'
-import { proSelectors } from '~store/types'
+
+import { authSelectors } from '../../store/selectors'
 
 export const ProNetworkSelect: React.FC<{
   selectAll?: boolean
@@ -18,19 +19,12 @@ export const ProNetworkSelect: React.FC<{
   const history = useHistory()
   const { netid } = useParams<{ netid?: string }>()
   const dispatch = useDispatch()
-  const netUsers = useSelector(proSelectors.networkUsers)
+  const user = useSelector(authSelectors.getUser)
 
   if (selectAll && !!netid) {
     networkNames.push(t('common.selectall'))
   }
 
-  const createNetworks = () => {
-    const networks = []
-    for (let i = 0; i < 100; i++) {
-      networks.push('net')
-    }
-    return networks
-  }
   const titleStyle = {
     textAlign: 'center',
   } as any
@@ -40,11 +34,11 @@ export const ProNetworkSelect: React.FC<{
       <Grid item xs={12}>
         <div style={titleStyle}>
           <Typography variant="h5">
-            {`${t('pro.label.welcome')} ${netUsers}`}
+            {`${t('pro.label.welcome')} ${user?.name}`}
           </Typography>
         </div>
       </Grid>
-      <Grid item xs={12}>
+      <Grid item xs={7} justifyContent="center">
         <FormControl fullWidth>
           <ProCustomSelect
             placeholder={`${t('common.select')} ${t('network.network')}`}
@@ -61,7 +55,7 @@ export const ProNetworkSelect: React.FC<{
                 )
               }
             }}
-            items={createNetworks()}
+            items={networkNames}
           />
         </FormControl>
       </Grid>
