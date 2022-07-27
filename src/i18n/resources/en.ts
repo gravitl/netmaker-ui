@@ -409,6 +409,7 @@ export const en: LanguageResource = {
     isingressrelay: 'Is Ingress and Relay',
     isrelayed: 'Being Relayed',
     ishub: 'Is Network Hub',
+    defaultacl: 'Node ACL Rule',
     onehub: 'This node is currently the hub',
     createhub: 'Make this node the hub',
     updatenode: 'Update Node',
