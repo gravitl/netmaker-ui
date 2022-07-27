@@ -19,9 +19,11 @@ import { ServerLogs } from './logs/ServerLogs'
 import { MetricRoute } from './metrics/MetricRoute'
 import { UserGroups } from './usergroups/UserGroups'
 import { NetworkUsers } from './networkusers/NetworkUsers'
-import ProDrawerNotAdmin from '~components/prodashboards/ProDrawerNotAdmin'
+import ProDrawerNotAdmin from '~components/prodashboards/NetAdminDashboard/ProDrawerNotAdmin'
 import { authSelectors } from '~store/types'
 import { useSelector } from 'react-redux'
+import { ProDashboard } from '~components/prodashboards/ProDashboard'
+import { ProNetworkSelect } from '~components/prodashboards/NetAdminDashboard/ProNetworkSelect'
 
 function NoMatch() {
   const location = useLocation()
@@ -60,10 +62,13 @@ function Routes() {
       <Grid item xs={12}>
         <Switch location={from || location}>
           <PrivateRoute exact path="/">
-            <Dashboard />
+            {!user?.isAdmin ? <Dashboard /> : <ProDashboard />}
           </PrivateRoute>
           <PrivateRoute path="/networks">
             <Networks />
+          </PrivateRoute>
+          <PrivateRoute path="/prouser">
+            <ProNetworkSelect />
           </PrivateRoute>
           <PrivateRoute path="/nodes">
             <Nodes />

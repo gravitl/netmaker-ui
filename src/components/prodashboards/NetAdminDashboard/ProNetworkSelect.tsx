@@ -1,13 +1,14 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
-import { networkSelectors } from '../../store/selectors'
+import { networkSelectors } from '../../../store/selectors'
 import { useTranslation } from 'react-i18next'
 import ProCustomSelect from '~components/select/ProCustomSelect'
 import { FormControl, Grid, Typography } from '@mui/material'
 import { clearCurrentMetrics } from '~store/modules/server/actions'
 
-import { authSelectors } from '../../store/selectors'
+import { authSelectors } from '../../../store/selectors'
+import { ProAccessLvl } from './ProAccessLevel'
 
 export const ProNetworkSelect: React.FC<{
   selectAll?: boolean
@@ -58,6 +59,9 @@ export const ProNetworkSelect: React.FC<{
             items={networkNames}
           />
         </FormControl>
+      </Grid>
+      <Grid item xs={12}>
+        <ProAccessLvl />
       </Grid>
     </Grid>
   )

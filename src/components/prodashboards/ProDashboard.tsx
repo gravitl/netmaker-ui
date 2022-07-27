@@ -1,0 +1,39 @@
+import { Container, Grid } from '@mui/material'
+import React from 'react'
+import { useRouteMatch, Switch, Route } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
+import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
+import { ProNetworkSelect } from './NetAdminDashboard/ProNetworkSelect'
+import { ProAccessLvl } from './NetAdminDashboard/ProAccessLevel'
+
+export const ProDashboard: React.FC = () => {
+  const { path } = useRouteMatch()
+  const { t } = useTranslation()
+
+  useLinkBreadcrumb({
+    title: t('breadcrumbs.proDashboard'),
+  })
+
+  return (
+    <Container>
+      <Switch>
+        <Route exact path={path}>
+          <Grid
+            container
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <Grid item xs={8}>
+              <ProNetworkSelect selectAll />
+            </Grid>
+          </Grid>
+        </Route>
+
+        <Route path={`${path}:netid`}>
+          <ProAccessLvl />
+        </Route>
+      </Switch>
+    </Container>
+  )
+}

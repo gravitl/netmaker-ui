@@ -14,7 +14,7 @@ import { useSelector } from 'react-redux'
 import { authSelectors, proSelectors } from '~store/types'
 import ACLCard from '~components/dashboard/ACLCard'
 import GraphCard from '~components/dashboard/GraphCard'
-import { ProNetworkSelect } from '../../components/prodashboards/ProNetworkSelect'
+import { ProNetworkSelect } from '../../components/prodashboards/NetAdminDashboard/ProNetworkSelect'
 
 export const Dashboard: React.FC = () => {
   const { path } = useRouteMatch()
