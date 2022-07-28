@@ -371,6 +371,7 @@ export interface LanguageResource {
     isegressrelay: string
     isrelayed: string
     ishub: string
+    defaultacl: string
     onehub: string
     createhub: string
     updatenode: string
