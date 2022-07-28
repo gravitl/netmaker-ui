@@ -3,10 +3,10 @@ import React from 'react'
 import { useRouteMatch, Switch, Route } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
-import { ProNetworkSelect } from './NetAdminDashboard/ProNetworkSelect'
-import { ProAccessLvl } from './NetAdminDashboard/ProAccessLevel'
+import { ProNetworkSelect } from './components/ProNetworkSelect'
+import { ProAccessLvl } from './components/ProAccessLevel'
 
-export const ProDashboard: React.FC = () => {
+export const ProUserView: React.FC = () => {
   const { path } = useRouteMatch()
   const { t } = useTranslation()
 
@@ -17,7 +17,7 @@ export const ProDashboard: React.FC = () => {
   return (
     <Container>
       <Switch>
-        <Route exact path={`${path}/accesslvl`}>
+        <Route exact path={`${path}`}>
           <Grid
             container
             direction="row"
@@ -30,7 +30,7 @@ export const ProDashboard: React.FC = () => {
           </Grid>
         </Route>
 
-        <Route path={`${path}/accesslvl/:netid`}>
+        <Route path={`${path}/:netid`}>
           <ProAccessLvl />
         </Route>
       </Switch>

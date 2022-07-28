@@ -24,6 +24,8 @@ export interface LanguageResource {
       networkusers: string
       selectnetwork: string
       welcome: string
+      welcomecard: string
+      networknumber: string
     }
     networkusers: {
       none: string

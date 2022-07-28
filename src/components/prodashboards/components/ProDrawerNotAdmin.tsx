@@ -18,9 +18,6 @@ import Logout from '@mui/icons-material/Logout'
 import Login from '@mui/icons-material/Login'
 import Info from '@mui/icons-material/Info'
 import Dashboard from '@mui/icons-material/Dashboard'
-import UsersIcon from '@mui/icons-material/People'
-import LogsIcon from '@mui/icons-material/Terminal'
-import MetricsIcon from '@mui/icons-material/Insights'
 import LibraryBooks from '@mui/icons-material/LibraryBooks'
 import Person from '@mui/icons-material/Person'
 import { PathBreadcrumbs } from '~components/PathBreadcrumbs'
@@ -34,8 +31,6 @@ import { NmLink } from '~components/Link'
 import { UI_VERSION } from '../../../config'
 import Logo from '../../../netmaker-logo.png'
 import DarkLogo from '../../../netmaker-logo-2.png'
-
-import { ViewList } from '@mui/icons-material'
 import { setUserSettings } from '~store/modules/auth/actions'
 
 const drawerWidth = 240
@@ -194,10 +189,6 @@ export default function ProDrawerNotAdmin() {
   const theme = useTheme()
   const [open, setOpen] = React.useState(false)
   const [clickOpen, setClickOpen] = React.useState(false)
-
-  const location = useLocation()
-  const parts = location.pathname.split('/')
-  const netid = parts.length > 2 ? parts[2] : false
 
   const handleDrawerOpen = () => {
     setOpen(true)

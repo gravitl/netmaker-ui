@@ -11,7 +11,8 @@ import { authSelectors } from '../../../store/selectors'
 
 export const ProNetworkSelect: React.FC<{
   selectAll?: boolean
-}> = ({ selectAll }) => {
+  prepend?: string
+}> = ({ selectAll, prepend }) => {
   const networkNames = useSelector(networkSelectors.getNetworks).map(
     (n) => n.netid
   )
@@ -46,7 +47,7 @@ export const ProNetworkSelect: React.FC<{
               dispatch(clearCurrentMetrics())
               const netIndex = history.location.pathname.indexOf(netid!)
               if (netid === undefined) {
-                history.push(`${history.location.pathname}${selected}`)
+                history.push(`${history.location.pathname}/${selected}`)
               } else if (selectAll && selected === t('common.selectall')) {
                 history.push(history.location.pathname.substr(0, netIndex - 1))
               } else if (netid !== undefined) {
