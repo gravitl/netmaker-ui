@@ -23,7 +23,6 @@ import ProDrawerNotAdmin from '~components/prodashboards/NetAdminDashboard/ProDr
 import { authSelectors } from '~store/types'
 import { useSelector } from 'react-redux'
 import { ProDashboard } from '~components/prodashboards/ProDashboard'
-import { ProNetworkSelect } from '~components/prodashboards/NetAdminDashboard/ProNetworkSelect'
 
 function NoMatch() {
   const location = useLocation()
@@ -68,7 +67,7 @@ function Routes() {
             <Networks />
           </PrivateRoute>
           <PrivateRoute path="/prouser">
-            <ProNetworkSelect />
+            <ProDashboard />
           </PrivateRoute>
           <PrivateRoute path="/nodes">
             <Nodes />

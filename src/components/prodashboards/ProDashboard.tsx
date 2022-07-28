@@ -11,13 +11,13 @@ export const ProDashboard: React.FC = () => {
   const { t } = useTranslation()
 
   useLinkBreadcrumb({
-    title: t('breadcrumbs.proDashboard'),
+    title: t('breadcrumbs.userdashboard'),
   })
 
   return (
     <Container>
       <Switch>
-        <Route exact path={path}>
+        <Route exact path={`${path}/accesslvl`}>
           <Grid
             container
             direction="row"
@@ -25,12 +25,12 @@ export const ProDashboard: React.FC = () => {
             alignItems="center"
           >
             <Grid item xs={8}>
-              <ProNetworkSelect selectAll />
+              <ProNetworkSelect />
             </Grid>
           </Grid>
         </Route>
 
-        <Route path={`${path}:netid`}>
+        <Route path={`${path}/accesslvl/:netid`}>
           <ProAccessLvl />
         </Route>
       </Switch>

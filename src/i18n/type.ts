@@ -108,6 +108,7 @@ export interface LanguageResource {
     createrelay: string
     graphs: string
     acls: string
+    userdashboard: string
   }
   common: {
     disabled: string

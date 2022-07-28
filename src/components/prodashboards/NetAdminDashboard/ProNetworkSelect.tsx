@@ -8,7 +8,6 @@ import { FormControl, Grid, Typography } from '@mui/material'
 import { clearCurrentMetrics } from '~store/modules/server/actions'
 
 import { authSelectors } from '../../../store/selectors'
-import { ProAccessLvl } from './ProAccessLevel'
 
 export const ProNetworkSelect: React.FC<{
   selectAll?: boolean
@@ -47,7 +46,7 @@ export const ProNetworkSelect: React.FC<{
               dispatch(clearCurrentMetrics())
               const netIndex = history.location.pathname.indexOf(netid!)
               if (netid === undefined) {
-                history.push(`${history.location.pathname}/${selected}`)
+                history.push(`${history.location.pathname}${selected}`)
               } else if (selectAll && selected === t('common.selectall')) {
                 history.push(history.location.pathname.substr(0, netIndex - 1))
               } else if (netid !== undefined) {
@@ -59,9 +58,6 @@ export const ProNetworkSelect: React.FC<{
             items={networkNames}
           />
         </FormControl>
-      </Grid>
-      <Grid item xs={12}>
-        <ProAccessLvl />
       </Grid>
     </Grid>
   )

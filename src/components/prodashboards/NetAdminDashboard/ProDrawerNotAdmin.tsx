@@ -285,41 +285,7 @@ export default function ProDrawerNotAdmin() {
             )
           )}
         </List>
-        {isLoggedIn && user!.isAdmin ? (
-          <>
-            <Divider />
-            <List>
-              <ListItemButton
-                component={Link}
-                to={`/acls${!!netid ? `/${netid}` : ''}`}
-              >
-                <ListItemIcon aria-label={String(t('acls.nodes'))}>
-                  <ViewList />
-                </ListItemIcon>
-                <ListItemText primary={t('header.acls')} />
-              </ListItemButton>
-              <ListItemButton component={Link} to="/users">
-                <ListItemIcon aria-label={String(t('users.header'))}>
-                  <UsersIcon />
-                </ListItemIcon>
-                <ListItemText primary={t('users.header')} />
-              </ListItemButton>
-              <ListItemButton component={Link} to="/logs">
-                <ListItemIcon aria-label={String(t('pro.logs'))}>
-                  <LogsIcon />
-                </ListItemIcon>
-                <ListItemText primary={t('pro.logs')} />
-              </ListItemButton>
-              <ListItemButton component={Link} to="/metrics">
-                <ListItemIcon aria-label={String(t('pro.metrics'))}>
-                  <MetricsIcon />
-                </ListItemIcon>
-                <ListItemText primary={t('pro.metrics')} />
-              </ListItemButton>
-            </List>
-            <Divider />
-          </>
-        ) : null}
+
         <List>
           <ListItem>
             <ListItemIcon aria-label={String(t('users.header'))}>

@@ -112,6 +112,7 @@ export const en: LanguageResource = {
     createrelay: 'Create Relay',
     graphs: 'Graphs',
     acls: 'ACLs',
+    userdashboard: 'User Dashboard',
   },
   common: {
     disabled: 'Disabled',
@@ -268,7 +269,7 @@ export const en: LanguageResource = {
     udpholepunching:
       'This can enhance connectivity in cases where NAT may block communication.',
     defaultnatenabled:
-      'Enable NAT\'ing if you wish traffic originating from your wireguard network to be source NAT\'ed to the IP of the egess node',
+      "Enable NAT'ing if you wish traffic originating from your wireguard network to be source NAT'ed to the IP of the egess node",
     islocal: 'Use if server is on same network (LAN) as you',
     ispointtosite:
       'Create a network in which all clients have only one, central peer',

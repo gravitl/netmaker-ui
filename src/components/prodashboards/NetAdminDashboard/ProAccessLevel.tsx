@@ -19,7 +19,7 @@ export const ProAccessLvl: React.FC = () => {
     <Grid container justifyContent="space-around" alignItems="center">
       <Grid item xs={12}>
         <div style={{ textAlign: 'center', margin: '1em 0 1em 0' }}>
-          <Typography variant="h5">{`${data.user.accesslevel}`}</Typography>
+          <Typography variant="h5">{`Your Access Level for this network is: ${data.user.accesslevel}`}</Typography>
         </div>
       </Grid>
     </Grid>
