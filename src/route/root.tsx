@@ -19,6 +19,9 @@ import { ServerLogs } from './logs/ServerLogs'
 import { MetricRoute } from './metrics/MetricRoute'
 import { UserGroups } from './usergroups/UserGroups'
 import { NetworkUsers } from './networkusers/NetworkUsers'
+import ProDrawerNotAdmin from '~components/prodashboards/ProDrawerNotAdmin'
+import { authSelectors } from '~store/types'
+import { useSelector } from 'react-redux'
 
 function NoMatch() {
   const location = useLocation()
@@ -40,12 +43,20 @@ function Routes() {
   // we show the gallery in the background, behind
   // the modal.
   const from = (location.state as any)?.from
+  const user = useSelector(authSelectors.getUser)
 
   return (
     <Grid container justifyContent="right">
       <Grid item xs={12}>
         <CustomDrawer />
       </Grid>
+      {!user?.isAdmin && (
+        <>
+          <Grid item xs={12}>
+            <ProDrawerNotAdmin />
+          </Grid>
+        </>
+      )}
       <Grid item xs={12}>
         <Switch location={from || location}>
           <PrivateRoute exact path="/">

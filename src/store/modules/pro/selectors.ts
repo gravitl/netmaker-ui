@@ -19,3 +19,7 @@ export const networkUserData = createSelector(
   getProState,
   (pro) => pro.networkUserData
 )
+
+export const getNetworkUserNetworks = createSelector(getProState, (pro) =>
+  Object.keys(pro.networkUserData)
+)

@@ -10,3 +10,15 @@ body::-webkit-scrollbar-thumb {
   background-color: darkgrey;
   outline: 1px solid slategrey;
 }
+
+.selected {
+  background-color: transparent;
+}
+
+.selected:hover {
+  background: #139da4;
+}
+
+.MuiInputBase-fromControl {
+  height: 50vh;
+}
