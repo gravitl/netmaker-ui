@@ -10,6 +10,7 @@ import { useNodeById } from '~util/node'
 import { useNodesByNetworkId } from '~util/network'
 import { FormRef, NmForm, NmFormInputText } from '~components/form'
 import RelaySelect from './RelaySelect'
+import { NotFound } from '~util/errorpage'
 
 const styles = {
   centerText: {
@@ -96,7 +97,7 @@ export function CreateRelay() {
   )
 
   if (!node || !nodes) {
-    return <h2>{t('error.notfound')}</h2>
+    return <NotFound />
   }
 
   for (let i = 0; i < nodes.length; i++) {

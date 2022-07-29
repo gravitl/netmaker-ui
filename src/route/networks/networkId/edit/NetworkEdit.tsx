@@ -17,6 +17,7 @@ import { useRouteMatch } from 'react-router'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 import { serverSelectors } from '~store/selectors'
 import { correctIPv4CidrRegex, correctIpv6Regex } from '~util/regex'
+import { NotFound } from '~util/errorpage'
 
 export const NetworkEdit: React.FC<{
   network: Network
@@ -75,11 +76,7 @@ export const NetworkEdit: React.FC<{
   )
 
   if (!!!network) {
-    return (
-      <div style={{ textAlign: 'center', margin: '1em 0 1em 0' }}>
-        <Typography variant="h5">{`${t('error.notfound')}`}</Typography>
-      </div>
-    )
+    return <NotFound />
   }
 
   const centerStyle = {
