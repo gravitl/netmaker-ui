@@ -14,34 +14,24 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
 import ListItem from '@mui/material/ListItem'
-import Wifi from '@mui/icons-material/Wifi'
-import DeviceHub from '@mui/icons-material/DeviceHub'
-import Devices from '@mui/icons-material/Devices'
-import Language from '@mui/icons-material/Language'
 import Logout from '@mui/icons-material/Logout'
 import Login from '@mui/icons-material/Login'
 import Info from '@mui/icons-material/Info'
 import Dashboard from '@mui/icons-material/Dashboard'
-import UsersIcon from '@mui/icons-material/People'
-import LogsIcon from '@mui/icons-material/Terminal'
-import MetricsIcon from '@mui/icons-material/Insights'
 import LibraryBooks from '@mui/icons-material/LibraryBooks'
 import Person from '@mui/icons-material/Person'
-import VpnKey from '@mui/icons-material/VpnKey'
 import { PathBreadcrumbs } from '~components/PathBreadcrumbs'
 import { useTranslation } from 'react-i18next'
 import { ListItemButton, Switch } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useRouteMatch, Link } from 'react-router-dom'
-import { authSelectors, serverSelectors } from '../../store/selectors'
-import { logout } from '../../store/modules/auth/actions'
-import { NmLink } from '../Link'
-import { UI_VERSION } from '../../config'
-import Logo from '../../netmaker-logo.png'
-import DarkLogo from '../../netmaker-logo-2.png'
-
-import { AccountTree, ViewList } from '@mui/icons-material'
-import { setUserSettings } from '../../store/modules/auth/actions'
+import { authSelectors, serverSelectors } from '~store/types'
+import { logout } from '~store/modules/auth/actions'
+import { NmLink } from '~components/Link'
+import { UI_VERSION } from '../../../config'
+import Logo from '../../../netmaker-logo.png'
+import DarkLogo from '../../../netmaker-logo-2.png'
+import { setUserSettings } from '~store/modules/auth/actions'
 
 const drawerWidth = 240
 
@@ -200,10 +190,6 @@ export default function ProDrawerNotAdmin() {
   const [open, setOpen] = React.useState(false)
   const [clickOpen, setClickOpen] = React.useState(false)
 
-  const location = useLocation()
-  const parts = location.pathname.split('/')
-  const netid = parts.length > 2 ? parts[2] : false
-
   const handleDrawerOpen = () => {
     setOpen(true)
   }
@@ -290,41 +276,7 @@ export default function ProDrawerNotAdmin() {
             )
           )}
         </List>
-        {isLoggedIn && user!.isAdmin ? (
-          <>
-            <Divider />
-            <List>
-              <ListItemButton
-                component={Link}
-                to={`/acls${!!netid ? `/${netid}` : ''}`}
-              >
-                <ListItemIcon aria-label={String(t('acls.nodes'))}>
-                  <ViewList />
-                </ListItemIcon>
-                <ListItemText primary={t('header.acls')} />
-              </ListItemButton>
-              <ListItemButton component={Link} to="/users">
-                <ListItemIcon aria-label={String(t('users.header'))}>
-                  <UsersIcon />
-                </ListItemIcon>
-                <ListItemText primary={t('users.header')} />
-              </ListItemButton>
-              <ListItemButton component={Link} to="/logs">
-                <ListItemIcon aria-label={String(t('pro.logs'))}>
-                  <LogsIcon />
-                </ListItemIcon>
-                <ListItemText primary={t('pro.logs')} />
-              </ListItemButton>
-              <ListItemButton component={Link} to="/metrics">
-                <ListItemIcon aria-label={String(t('pro.metrics'))}>
-                  <MetricsIcon />
-                </ListItemIcon>
-                <ListItemText primary={t('pro.metrics')} />
-              </ListItemButton>
-            </List>
-            <Divider />
-          </>
-        ) : null}
+
         <List>
           <ListItem>
             <ListItemIcon aria-label={String(t('users.header'))}>

@@ -11,18 +11,14 @@ import DNSCard from '~components/dashboard/DNSCard'
 import UserCard from '~components/dashboard/UserCard'
 import AdminCard from '~components/dashboard/AdminCard'
 import { useSelector } from 'react-redux'
-import { authSelectors, proSelectors } from '~store/types'
+import { authSelectors } from '~store/types'
 import ACLCard from '~components/dashboard/ACLCard'
 import GraphCard from '~components/dashboard/GraphCard'
-import { ProNetworkSelect } from '../../components/prodashboards/ProNetworkSelect'
 
 export const Dashboard: React.FC = () => {
   const { path } = useRouteMatch()
   const { t } = useTranslation()
   const user = useSelector(authSelectors.getUser)
-  const networks = useSelector(proSelectors.getNetworkUserNetworks)
-
-  console.log('testing', networks)
 
   useLinkBreadcrumb({
     title: t('breadcrumbs.dashboard'),
@@ -38,13 +34,6 @@ export const Dashboard: React.FC = () => {
             justifyContent="space-evenly"
             alignItems="center"
           >
-            {!user?.isAdmin && (
-              <>
-                <Grid item xs={12} sm={6} md={3.75}>
-                  <ProNetworkSelect selectAll />
-                </Grid>
-              </>
-            )}
             {user?.isAdmin && (
               <>
                 <Grid item xs={12} sm={6} md={3.75}>

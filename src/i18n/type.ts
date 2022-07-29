@@ -24,6 +24,8 @@ export interface LanguageResource {
       networkusers: string
       selectnetwork: string
       welcome: string
+      welcomecard: string
+      networknumber: string
     }
     networkusers: {
       none: string
@@ -108,6 +110,7 @@ export interface LanguageResource {
     createrelay: string
     graphs: string
     acls: string
+    userdashboard: string
   }
   common: {
     disabled: string
