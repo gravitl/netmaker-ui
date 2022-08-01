@@ -135,7 +135,6 @@ export const en: LanguageResource = {
     network: 'Could not reach server',
     tokenexpire: 'Session has expired',
     unauthorized: 'Unauthorized access attempted',
-    error: '404 Error',
   },
   extclient: {
     extclients: 'External Clients',
