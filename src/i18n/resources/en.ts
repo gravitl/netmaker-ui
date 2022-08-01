@@ -130,7 +130,8 @@ export const en: LanguageResource = {
     nodeaddress: 'Node Address',
   },
   error: {
-    notfound: 'Not found',
+    notfound:
+      'Looks like you have lost your way, Netmaker has a route for that!',
     network: 'Could not reach server',
     tokenexpire: 'Session has expired',
     unauthorized: 'Unauthorized access attempted',
@@ -212,7 +213,7 @@ export const en: LanguageResource = {
     udpholepunching:
       'This can enhance connectivity in cases where NAT may block communication.',
     defaultnatenabled:
-      'Enable NAT\'ing if you wish traffic originating from your wireguard network to be source NAT\'ed to the IP of the egess node',
+      "Enable NAT'ing if you wish traffic originating from your wireguard network to be source NAT'ed to the IP of the egess node",
     islocal: 'Use if server is on same network (LAN) as you',
     ispointtosite:
       'Create a network in which all clients have only one, central peer',

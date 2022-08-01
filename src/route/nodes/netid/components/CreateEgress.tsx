@@ -17,10 +17,16 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { createEgressNode } from '~modules/node/actions'
 import { useNodeById } from '~util/node'
-import { NmForm, NmFormInputText, validate, NmFormInputSwitch} from '~components/form'
+import {
+  NmForm,
+  NmFormInputText,
+  validate,
+  NmFormInputSwitch,
+} from '~components/form'
 import { correctIPv4CidrRegex, correctIpv6Regex } from '~util/regex'
 import { convertStringToArray } from '~util/fields'
 import { makeStyles, createStyles } from '@mui/styles'
+import { NotFound } from '~util/errorpage'
 
 const styles = {
   centerText: {
@@ -128,7 +134,7 @@ export function CreateEgress() {
           payload: {
             ranges: newRanges,
             interface: data.iface,
-            natEnabled: data.natEnabled ? "yes" : "no" 
+            natEnabled: data.natEnabled ? 'yes' : 'no',
           },
         })
       )
@@ -165,7 +171,7 @@ export function CreateEgress() {
   )
 
   if (!node) {
-    return <h2>{t('error.notfound')}</h2>
+    return <NotFound />
   }
 
   return (
@@ -231,27 +237,27 @@ export function CreateEgress() {
               </FormControl>
             </Grid>
             <Grid
-            item
-            xs={12}
-            sm={10}
-            md={10}
-            className={classes.center + ' ' + classes.rowMargin}
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
+              item
+              xs={12}
+              sm={10}
+              md={10}
+              className={classes.center + ' ' + classes.rowMargin}
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
             >
               <Tooltip
-                  title={t('helper.defaultnatenabled') as string}
-                  placement="top"
-                >
-                  <div>
-                    <NmFormInputSwitch
-                      name={'natEnabled'}
-                      label={String(t('network.defaultnatenabled'))}
-                    />
-                  </div>
+                title={t('helper.defaultnatenabled') as string}
+                placement="top"
+              >
+                <div>
+                  <NmFormInputSwitch
+                    name={'natEnabled'}
+                    label={String(t('network.defaultnatenabled'))}
+                  />
+                </div>
               </Tooltip>
             </Grid>
           </Grid>
