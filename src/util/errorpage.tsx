@@ -5,7 +5,7 @@ import Logo from '../netmaker-logo.png'
 import DarkLogo from '../netmaker-logo-2.png'
 import { useSelector } from 'react-redux'
 import { authSelectors } from '~store/selectors'
-import WifiOffIcon from '@mui/icons-material/WifiOff'
+import WarningIcon from '@mui/icons-material/Warning'
 
 export const NotFound: React.FC = () => {
   const { t } = useTranslation()
@@ -28,7 +28,7 @@ export const NotFound: React.FC = () => {
   return (
     <Grid container justifyContent="center" alignItems="center">
       <Grid item xs={10} sx={{ marginTop: '1em' }}>
-        <WifiOffIcon style={{ fontSize: '2em' }} />
+        <WarningIcon style={{ fontSize: '2em' }} />
       </Grid>
       <Grid item xs={10}>
         <div
