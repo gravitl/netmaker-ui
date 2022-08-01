@@ -144,7 +144,6 @@ export const en: LanguageResource = {
     viewing: 'Viewing Ext Client',
     none: 'No Ext Clients Found',
     name: 'Name',
-
     deleteconfirm: 'Are you sure you want to delete this Ext. Client?',
     changeconfirm:
       'Are you sure you want to change access for this Ext. Client?',
