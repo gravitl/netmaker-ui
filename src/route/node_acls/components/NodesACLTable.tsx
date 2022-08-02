@@ -10,7 +10,6 @@ import {
   Grid,
   IconButton,
   InputAdornment,
-  LinearProgress,
   TextField,
   Tooltip,
   Typography,
