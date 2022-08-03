@@ -238,11 +238,7 @@ export const NodesACLTable: React.FC<{}> = () => {
             editableNetworkACL[currentNodeACLs[i]][currentAclIDs[j]]
         }
         if (currentNodeACLs[i] === currentAclIDs[j]) continue // skip adding self to lists
-        if (
-          !!!nodeid ||
-          (!!nodeid &&
-            (nodeid === currentAclIDs[j] || nodeid === currentAclIDs[i]))
-        )
+        if (!!!nodeid || (!!nodeid && nodeid === currentAclIDs[j]))
           newACLs[currentNodeACLs[i]][currentAclIDs[j]] = choice // affect connection
       }
     }
