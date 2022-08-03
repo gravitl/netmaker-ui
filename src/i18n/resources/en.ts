@@ -115,6 +115,7 @@ export const en: LanguageResource = {
     graphs: 'Graphs',
     acls: 'ACLs',
     userdashboard: 'User Dashboard',
+    netadmindashboard: 'Netadmin Dashboard',
   },
   common: {
     disabled: 'Disabled',

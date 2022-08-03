@@ -111,6 +111,7 @@ export interface LanguageResource {
     graphs: string
     acls: string
     userdashboard: string
+    netadmindashboard: string
   }
   common: {
     disabled: string
