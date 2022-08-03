@@ -52,6 +52,7 @@ export const NetworkNodes: React.FC = () => {
   const { t } = useTranslation()
   const { netid } = useParams<{ netid: string }>()
   const network = useNetwork(netid)
+  //eslint-disable-next-line
   const listOfNodes = useNodesByNetworkId(netid) || []
   const nodeSort = useSelector(nodeSelectors.getNodeSort)
   const [filterNodes, setFilterNodes] = React.useState(listOfNodes)
