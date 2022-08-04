@@ -30,23 +30,19 @@ export const NetAdminDashboard: React.FC = () => {
             justifyContent="space-evenly"
             alignItems="center"
           >
-            {user?.isAdmin && (
-              <>
-                <Grid item xs={12} sm={6} md={3.75}>
-                  <NetworkCard />
-                </Grid>
-                <Grid item xs={12} sm={6} md={3.75}>
-                  <NodeCard />
-                </Grid>
+            <Grid item xs={12} sm={6} md={3.75}>
+              <NetworkCard />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3.75}>
+              <NodeCard />
+            </Grid>
 
-                <Grid item xs={12} sm={6} md={3.75}>
-                  <AccessKeysCard />
-                </Grid>
-                <Grid item xs={12} sm={6} md={3.75}>
-                  <ExtClientsCard />
-                </Grid>
-              </>
-            )}
+            <Grid item xs={12} sm={6} md={3.75}>
+              <AccessKeysCard />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3.75}>
+              <ExtClientsCard />
+            </Grid>
           </Grid>
         </Route>
       </Switch>

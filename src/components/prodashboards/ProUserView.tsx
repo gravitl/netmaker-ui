@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 import { ProNetworkSelect } from './components/ProNetworkSelect'
 import { ProAccessLvl } from './components/ProAccessLevel'
+import { NetAdminDashboard } from './components/NetAdminDashboard'
 
 export const ProUserView: React.FC = () => {
   const { path } = useRouteMatch()
@@ -32,6 +33,9 @@ export const ProUserView: React.FC = () => {
 
         <Route path={`${path}/:netid`}>
           <ProAccessLvl />
+        </Route>
+        <Route path={`${path}/:netid/:accesslvl`}>
+          <NetAdminDashboard />
         </Route>
       </Switch>
     </Container>
