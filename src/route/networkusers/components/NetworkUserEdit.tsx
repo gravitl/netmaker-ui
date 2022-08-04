@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import { Grid, Modal, Typography, Box } from '@mui/material'
+import { Grid, Modal, Typography, Box, Tooltip } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useHistory, useRouteMatch, useParams } from 'react-router'
@@ -20,7 +20,9 @@ export const NetworkUserEdit: React.FC<{}> = () => {
   const currentUsers = useSelector(proSelectors.networkUsers)
   let currentClient = undefined as NetworkUser | undefined
   if (!!currentUsers && !!currentUsers[netid]) {
-    currentClient = currentUsers[netid].filter(user => user.id === clientid)[0]
+    currentClient = currentUsers[netid].filter(
+      (user) => user.id === clientid
+    )[0]
   }
   const inDarkMode = useSelector(authSelectors.isInDarkMode)
 
@@ -30,7 +32,7 @@ export const NetworkUserEdit: React.FC<{}> = () => {
   })
 
   useLinkBreadcrumb({
-    link: url.split('/'+clientid)[0],
+    link: url.split('/' + clientid)[0],
     title: netid,
   })
 
@@ -42,16 +44,16 @@ export const NetworkUserEdit: React.FC<{}> = () => {
     (data: NetworkUser) => {
       if (!!currentClient) {
         let newClient = {
-            ...data,
-            accesslevel: Number(data.accesslevel),
-            nodelimit: Number(data.nodelimit),
-            clientlimit: Number(data.clientlimit)
+          ...data,
+          accesslevel: Number(data.accesslevel),
+          nodelimit: Number(data.nodelimit),
+          clientlimit: Number(data.clientlimit),
         }
 
         dispatch(
           updateNetworkUser.request({
             networkName: netid,
-            networkUser: {...newClient},
+            networkUser: { ...newClient },
           })
         )
         history.push(`/networkusers/${netid}`)
@@ -66,14 +68,14 @@ export const NetworkUserEdit: React.FC<{}> = () => {
 
   if (!!!currentClient) {
     return (
-        <div style={{ textAlign: 'center', margin: '1em 0 1em 0' }}>
-          <Typography variant="h5">{`${t('error.notfound')}`}</Typography>
-        </div>
-      )
+      <div style={{ textAlign: 'center', margin: '1em 0 1em 0' }}>
+        <Typography variant="h5">{`${t('error.notfound')}`}</Typography>
+      </div>
+    )
   }
 
   const initialState: NetworkUser = {
-    ...currentClient
+    ...currentClient,
   }
 
   const boxStyle = {
@@ -126,9 +128,13 @@ export const NetworkUserEdit: React.FC<{}> = () => {
                 type: 'submit',
               }}
             >
-            <Grid container justifyContent={'space-evenly'} alignItems='center'>
-            <Grid item xs={9}>
-                <NmFormInputText
+              <Grid
+                container
+                justifyContent={'space-evenly'}
+                alignItems="center"
+              >
+                <Grid item xs={9}>
+                  <NmFormInputText
                     name="id"
                     defaultValue={clientid}
                     label={String(t('node.id'))}
@@ -138,61 +144,76 @@ export const NetworkUserEdit: React.FC<{}> = () => {
                     fullWidth
                     autoComplete="false"
                     disabled
-                />
-            </Grid>
-            <Grid item xs={4} md={3.1}>
-                <NmFormInputText
-                    defaultValue={currentClient.accesslevel}
-                    name='accesslevel'
-                    label={String(t('pro.networkusers.accesslevel'))}
-                    type="number"
-                    autoFocus
-                />
-            </Grid>
-            <Grid item sm={4} md={3.1}>
-                <NmFormInputText
-                    defaultValue={currentClient.nodelimit}
-                    name='nodelimit'
-                    label={String(t('pro.networkusers.nodelimit'))}
-                    type="number"
-                />
-            </Grid>
-            <Grid item sm={4} md={3.1}>
-                <NmFormInputText
-                    defaultValue={currentClient.clientlimit}
-                    name='clientlimit'
-                    label={String(t('pro.networkusers.clientlimit'))}
-                    type="number"
-                />
-            </Grid>
-            <Grid item xs={11} sm={10} md={9}>
-                <Grid
+                  />
+                </Grid>
+                <Grid item xs={4} md={3.1}>
+                  <Tooltip
+                    title={t('pro.helpers.accesslevel') as string}
+                    placement="top"
+                  >
+                    <NmFormInputText
+                      defaultValue={currentClient.accesslevel}
+                      name="accesslevel"
+                      label={String(t('pro.networkusers.accesslevel'))}
+                      type="number"
+                      autoFocus
+                    />
+                  </Tooltip>
+                </Grid>
+                <Grid item sm={4} md={3.1}>
+                  <Tooltip
+                    title={t('pro.helpers.usernodelimit') as string}
+                    placement="top"
+                  >
+                    <NmFormInputText
+                      defaultValue={currentClient.nodelimit}
+                      name="nodelimit"
+                      label={String(t('pro.networkusers.nodelimit'))}
+                      type="number"
+                    />
+                  </Tooltip>
+                </Grid>
+                <Grid item sm={4} md={3.1}>
+                  <Tooltip
+                    title={t('pro.helpers.userclientlimit') as string}
+                    placement="top"
+                  >
+                    <NmFormInputText
+                      defaultValue={currentClient.clientlimit}
+                      name="clientlimit"
+                      label={String(t('pro.networkusers.clientlimit'))}
+                      type="number"
+                    />
+                  </Tooltip>
+                </Grid>
+                <Grid item xs={11} sm={10} md={9}>
+                  <Grid
                     container
                     justifyContent={'space-evenly'}
-                    alignItems='center'
-                    sx={{marginTop: '1rem'}}
-                >
-                    <Grid item xs={12} md={8} style={{textAlign: 'center'}}>
-                    <NmFormInputText
-                    fullWidth
-                    name='groups'
-                    label={String(t('pro.networkusers.groups'))}
-                    disabled
-                    />
+                    alignItems="center"
+                    sx={{ marginTop: '1rem' }}
+                  >
+                    <Grid item xs={12} md={8} style={{ textAlign: 'center' }}>
+                      <NmFormInputText
+                        fullWidth
+                        name="groups"
+                        label={String(t('pro.networkusers.groups'))}
+                        disabled
+                      />
                     </Grid>
-                    <Grid item xs={8} md={3.75} style={{textAlign: 'center'}}>
-                    <NmLink
-                        variant='outlined'
+                    <Grid item xs={8} md={3.75} style={{ textAlign: 'center' }}>
+                      <NmLink
+                        variant="outlined"
                         fullWidth
                         sx={{ textTransform: 'none' }}
                         to={`/networkusers/${netid}/${clientid}/groups`}
-                    >
+                      >
                         {`${t('common.edit')} ${t('pro.networkusers.groups')}`}
-                    </NmLink> 
+                      </NmLink>
                     </Grid>
+                  </Grid>
                 </Grid>
-            </Grid>
-            </Grid>
+              </Grid>
             </NmForm>
           </Grid>
         </Grid>
