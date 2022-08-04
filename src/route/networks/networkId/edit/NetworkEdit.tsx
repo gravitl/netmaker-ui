@@ -261,25 +261,40 @@ export const NetworkEdit: React.FC<{
         </Tooltip>
         <Grid item xs={12} style={{ marginTop: '1rem' }}></Grid>
         <Grid item xs={12} sm={4} md={3.1}>
-          <NmFormInputText
-            name="prosettings.defaultaccesslevel"
-            label={String(t('pro.network.defaultaccesslevel'))}
-            type="number"
-          />
+          <Tooltip
+            title={t('pro.helpers.accesslevel') as string}
+            placement="top"
+          >
+            <NmFormInputText
+              name="prosettings.defaultaccesslevel"
+              label={String(t('pro.network.defaultaccesslevel'))}
+              type="number"
+            />
+          </Tooltip>
         </Grid>
         <Grid item xs={12} sm={4} md={3.1}>
-          <NmFormInputText
-            name="prosettings.defaultusernodelimit"
-            label={String(t('pro.network.defaultusernodelimit'))}
-            type="number"
-          />
+          <Tooltip
+            title={t('pro.helpers.usernodelimit') as string}
+            placement="top"
+          >
+            <NmFormInputText
+              name="prosettings.defaultusernodelimit"
+              label={String(t('pro.network.defaultusernodelimit'))}
+              type="number"
+            />
+          </Tooltip>
         </Grid>
         <Grid item xs={12} sm={4} md={3.1}>
-          <NmFormInputText
-            name="prosettings.defaultuserclientlimit"
-            label={String(t('pro.network.defaultuserclientlimit'))}
-            type="number"
-          />
+          <Tooltip
+            title={t('pro.helpers.userclientlimit') as string}
+            placement="top"
+          >
+            <NmFormInputText
+              name="prosettings.defaultuserclientlimit"
+              label={String(t('pro.network.defaultuserclientlimit'))}
+              type="number"
+            />
+          </Tooltip>
         </Grid>
         <Grid item xs={12} style={{ marginTop: '1rem' }}></Grid>
         <Grid item xs={6} sm={5.75} md={5.5}>
