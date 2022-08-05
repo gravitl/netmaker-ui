@@ -8,13 +8,9 @@ import NodeCard from '~components/dashboard/NodeCard'
 import ExtClientsCard from '~components/dashboard/ExtClientsCard'
 import AccessKeysCard from '~components/dashboard/AccessKeyCard'
 
-import { useSelector } from 'react-redux'
-import { authSelectors } from '~store/types'
-
 export const NetAdminDashboard: React.FC = () => {
   const { path } = useRouteMatch()
   const { t } = useTranslation()
-  const user = useSelector(authSelectors.getUser)
 
   useLinkBreadcrumb({
     title: t('breadcrumbs.netadmindashboard'),
@@ -30,17 +26,17 @@ export const NetAdminDashboard: React.FC = () => {
             justifyContent="space-evenly"
             alignItems="center"
           >
-            <Grid item xs={12} sm={6} md={3.75}>
+            <Grid item xs={12} sm={6} md={5}>
               <NetworkCard />
             </Grid>
-            <Grid item xs={12} sm={6} md={3.75}>
+            <Grid item xs={12} sm={6} md={5}>
               <NodeCard />
             </Grid>
 
-            <Grid item xs={12} sm={6} md={3.75}>
+            <Grid item xs={12} sm={6} md={5}>
               <AccessKeysCard />
             </Grid>
-            <Grid item xs={12} sm={6} md={3.75}>
+            <Grid item xs={12} sm={6} md={5}>
               <ExtClientsCard />
             </Grid>
           </Grid>

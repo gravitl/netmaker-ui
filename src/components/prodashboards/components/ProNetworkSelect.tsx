@@ -8,7 +8,6 @@ import { FormControl, Grid, Typography } from '@mui/material'
 import { clearCurrentMetrics } from '~store/modules/server/actions'
 
 import { authSelectors } from '../../../store/selectors'
-import { NetAdminDashboard } from './NetAdminDashboard'
 
 export const ProNetworkSelect: React.FC<{
   selectAll?: boolean
@@ -60,9 +59,6 @@ export const ProNetworkSelect: React.FC<{
             items={networkNames}
           />
         </FormControl>
-      </Grid>
-      <Grid item xs={12}>
-        <NetAdminDashboard />
       </Grid>
     </Grid>
   )
