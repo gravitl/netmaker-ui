@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
-import { networkSelectors } from '../../../store/selectors'
+import { proSelectors } from '../../../store/selectors'
 import { useTranslation } from 'react-i18next'
 import ProCustomSelect from '~components/select/ProCustomSelect'
 import { FormControl, Grid, Typography } from '@mui/material'
@@ -13,9 +13,7 @@ export const ProNetworkSelect: React.FC<{
   selectAll?: boolean
   prepend?: string
 }> = ({ selectAll, prepend }) => {
-  const networkNames = useSelector(networkSelectors.getNetworks).map(
-    (n) => n.netid
-  )
+  const networkNames = useSelector(proSelectors.getNetworkUserNetworks)
   const { t } = useTranslation()
   const history = useHistory()
   const { netid } = useParams<{ netid?: string }>()
