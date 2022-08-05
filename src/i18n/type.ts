@@ -43,6 +43,8 @@ export interface LanguageResource {
       defaultuserclientlimit: string
       allowedusers: string
       allowedgroups: string
+      networkedit: string
+      managenetwork: string
     }
     helpers: {
       accesslevel: string

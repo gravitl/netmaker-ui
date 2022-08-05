@@ -45,6 +45,8 @@ export const en: LanguageResource = {
       defaultuserclientlimit: 'Default User Client Limit',
       allowedusers: 'Allowed Users',
       allowedgroups: 'Allowed Groups',
+      networkedit: 'Edit Network',
+      managenetwork: 'Manage your network',
     },
     helpers: {
       accesslevel:
