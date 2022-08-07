@@ -6,6 +6,7 @@ import { useHistory, useRouteMatch, useParams } from 'react-router'
 import { nodeSelectors } from '~store/types'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 import { clearQr } from '~store/modules/node/actions'
+import { NotFound } from '~util/errorpage'
 
 export const QrCodeView: React.FC<{}> = () => {
   const history = useHistory()
@@ -31,11 +32,7 @@ export const QrCodeView: React.FC<{}> = () => {
   }
 
   if (!qrCode) {
-    return (
-      <div>
-        <Typography variant="h5">{t('error.notfound')}</Typography>
-      </div>
-    )
+    return <NotFound />
   }
 
   const boxStyle = {

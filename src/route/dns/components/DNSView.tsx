@@ -15,6 +15,7 @@ import { deleteDnsEntry } from '~store/modules/network/actions'
 import { Delete } from '@mui/icons-material'
 import CustomizedDialogs from '~components/dialog/CustomDialog'
 import CopyText from '~components/CopyText'
+import { NotFound } from '~util/errorpage'
 
 const columns: TableColumns<Node> = [
   {
@@ -83,7 +84,7 @@ export const DNSView: React.FC = () => {
   })
 
   if (!nodes) {
-    return <div>{t('error.notfound')}</div>
+    return <NotFound />
   }
 
   if (!nodes.length) {

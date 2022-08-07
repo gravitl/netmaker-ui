@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import { Modal, Box, Grid, Typography, useTheme, } from '@mui/material'
+import { Modal, Box, Grid, Typography, useTheme } from '@mui/material'
 import { useHistory } from 'react-router-dom'
 import { useRouteMatch, useParams } from 'react-router-dom'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
@@ -10,6 +10,7 @@ import { useNodeById } from '~util/node'
 import { useNodesByNetworkId } from '~util/network'
 import { FormRef, NmForm, NmFormInputText } from '~components/form'
 import RelaySelect from './RelaySelect'
+import { NotFound } from '~util/errorpage'
 
 const styles = {
   centerText: {
@@ -55,8 +56,7 @@ export function CreateRelay() {
   const history = useHistory()
   const theme = useTheme()
   const { t } = useTranslation()
-  const { netid, nodeId } =
-    useParams<{ netid: string; nodeId: string }>()
+  const { netid, nodeId } = useParams<{ netid: string; nodeId: string }>()
   const { url } = useRouteMatch()
   const node = useNodeById(nodeId)
   const dispatch = useDispatch()
@@ -97,12 +97,17 @@ export function CreateRelay() {
   )
 
   if (!node || !nodes) {
-    return <h2>{t('error.notfound')}</h2>
+    return <NotFound />
   }
 
   for (let i = 0; i < nodes.length; i++) {
     if (!!nodes && !!nodes.length) {
-      const data = { name: nodes[i].name, address: nodes[i].address, isserver: nodes[i].isserver, address6: nodes[i].address6 }
+      const data = {
+        name: nodes[i].name,
+        address: nodes[i].address,
+        isserver: nodes[i].isserver,
+        address6: nodes[i].address6,
+      }
       if (nodes[i].id !== node.id) {
         nodeNames.push(data)
       }
@@ -126,7 +131,12 @@ export function CreateRelay() {
         history.goBack()
       }}
     >
-      <Box style={{...styles.modal, backgroundColor: theme.palette.background.paper}}>
+      <Box
+        style={{
+          ...styles.modal,
+          backgroundColor: theme.palette.background.paper,
+        }}
+      >
         <NmForm
           initialState={initialState}
           onSubmit={onSubmit}

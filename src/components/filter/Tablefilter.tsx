@@ -1,4 +1,4 @@
-import { ArrowDownward, ArrowUpward, } from '@mui/icons-material'
+import { ArrowDownward, ArrowUpward } from '@mui/icons-material'
 import {
   FormControl,
   InputLabel,
@@ -28,15 +28,32 @@ export function Tablefilter(props: TablefilterProps) {
       <Grid item xs={9.25}>
         <FormControl fullWidth>
           <InputLabel>{t('common.sortby')}</InputLabel>
-          <Select defaultValue={currentValue} onChange={(event: SelectChangeEvent) => { onSelect(event.target.value) }} >
-            {!!values.length && values.map(val => <MenuItem value={val}>{val}</MenuItem>)}
+          <Select
+            label={t('common.sortby')}
+            defaultValue={currentValue}
+            onChange={(event: SelectChangeEvent) => {
+              onSelect(event.target.value)
+            }}
+          >
+            {!!values.length &&
+              values.map((val) => <MenuItem value={val}>{val}</MenuItem>)}
           </Select>
         </FormControl>
       </Grid>
       <Grid item xs={2.5}>
-        <Tooltip title={ !ascending ? String(t('common.ascend')) : String(t('common.descend'))}>
+        <Tooltip
+          title={
+            !ascending
+              ? String(t('common.ascend'))
+              : String(t('common.descend'))
+          }
+        >
           <IconButton onClick={onAscendClick}>
-            { ascending ? <ArrowUpward color='primary' /> : <ArrowDownward color='primary' /> }
+            {ascending ? (
+              <ArrowUpward color="primary" />
+            ) : (
+              <ArrowDownward color="primary" />
+            )}
           </IconButton>
         </Tooltip>
       </Grid>

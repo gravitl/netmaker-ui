@@ -45,18 +45,39 @@ import { HubButton } from './components/HubButton'
 import { MultiCopy } from '~components/CopyText'
 import { nodeSelectors } from '~store/selectors'
 import { Tablefilter } from '~components/filter/Tablefilter'
+import { useEffect, useState } from 'react'
 
 export const NetworkNodes: React.FC = () => {
   const { path, url } = useRouteMatch()
   const { t } = useTranslation()
   const { netid } = useParams<{ netid: string }>()
   const network = useNetwork(netid)
+  //eslint-disable-next-line
   const listOfNodes = useNodesByNetworkId(netid) || []
   const nodeSort = useSelector(nodeSelectors.getNodeSort)
   const [filterNodes, setFilterNodes] = React.useState(listOfNodes)
   const [selected, setSelected] = React.useState({} as Node)
   const dispatch = useDispatch()
   const history = useHistory()
+  const [searchTerm, setSearchTerm] = useState(' ')
+
+  useEffect(() => {
+    if (!!!searchTerm) {
+      setFilterNodes(listOfNodes)
+    } else {
+      setFilterNodes(
+        listOfNodes.filter((node) =>
+          `${node.name}${node.address}${node.network}`.includes(searchTerm)
+        )
+      )
+    }
+  }, [listOfNodes, searchTerm])
+
+  const handleFilter = (event: { target: { value: string } }) => {
+    const { value } = event.target
+    const searchTerm = value.trim()
+    setSearchTerm(searchTerm)
+  }
 
   useLinkBreadcrumb({
     link: url,
@@ -217,20 +238,6 @@ export const NetworkNodes: React.FC = () => {
         />
       ),
     })
-  }
-
-  const handleFilter = (event: { target: { value: string } }) => {
-    const { value } = event.target
-    const searchTerm = value.trim()
-    if (!!!searchTerm) {
-      setFilterNodes(listOfNodes)
-    } else {
-      setFilterNodes(
-        listOfNodes.filter((node) =>
-          `${node.name}${node.address}${node.network}`.includes(searchTerm)
-        )
-      )
-    }
   }
 
   const handleClose = () => {

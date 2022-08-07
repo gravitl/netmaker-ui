@@ -10,7 +10,6 @@ import {
   Grid,
   IconButton,
   InputAdornment,
-  LinearProgress,
   TextField,
   Tooltip,
   Typography,
@@ -39,6 +38,7 @@ import TableRow from '@mui/material/TableRow'
 import Paper from '@mui/material/Paper'
 import { NodeACL, NodeACLContainer } from '~store/types'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
+import Loading from '~components/Loading'
 
 const BLOCKED = 1
 const ALLOWED = 2
@@ -140,26 +140,7 @@ export const NodesACLTable: React.FC<{}> = () => {
       </Grid>
     )
   } else if (isProcessing || (!isProcessing && !!!currentNodeACLs.length)) {
-    return (
-      <Grid container justifyContent="center" alignItems="center">
-        <Grid item xs={12}>
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <Typography variant="h4">
-              {`${t('common.loading')} ${t('header.acls')}, ${t('node.none')}`}
-            </Typography>
-          </div>
-        </Grid>
-        <Grid item xs={10} sx={{ marginTop: '3em' }}>
-          <LinearProgress />
-        </Grid>
-      </Grid>
-    )
+    return <Loading />
   }
 
   listOfNodes.map((node) => nodeNameMap.set(node.id, node.name))
@@ -257,11 +238,7 @@ export const NodesACLTable: React.FC<{}> = () => {
             editableNetworkACL[currentNodeACLs[i]][currentAclIDs[j]]
         }
         if (currentNodeACLs[i] === currentAclIDs[j]) continue // skip adding self to lists
-        if (
-          !!!nodeid ||
-          (!!nodeid &&
-            (nodeid === currentAclIDs[j] || nodeid === currentAclIDs[i]))
-        )
+        if (!!!nodeid || (!!nodeid && nodeid === currentAclIDs[j]))
           newACLs[currentNodeACLs[i]][currentAclIDs[j]] = choice // affect connection
       }
     }
@@ -336,7 +313,7 @@ export const NodesACLTable: React.FC<{}> = () => {
               onChange={handleFilter}
             />
           </Grid>
-          <Grid item xs={8} md={3} style={{paddingBottom:'1rem'}} >
+          <Grid item xs={8} md={3} style={{ paddingBottom: '1rem' }}>
             <NetworkSelect />
           </Grid>
           <Grid item xs={8} md={2}>
@@ -396,7 +373,7 @@ export const NodesACLTable: React.FC<{}> = () => {
           <TableContainer sx={{ maxHeight: 600, display: 'flex' }}>
             <Table
               stickyHeader
-              sx={{ minWidth: '75vw', width: '100%'}}
+              sx={{ minWidth: '75vw', width: '100%' }}
               size="small"
               aria-label="acl-table"
             >

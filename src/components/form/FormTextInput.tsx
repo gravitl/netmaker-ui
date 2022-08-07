@@ -26,11 +26,15 @@ export const NmFormInputText: React.FC<
           value={value}
           error={!!error}
           helperText={error?.message}
-          inputProps={rightAlign ? {
-            style: {
-              textAlign: "right"
-            }
-          }: {}}
+          inputProps={
+            rightAlign
+              ? {
+                  style: {
+                    textAlign: 'right',
+                  },
+                }
+              : {}
+          }
         />
       )}
     />

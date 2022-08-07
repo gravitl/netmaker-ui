@@ -130,7 +130,8 @@ export const en: LanguageResource = {
     nodeaddress: 'Node Address',
   },
   error: {
-    notfound: 'Not found',
+    notfound:
+      'Looks like you have lost your way, Netmaker has a route for that!',
     network: 'Could not reach server',
     tokenexpire: 'Session has expired',
     unauthorized: 'Unauthorized access attempted',
@@ -183,6 +184,7 @@ export const en: LanguageResource = {
     defaultsaveconfig: 'Default Saveconfig',
     accesskeys: 'Access Keys',
     defaultudpholepunch: 'UDP Hole Punching',
+    defaultnatenabled: 'Enable NAT for egress traffic',
     islocal: 'Is Local Network',
     create: 'Create Network',
     netid: 'Network Name',
@@ -200,12 +202,18 @@ export const en: LanguageResource = {
     defaultacl: 'Default Access Control',
     isipv6: 'IPv6',
     isipv4: 'IPv4',
+    validation: {
+      ipv4: 'Please enter a valid IPv4 address',
+      ipv6: 'Please enter a valid IPv6 address',
+    },
   },
   helper: {
     egress: 'Enter your network interface name, i.e. "eth0"',
     egressiface: 'Find your interface on linux with "ip link show"',
     udpholepunching:
       'This can enhance connectivity in cases where NAT may block communication.',
+    defaultnatenabled:
+      "Enable NAT'ing if you wish traffic originating from your wireguard network to be source NAT'ed to the IP of the egess node",
     islocal: 'Use if server is on same network (LAN) as you',
     ispointtosite:
       'Create a network in which all clients have only one, central peer',
@@ -357,6 +365,11 @@ export const en: LanguageResource = {
     error: 'Node has no Connectivity',
     warning: 'Node has connectivity issues',
     connected: 'Node is connected to ',
+    validation: {
+      relayaddress: 'Please enter a valid relay address range (IPv4 or IPv6)',
+      egressgatewayrange:
+        'Please enter a valid egress gateway range (IPv4 CIDR or IPv6 CIDR)',
+    },
     state: {
       error: 'ERROR',
       warning: 'WARNING',

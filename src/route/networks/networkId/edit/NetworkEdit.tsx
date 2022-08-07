@@ -1,6 +1,6 @@
 import React from 'react'
 import { Grid, Tooltip, Typography } from '@mui/material'
-import { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import {
@@ -8,6 +8,7 @@ import {
   NmForm,
   NmFormInputSwitch,
   NmFormInputText,
+  validate,
 } from '~components/form'
 import { updateNetwork } from '~modules/network/actions'
 import { Network } from '~modules/network/types'
@@ -15,6 +16,8 @@ import { networkToNetworkPayload } from '~modules/network/utils'
 import { useRouteMatch } from 'react-router'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 import { serverSelectors } from '~store/selectors'
+import { correctIPv4CidrRegex, correctIpv6Regex } from '~util/regex'
+import { NotFound } from '~util/errorpage'
 
 export const NetworkEdit: React.FC<{
   network: Network
@@ -26,6 +29,35 @@ export const NetworkEdit: React.FC<{
   const serverConfig = useSelector(serverSelectors.getServerConfig)
 
   const formRef = React.createRef<FormRef<Network>>()
+
+  const createipValidation = useMemo(
+    () =>
+      validate<Network>({
+        addressrange: (addressrange, formData) => {
+          if (!formData.isipv4) {
+            return undefined
+          }
+          return !correctIPv4CidrRegex.test(addressrange)
+            ? {
+                message: t('network.validation.ipv4'),
+                type: 'value',
+              }
+            : undefined
+        },
+        addressrange6: (addressrange6, formData) => {
+          if (!formData.isipv6) {
+            return undefined
+          }
+          return !correctIpv6Regex.test(addressrange6)
+            ? {
+                message: t('network.validation.ipv6'),
+                type: 'value',
+              }
+            : undefined
+        },
+      }),
+    [t]
+  )
 
   useLinkBreadcrumb({
     link: url,
@@ -44,11 +76,7 @@ export const NetworkEdit: React.FC<{
   )
 
   if (!!!network) {
-    return (
-      <div style={{ textAlign: 'center', margin: '1em 0 1em 0' }}>
-        <Typography variant="h5">{`${t('error.notfound')}`}</Typography>
-      </div>
-    )
+    return <NotFound />
   }
 
   const centerStyle = {
@@ -59,6 +87,7 @@ export const NetworkEdit: React.FC<{
 
   return (
     <NmForm
+      resolver={createipValidation}
       initialState={network}
       onSubmit={onSubmit}
       onCancel={onCancel}
