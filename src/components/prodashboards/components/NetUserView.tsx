@@ -5,6 +5,8 @@ import { proSelectors } from '~store/selectors'
 import { NetAdminDashboard } from './NetAdminDashboard'
 import { NodeAccessView } from './NodeAccessView'
 
+import { ExtClients } from './vpnview/VpnViewHome'
+
 const NET_ADMIN_ACCESS_LVL = 0
 const NODE_ACCESS_LVL = 1
 const CLIENT_ACCESS_LVL = 2
@@ -25,7 +27,7 @@ export default function NetUserView() {
     case NODE_ACCESS_LVL:
       return <NodeAccessView />
     case CLIENT_ACCESS_LVL:
-      return <div>LOOKING AT REMOTE ACCESS STUFF</div>
+      return <ExtClients />
     default:
       return <div>NO ACCESS</div>
   }
