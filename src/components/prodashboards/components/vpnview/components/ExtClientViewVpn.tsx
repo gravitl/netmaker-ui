@@ -5,17 +5,18 @@ import { ExternalClient, Node } from '~modules/node'
 import { useTranslation } from 'react-i18next'
 import { useRouteMatch, useParams, Route, Switch } from 'react-router-dom'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
-import { useNodesByNetworkId } from '~util/network'
 import { Grid, Typography } from '@mui/material'
 import { i18n } from '../../../../../i18n/i18n'
 import { filterExtClientsByNetwork, filterIngressGateways } from '~util/node'
 import { useSelector } from 'react-redux'
 import { ExtClientCreateButtonVpn } from './ExtClientCreateButtonVpn'
-import { nodeSelectors } from '~store/types'
+import { proSelectors } from '~store/types'
 import { DownloadExtClientButtonVpn } from './DownloadExtClientButtonVpn'
 import { DeleteExtClientButtonVpn } from './DeleteExtClientButtonVpn'
 import { EditExtClientButtonVpn } from './EditExtClientButtonVpn'
 import { NetworkSelect } from '~components/NetworkSelect'
+import Avatar from '@mui/material/Avatar'
+
 import {
   CheckBox,
   CheckBoxOutlineBlank,
@@ -26,6 +27,8 @@ import { IconButton, Tooltip } from '@mui/material'
 import { updateExternalClient } from '~store/modules/node/actions'
 import CustomizedDialogs from '~components/dialog/CustomDialog'
 import { MultiCopy } from '~components/CopyText'
+import { tempClients, tempNodes } from './testdata'
+import { grey } from '@mui/material/colors'
 
 const columns: TableColumns<Node> = [
   {
@@ -49,6 +52,7 @@ const columns: TableColumns<Node> = [
     label: i18n.t('ingress.add'),
     minWidth: 45,
     align: 'center',
+
     format: (_, node) => <ExtClientCreateButtonVpn node={node} />,
   },
 ]
@@ -60,10 +64,9 @@ const centerText = {
 export const ExtClientViewVpn: React.FC = () => {
   const { path, url } = useRouteMatch()
   const { t } = useTranslation()
-  const extClients = useSelector(nodeSelectors.getExtClients)
   const { netid } = useParams<{ netid: string }>()
-  var clients = filterExtClientsByNetwork(extClients, netid)
-  const listOfNodes = useNodesByNetworkId(netid)
+  var clients = filterExtClientsByNetwork(tempClients, netid)
+  const listOfNodes = tempNodes
   const [filterClients, setFilterClients] = React.useState(
     [] as ExternalClient[]
   )
@@ -71,6 +74,8 @@ export const ExtClientViewVpn: React.FC = () => {
     {} as ExternalClient | null
   )
   const dispatch = useDispatch()
+  const userData = useSelector(proSelectors.networkUserData)
+  const data = userData[netid]
 
   useLinkBreadcrumb({
     link: url,
@@ -210,9 +215,42 @@ export const ExtClientViewVpn: React.FC = () => {
     }
   }
 
+  //get the number of clients for this user
+  const clientCount = data.clients.length
+  //subtract the number of clients for this user from the total number of clients
+  const clientsLeft = data.user.clientlimit - clientCount
+
   return (
     <Switch>
       <Route exact path={path}>
+        <Grid
+          container
+          direction="row"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Grid item xs={4}>
+            <Avatar
+              sx={{
+                bgcolor: grey[700],
+                width: 100,
+                height: 100,
+              }}
+              aria-label={String(t('pro.label.welcomecard'))}
+            >
+              {clientCount}
+            </Avatar>
+          </Grid>
+          <Grid item xs={1}>
+            <Avatar
+              sx={{ bgcolor: grey[700], width: 100, height: 100 }}
+              aria-label={String(t('pro.label.welcomecard'))}
+            >
+              {clientsLeft}
+            </Avatar>
+          </Grid>
+        </Grid>
+
         <Grid
           container
           direction="row"

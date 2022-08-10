@@ -12,7 +12,7 @@ import {
   useHistory,
 } from 'react-router-dom'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
-import { useNetwork, useNodesByNetworkId } from '~util/network'
+import { useNetwork } from '~util/network'
 import { NodeId } from '../../../route/nodes/netid/nodeId/NodeId'
 import {
   Chip,
@@ -46,6 +46,7 @@ import { MultiCopy } from '~components/CopyText'
 import { nodeSelectors } from '~store/selectors'
 import { Tablefilter } from '~components/filter/Tablefilter'
 import { useEffect, useState } from 'react'
+import { tempNodes } from './vpnview/components/testdata'
 
 export const NodeAccessView: React.FC = () => {
   const { path, url } = useRouteMatch()
@@ -53,7 +54,7 @@ export const NodeAccessView: React.FC = () => {
   const { netid } = useParams<{ netid: string }>()
   const network = useNetwork(netid)
   // eslint-disable-next-line
-  const listOfNodes = useNodesByNetworkId(netid) || []
+  const listOfNodes = tempNodes
   const nodeSort = useSelector(nodeSelectors.getNodeSort)
   const [filterNodes, setFilterNodes] = React.useState(listOfNodes)
   const [selected, setSelected] = React.useState({} as Node)

@@ -16,6 +16,8 @@ export const ExtClients: React.FC = () => {
     title: t('breadcrumbs.extClients'),
   })
 
+  
+
   return (
     <Container>
       <Switch>
