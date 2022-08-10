@@ -23,6 +23,7 @@ export const reducer = createReducer({
       if (!!payload && !!payload.payload) {
         draftState.networkUserData = payload.payload
       }
+      console.log("USER DATA:", JSON.stringify(draftState.networkUserData))
     })
   )
   .handleAction(getNetworkUserData['failure'], (state, _) =>
