@@ -157,6 +157,8 @@ export interface LanguageResource {
     sortby: string
     lowercase: string
     disconnected: string
+    clientsused: string
+    clientsavailable: string
   }
   dashboard: {
     title: string

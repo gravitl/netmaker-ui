@@ -161,6 +161,8 @@ export const en: LanguageResource = {
     descend: 'Sort Descending ',
     sortby: 'Sort by',
     disconnected: 'Disconnected',
+    clientsused: 'Clients Used:',
+    clientsavailable: 'Clients Available:',
   },
   dashboard: {
     title: 'Netmaker Dashboard',

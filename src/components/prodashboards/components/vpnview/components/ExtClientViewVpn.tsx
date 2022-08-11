@@ -236,17 +236,29 @@ export const ExtClientViewVpn: React.FC = () => {
                 width: 100,
                 height: 100,
               }}
-              aria-label={String(t('pro.label.welcomecard'))}
+              aria-label={String(t('common.clientsused'))}
             >
-              {clientCount}
+              <Typography
+                variant="body1"
+                style={{ fontSize: '.9em', textAlign: 'center' }}
+              >
+                {String(t('common.clientsused'))}
+                {clientCount}
+              </Typography>
             </Avatar>
           </Grid>
           <Grid item xs={1}>
             <Avatar
               sx={{ bgcolor: grey[700], width: 100, height: 100 }}
-              aria-label={String(t('pro.label.welcomecard'))}
+              aria-label={String(t('common.clientsavailable'))}
             >
-              {clientsLeft}
+              <Typography
+                variant="body1"
+                style={{ fontSize: '.9em', textAlign: 'center' }}
+              >
+                {String(t('common.clientsavailable'))}
+                {clientsLeft}
+              </Typography>
             </Avatar>
           </Grid>
         </Grid>
