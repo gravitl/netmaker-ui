@@ -186,33 +186,6 @@ export const NetworkUserEdit: React.FC<{}> = () => {
                     />
                   </Tooltip>
                 </Grid>
-                <Grid item xs={11} sm={10} md={9}>
-                  <Grid
-                    container
-                    justifyContent={'space-evenly'}
-                    alignItems="center"
-                    sx={{ marginTop: '1rem' }}
-                  >
-                    <Grid item xs={12} md={8} style={{ textAlign: 'center' }}>
-                      <NmFormInputText
-                        fullWidth
-                        name="groups"
-                        label={String(t('pro.networkusers.groups'))}
-                        disabled
-                      />
-                    </Grid>
-                    <Grid item xs={8} md={3.75} style={{ textAlign: 'center' }}>
-                      <NmLink
-                        variant="outlined"
-                        fullWidth
-                        sx={{ textTransform: 'none' }}
-                        to={`/networkusers/${netid}/${clientid}/groups`}
-                      >
-                        {`${t('common.edit')} ${t('pro.networkusers.groups')}`}
-                      </NmLink>
-                    </Grid>
-                  </Grid>
-                </Grid>
               </Grid>
             </NmForm>
           </Grid>

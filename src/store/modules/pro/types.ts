@@ -20,7 +20,6 @@ export interface NetworkUser {
   id: string
   clients: Array<string>
   nodes: Array<string>
-  groups: Array<string>
 }
 
 export interface NetworkUserData {

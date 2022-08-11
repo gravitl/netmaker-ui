@@ -42,9 +42,6 @@ export const MetricRoute: React.FC = () => {
             <Grid item xs={12}>
               <hr />
             </Grid>
-            <Grid item xs={11.5}>
-                <MetricsTable />
-            </Grid>
           </Grid>
         </Route>
         <Route path={`${path}/:netid/:nodeid`}>

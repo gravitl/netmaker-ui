@@ -17,12 +17,16 @@ import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 import { correctUserNameRegex } from '~util/regex'
 import { useDialog } from '~components/ConfirmDialog'
 import { authSelectors, networkSelectors } from '~store/selectors'
+import { NmLink } from '~components/Link'
+import { User } from '~store/types'
+import { getNetworkUsers } from '~store/modules/pro/actions'
 
 export const UserEdit: React.FC = () => {
   const { t } = useTranslation()
   const { username } = useParams<{ username: string }>()
   const { Component: Dialog, setProps: setDialog } = useDialog()
   const currentUser = useSelector(authSelectors.getUser)
+  const [stateUser, setStateUser] = React.useState({} as User)
 
   useLinkBreadcrumb({
     title: username,
@@ -43,13 +47,14 @@ export const UserEdit: React.FC = () => {
       checked: !!user?.networks?.includes(network.netid),
       netid: network.netid,
     })),
+    groups: user?.groups,
   }
 
   const formRef = React.createRef<FormRef<typeof initialState>>()
 
   const onSubmit = useCallback(
     (data: typeof initialState) => {
-      const create = () =>
+      const create = () => {
         dispatch(
           updateUserNetworks.request({
             username: data.username,
@@ -57,8 +62,12 @@ export const UserEdit: React.FC = () => {
             networks: data.networks
               .filter((network) => network.checked)
               .map((network) => network.netid),
+            groups: user?.groups || [],
           })
         )
+
+        setTimeout(() => dispatch(getNetworkUsers.request()), 100)        
+      }
 
       if (data.isadmin) {
         setDialog({
@@ -70,7 +79,7 @@ export const UserEdit: React.FC = () => {
         create()
       }
     },
-    [dispatch, t, setDialog]
+    [dispatch, t, setDialog, user]
   )
   const validation = useMemo(
     () =>
@@ -85,6 +94,12 @@ export const UserEdit: React.FC = () => {
       }),
     [t]
   )
+
+  React.useEffect(() => {
+    if (stateUser !== currentUser && !!currentUser) {
+      setStateUser(currentUser)
+    }
+  }, [currentUser, stateUser])
 
   if (!currentUser?.isAdmin) return null
 
@@ -161,8 +176,35 @@ export const UserEdit: React.FC = () => {
               </NmFormList>
             </Grid>
           </Grid>
+          <Grid
+            container
+            justifyContent={'space-evenly'}
+            alignItems="center"
+            sx={{ marginTop: '1rem' }}
+          >
+            <Grid item xs={12} md={8} style={{ textAlign: 'center' }}>
+              <NmFormInputText
+                fullWidth
+                name="groups"
+                label={String(t('pro.networkusers.groups'))}
+                disabled
+              />
+            </Grid>
+            <Grid item xs={8} md={3.75} style={{ textAlign: 'center' }}>
+              <NmLink
+                variant="outlined"
+                fullWidth
+                sx={{ textTransform: 'none' }}
+                to={`/users/${username}/groups`}
+                disabled={user?.isAdmin}
+              >
+                {`${t('common.edit')} ${t('pro.networkusers.groups')}`}
+              </NmLink>
+            </Grid>
+          </Grid>
         </NmForm>
       </Grid>
+      
       <Dialog />
     </Grid>
   )
