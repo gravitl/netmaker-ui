@@ -8,6 +8,7 @@ import { UserTable } from './components/UserTable'
 import { UserCreate } from './create/UserCreate'
 import { UserEdit } from './userId/UserEdit'
 import { UserChangePassword } from './userId/UserChangePassword'
+import { UserGroupEdit } from './userId/UserGroupEdit'
 
 export const Users: React.FC = () => {
   const { path } = useRouteMatch()
@@ -50,6 +51,9 @@ export const Users: React.FC = () => {
             </Grid>
           </Grid>
           <UserTable />
+        </Route>
+        <Route exact path={`${path}/:username/groups`}>
+          <UserGroupEdit />
         </Route>
         <Route path={`${path}/create`}>
           <UserCreate />

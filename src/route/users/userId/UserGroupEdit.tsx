@@ -3,12 +3,12 @@ import { Grid, useTheme, Typography, Box } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { FormRef, NmForm, NmFormInputText } from '~components/form'
-import ChoicesSelect from './ChoicesSelect'
-import { proSelectors } from '~store/selectors'
+import ChoicesSelect from '../../networkusers/components/ChoicesSelect'
+import { authSelectors, proSelectors } from '~store/selectors'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 import { useRouteMatch, useHistory, useParams } from 'react-router-dom'
-import { NetworkUser } from '~store/types'
-import { updateNetworkUser } from '~store/modules/pro/actions'
+import { User } from '~store/types'
+import { updateUserNetworks } from '~store/modules/auth/actions'
 
 export const UserGroupEdit: React.FC<{}> = () => {
   const { t } = useTranslation()
@@ -16,12 +16,12 @@ export const UserGroupEdit: React.FC<{}> = () => {
   const dispatch = useDispatch()
   const groups = useSelector(proSelectors.userGroups)
   const { url } = useRouteMatch()
-  const { netid, clientid } = useParams<{ netid: string; clientid: string }>()
+  const { username } = useParams<{ username: string }>()
   const history = useHistory()
-  const currentUsers = useSelector(proSelectors.networkUsers)
-  let currentClient = undefined as NetworkUser | undefined
-  if (!!currentUsers && !!currentUsers[netid]) {
-    currentClient = currentUsers[netid].filter(user => user.id === clientid)[0]
+  const currentUsers = useSelector(authSelectors.getUsers)
+  let currentClient = undefined as User | undefined
+  if (!!currentUsers) {
+    currentClient = currentUsers.filter(user => user.name === username)[0]
   }
 
   useLinkBreadcrumb({
@@ -30,13 +30,8 @@ export const UserGroupEdit: React.FC<{}> = () => {
   })
 
   useLinkBreadcrumb({
-    link: `/networkusers/${netid}/${clientid}`,
-    title: clientid,
-  })
-
-  useLinkBreadcrumb({
-    link: `/networkusers/${netid}`,
-    title: netid,
+    link: `/users/${username}`,
+    title: username,
   })
 
   const updateChoices = (value: string) => {
@@ -55,7 +50,7 @@ export const UserGroupEdit: React.FC<{}> = () => {
   }
 
   if (!!currentClient) {
-    initialState.choices = currentClient.groups.join(',')
+    initialState.choices = (currentClient.groups || []).join(',')
   }
 
   const onSubmit = useCallback(
@@ -69,15 +64,17 @@ export const UserGroupEdit: React.FC<{}> = () => {
             newClient.groups = newRanges
 
             dispatch(
-                updateNetworkUser.request({
-                    networkName: netid,
-                    networkUser: newClient,
+                updateUserNetworks.request({
+                    username: currentClient.name,
+                    networks: currentClient.networks as string[],
+                    groups: newClient.groups,
+                    isadmin: currentClient.isAdmin,
                 })
             )
-            history.push(`/networkusers/${netid}`)
+            history.push(`/users`)
         }
     },
-    [dispatch, history, netid, currentClient]
+    [dispatch, history, currentClient]
   )
 
   if (!!!currentClient) {
@@ -101,7 +98,7 @@ export const UserGroupEdit: React.FC<{}> = () => {
         <Grid item xs={12}>
             <div style={{ textAlign: 'center', margin: '1em 0 1em 0' }}>
                 <Typography variant="h5">
-                    {`${t('common.edit')} ${currentClient.id} ${t('pro.networkusers.groups')}`}
+                    {`${t('common.edit')} ${currentClient.name} ${t('pro.networkusers.groups')}`}
                 </Typography>
             </div>
         </Grid>

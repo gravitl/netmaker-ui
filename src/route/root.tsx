@@ -68,7 +68,7 @@ function Routes() {
             <Networks />
           </PrivateRoute>
           <PrivateRoute path="/prouser">
-            <ProUserView />
+            {user?.isAdmin ? <Dashboard /> : <ProUserView />}
           </PrivateRoute>
           <PrivateRoute path="/nodes">
             <Nodes />

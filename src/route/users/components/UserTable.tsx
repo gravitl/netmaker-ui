@@ -8,6 +8,7 @@ import { Delete } from '@mui/icons-material'
 import { useDialog } from '~components/ConfirmDialog'
 import { useTranslation } from 'react-i18next'
 import { deleteUser } from '~store/modules/auth/actions'
+import { Typography } from '@mui/material'
 
 const columns: TableColumns<User> = [
   {
@@ -37,6 +38,24 @@ const columns: TableColumns<User> = [
             <NmLink key={network} to={`/networks/${network}`}>
               {network}
             </NmLink>
+          ))}
+        </span>
+      )
+    },
+  },
+  {
+    id: 'groups',
+    labelKey: 'pro.networkusers.groups',
+    minWidth: 150,
+    sortable: false,
+    format: (groups, user) => {
+      if (user.isAdmin && (!groups || !groups.length)) return <span>*</span>
+      return (
+        <span>
+          {groups?.map((g) => (
+            <Typography key={g} variant="subtitle2">
+              {g}
+            </Typography>
           ))}
         </span>
       )
