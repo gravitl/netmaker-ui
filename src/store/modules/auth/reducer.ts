@@ -163,7 +163,6 @@ export const reducer = createReducer({
       } else {
         draftState.users = []
       }
-      console.log("USERS:", draftState.users)
     })
   )
   .handleAction(createUser['success'], (state, { payload }) =>
