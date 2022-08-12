@@ -190,7 +190,8 @@ export const en: LanguageResource = {
     nodeaddress: 'Node Address',
   },
   error: {
-    notfound: 'Not found',
+    notfound:
+      'Looks like you have lost your way, Netmaker has a route for that!',
     network: 'Could not reach server',
     tokenexpire: 'Session has expired',
     unauthorized: 'Unauthorized access attempted',

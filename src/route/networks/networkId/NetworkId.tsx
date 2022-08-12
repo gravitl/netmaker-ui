@@ -23,6 +23,7 @@ import { deleteNetwork } from '~modules/network/actions'
 import { NetworkEdit } from './edit/NetworkEdit'
 import { AccessKeys } from './accesskeys/AccessKeys'
 import { useNetwork } from '~util/network'
+import { NotFound } from '~util/errorpage'
 import { NetworkListEdit } from './edit/NetworkListEdit'
 
 export const NetworkId: React.FC = () => {
@@ -56,11 +57,13 @@ export const NetworkId: React.FC = () => {
   )
 
   if (!!!network) {
-    return <div style={{ textAlign: 'center', margin: '1em 0 1em 0' }}>
-    <Typography variant="h5">
-      {`${t('error.notfound')}`}
-    </Typography>
-  </div>
+    return (
+      <div style={{ textAlign: 'center', margin: '1em 0 1em 0' }}>
+        <Typography variant="h5">
+          <NotFound />
+        </Typography>
+      </div>
+    )
   }
 
   const hasProSettings = !!network?.prosettings
@@ -70,7 +73,7 @@ export const NetworkId: React.FC = () => {
     margin: '4px',
     height: '100%',
     flex: '1',
-    inlineSize: '1em', 
+    inlineSize: '1em',
     overflow: 'hidden',
   } as any
 
@@ -105,7 +108,7 @@ export const NetworkId: React.FC = () => {
         </Route>
         <Route exact path={path}>
           <div style={{ textAlign: 'center', margin: '1em 0 1em 0' }}>
-            <Typography variant="h5" style={{overflowWrap: 'break-word'}}>
+            <Typography variant="h5" style={{ overflowWrap: 'break-word' }}>
               {`${t('network.details')} : ${netid}`}
             </Typography>
           </div>
@@ -116,27 +119,59 @@ export const NetworkId: React.FC = () => {
             style={{ marginBottom: '2em', marginTop: '2em' }}
           >
             <Grid item xs={12} sm={12} md={12}>
-              <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', margin: '0.5em 0 0.5em 0'}}>
-                <NmLink to={`${url}/edit`} variant="outlined" fullWidth style={buttonStyle}>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  margin: '0.5em 0 0.5em 0',
+                }}
+              >
+                <NmLink
+                  to={`${url}/edit`}
+                  variant="outlined"
+                  fullWidth
+                  style={buttonStyle}
+                >
                   {t('common.edit')}
                 </NmLink>
-                <NmLink to={`/nodes/${netid}`} variant="outlined" fullWidth style={buttonStyle}>
+                <NmLink
+                  to={`/nodes/${netid}`}
+                  variant="outlined"
+                  fullWidth
+                  style={buttonStyle}
+                >
                   {`${t('node.nodes')}`}
                 </NmLink>
-                <NmLink to={`/access-keys/${netid}`} variant="outlined" fullWidth style={buttonStyle}>
+                <NmLink
+                  to={`/access-keys/${netid}`}
+                  variant="outlined"
+                  fullWidth
+                  style={buttonStyle}
+                >
                   {t('header.accessKeys')}
                 </NmLink>
-                <NmLink to={`/graphs/${netid}`} variant="outlined" fullWidth style={buttonStyle}>
+                <NmLink
+                  to={`/graphs/${netid}`}
+                  variant="outlined"
+                  fullWidth
+                  style={buttonStyle}
+                >
                   {t('network.graph')}
                 </NmLink>
-                <NmLink to={`/acls/${netid}`} variant="outlined" fullWidth style={buttonStyle}>
+                <NmLink
+                  to={`/acls/${netid}`}
+                  variant="outlined"
+                  fullWidth
+                  style={buttonStyle}
+                >
                   {t('header.acls')}
                 </NmLink>
                 <Button
                   variant="outlined"
                   onClick={() => deleteNetworkCallback()}
                   fullWidth
-                  color='warning'
+                  color="warning"
                   style={buttonStyle}
                 >
                   {t('common.delete')}
@@ -144,14 +179,14 @@ export const NetworkId: React.FC = () => {
               </div>
             </Grid>
             <Grid item xs={12} sm={2}>
-              <div style={{textAlign: 'center', margin: '0.5em 0 0.5em 0'}}>
-                
-              </div>
+              <div
+                style={{ textAlign: 'center', margin: '0.5em 0 0.5em 0' }}
+              ></div>
             </Grid>
             <Grid item xs={12} sm={2}>
-            <div style={{textAlign: 'center', margin: '0.5em 0 0.5em 0'}}>
-                
-              </div>
+              <div
+                style={{ textAlign: 'center', margin: '0.5em 0 0.5em 0' }}
+              ></div>
             </Grid>
           </Grid>
           <Grid
@@ -283,9 +318,7 @@ export const NetworkId: React.FC = () => {
             <Grid item xs={12} sm={6} md={3}>
               <FormControlLabel
                 label={String(t('network.defaultacl'))}
-                control={
-                  <SwitchField checked={network.defaultacl} disabled />
-                }
+                control={<SwitchField checked={network.defaultacl} disabled />}
                 disabled
               />
             </Grid>
