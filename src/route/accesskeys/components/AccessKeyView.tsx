@@ -2,7 +2,7 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { networkSelectors } from '~store/types'
 import { useHistory, useParams } from 'react-router'
-import AccessKeyDetails from './AccessKeyDetails'
+import AccessKeyDetails from '../../../i18n/AccessKeyDetails'
 import { useTranslation } from 'react-i18next'
 
 export const AccessKeyView: React.FC<{}> = () => {

@@ -15,6 +15,15 @@ import { Users } from './users/Users'
 import { DNS } from './dns/DNS'
 import { Graphs } from './graph/Graphs'
 import { NodeAcls } from './node_acls/NodeACLs'
+import { ServerLogs } from './logs/ServerLogs'
+import { MetricRoute } from './metrics/MetricRoute'
+import { UserGroups } from './usergroups/UserGroups'
+import { NetworkUsers } from './networkusers/NetworkUsers'
+import ProDrawerNotAdmin from '~components/prodashboards/components/ProDrawerNotAdmin'
+import { authSelectors } from '~store/types'
+import { useSelector } from 'react-redux'
+import { ProUserView } from '~components/prodashboards/ProUserView'
+import WelcomeCard from '~components/prodashboards/components/WelcomeCard'
 
 function NoMatch() {
   const location = useLocation()
@@ -36,19 +45,30 @@ function Routes() {
   // we show the gallery in the background, behind
   // the modal.
   const from = (location.state as any)?.from
+  const user = useSelector(authSelectors.getUser)
 
   return (
     <Grid container justifyContent="right">
       <Grid item xs={12}>
         <CustomDrawer />
       </Grid>
+      {!user?.isAdmin && (
+        <>
+          <Grid item xs={12}>
+            <ProDrawerNotAdmin />
+          </Grid>
+        </>
+      )}
       <Grid item xs={12}>
         <Switch location={from || location}>
           <PrivateRoute exact path="/">
-            <Dashboard />
+            {user?.isAdmin ? <Dashboard /> : <WelcomeCard />}
           </PrivateRoute>
           <PrivateRoute path="/networks">
             <Networks />
+          </PrivateRoute>
+          <PrivateRoute path="/prouser">
+            {user?.isAdmin ? <Dashboard /> : <ProUserView />}
           </PrivateRoute>
           <PrivateRoute path="/nodes">
             <Nodes />
@@ -67,6 +87,18 @@ function Routes() {
           </PrivateRoute>
           <PrivateRoute path="/acls">
             <NodeAcls />
+          </PrivateRoute>
+          <PrivateRoute path="/logs">
+            <ServerLogs />
+          </PrivateRoute>
+          <PrivateRoute path="/metrics">
+            <MetricRoute />
+          </PrivateRoute>
+          <PrivateRoute path="/usergroups">
+            <UserGroups />
+          </PrivateRoute>
+          <PrivateRoute path="/networkusers">
+            <NetworkUsers />
           </PrivateRoute>
           <PrivateRoute
             path="/users"

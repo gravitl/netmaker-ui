@@ -15,7 +15,7 @@ import { getCommaSeparatedArray } from '~util/fields'
 import { useNodeById } from '~util/node'
 import { useNetwork } from '~util/network'
 import { serverSelectors } from '~store/selectors'
-import { Node } from '~store/modules/node/types'
+import { Node, nodeACLValues } from '~store/modules/node/types'
 import { datePickerConverter } from '~util/unixTime'
 import AdapterDateFns from '@mui/lab/AdapterDateFns'
 import LocalizationProvider from '@mui/lab/LocalizationProvider'
@@ -27,6 +27,7 @@ import {
   ipv6AddressRegex,
 } from '~util/regex'
 import { convertStringToArray } from '~util/fields'
+import { NmFormOptionSelect } from '~components/form/FormOptionSelect'
 
 export const NodeEdit: React.FC<{
   onCancel: () => void
@@ -475,6 +476,21 @@ export const NodeEdit: React.FC<{
               defaultValue={String(node.mtu)}
               label={String(t('node.mtu'))}
               name={'mtu'}
+            />
+          </Tooltip>
+        </Grid>
+        <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
+          <Tooltip title={String(t('helper.defaultacl'))} placement="top">
+            <NmFormOptionSelect
+              defaultValue={node.defaultacl === undefined ? nodeACLValues.unset : 
+                node.defaultacl ? nodeACLValues.allow : nodeACLValues.deny}
+              label={String(t('node.defaultacl'))}
+              name={'defaultacl'}
+              selections={[
+                {key: nodeACLValues.unset, option: undefined},
+                {key: nodeACLValues.allow, option: true},
+                {key: nodeACLValues.deny, option: false},
+              ]}
             />
           </Tooltip>
         </Grid>

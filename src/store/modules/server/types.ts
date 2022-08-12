@@ -55,3 +55,50 @@ export interface GetServerConfigPayload {
     RCE: string
   }
 }
+
+export interface LogsPayload {
+  Request: undefined
+  Response: string
+}
+
+export type MetricID = string
+
+export type NodeMetricsTable = Record<string, NodeMetric>
+
+export type MetricsTable = Record<string, NodeMetricsContainer>
+
+export interface NodeMetricsContainer {
+  connectivity: NodeMetricsTable
+}
+
+export interface MetricsContainer {
+  nodes: MetricsTable
+}
+
+export interface NodeMetric {
+  uptime: number
+  totaltime: number
+  latency: number
+  totalreceived: number
+  receivedhourly: number
+  totalsent: number
+  senthourly: number
+  actualuptime: number
+  percentup: number
+  connected: boolean
+}
+
+export interface NodeMetricsID {
+  ID: string
+  Network: string
+}
+
+export interface NodeMetrics {
+  Request: NodeMetricsID
+  Response: NodeMetricsContainer
+}
+
+export interface Metrics {
+  Request: string | undefined
+  Response: MetricsContainer
+}

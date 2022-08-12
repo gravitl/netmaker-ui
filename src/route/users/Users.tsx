@@ -8,6 +8,7 @@ import { UserTable } from './components/UserTable'
 import { UserCreate } from './create/UserCreate'
 import { UserEdit } from './userId/UserEdit'
 import { UserChangePassword } from './userId/UserChangePassword'
+import { UserGroupEdit } from './userId/UserGroupEdit'
 
 export const Users: React.FC = () => {
   const { path } = useRouteMatch()
@@ -21,7 +22,7 @@ export const Users: React.FC = () => {
     <Container>
       <Switch>
         <Route exact path={path}>
-          <Grid item xs={10}>
+          <Grid item xs={12}>
             <Grid
               container
               direction="row"
@@ -29,17 +30,30 @@ export const Users: React.FC = () => {
               justifyContent="flex-end"
               alignItems="center"
             >
-              <Grid item xs={8}>
+              <Grid item xs={7}>
                 <h2>{t('users.header')}</h2>
               </Grid>
-              <Grid item xs={1}>
+              <Grid item xs={1.5}>
                 <NmLink variant="contained" to={{ pathname: '/users/create' }}>
                   {t('users.create.button')}
+                </NmLink>
+              </Grid>
+              <Grid item xs={1.5}>
+                <NmLink variant="contained" color='warning' to={{ pathname: '/usergroups' }}>
+                  {t('pro.label.usergroups')}
+                </NmLink>
+              </Grid>
+              <Grid item xs={2}>
+                <NmLink variant="contained" color='warning' to={{ pathname: '/networkusers' }}>
+                  {t('pro.label.networkusers')}
                 </NmLink>
               </Grid>
             </Grid>
           </Grid>
           <UserTable />
+        </Route>
+        <Route exact path={`${path}/:username/groups`}>
+          <UserGroupEdit />
         </Route>
         <Route path={`${path}/create`}>
           <UserCreate />

@@ -24,6 +24,7 @@ import { NetworkEdit } from './edit/NetworkEdit'
 import { AccessKeys } from './accesskeys/AccessKeys'
 import { useNetwork } from '~util/network'
 import { NotFound } from '~util/errorpage'
+import { NetworkListEdit } from './edit/NetworkListEdit'
 
 export const NetworkId: React.FC = () => {
   const { path, url } = useRouteMatch()
@@ -65,6 +66,8 @@ export const NetworkId: React.FC = () => {
     )
   }
 
+  const hasProSettings = !!network?.prosettings
+
   const buttonStyle = {
     width: '100%',
     margin: '4px',
@@ -85,6 +88,12 @@ export const NetworkId: React.FC = () => {
       <Switch>
         <Route path={`${path}/accesskeys`}>
           <AccessKeys />
+        </Route>
+        <Route path={`${path}/edit/networkusers`}>
+          <NetworkListEdit netid={netid} field='users' />
+        </Route>
+        <Route path={`${path}/edit/groups`}>
+          <NetworkListEdit netid={netid} field='groups' />
         </Route>
         <Route path={`${path}/edit`}>
           {/* <NetworkModifiedStats netid={netid} /> */}
@@ -311,6 +320,48 @@ export const NetworkId: React.FC = () => {
                 label={String(t('network.defaultacl'))}
                 control={<SwitchField checked={network.defaultacl} disabled />}
                 disabled
+              />
+            </Grid>
+            <Grid item xs={12} style={{marginTop: '1rem'}}></Grid>
+            <Grid item xs={12} sm={4} md={3.1}>
+              <TextField
+                disabled
+                value={hasProSettings ? network.prosettings?.defaultaccesslevel : 2}
+                label={String(t('pro.network.defaultaccesslevel'))}
+                type="number"
+              />
+            </Grid>
+            <Grid item xs={12} sm={4} md={3.1}>
+              <TextField
+                disabled
+                value={hasProSettings ? network.prosettings?.defaultusernodelimit : 0}
+                label={String(t('pro.network.defaultusernodelimit'))}
+                type="number"
+              />
+            </Grid>
+            <Grid item xs={12} sm={4} md={3.1}>
+              <TextField
+                disabled
+                value={hasProSettings ? network.prosettings?.defaultuserclientlimit : 0}
+                label={String(t('pro.network.defaultuserclientlimit'))}
+                type="number"
+              />
+            </Grid>
+            <Grid item xs={12} style={{marginTop: '1rem'}}></Grid>
+            <Grid item xs={12} sm={5} md={5} style={centerStyle}>
+              <TextField
+                fullWidth
+                disabled
+                value={hasProSettings ? network.prosettings?.allowedgroups.join(',') : ''}
+                label={String(t('pro.network.allowedgroups'))}
+              />
+            </Grid>
+            <Grid item xs={12} sm={5} md={5} style={centerStyle}>
+              <TextField
+                fullWidth
+                disabled
+                value={hasProSettings ? network.prosettings?.allowedusers.join(',') : ''}
+                label={String(t('pro.network.allowedusers'))}
               />
             </Grid>
           </Grid>

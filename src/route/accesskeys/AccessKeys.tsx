@@ -41,9 +41,8 @@ export const AccessKeys: React.FC = () => {
               <NetworkSelect selectAll />
             </Grid>
           </Grid>
-
-          
         </Route>
+
         <Route path={`${path}/:netid/details/:keyname`}>
           <AccessKeyView />
         </Route>

@@ -1,4 +1,57 @@
 export interface LanguageResource {
+  pro: {
+    logs: string
+    refresh: string
+    metrics: string
+    admin: string
+    admintools: string
+    nometrics: string
+    choose: string
+    metrickeys: {
+      latency: string
+      uptime: string
+      totaltime: string
+      percentup: string
+      connected: string
+      totalsent: string
+      totalreceived: string
+      syncmetrics: string
+    }
+    label: {
+      usergroup: string
+      usergroups: string
+      networkuser: string
+      networkusers: string
+      selectnetwork: string
+      welcome: string
+      welcomecard: string
+      networknumber: string
+    }
+    networkusers: {
+      none: string
+      deleteconfirm: string
+      accesslevel: string
+      nodelimit: string
+      clientlimit: string
+      groups: string
+      nodes: string
+      clients: string
+    }
+    network: {
+      defaultaccesslevel: string
+      defaultusernodelimit: string
+      defaultuserclientlimit: string
+      allowedusers: string
+      allowedgroups: string
+      networkedit: string
+      managenetwork: string
+    }
+    helpers: {
+      accesslevel: string
+      usernodelimit: string
+      userclientlimit: string
+    }
+  }
   header: {
     login: string
     logout: string
@@ -59,6 +112,8 @@ export interface LanguageResource {
     createrelay: string
     graphs: string
     acls: string
+    userdashboard: string
+    netadmindashboard: string
   }
   common: {
     disabled: string
@@ -101,6 +156,9 @@ export interface LanguageResource {
     descend: string
     sortby: string
     lowercase: string
+    disconnected: string
+    clientsused: string
+    clientsavailable: string
   }
   dashboard: {
     title: string
@@ -132,6 +190,7 @@ export interface LanguageResource {
     network: string
     tokenexpire: string
     unauthorized: string
+    overload: string
   }
   extclient: {
     extclients: string
@@ -243,6 +302,9 @@ export interface LanguageResource {
     validation: {
       ipv4: string
       ipv6: string
+      accesslevel: string
+      nodelimit: string
+      clientlimit: string
     }
   }
   node: {
@@ -319,6 +381,7 @@ export interface LanguageResource {
     isegressrelay: string
     isrelayed: string
     ishub: string
+    defaultacl: string
     onehub: string
     createhub: string
     updatenode: string
@@ -423,6 +486,7 @@ export interface LanguageResource {
         user: string
         approve: string
         nodeacl: string
+        networkuser: string
       }
       failure: {
         node: string
@@ -431,6 +495,7 @@ export interface LanguageResource {
         user: string
         approve: string
         nodeacl: string
+        networkuser: string
       }
     }
     create: {
@@ -465,6 +530,8 @@ export interface LanguageResource {
         dns: string
         user: string
         node: string
+        usergroups: string
+        networkuser: string
       }
       failure: {
         accesskey: string
@@ -475,6 +542,8 @@ export interface LanguageResource {
         dns: string
         user: string
         node: string
+        usergroups: string
+        networkuser: string
       }
     }
     login: {

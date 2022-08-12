@@ -19,13 +19,14 @@ export interface Network {
   islocal: boolean
   isipv4: boolean
   isipv6: boolean
-  ispointtosite: boolean 
+  ispointtosite: boolean
   localrange: string
   defaultudpholepunch: boolean
   defaultnatenabled: boolean
   defaultextclientdns: string
   defaultmtu: number
   defaultacl: boolean
+  prosettings: ProSettings | undefined
 }
 
 export type NetworkPayload = Modify<
@@ -79,6 +80,7 @@ export interface CreateNetworkPayload {
     defaultudpholepunch: 'yes' | 'no'
     ispointtosite: 'yes' | 'no'
     defaultacl: 'yes' | 'no'
+    prosettings?: ProSettings
   }
   Response: NetworkPayload
 }
@@ -158,4 +160,12 @@ export interface DeleteAccessKeyPayload {
     netid: string
     name: string
   }
+}
+
+export interface ProSettings {
+  defaultaccesslevel: number
+  defaultusernodelimit: number
+  defaultuserclientlimit: number
+  allowedusers: string[]
+  allowedgroups: string[]
 }

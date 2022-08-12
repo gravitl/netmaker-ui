@@ -37,6 +37,7 @@ import { deleteNode } from '~store/modules/node/actions'
 import CustomizedDialogs from '~components/dialog/CustomDialog'
 import { authSelectors } from '~store/selectors'
 import { MultiCopy } from '~components/CopyText'
+import MetricsIcon from '@mui/icons-material/Insights'
 
 const styles = {
   multiCopy: {
@@ -212,6 +213,16 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({
             <ViewList />
           </IconButton>
         </Tooltip>
+        <Tooltip title={`${t('pro.metrics')}`} placement="top">
+          <IconButton
+            component={Link}
+            to={`/metrics/${data.network}/${data.id}`}
+            aria-label="view-metrics"
+          >
+            <MetricsIcon />
+          </IconButton>
+        </Tooltip>
+
         <Tooltip
           title={`${t('common.delete')} ${t('node.node')}`}
           placement="top"
