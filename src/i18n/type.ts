@@ -43,6 +43,8 @@ export interface LanguageResource {
       defaultuserclientlimit: string
       allowedusers: string
       allowedgroups: string
+      networkedit: string
+      managenetwork: string
     }
     helpers: {
       accesslevel: string
@@ -111,6 +113,7 @@ export interface LanguageResource {
     graphs: string
     acls: string
     userdashboard: string
+    netadmindashboard: string
   }
   common: {
     disabled: string
@@ -154,6 +157,8 @@ export interface LanguageResource {
     sortby: string
     lowercase: string
     disconnected: string
+    clientsused: string
+    clientsavailable: string
   }
   dashboard: {
     title: string

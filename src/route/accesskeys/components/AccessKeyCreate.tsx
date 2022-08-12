@@ -10,7 +10,7 @@ import {
   clearTempKey,
 } from '../../../store/modules/network/actions'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
-import AccessKeyDetails from './AccessKeyDetails'
+import AccessKeyDetails from '../../../i18n/AccessKeyDetails'
 
 export const AccessKeyCreate: React.FC = () => {
   const listOfNetworks = useSelector(networkSelectors.getNetworks)
@@ -111,7 +111,10 @@ export const AccessKeyCreate: React.FC = () => {
         >
           <Grid container justifyContent="center" alignItems="center">
             <Grid item xs={12} md={6}>
-              <NmFormInputText name={'name'} label={`${t('accesskey.name')} (${t('common.optional')})`} />
+              <NmFormInputText
+                name={'name'}
+                label={`${t('accesskey.name')} (${t('common.optional')})`}
+              />
             </Grid>
             <Grid item xs={12} md={6}>
               <NmFormInputText

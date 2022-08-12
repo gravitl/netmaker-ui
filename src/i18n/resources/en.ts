@@ -45,6 +45,8 @@ export const en: LanguageResource = {
       defaultuserclientlimit: 'Default User Client Limit',
       allowedusers: 'Allowed Users',
       allowedgroups: 'Allowed Groups',
+      networkedit: 'Edit Network',
+      managenetwork: 'Manage your network',
     },
     helpers: {
       accesslevel:
@@ -115,6 +117,7 @@ export const en: LanguageResource = {
     graphs: 'Graphs',
     acls: 'ACLs',
     userdashboard: 'User Dashboard',
+    netadmindashboard: 'Netadmin Dashboard',
   },
   common: {
     disabled: 'Disabled',
@@ -158,6 +161,8 @@ export const en: LanguageResource = {
     descend: 'Sort Descending ',
     sortby: 'Sort by',
     disconnected: 'Disconnected',
+    clientsused: 'Clients Used:',
+    clientsavailable: 'Clients Available:',
   },
   dashboard: {
     title: 'Netmaker Dashboard',
