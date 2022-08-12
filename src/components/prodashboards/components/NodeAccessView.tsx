@@ -1,5 +1,4 @@
 import React from 'react'
-import { NmLink } from '~components/index'
 import { NmTable, TableColumns } from '~components/Table'
 import { Node } from '~modules/node'
 import { useTranslation } from 'react-i18next'
@@ -25,9 +24,6 @@ import {
 } from '@mui/material'
 import {
   AccountTree,
-  AltRoute,
-  CallMerge,
-  CallSplit,
   Delete,
   Search,
   Sync,
@@ -35,7 +31,6 @@ import {
 } from '@mui/icons-material'
 import { i18n } from '../../../i18n/i18n'
 import { CreateEgress } from '../../../route/nodes/netid/components/CreateEgress'
-import { TableToggleButton } from '../../../route/nodes/netid/components/TableToggleButton'
 import { CreateRelay } from '../../../route/nodes/netid/components/CreateRelay'
 import { NetworkSelect } from '../../../components/NetworkSelect'
 import { useDispatch, useSelector } from 'react-redux'
@@ -46,15 +41,16 @@ import { MultiCopy } from '~components/CopyText'
 import { nodeSelectors } from '~store/selectors'
 import { Tablefilter } from '~components/filter/Tablefilter'
 import { useEffect, useState } from 'react'
-import { tempNodes } from './vpnview/components/testdata'
+import { GenericError } from '~util/genericerror'
+// import { tempNodes } from './vpnview/components/testdata'
 
-export const NodeAccessView: React.FC = () => {
+export const NodeAccessView: React.FC<{nodes: Node[]}> = ({nodes}) => {
   const { path, url } = useRouteMatch()
   const { t } = useTranslation()
   const { netid } = useParams<{ netid: string }>()
   const network = useNetwork(netid)
   // eslint-disable-next-line
-  const listOfNodes = tempNodes
+  const listOfNodes = nodes
   const nodeSort = useSelector(nodeSelectors.getNodeSort)
   const [filterNodes, setFilterNodes] = React.useState(listOfNodes)
   const [selected, setSelected] = React.useState({} as Node)
@@ -92,7 +88,7 @@ export const NodeAccessView: React.FC = () => {
   }
 
   if (!listOfNodes || !!!network) {
-    return <h5>Not found, data missing</h5>
+    return <GenericError />
   }
 
   const columns: TableColumns<Node> = [

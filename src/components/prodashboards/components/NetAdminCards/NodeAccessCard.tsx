@@ -10,12 +10,11 @@ import Typography from '@mui/material/Typography'
 import { useTranslation } from 'react-i18next'
 import { DeviceHub } from '@mui/icons-material'
 import { Button, Grid, useTheme } from '@mui/material'
-import { useSelector } from 'react-redux'
-import { nodeSelectors } from '~store/types'
+import { Node } from '~store/types'
 
-export default function NodeAccessCard() {
+export default function NodeAccessCard(Props: {nodes: Node[]}) {
   const { t } = useTranslation()
-  const nodes = useSelector(nodeSelectors.getNodes)
+  const { nodes } = Props
   const nodeCount = nodes.length
   const theme = useTheme()
   const { netid } = useParams<{ netid: string }>()

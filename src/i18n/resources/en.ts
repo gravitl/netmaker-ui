@@ -192,6 +192,7 @@ export const en: LanguageResource = {
   error: {
     notfound:
       'Looks like you have lost your way, Netmaker has a route for that!',
+    noresults: 'No results found',
     network: 'Could not reach server',
     tokenexpire: 'Session has expired',
     unauthorized: 'Unauthorized access attempted',

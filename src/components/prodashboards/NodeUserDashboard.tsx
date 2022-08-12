@@ -9,7 +9,7 @@ import { ExtClientViewVpn } from './components/vpnview/components/ExtClientViewV
 import { NodeAccessView } from './components/NodeAccessView'
 import { useSelector } from 'react-redux'
 import { proSelectors } from '~store/selectors'
-import { Node } from '~store/types'
+import { ExternalClient, Node } from '~store/types'
 
 export const NodeUserDashboard: React.FC = () => {
   const { path } = useRouteMatch()
@@ -17,18 +17,18 @@ export const NodeUserDashboard: React.FC = () => {
   const { netid } = useParams<{ netid: string }>()
   const netData = useSelector(proSelectors.networkUserData)[netid]
   let nodes = [] as Node[]
+  let clients = [] as ExternalClient[]
+  let vpns = [] as Node[]
 
   if (!!netData) {
     nodes = netData.nodes
+    clients = netData.clients
+    vpns = netData.vpns
   }
 
   useLinkBreadcrumb({
     title: t('breadcrumbs.netadmindashboard'),
   })
-
-  if (!!nodes.length) {
-    return <div>not found</div>
-  }
 
   return (
     <Container>
@@ -41,21 +41,21 @@ export const NodeUserDashboard: React.FC = () => {
             alignItems="center"
           >
             <Grid item xs={12} sm={6} md={5}>
-              <NodeAccessCard />
+              <NodeAccessCard nodes={nodes} />
             </Grid>
             <Grid item xs={12} sm={6} md={5}>
-              <ExtAccessCard />
+              <ExtAccessCard clients={clients} />
             </Grid>
           </Grid>
         </Route>
         <Route path={`${path}/vpnview`}>
           <Grid>
-            <ExtClientViewVpn />
+            <ExtClientViewVpn vpns={vpns} clients={clients} />
           </Grid>
         </Route>
         <Route path={`${path}/nodeview`}>
           <Grid>
-            <NodeAccessView />
+            <NodeAccessView nodes={nodes} />
           </Grid>
         </Route>
       </Switch>

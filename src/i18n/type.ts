@@ -188,6 +188,7 @@ export interface LanguageResource {
   error: {
     notfound: string
     network: string
+    noresults: string
     tokenexpire: string
     unauthorized: string
     overload: string

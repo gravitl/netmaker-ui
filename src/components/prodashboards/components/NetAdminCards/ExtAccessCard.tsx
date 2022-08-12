@@ -6,8 +6,7 @@ import CardActions from '@mui/material/CardActions'
 // import CreateIcon from '@mui/icons-material/AddBox';
 import { grey } from '@mui/material/colors'
 import Avatar from '@mui/material/Avatar'
-import { useSelector } from 'react-redux'
-import { nodeSelectors } from '~store/types'
+import { ExternalClient } from '~store/types'
 
 import CardContent from '@mui/material/CardContent'
 import Typography from '@mui/material/Typography'
@@ -15,10 +14,10 @@ import { useTranslation } from 'react-i18next'
 import { Devices } from '@mui/icons-material'
 import { Button, Grid, useTheme } from '@mui/material'
 
-export default function ExtAccessCard() {
+export default function ExtAccessCard(Props: {clients: ExternalClient[]}) {
   const { t } = useTranslation()
-  const clients = useSelector(nodeSelectors.getExtClients)
-  const clientCount = clients.length
+  const clients = Props.clients
+  const clientCount = clients.length || 0
   const theme = useTheme()
   const { netid } = useParams<{ netid: string }>()
 
