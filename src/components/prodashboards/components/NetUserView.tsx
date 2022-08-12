@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { proSelectors } from '~store/selectors'
 import { NetAdminDashboard } from './NetAdminDashboard'
-import { NodeAccessView } from './NodeAccessView'
+import { NodeUserDashboard } from '../NodeUserDashboard'
 
 import { ExtClients } from './vpnview/VpnViewHome'
 
@@ -25,7 +25,7 @@ export default function NetUserView() {
     case NET_ADMIN_ACCESS_LVL:
       return <NetAdminDashboard />
     case NODE_ACCESS_LVL:
-      return <NodeAccessView />
+      return <NodeUserDashboard />
     case CLIENT_ACCESS_LVL:
       return <ExtClients />
     default:
