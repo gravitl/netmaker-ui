@@ -101,23 +101,12 @@ export const NodeAccessView: React.FC = () => {
       labelKey: 'node.name',
       minWidth: 100,
       sortable: true,
-      format: (value, node) => (
-        <NmLink
-          to={`/nodes/${node.network}/${encodeURIComponent(node.id)}`}
-          sx={{ textTransform: 'none' }}
-        >
-          {value}
-          {`${
-            node.ispending === 'yes' ? ` (${i18n.t('common.pending')})` : ''
-          }`}
-        </NmLink>
-      ),
     },
     {
       id: 'address',
       labelKey: 'node.addresses',
       minWidth: 130,
-      align: 'right',
+      align: 'center',
       format: (_, node) => (
         <MultiCopy type="subtitle2" values={[node.address, node.address6]} />
       ),
@@ -134,67 +123,6 @@ export const NodeAccessView: React.FC = () => {
       labelKey: 'node.network',
       minWidth: 100,
       align: 'right',
-      format: (value) => (
-        <Tooltip
-          disableTouchListener={true}
-          title={`${t('node.connected') as string}${value}`}
-          placement="top"
-        >
-          <NmLink sx={{ textTransform: 'none' }} to={`/networks/${value}`}>
-            {value}
-          </NmLink>
-        </Tooltip>
-      ),
-    },
-    {
-      id: 'isegressgateway',
-      labelKey: 'node.statusegress',
-      minWidth: 30,
-      align: 'center',
-      format: (isegress, row) => (
-        <TableToggleButton
-          which="egress"
-          isOn={isegress}
-          node={row}
-          createText={`${i18n.t('node.createegress')} : ${row.name}`}
-          removeText={`${i18n.t('node.removeegress')} : ${row.name}`}
-          SignalIcon={<CallSplit />}
-          withHistory
-        />
-      ),
-    },
-    {
-      id: 'isingressgateway',
-      labelKey: 'node.statusingress',
-      minWidth: 30,
-      align: 'center',
-      format: (isingress, row) => (
-        <TableToggleButton
-          which="ingress"
-          isOn={isingress}
-          node={row}
-          createText={`${i18n.t('node.createingress')} : ${row.name}`}
-          removeText={`${i18n.t('node.removeingress')} : ${row.name}`}
-          SignalIcon={<CallMerge />}
-        />
-      ),
-    },
-    {
-      id: 'isrelay',
-      labelKey: 'node.statusrelay',
-      minWidth: 30,
-      align: 'center',
-      format: (isrelay, row) => (
-        <TableToggleButton
-          which="relay"
-          isOn={isrelay}
-          node={row}
-          createText={`${i18n.t('node.createrelay')} : ${row.name}`}
-          removeText={`${i18n.t('node.removerelay')} : ${row.name}`}
-          SignalIcon={<AltRoute />}
-          withHistory
-        />
-      ),
     },
     {
       id: 'lastcheckin',
