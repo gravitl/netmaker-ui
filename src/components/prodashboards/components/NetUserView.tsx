@@ -5,7 +5,7 @@ import { proSelectors } from '~store/selectors'
 import { NetAdminDashboard } from './NetAdminDashboard'
 import { NodeUserDashboard } from '../NodeUserDashboard'
 
-import { ExtClients } from './vpnview/VpnViewHome'
+import { NotFound } from '~util/errorpage'
 
 const NET_ADMIN_ACCESS_LVL = 0
 const NODE_ACCESS_LVL = 1
@@ -16,7 +16,7 @@ export default function NetUserView() {
   const allUserData = useSelector(proSelectors.networkUserData)
 
   if (!!!allUserData || !!!allUserData[netid]) {
-    ;<div>Not found</div>
+    return <NotFound />
   }
 
   const userData = allUserData[netid]
@@ -27,7 +27,7 @@ export default function NetUserView() {
     case NODE_ACCESS_LVL:
       return <NodeUserDashboard />
     case CLIENT_ACCESS_LVL:
-      return <ExtClients />
+      return <NodeUserDashboard />
     default:
       return <div>NO ACCESS</div>
   }

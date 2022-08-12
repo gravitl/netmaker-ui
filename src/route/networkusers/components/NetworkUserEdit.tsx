@@ -9,7 +9,6 @@ import { proSelectors, authSelectors } from '~store/selectors'
 import { grey } from '@mui/material/colors'
 import { NetworkUser } from '~store/types'
 import { updateNetworkUser } from '~store/modules/pro/actions'
-import { NmLink } from '~components/Link'
 
 export const NetworkUserEdit: React.FC<{}> = () => {
   const history = useHistory()

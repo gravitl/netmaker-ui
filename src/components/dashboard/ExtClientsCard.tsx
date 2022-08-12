@@ -25,7 +25,7 @@ const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
   },
 }))
 
-export default function NodeCard() {
+export default function ExtClientsCard() {
   const { t } = useTranslation()
   const clients = useSelector(nodeSelectors.getExtClients)
   const clientCount = clients.length

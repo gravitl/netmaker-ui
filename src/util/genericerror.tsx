@@ -5,9 +5,9 @@ import Logo from '../netmaker-logo.png'
 import DarkLogo from '../netmaker-logo-2.png'
 import { useSelector } from 'react-redux'
 import { authSelectors } from '~store/selectors'
-import WarningIcon from '@mui/icons-material/Warning'
+import WarningIcon from '@mui/icons-material/Report'
 
-export const NotFound: React.FC = () => {
+export const GenericError: React.FC<{message?: string}> = ({message}) => {
   const { t } = useTranslation()
   const inDarkMode = useSelector(authSelectors.isInDarkMode)
 
@@ -46,7 +46,7 @@ export const NotFound: React.FC = () => {
             marginTop: '1em',
           }}
         >
-          <Typography variant="h4">{`${t('error.notfound')}`}</Typography>
+          <Typography variant="h4">{`${message || t('error.noresults')}`}</Typography>
         </div>
       </Grid>
       <Grid item xs={10} sx={{ marginTop: '3em' }}>

@@ -8,7 +8,6 @@ import { useSelector } from 'react-redux'
 import { proSelectors } from '~store/types'
 import Loading from '~components/Loading'
 import NetUserView from './components/NetUserView'
-import { ExtClientViewVpn } from './components/vpnview/components/ExtClientViewVpn'
 
 export const ProUserView: React.FC = () => {
   const { path } = useRouteMatch()
@@ -38,9 +37,6 @@ export const ProUserView: React.FC = () => {
         </Route>
         <Route path={`${path}/:netid`}>
           <NetUserView />
-        </Route>
-        <Route path={`${path}/ext/:netid`}>
-          <ExtClientViewVpn />
         </Route>
       </Switch>
     </Container>

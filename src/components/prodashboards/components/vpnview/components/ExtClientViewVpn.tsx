@@ -7,7 +7,6 @@ import { useRouteMatch, useParams, Route, Switch } from 'react-router-dom'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 import { Grid, Typography } from '@mui/material'
 import { i18n } from '../../../../../i18n/i18n'
-import { filterExtClientsByNetwork, filterIngressGateways } from '~util/node'
 import { useSelector } from 'react-redux'
 import { ExtClientCreateButtonVpn } from './ExtClientCreateButtonVpn'
 import { proSelectors } from '~store/types'
@@ -27,8 +26,9 @@ import { IconButton, Tooltip } from '@mui/material'
 import { updateExternalClient } from '~store/modules/node/actions'
 import CustomizedDialogs from '~components/dialog/CustomDialog'
 import { MultiCopy } from '~components/CopyText'
-import { tempClients, tempNodes } from './testdata'
+// import { tempClients, tempNodes } from './testdata'
 import { grey } from '@mui/material/colors'
+import { GenericError } from '~util/genericerror'
 
 const columns: TableColumns<Node> = [
   {
@@ -61,12 +61,10 @@ const centerText = {
   textAlign: 'center',
 }
 
-export const ExtClientViewVpn: React.FC = () => {
+export const ExtClientViewVpn: React.FC<{vpns: Node[], clients: ExternalClient[]}> = ({vpns, clients}) => {
   const { path, url } = useRouteMatch()
   const { t } = useTranslation()
   const { netid } = useParams<{ netid: string }>()
-  var clients = filterExtClientsByNetwork(tempClients, netid)
-  const listOfNodes = tempNodes
   const [filterClients, setFilterClients] = React.useState(
     [] as ExternalClient[]
   )
@@ -82,30 +80,8 @@ export const ExtClientViewVpn: React.FC = () => {
     title: netid,
   })
 
-  if (!listOfNodes) {
-    return <div>{t('error.notfound')}</div>
-  }
-
-  const gateways = filterIngressGateways(listOfNodes)
-
-  if (!!!gateways.length) {
-    return (
-      <Grid
-        container
-        direction="row"
-        justifyContent="center"
-        alignItems="flex-start"
-      >
-        <Grid item xs={8} sx={{ margin: '0.5em 0em 1em 0em' }}>
-          <NetworkSelect />
-        </Grid>
-        <Grid item xs={12} sx={{ margin: '0.5em 0em 1em 0em' }}>
-          <div style={centerText as any}>
-            <h3>{t('ingress.none')}</h3>
-          </div>
-        </Grid>
-      </Grid>
-    )
+  if (!vpns || !vpns.length) {
+    return <GenericError message={t('ingress.none')}/>
   }
 
   const extColumns: TableColumns<ExternalClient> = [
@@ -300,7 +276,7 @@ export const ExtClientViewVpn: React.FC = () => {
             </div>
             <NmTable
               columns={columns}
-              rows={gateways}
+              rows={vpns}
               getRowId={(row) => row.id}
               actions={[
                 (row) => ({
