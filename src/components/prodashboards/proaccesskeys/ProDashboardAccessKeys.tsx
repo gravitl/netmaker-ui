@@ -44,9 +44,6 @@ export const ProDashboardAccessKeys: React.FC = () => {
         <Route path={`${path}/create`}>
           <ProAccessKeyCreate />
         </Route>
-        <Route path={`${path}/accesskeys`}>
-          <ProAccessKeyTable />
-        </Route>
       </Switch>
     </Container>
   )

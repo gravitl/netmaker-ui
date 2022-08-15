@@ -35,7 +35,7 @@ export default function AdminNetworkCard() {
   return (
     <Button
       component={Link}
-      to={`${netid}/proedit`}
+      to={`/prouser/${netid}/proedit`}
       color={'inherit'}
       fullWidth
       style={{ textTransform: 'none' }}

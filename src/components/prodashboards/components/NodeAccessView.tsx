@@ -11,7 +11,6 @@ import {
   useHistory,
 } from 'react-router-dom'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
-import { useNetwork } from '~util/network'
 import { NodeId } from '../../../route/nodes/netid/nodeId/NodeId'
 import {
   Chip,
@@ -22,31 +21,25 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material'
-import { AccountTree, Delete, Search, Sync, Hub } from '@mui/icons-material'
-import { i18n } from '../../../i18n/i18n'
+import { AccountTree, Delete, Search, Sync } from '@mui/icons-material'
 import { CreateEgress } from '../../../route/nodes/netid/components/CreateEgress'
 import { CreateRelay } from '../../../route/nodes/netid/components/CreateRelay'
 import { NetworkSelect } from '../../../components/NetworkSelect'
 import { useDispatch, useSelector } from 'react-redux'
 import { deleteNode, setNodeSort } from '~store/modules/node/actions'
 import CustomizedDialogs from '~components/dialog/CustomDialog'
-import { HubButton } from '../../../route/nodes/netid/components/HubButton'
 import { MultiCopy } from '~components/CopyText'
 import { nodeSelectors } from '~store/selectors'
 import { Tablefilter } from '~components/filter/Tablefilter'
 import { useEffect, useState } from 'react'
 import { GenericError } from '~util/genericerror'
-// import { tempNodes } from './vpnview/components/testdata'
 
 export const NodeAccessView: React.FC<{ nodes: Node[] }> = ({ nodes }) => {
   const { path, url } = useRouteMatch()
   const { t } = useTranslation()
   const { netid } = useParams<{ netid: string }>()
-  const network = useNetwork(netid)
-  // eslint-disable-next-line
-  const listOfNodes = nodes
   const nodeSort = useSelector(nodeSelectors.getNodeSort)
-  const [filterNodes, setFilterNodes] = React.useState(listOfNodes)
+  const [filterNodes, setFilterNodes] = React.useState(nodes)
   const [selected, setSelected] = React.useState({} as Node)
   const dispatch = useDispatch()
   const history = useHistory()
@@ -54,17 +47,17 @@ export const NodeAccessView: React.FC<{ nodes: Node[] }> = ({ nodes }) => {
 
   useEffect(() => {
     if (!!!searchTerm) {
-      setFilterNodes(listOfNodes)
+      setFilterNodes(nodes)
     } else {
-      if (listOfNodes) {
+      if (nodes) {
         setFilterNodes(
-          listOfNodes.filter((node) =>
+          nodes.filter((node) =>
             `${node.name}${node.address}${node.network}`.includes(searchTerm)
           )
         )
       }
     }
-  }, [listOfNodes, searchTerm])
+  }, [nodes, searchTerm])
 
   const handleFilter = (event: { target: { value: string } }) => {
     const { value } = event.target
@@ -83,7 +76,7 @@ export const NodeAccessView: React.FC<{ nodes: Node[] }> = ({ nodes }) => {
     }
   }
 
-  if (!listOfNodes || !!!network) {
+  if (!nodes) {
     return <GenericError />
   }
 
@@ -143,23 +136,6 @@ export const NodeAccessView: React.FC<{ nodes: Node[] }> = ({ nodes }) => {
       },
     },
   ]
-
-  if (network.ispointtosite) {
-    columns.push({
-      id: 'ishub',
-      labelKey: 'node.statushub',
-      minWidth: 30,
-      align: 'center',
-      format: (_, row) => (
-        <HubButton
-          node={row}
-          createText={`${i18n.t('node.createhub')} : ${row.name}`}
-          disabledText={`${i18n.t('node.onehub')} : ${row.name}`}
-          SignalIcon={<Hub />}
-        />
-      ),
-    })
-  }
 
   const handleClose = () => {
     setSelected({} as Node)
@@ -273,9 +249,9 @@ export const NodeAccessView: React.FC<{ nodes: Node[] }> = ({ nodes }) => {
         <NmTable
           columns={columns}
           rows={
-            filterNodes.length && filterNodes.length < listOfNodes.length
+            filterNodes.length && filterNodes.length < nodes.length
               ? filterNodes
-              : listOfNodes
+              : nodes
           }
           actions={[
             (row) => ({
