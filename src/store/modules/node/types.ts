@@ -49,6 +49,7 @@ export interface Node {
   isk8s: boolean
   ishub: boolean
   defaultacl: boolean | undefined
+  ownerid: string
 }
 
 export type NodePayload = Modify<
@@ -69,6 +70,7 @@ export type NodePayload = Modify<
     isk8s: 'yes' | 'no'
     ishub: 'yes' | 'no'
     defaultacl: 'yes' | 'no' | 'unset'
+    ownerid: string
   }
 >
 
