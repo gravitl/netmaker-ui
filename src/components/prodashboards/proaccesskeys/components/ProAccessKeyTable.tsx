@@ -1,5 +1,5 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { NmLink } from '../../../../components'
 import { AccessKey } from '../../../../store/modules/network'
 import { NmTable, TableColumns } from '../../../../components/Table'
@@ -7,10 +7,9 @@ import { Delete } from '@mui/icons-material'
 import { useTranslation } from 'react-i18next'
 import { useParams, useHistory, useRouteMatch } from 'react-router-dom'
 import { deleteAccessKey } from '~store/modules/network/actions'
-import { useNetwork } from '~util/network'
 import CustomDialog from '~components/dialog/CustomDialog'
 import { Button, Grid, Typography } from '@mui/material'
-import { NetworkSelect } from '~components/NetworkSelect'
+import { proSelectors } from '~store/selectors'
 
 export const ProAccessKeyTable: React.FC<{}> = () => {
   const { t } = useTranslation()
@@ -19,7 +18,8 @@ export const ProAccessKeyTable: React.FC<{}> = () => {
   const [open, setOpen] = React.useState(false)
   const [selectedKey, setSelectedKey] = React.useState('')
   const { netid } = useParams<{ netid: string }>()
-  const network = useNetwork(netid)
+  const userData = useSelector(proSelectors.networkUserData)[netid]
+  const network = userData.networks.filter((net) => net.netid === netid)[0]
   const { url } = useRouteMatch()
 
   if (!!!network) {
@@ -37,9 +37,6 @@ export const ProAccessKeyTable: React.FC<{}> = () => {
               {`${netid}, ${t('network.none')}`}
             </Typography>
           </div>
-        </Grid>
-        <Grid item xs={5}>
-          <NetworkSelect />
         </Grid>
       </Grid>
     )
@@ -108,9 +105,7 @@ export const ProAccessKeyTable: React.FC<{}> = () => {
               </Typography>
             </div>
           </Grid>
-          <Grid item xs={10} md={3}>
-            <NetworkSelect />
-          </Grid>
+
           <Grid item xs={8} md={3}>
             <Button
               fullWidth

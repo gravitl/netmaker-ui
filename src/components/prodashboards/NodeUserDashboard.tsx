@@ -41,7 +41,7 @@ export const NodeUserDashboard: React.FC = () => {
             alignItems="center"
           >
             <Grid item xs={12} sm={6} md={5}>
-              <NodeAccessCard nodes={nodes} />
+              <NodeAccessCard />
             </Grid>
             <Grid item xs={12} sm={6} md={5}>
               <ExtAccessCard clients={clients} />

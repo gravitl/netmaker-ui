@@ -9,9 +9,8 @@ import Typography from '@mui/material/Typography'
 import { useTranslation } from 'react-i18next'
 import { DeviceHub } from '@mui/icons-material'
 import { Button, useTheme } from '@mui/material'
-import { Node } from '~store/types'
 
-export default function NodeAccessCard(Props: { nodes: Node[] }) {
+export default function NodeAccessCard() {
   const { t } = useTranslation()
   const theme = useTheme()
   const { netid } = useParams<{ netid: string }>()
@@ -34,7 +33,7 @@ export default function NodeAccessCard(Props: { nodes: Node[] }) {
   return (
     <Button
       component={Link}
-      to={`${netid}/nodeview`}
+      to={`/prouser/${netid}/nodeview`}
       color={'inherit'}
       fullWidth
       style={{ textTransform: 'none' }}
