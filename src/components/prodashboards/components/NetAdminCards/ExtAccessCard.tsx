@@ -14,7 +14,7 @@ import { useTranslation } from 'react-i18next'
 import { Devices } from '@mui/icons-material'
 import { Button, Grid, useTheme } from '@mui/material'
 
-export default function ExtAccessCard(Props: {clients: ExternalClient[]}) {
+export default function ExtAccessCard(Props: { clients: ExternalClient[] }) {
   const { t } = useTranslation()
   const clients = Props.clients
   const clientCount = clients.length || 0
