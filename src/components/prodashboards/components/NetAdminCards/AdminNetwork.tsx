@@ -2,7 +2,6 @@ import * as React from 'react'
 import { Link, useParams } from 'react-router-dom'
 import Avatar from '@mui/material/Avatar'
 import Card from '@mui/material/Card'
-import CardActions from '@mui/material/CardActions'
 
 import { grey } from '@mui/material/colors'
 
@@ -10,7 +9,7 @@ import CardContent from '@mui/material/CardContent'
 import Typography from '@mui/material/Typography'
 import { useTranslation } from 'react-i18next'
 import { Wifi } from '@mui/icons-material'
-import { Button, Grid, useTheme } from '@mui/material'
+import { Button, useTheme } from '@mui/material'
 
 export default function AdminNetworkCard() {
   const { t } = useTranslation()

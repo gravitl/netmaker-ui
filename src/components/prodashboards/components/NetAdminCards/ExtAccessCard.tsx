@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { Link, useParams } from 'react-router-dom'
 import Card from '@mui/material/Card'
-import CardActions from '@mui/material/CardActions'
 
 // import CreateIcon from '@mui/icons-material/AddBox';
 import { grey } from '@mui/material/colors'
@@ -12,12 +11,10 @@ import CardContent from '@mui/material/CardContent'
 import Typography from '@mui/material/Typography'
 import { useTranslation } from 'react-i18next'
 import { Devices } from '@mui/icons-material'
-import { Button, Grid, useTheme } from '@mui/material'
+import { Button, useTheme } from '@mui/material'
 
 export default function ExtAccessCard(Props: { clients: ExternalClient[] }) {
   const { t } = useTranslation()
-  const clients = Props.clients
-  const clientCount = clients.length || 0
   const theme = useTheme()
   const { netid } = useParams<{ netid: string }>()
 
@@ -26,6 +23,7 @@ export default function ExtAccessCard(Props: { clients: ExternalClient[] }) {
     marginTop: '1em',
     height: '100%',
     width: '100%',
+    minHeight: '14em',
   }
 
   const cardContentStyle = {
@@ -64,21 +62,6 @@ export default function ExtAccessCard(Props: { clients: ExternalClient[] }) {
             </Typography>
           </div>
         </CardContent>
-        <CardActions>
-          <Grid container justifyContent="space-around" alignItems="center">
-            <Grid item xs={10}></Grid>
-            <Grid item xs={1}>
-              <Avatar
-                sx={{ bgcolor: grey[900] }}
-                aria-label={String(t('common.count'))}
-              >
-                <Typography variant="body1" color="white">
-                  {clientCount}
-                </Typography>
-              </Avatar>
-            </Grid>
-          </Grid>
-        </CardActions>
       </Card>
     </Button>
   )

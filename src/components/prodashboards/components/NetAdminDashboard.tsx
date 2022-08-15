@@ -3,9 +3,7 @@ import React from 'react'
 import { useRouteMatch, Switch, Route } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
-import NodeCard from '~components/dashboard/NodeCard'
-import ExtClientsCard from '~components/dashboard/ExtClientsCard'
-import AccessKeysCard from '~components/dashboard/AccessKeyCard'
+import ProAccessKeyCard from './NetAdminCards/ProAccessKeyCard'
 import AdminNetworkCard from './NetAdminCards/AdminNetwork'
 import { ProNetworks } from '../networksView/ProNetworks'
 import { NodeAccessView } from './NodeAccessView'
@@ -13,6 +11,10 @@ import { useSelector } from 'react-redux'
 import { proSelectors } from '~store/types'
 import { useParams } from 'react-router-dom'
 import { ExternalClient, Node } from '~store/types'
+import NodeAccessCard from './NetAdminCards/NodeAccessCard'
+import { ExtClientViewVpn } from './vpnview/components/ExtClientViewVpn'
+import ExtAccessCard from './NetAdminCards/ExtAccessCard'
+import { ProDashboardAccessKeys } from '../proaccesskeys/ProDashboardAccessKeys'
 
 export const NetAdminDashboard: React.FC = () => {
   const { path } = useRouteMatch()
@@ -47,13 +49,13 @@ export const NetAdminDashboard: React.FC = () => {
               <AdminNetworkCard />
             </Grid>
             <Grid item xs={12} sm={6} md={5}>
-              <NodeCard />
+              <NodeAccessCard nodes={nodes} />
             </Grid>
             <Grid item xs={12} sm={6} md={5}>
-              <AccessKeysCard />
+              <ProAccessKeyCard />
             </Grid>
             <Grid item xs={12} sm={6} md={5}>
-              <ExtClientsCard />
+              <ExtAccessCard clients={clients} />
             </Grid>
           </Grid>
         </Route>
@@ -63,7 +65,19 @@ export const NetAdminDashboard: React.FC = () => {
           </Grid>
         </Route>
         <Route path={`${path}/nodeview`}>
-          <Grid>{<NodeAccessView nodes={nodes} />}</Grid>
+          <Grid>
+            <NodeAccessView nodes={nodes} />
+          </Grid>
+        </Route>
+        <Route path={`${path}/accesskeys`}>
+          <Grid>
+            <ProDashboardAccessKeys />
+          </Grid>
+        </Route>
+        <Route path={`${path}/vpnview`}>
+          <Grid>
+            <ExtClientViewVpn vpns={vpns} clients={clients} />
+          </Grid>
         </Route>
       </Switch>
     </Container>

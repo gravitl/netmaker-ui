@@ -3,7 +3,6 @@ import React from 'react'
 import { useRouteMatch, Switch, Route, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
-import NodeAccessCard from '../NetAdminCards/NodeAccessCard'
 import ExtAccessCard from '../NetAdminCards/ExtAccessCard'
 import { ExtClientViewVpn } from './components/ExtClientViewVpn'
 import { useSelector } from 'react-redux'
@@ -15,12 +14,10 @@ export const VpnDashboard: React.FC = () => {
   const { t } = useTranslation()
   const { netid } = useParams<{ netid: string }>()
   const netData = useSelector(proSelectors.networkUserData)[netid]
-  let nodes = [] as Node[]
   let clients = [] as ExternalClient[]
   let vpns = [] as Node[]
 
   if (!!netData) {
-    nodes = netData.nodes
     clients = netData.clients
     vpns = netData.vpns
   }
