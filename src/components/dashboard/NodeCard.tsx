@@ -55,56 +55,65 @@ export default function NodeCard() {
   ]
 
   return (
-    <Button component={Link} to={'/nodes'} color={'inherit'} fullWidth style={{textTransform: 'none'}}>
-    <Card
-      sx={{ minWidth: 275, backgroundColor: grey[200] }}
-      variant="outlined"
-      style={cardStyle}
+    <Button
+      component={Link}
+      to={'/nodes'}
+      color={'inherit'}
+      fullWidth
+      style={{ textTransform: 'none' }}
     >
-      <CardContent>
-        <Avatar sx={{ bgcolor: grey[900] }} aria-label={String(t('node.nodes'))}>
-          <DeviceHub sx={{color: theme.palette.common.white}} />
-        </Avatar>
-        <div style={cardContentStyle}>
-          <Typography variant="h5" component="div" color='black'>
-            {t('node.nodes')}
-          </Typography>
-          <Typography variant="body2" color='primary'>
-            {`${t('common.manage')} ${t('node.nodes')}`}
-          </Typography>
-        </div>
-      </CardContent>
-      <CardActions>
-        <Grid container justifyContent='space-around' alignItems='center'>
+      <Card
+        sx={{ minWidth: 275, backgroundColor: grey[200] }}
+        variant="outlined"
+        style={cardStyle}
+      >
+        <CardContent>
+          <Avatar
+            sx={{ bgcolor: grey[900] }}
+            aria-label={String(t('node.nodes'))}
+          >
+            <DeviceHub sx={{ color: theme.palette.common.white }} />
+          </Avatar>
+          <div style={cardContentStyle}>
+            <Typography variant="h5" component="div" color="black">
+              {t('node.nodes')}
+            </Typography>
+            <Typography variant="body2" color="primary">
+              {`${t('common.manage')} ${t('node.nodes')}`}
+            </Typography>
+          </div>
+        </CardContent>
+        <CardActions>
+          <Grid container justifyContent="space-around" alignItems="center">
             <Grid item xs={10}>
-            <StyledSpeedDial
-              ariaLabel={`${t('common.manage')} ${t('node.nodes')}`}
-              icon={<KeyboardArrowRight />}
-              direction={'right'}
-            >
-              {actions.map((action) => (
-                <SpeedDialAction
-                  color="primary"
-                  key={action.name}
-                  icon={action.icon}
-                  tooltipTitle={action.name}
-                />
-              ))}
-            </StyledSpeedDial>
+              <StyledSpeedDial
+                ariaLabel={`${t('common.manage')} ${t('node.nodes')}`}
+                icon={<KeyboardArrowRight />}
+                direction={'right'}
+              >
+                {actions.map((action) => (
+                  <SpeedDialAction
+                    color="primary"
+                    key={action.name}
+                    icon={action.icon}
+                    tooltipTitle={action.name}
+                  />
+                ))}
+              </StyledSpeedDial>
             </Grid>
             <Grid item xs={1}>
               <Avatar
                 sx={{ bgcolor: grey[900] }}
                 aria-label={String(t('common.count'))}
               >
-                  <Typography variant="body1" color='white'>
-                    {nodeCount}
-                  </Typography>
+                <Typography variant="body1" color="white">
+                  {nodeCount}
+                </Typography>
               </Avatar>
             </Grid>
           </Grid>
-      </CardActions>
-    </Card>
+        </CardActions>
+      </Card>
     </Button>
   )
 }

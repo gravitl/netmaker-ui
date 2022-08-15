@@ -22,13 +22,7 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material'
-import {
-  AccountTree,
-  Delete,
-  Search,
-  Sync,
-  Hub,
-} from '@mui/icons-material'
+import { AccountTree, Delete, Search, Sync, Hub } from '@mui/icons-material'
 import { i18n } from '../../../i18n/i18n'
 import { CreateEgress } from '../../../route/nodes/netid/components/CreateEgress'
 import { CreateRelay } from '../../../route/nodes/netid/components/CreateRelay'
@@ -44,7 +38,7 @@ import { useEffect, useState } from 'react'
 import { GenericError } from '~util/genericerror'
 // import { tempNodes } from './vpnview/components/testdata'
 
-export const NodeAccessView: React.FC<{nodes: Node[]}> = ({nodes}) => {
+export const NodeAccessView: React.FC<{ nodes: Node[] }> = ({ nodes }) => {
   const { path, url } = useRouteMatch()
   const { t } = useTranslation()
   const { netid } = useParams<{ netid: string }>()
@@ -62,11 +56,13 @@ export const NodeAccessView: React.FC<{nodes: Node[]}> = ({nodes}) => {
     if (!!!searchTerm) {
       setFilterNodes(listOfNodes)
     } else {
-      setFilterNodes(
-        listOfNodes.filter((node) =>
-          `${node.name}${node.address}${node.network}`.includes(searchTerm)
+      if (listOfNodes) {
+        setFilterNodes(
+          listOfNodes.filter((node) =>
+            `${node.name}${node.address}${node.network}`.includes(searchTerm)
+          )
         )
-      )
+      }
     }
   }, [listOfNodes, searchTerm])
 

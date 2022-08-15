@@ -6,6 +6,7 @@ import { NetAdminDashboard } from './NetAdminDashboard'
 import { NodeUserDashboard } from '../NodeUserDashboard'
 
 import { NotFound } from '~util/errorpage'
+import { VpnDashboard } from './vpnview/VpnDashboard'
 
 const NET_ADMIN_ACCESS_LVL = 0
 const NODE_ACCESS_LVL = 1
@@ -27,7 +28,7 @@ export default function NetUserView() {
     case NODE_ACCESS_LVL:
       return <NodeUserDashboard />
     case CLIENT_ACCESS_LVL:
-      return <NodeUserDashboard />
+      return <VpnDashboard />
     default:
       return <div>NO ACCESS</div>
   }
