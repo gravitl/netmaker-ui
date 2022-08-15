@@ -28,6 +28,9 @@ export const en: LanguageResource = {
       welcome: 'Welcome ',
       welcomecard: 'Please click to continue',
       networknumber: 'Number of Networks available:',
+      vpnaccess: 'VPN Access',
+      clientconfig: 'Manage your client configuration',
+      userpermissions: 'User Permissions',
     },
     networkusers: {
       none: 'No Network Users Found',
@@ -117,7 +120,8 @@ export const en: LanguageResource = {
     graphs: 'Graphs',
     acls: 'ACLs',
     userdashboard: 'User Dashboard',
-    netadmindashboard: 'Netadmin Dashboard',
+    netadmindashboard: 'Network Administrator Dashboard',
+    nodeuserdashboard: 'Node User Dashboard',
   },
   common: {
     disabled: 'Disabled',

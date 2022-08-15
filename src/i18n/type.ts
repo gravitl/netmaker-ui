@@ -26,6 +26,9 @@ export interface LanguageResource {
       welcome: string
       welcomecard: string
       networknumber: string
+      vpnaccess: string
+      clientconfig: string
+      userpermissions: string
     }
     networkusers: {
       none: string
@@ -114,6 +117,7 @@ export interface LanguageResource {
     acls: string
     userdashboard: string
     netadmindashboard: string
+    nodeuserdashboard: string
   }
   common: {
     disabled: string

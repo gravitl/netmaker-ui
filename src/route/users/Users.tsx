@@ -1,6 +1,6 @@
-import { Container, Grid } from '@mui/material'
+import { Container, Grid, IconButton, Tooltip } from '@mui/material'
 import React from 'react'
-import { useRouteMatch, Switch, Route } from 'react-router-dom'
+import { useRouteMatch, Switch, Route, useHistory } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 import { NmLink } from '~components/index'
@@ -9,10 +9,16 @@ import { UserCreate } from './create/UserCreate'
 import { UserEdit } from './userId/UserEdit'
 import { UserChangePassword } from './userId/UserChangePassword'
 import { UserGroupEdit } from './userId/UserGroupEdit'
+import { Sync } from '@mui/icons-material'
 
 export const Users: React.FC = () => {
   const { path } = useRouteMatch()
   const { t } = useTranslation()
+  const history = useHistory()
+
+  const syncUsers = () => {
+    history.push('/users')
+  }
 
   useLinkBreadcrumb({
     title: t('breadcrumbs.users'),
@@ -30,22 +36,38 @@ export const Users: React.FC = () => {
               justifyContent="flex-end"
               alignItems="center"
             >
-              <Grid item xs={7}>
+              <Grid item xs={5}>
                 <h2>{t('users.header')}</h2>
+              </Grid>
+              <Grid item xs={1}>
+                <Tooltip title={`${t('pro.refresh')}`} placement="top">
+                  <IconButton color="primary" onClick={syncUsers}>
+                    <Sync />
+                  </IconButton>
+                </Tooltip>
               </Grid>
               <Grid item xs={1.5}>
                 <NmLink variant="contained" to={{ pathname: '/users/create' }}>
                   {t('users.create.button')}
                 </NmLink>
               </Grid>
+
               <Grid item xs={1.5}>
-                <NmLink variant="contained" color='warning' to={{ pathname: '/usergroups' }}>
+                <NmLink
+                  variant="contained"
+                  color="primary"
+                  to={{ pathname: '/usergroups' }}
+                >
                   {t('pro.label.usergroups')}
                 </NmLink>
               </Grid>
               <Grid item xs={2}>
-                <NmLink variant="contained" color='warning' to={{ pathname: '/networkusers' }}>
-                  {t('pro.label.networkusers')}
+                <NmLink
+                  variant="contained"
+                  color="primary"
+                  to={{ pathname: '/networkusers' }}
+                >
+                  {t('pro.label.userpermissions')}
                 </NmLink>
               </Grid>
             </Grid>

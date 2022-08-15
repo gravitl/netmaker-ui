@@ -49,16 +49,16 @@ export default function ExtAccessCard(Props: { clients: ExternalClient[] }) {
         <CardContent>
           <Avatar
             sx={{ bgcolor: grey[900] }}
-            aria-label={String(t('breadcrumbs.extClients'))}
+            aria-label={String(t('pro.label.vpnaccess'))}
           >
             <Devices sx={{ color: theme.palette.common.white }} />
           </Avatar>
           <div style={cardContentStyle}>
             <Typography variant="h5" component="div" color="black">
-              {t('breadcrumbs.extClients')}
+              {t('pro.label.vpnaccess')}
             </Typography>
             <Typography variant="body2" color="primary">
-              {`${t('common.manage')} ${t('breadcrumbs.extClients')}`}
+              {`${t('pro.label.clientconfig')}`}
             </Typography>
           </div>
         </CardContent>

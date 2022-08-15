@@ -27,7 +27,7 @@ export const NodeUserDashboard: React.FC = () => {
   }
 
   useLinkBreadcrumb({
-    title: t('breadcrumbs.netadmindashboard'),
+    title: t('breadcrumbs.nodeuserdashboard'),
   })
 
   return (
