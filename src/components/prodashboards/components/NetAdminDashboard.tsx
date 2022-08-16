@@ -11,10 +11,10 @@ import { Network, proSelectors } from '~store/types'
 import { useParams } from 'react-router-dom'
 import { ExternalClient, Node } from '~store/types'
 import NodeAccessCard from './NetAdminCards/NodeAccessCard'
-import { ExtClientViewVpn } from './vpnview/components/ExtClientViewVpn'
 import ExtAccessCard from './NetAdminCards/ExtAccessCard'
 import { ProDashboardAccessKeys } from '../proaccesskeys/ProDashboardAccessKeys'
 import { ProNetworkEdit } from '../networksView/pronetworkId/edit/ProNetworkEdit'
+import { RemoteAccessView } from './vpnview/RemoteAccessView'
 
 export const NetAdminDashboard: React.FC = () => {
   const { path } = useRouteMatch()
@@ -24,13 +24,11 @@ export const NetAdminDashboard: React.FC = () => {
   const history = useHistory()
   let nodes = [] as Node[]
   let clients = [] as ExternalClient[]
-  let vpns = [] as Node[]
   let network = {} as Network
 
   if (!!netData) {
     nodes = netData.nodes
     clients = netData.clients
-    vpns = netData.vpns
     network = netData.networks.filter((net) => net.netid === netid)[0]
   }
 
@@ -82,7 +80,7 @@ export const NetAdminDashboard: React.FC = () => {
         </Route>
         <Route path={`${path}/vpnview`}>
           <Grid>
-            <ExtClientViewVpn vpns={vpns} clients={clients} />
+            <RemoteAccessView />
           </Grid>
         </Route>
       </Switch>
