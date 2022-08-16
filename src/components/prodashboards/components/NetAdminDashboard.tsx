@@ -72,7 +72,7 @@ export const NetAdminDashboard: React.FC = () => {
         </Route>
         <Route path={`${path}/nodeview`}>
           <Grid>
-            <NodeAccessView nodes={nodes} />
+            <NodeAccessView nodes={nodes} isNetAdmin={true} />
           </Grid>
         </Route>
         <Route path={`${path}/accesskeys`}>

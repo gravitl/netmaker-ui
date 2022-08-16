@@ -10,6 +10,7 @@ import {
   getNetworkUserData,
 } from './actions'
 import { NetworksUsersMap, NetworkUserDataMap } from './types'
+import { netUserDataPayloadToNetUserData } from './utils'
 
 export const reducer = createReducer({
   isProcessing: false as boolean,
@@ -20,9 +21,7 @@ export const reducer = createReducer({
 .handleAction(getNetworkUserData['success'], (state, payload) =>
     produce(state, (draftState) => {
       draftState.isProcessing = false
-      if (!!payload && !!payload.payload) {
-        draftState.networkUserData = payload.payload
-      }
+      draftState.networkUserData = netUserDataPayloadToNetUserData(payload.payload)
       console.log("USER DATA:", JSON.stringify(draftState.networkUserData))
     })
   )

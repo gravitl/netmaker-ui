@@ -12,7 +12,7 @@ export const NetworkUsers: React.FC = () => {
   const { t } = useTranslation()
 
   useLinkBreadcrumb({
-    title: t('pro.label.networkusers'),
+    title: t('pro.label.userpermissions'),
   })
 
   const titleStyle = {
@@ -32,7 +32,7 @@ export const NetworkUsers: React.FC = () => {
             <Grid item xs={5}>
               <div style={titleStyle}>
                 <Typography variant="h5">
-                  {t('pro.label.networkusers')}
+                  {t('pro.label.userpermissions')}
                 </Typography>
               </div>
             </Grid>

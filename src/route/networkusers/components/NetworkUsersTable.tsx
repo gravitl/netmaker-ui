@@ -60,7 +60,7 @@ export const NetworkUsersTable: React.FC<{}> = () => {
       format: (value) => (
         <NmLink
           sx={{ textTransform: 'none' }}
-          to={`/networkusers/${netid}/${value}`}
+          to={`/user-permissions/${netid}/${value}`}
         >
           {value}
         </NmLink>
@@ -85,7 +85,7 @@ export const NetworkUsersTable: React.FC<{}> = () => {
         networkUserID: selectedUserID,
       })
     )
-    history.push(`/networkusers/${netid}`)
+    history.push(`/user-permissions/${netid}`)
   }
 
   return (
@@ -101,7 +101,7 @@ export const NetworkUsersTable: React.FC<{}> = () => {
           <Grid item xs={8} md={6}>
             <div style={{ textAlign: 'center' }}>
               <Typography variant="h4">
-                {`${netid} ${t('pro.label.networkusers')}`}
+                {`${netid} ${t('pro.label.userpermissions')}`}
               </Typography>
             </div>
           </Grid>
@@ -121,7 +121,7 @@ export const NetworkUsersTable: React.FC<{}> = () => {
             disabled: false,
             icon: <Edit />,
             onClick: () => {
-              history.push(`/networkusers/${netid}/${row.id}`)
+              history.push(`/user-permissions/${netid}/${row.id}`)
             },
           }),
           (row) => ({

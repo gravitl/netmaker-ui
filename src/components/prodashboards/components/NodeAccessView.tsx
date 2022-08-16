@@ -45,7 +45,7 @@ import { NmLink } from '~components/Link'
 import { i18n } from '../../../i18n/i18n'
 import { TableToggleButton } from '../../../route/nodes/netid/components/TableToggleButton'
 
-export const NodeAccessView: React.FC<{ nodes: Node[], isNetAdmin: boolean }> = ({ nodes, isNetAdmin }) => {
+export const NodeAccessView: React.FC<{ nodes: Node[], isNetAdmin?: boolean }> = ({ nodes, isNetAdmin }) => {
   const { path, url } = useRouteMatch()
   const { t } = useTranslation()
   const { netid } = useParams<{ netid: string }>()
@@ -55,59 +55,6 @@ export const NodeAccessView: React.FC<{ nodes: Node[], isNetAdmin: boolean }> = 
   const dispatch = useDispatch()
   const history = useHistory()
   const [searchTerm, setSearchTerm] = useState(' ')
-  const buttonArray = [{
-    id: 'isegressgateway',
-    labelKey: 'node.statusegress',
-    minWidth: 30,
-    align: 'center',
-    format: (isegress, row) => (
-      <TableToggleButton
-        which="egress"
-        isOn={isegress}
-        node={row}
-        createText={`${i18n.t('node.createegress')} : ${row.name}`}
-        removeText={`${i18n.t('node.removeegress')} : ${row.name}`}
-        SignalIcon={<CallSplit />}
-        withHistory
-      />
-    ),
-  },
-  {
-    id: 'isingressgateway',
-    labelKey: 'node.statusingress',
-    minWidth: 30,
-    align: 'center',
-    format: (isingress, row) => (
-      <TableToggleButton
-        which="ingress"
-        isOn={isingress}
-        node={row}
-        createText={`${i18n.t('node.createingress')} : ${row.name}`}
-        removeText={`${i18n.t('node.removeingress')} : ${row.name}`}
-        SignalIcon={<CallMerge />}
-      />
-    ),
-  },
-  {
-    id: 'isrelay',
-    labelKey: 'node.statusrelay',
-    minWidth: 30,
-    align: 'center',
-    format: (isrelay, row) => (
-      <TableToggleButton
-        which="relay"
-        isOn={isrelay}
-        node={row}
-        createText={`${i18n.t('node.createrelay')} : ${row.name}`}
-        removeText={`${i18n.t('node.removerelay')} : ${row.name}`}
-        SignalIcon={<AltRoute />}
-        withHistory
-      />
-    ),
-  },]
-
-  const netAdminOptions = []
-  if user ===
 
   useEffect(() => {
     if (!!!searchTerm) {
@@ -184,6 +131,10 @@ export const NodeAccessView: React.FC<{ nodes: Node[], isNetAdmin: boolean }> = 
       minWidth: 100,
       align: 'right',
     },
+  ]
+
+  if (isNetAdmin) {
+    columns.push(
     {
       id: 'isegressgateway',
       labelKey: 'node.statusegress',
@@ -200,7 +151,8 @@ export const NodeAccessView: React.FC<{ nodes: Node[], isNetAdmin: boolean }> = 
           withHistory
         />
       ),
-    },
+    })
+    columns.push(
     {
       id: 'isingressgateway',
       labelKey: 'node.statusingress',
@@ -216,7 +168,8 @@ export const NodeAccessView: React.FC<{ nodes: Node[], isNetAdmin: boolean }> = 
           SignalIcon={<CallMerge />}
         />
       ),
-    },
+    })
+    columns.push(
     {
       id: 'isrelay',
       labelKey: 'node.statusrelay',
@@ -233,7 +186,10 @@ export const NodeAccessView: React.FC<{ nodes: Node[], isNetAdmin: boolean }> = 
           withHistory
         />
       ),
-    },
+    })
+  }
+
+  columns.push(
     {
       id: 'lastcheckin',
       labelKey: 'node.status',
@@ -259,8 +215,8 @@ export const NodeAccessView: React.FC<{ nodes: Node[], isNetAdmin: boolean }> = 
           </Tooltip>
         )
       },
-    },
-  ]
+    }
+  )
 
   const handleClose = () => {
     setSelected({} as Node)
