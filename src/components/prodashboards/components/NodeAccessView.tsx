@@ -33,6 +33,8 @@ import { nodeSelectors } from '~store/selectors'
 import { Tablefilter } from '~components/filter/Tablefilter'
 import { useEffect, useState } from 'react'
 import { GenericError } from '~util/genericerror'
+import { NmLink } from '~components/Link'
+import { i18n } from '../../../i18n/i18n'
 
 export const NodeAccessView: React.FC<{ nodes: Node[] }> = ({ nodes }) => {
   const { path, url } = useRouteMatch()
@@ -86,6 +88,17 @@ export const NodeAccessView: React.FC<{ nodes: Node[] }> = ({ nodes }) => {
       labelKey: 'node.name',
       minWidth: 100,
       sortable: true,
+      format: (value, node) => (
+        <NmLink
+          to={`/nodes/${node.network}/${encodeURIComponent(node.id)}`}
+          sx={{ textTransform: 'none' }}
+        >
+          {value}
+          {`${
+            node.ispending === 'yes' ? ` (${i18n.t('common.pending')})` : ''
+          }`}
+        </NmLink>
+      ),
     },
     {
       id: 'address',
