@@ -2,22 +2,21 @@ import React from 'react'
 import { Grid, Modal, Typography, Box } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
-import { useHistory, useRouteMatch, useParams } from 'react-router'
+import { useHistory, useParams } from 'react-router'
 import { nodeSelectors } from '~store/types'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 import { clearQr } from '~store/modules/node/actions'
+import { NotFound } from '~util/errorpage'
 
 export const QrCodeViewVpn: React.FC<{}> = () => {
   const history = useHistory()
   const qrCode = useSelector(nodeSelectors.getCurrentQrCode)
   const { t } = useTranslation()
-  const { path } = useRouteMatch()
   const { netid, clientid } = useParams<{ netid: string; clientid: string }>()
-  const newPath = `${path.split(':netid')[0]}${netid}`
   const dispatch = useDispatch()
 
   useLinkBreadcrumb({
-    link: newPath,
+    link: `/prouser/${netid}/vpnview`,
     title: clientid,
   })
 
@@ -27,14 +26,12 @@ export const QrCodeViewVpn: React.FC<{}> = () => {
 
   const handleClose = () => {
     dispatch(clearQr())
-    history.push(newPath)
+    history.goBack()
   }
 
   if (!qrCode) {
     return (
-      <div>
-        <Typography variant="h5">{t('error.notfound')}</Typography>
-      </div>
+      <NotFound />
     )
   }
 
@@ -69,7 +66,7 @@ export const QrCodeViewVpn: React.FC<{}> = () => {
       <Box style={boxStyle.modal}>
         <Grid container justifyContent="center" alignItems="center">
           <Grid item xs={12} style={boxStyle.center}>
-            <Typography variant="h5">
+            <Typography variant="h5" color='black'>
               {`${t('extclient.qr')} : ${clientid}`}
             </Typography>
           </Grid>

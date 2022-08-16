@@ -35,6 +35,8 @@ function App() {
         dispatch(logout())
       } else if (isLoggedIn && token && user?.isAdmin) {
         dispatch(getNodes.request({ token }))
+      } else if (isLoggedIn && token && user && !user.isAdmin) {
+        dispatch(getNetworkUserData.request({networkUserID: user.name}))
       }
       
     }, 7500)

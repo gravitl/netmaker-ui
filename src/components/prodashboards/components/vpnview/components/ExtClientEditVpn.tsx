@@ -6,8 +6,9 @@ import { useHistory, useRouteMatch, useParams } from 'react-router'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 import { updateExternalClient } from '~store/modules/node/actions'
 import { NmForm, NmFormInputText } from '~components/form'
-import { nodeSelectors, authSelectors } from '~store/selectors'
+import { authSelectors, proSelectors } from '~store/selectors'
 import { grey } from '@mui/material/colors'
+import { getNetworkUserData } from '~store/modules/pro/actions'
 
 export const ExtClientEditVpn: React.FC<{}> = () => {
   const history = useHistory()
@@ -17,7 +18,8 @@ export const ExtClientEditVpn: React.FC<{}> = () => {
   const newPath = `${path.split(':netid')[0]}${netid}`
   const dispatch = useDispatch()
   const inDarkMode = useSelector(authSelectors.isInDarkMode)
-  const extClients = useSelector(nodeSelectors.getExtClients)
+  const userData = useSelector(proSelectors.networkUserData)[netid]
+  const extClients = userData.clients
   const currentClient = extClients.filter((ec) => ec.clientid === clientid)[0]
 
   useLinkBreadcrumb({
@@ -40,10 +42,11 @@ export const ExtClientEditVpn: React.FC<{}> = () => {
             enabled: currentClient.enabled,
           })
         )
+        dispatch(getNetworkUserData.request({networkUserID: userData.user.id}))
         history.goBack()
       }
     },
-    [dispatch, clientid, netid, history, currentClient]
+    [dispatch, clientid, netid, history, currentClient, userData]
   )
 
   const handleClose = () => {

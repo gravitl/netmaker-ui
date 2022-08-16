@@ -3,21 +3,24 @@ import React from 'react'
 import { useRouteMatch, Switch, Route, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
-import ExtAccessCard from '../NetAdminCards/ExtAccessCard'
+import { ExtClientViewVpn } from './components/ExtClientViewVpn'
 import { useSelector } from 'react-redux'
 import { proSelectors } from '~store/selectors'
-import { ExternalClient } from '~store/types'
-import { RemoteAccessView } from './RemoteAccessView'
+import { ExternalClient, Node } from '~store/types'
+import { ExtClientEditVpn } from './components/ExtClientEditVpn'
+import { QrCodeViewVpn } from './components/QrCodeViewVpn'
 
-export const VpnDashboard: React.FC = () => {
+export const RemoteAccessView: React.FC = () => {
   const { path } = useRouteMatch()
   const { t } = useTranslation()
   const { netid } = useParams<{ netid: string }>()
   const netData = useSelector(proSelectors.networkUserData)[netid]
   let clients = [] as ExternalClient[]
+  let vpns = [] as Node[]
 
   if (!!netData) {
     clients = netData.clients
+    vpns = netData.vpns
   }
 
   useLinkBreadcrumb({
@@ -34,14 +37,19 @@ export const VpnDashboard: React.FC = () => {
             justifyContent="space-evenly"
             alignItems="center"
           >
-            <Grid item xs={12} sm={6} md={5}>
-              <ExtAccessCard clients={clients} />
+            <Grid item xs={12}>
+                <ExtClientViewVpn vpns={vpns} clients={clients} />
             </Grid>
           </Grid>
         </Route>
-        <Route path={`${path}/vpnview`}>
+        <Route path={`${path}/:clientid/edit`}>
           <Grid>
-            <RemoteAccessView />
+            <ExtClientEditVpn />
+          </Grid>
+        </Route>
+        <Route path={`${path}/:clientid/qr`}>
+          <Grid>
+            <QrCodeViewVpn />
           </Grid>
         </Route>
       </Switch>

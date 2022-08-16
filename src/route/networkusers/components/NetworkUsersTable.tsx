@@ -1,24 +1,20 @@
 import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { NmLink } from '../../../components'
 import { NmTable, TableColumns } from '../../../components/Table'
-import { Delete, Edit } from '@mui/icons-material'
+import { Edit } from '@mui/icons-material'
 import { useTranslation } from 'react-i18next'
 import { useParams, useHistory, useRouteMatch } from 'react-router-dom'
-import CustomDialog from '~components/dialog/CustomDialog'
 import { Grid, Typography } from '@mui/material'
 import { NetworkSelect } from '~components/NetworkSelect'
 import { NetworkUser } from '~store/types'
-import { deleteNetworkUser } from '~store/modules/pro/actions'
 import { proSelectors } from '~store/selectors'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 
 export const NetworkUsersTable: React.FC<{}> = () => {
   const { t } = useTranslation()
-  const dispatch = useDispatch()
   const history = useHistory()
-  const [open, setOpen] = React.useState(false)
-  const [selectedUserID, setSelectedUserID] = React.useState('')
+  // const [open, setOpen] = React.useState(false)
   const { netid } = useParams<{ netid: string }>()
   const { url } = useRouteMatch()
   const netUsers = useSelector(proSelectors.networkUsers)
@@ -67,26 +63,58 @@ export const NetworkUsersTable: React.FC<{}> = () => {
       ),
       align: 'center',
     },
+    {
+      id: 'id',
+      label: t('node.nodes'),
+      minWidth: 170,
+      sortable: true,
+      format: (_, obj) => (<span>
+        {obj.nodes.map(n => 
+          <NmLink
+            sx={{ textTransform: 'none' }}
+            to={`/nodes/${netid}/${n}`}
+          >
+            {n}
+          </NmLink>)}
+        </span>
+      ),
+      align: 'center',
+    },
+    {
+      id: 'id',
+      label: t('extclient.extclients'),
+      minWidth: 170,
+      sortable: true,
+      format: (_, obj) => (
+        <NmLink
+          sx={{ textTransform: 'none' }}
+          to={`/ext-clients/${netid}`}
+        >
+          {obj.clients.join(',')}
+        </NmLink>
+      ),
+      align: 'center',
+    },
   ]
 
-  const handleClose = () => {
-    setOpen(false)
-  }
+  // const handleClose = () => {
+  //   setOpen(false)
+  // }
 
-  const handleOpen = (selected: string) => {
-    setSelectedUserID(selected)
-    setOpen(true)
-  }
+  // const handleOpen = (selected: string) => {
+  //   setSelectedUserID(selected)
+  //   setOpen(true)
+  // }
 
-  const handleDeleteNetworkUser = () => {
-    dispatch(
-      deleteNetworkUser.request({
-        networkName: netid,
-        networkUserID: selectedUserID,
-      })
-    )
-    history.push(`/user-permissions/${netid}`)
-  }
+  // const handleDeleteNetworkUser = () => {
+  //   dispatch(
+  //     deleteNetworkUser.request({
+  //       networkName: netid,
+  //       networkUserID: selectedUserID,
+  //     })
+  //   )
+  //   history.push(`/user-permissions/${netid}`)
+  // }
 
   return (
     <Grid container>
@@ -124,17 +152,17 @@ export const NetworkUsersTable: React.FC<{}> = () => {
               history.push(`/user-permissions/${netid}/${row.id}`)
             },
           }),
-          (row) => ({
-            tooltip: `${t('common.delete')} ${row.id}`,
-            disabled: false,
-            icon: <Delete />,
-            onClick: () => {
-              handleOpen(row.id)
-            },
-          }),
+          // (row) => ({
+          //   tooltip: `${t('common.delete')} ${row.id}`,
+          //   disabled: false,
+          //   icon: <Delete />,
+          //   onClick: () => {
+          //     handleOpen(row.id)
+          //   },
+          // }),
         ]}
       />
-      {selectedUserID && (
+      {/* {selectedUserID && (
         <CustomDialog
           open={open}
           handleClose={handleClose}
@@ -142,7 +170,7 @@ export const NetworkUsersTable: React.FC<{}> = () => {
           message={t('pro.networkusers.deleteconfirm')}
           title={`${t('common.delete')} ${selectedUserID}`}
         />
-      )}
+      )} */}
     </Grid>
   )
 }
