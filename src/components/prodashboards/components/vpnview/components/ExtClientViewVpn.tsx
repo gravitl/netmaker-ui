@@ -28,6 +28,7 @@ import { MultiCopy } from '~components/CopyText'
 // import { tempClients, tempNodes } from './testdata'
 import { grey } from '@mui/material/colors'
 import { GenericError } from '~util/genericerror'
+import { useHistory } from 'react-router-dom'
 
 const columns: TableColumns<Node> = [
   {
@@ -66,6 +67,7 @@ export const ExtClientViewVpn: React.FC<{
   const { path, url } = useRouteMatch()
   const { t } = useTranslation()
   const { netid } = useParams<{ netid: string }>()
+  const history = useHistory()
   const [filterClients, setFilterClients] = React.useState(
     [] as ExternalClient[]
   )
@@ -171,6 +173,7 @@ export const ExtClientViewVpn: React.FC<{
           enabled: !selectedClient.enabled,
         })
       )
+      history.push(`/prouser/${netid}/vpnview`)
     }
   }
 
@@ -246,7 +249,6 @@ export const ExtClientViewVpn: React.FC<{
           justifyContent="space-evenly"
           alignItems="flex-start"
         >
-          <Grid item xs={6} sx={{ margin: '0.5em 0em 1em 0em' }}></Grid>
           <Grid item xs={12}>
             <hr />
             <CustomizedDialogs

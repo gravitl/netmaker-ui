@@ -1,5 +1,5 @@
 import { MutableRequired } from '../acls'
-import { Node, ExternalClient, Network } from '../../types'
+import { Node, ExternalClient, Network, NodePayload, NetworkPayload } from '../../types'
 
 export type UserGroups = MutableRequired<{ [groupName: string]: void }>
 
@@ -30,12 +30,24 @@ export interface NetworkUserData {
   user: NetworkUser
 }
 
+export interface NetworkUserDataPayload {
+  nodes: Array<NodePayload>
+  clients: Array<ExternalClient>
+  vpns: Array<NodePayload>
+  networks: Array<NetworkPayload>
+  user: NetworkUser
+}
+
 export type NetworksUsersMap = MutableRequired<{
   [networkName: string]: NetworkUser[]
 }>
 
 export type NetworkUserDataMap = MutableRequired<{
   [networkName: string]: NetworkUserData
+}>
+
+export type NetworkUserDataMapPayload = MutableRequired<{
+  [networkName: string]: NetworkUserDataPayload
 }>
 
 export interface NetworkUsersPayload {
@@ -55,5 +67,5 @@ export interface NetworkUserUpdatePayload {
 
 export interface NetworkUserGetPayload {
   Request: { networkUserID: string }
-  Response: NetworkUserDataMap
+  Response: NetworkUserDataMapPayload
 }

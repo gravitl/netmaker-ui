@@ -10,6 +10,7 @@ import {
   getNetworkUserData,
 } from './actions'
 import { NetworksUsersMap, NetworkUserDataMap } from './types'
+import { netUserDataPayloadToNetUserData } from './utils'
 
 export const reducer = createReducer({
   isProcessing: false as boolean,
@@ -19,22 +20,22 @@ export const reducer = createReducer({
 })
 .handleAction(getNetworkUserData['success'], (state, payload) =>
     produce(state, (draftState) => {
-      draftState.isProcessing = false
-      if (!!payload && !!payload.payload) {
-        draftState.networkUserData = payload.payload
+      const newData = netUserDataPayloadToNetUserData(payload.payload)
+      if (JSON.stringify(draftState.networkUserData) !== JSON.stringify(newData)) {
+        draftState.networkUserData = newData
       }
+      // draftState.isProcessing = false
       console.log("USER DATA:", JSON.stringify(draftState.networkUserData))
     })
   )
   .handleAction(getNetworkUserData['failure'], (state, _) =>
     produce(state, (draftState) => {
-      draftState.isProcessing = false
+      // draftState.isProcessing = false
       draftState.networkUserData = {}
     })
   )
   .handleAction(getNetworkUserData['request'], (state, _) =>
     produce(state, (draftState) => {
-      draftState.isProcessing = true
     })
   )
   .handleAction(getUserGroups['success'], (state, payload) =>

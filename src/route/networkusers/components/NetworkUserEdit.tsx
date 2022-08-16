@@ -1,10 +1,10 @@
-import React, { useCallback, useMemo } from 'react'
+import React, { useCallback } from 'react'
 import { Grid, Modal, Typography, Box, Tooltip } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useHistory, useRouteMatch, useParams } from 'react-router'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
-import { NmForm, NmFormInputText, validate } from '~components/form'
+import { NmForm, NmFormInputText } from '~components/form'
 import { proSelectors, authSelectors } from '~store/selectors'
 import { grey } from '@mui/material/colors'
 import { NetworkUser } from '~store/types'
@@ -55,14 +55,14 @@ export const NetworkUserEdit: React.FC<{}> = () => {
             networkUser: { ...newClient },
           })
         )
-        history.push(`/networkusers/${netid}`)
+        history.push(`/user-permissions/${netid}`)
       }
     },
     [dispatch, netid, history, currentClient]
   )
 
   const handleClose = () => {
-    history.push(`/networkusers/${netid}`)
+    history.push(`/user-permissions/${netid}`)
   }
 
   if (!!!currentClient) {

@@ -65,7 +65,7 @@ export const Users: React.FC = () => {
                 <NmLink
                   variant="contained"
                   color="primary"
-                  to={{ pathname: '/networkusers' }}
+                  to={{ pathname: '/user-permissions' }}
                 >
                   {t('pro.label.userpermissions')}
                 </NmLink>

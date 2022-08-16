@@ -59,11 +59,11 @@ export default function UserCard() {
     },
     {
       icon: (
-        <Link color="primary" to="/networkusers">
+        <Link color="primary" to="/user-permissions">
           <NetworkUsersIcon />
         </Link>
       ),
-      name: `${t('common.manage')} ${t('pro.label.networkusers')}`,
+      name: `${t('common.manage')} ${t('pro.label.userpermissions')}`,
     },
     {
       icon: (

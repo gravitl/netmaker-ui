@@ -97,7 +97,7 @@ function Routes() {
           <PrivateRoute path="/usergroups">
             <UserGroups />
           </PrivateRoute>
-          <PrivateRoute path="/networkusers">
+          <PrivateRoute path="/user-permissions">
             <NetworkUsers />
           </PrivateRoute>
           <PrivateRoute

@@ -9,7 +9,7 @@ import {
   getNetworkUserData,
 } from './actions'
 import { AxiosResponse } from 'axios'
-import { NetworksUsersMap, NetworkUserDataMap, UserGroups } from './types'
+import { NetworksUsersMap, NetworkUserDataMapPayload, UserGroups } from './types'
 import { apiRequestWithAuthSaga } from '../api/saga'
 import { generatorToastSaga } from '../toast/saga'
 import { i18n } from '../../../i18n/i18n'
@@ -95,7 +95,7 @@ function* handleGetNetworkUserData(
   action: ReturnType<typeof getNetworkUserData['request']>
 ) {
   try {
-    const response: AxiosResponse<NetworkUserDataMap> =
+    const response: AxiosResponse<NetworkUserDataMapPayload> =
       yield apiRequestWithAuthSaga('get', `/networkusers/data/${action.payload.networkUserID}/me`, {})
     yield put(getNetworkUserData['success'](response.data))
   } catch (e: unknown) {
