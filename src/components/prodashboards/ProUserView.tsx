@@ -29,6 +29,7 @@ export const ProUserView: React.FC = () => {
             direction="row"
             justifyContent="center"
             alignItems="center"
+            textAlign="center"
           >
             <Grid item xs={8}>
               <ProNetworkSelect />

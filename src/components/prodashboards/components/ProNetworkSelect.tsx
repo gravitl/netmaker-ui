@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next'
 import ProCustomSelect from '~components/select/ProCustomSelect'
 import { FormControl, Grid, Typography } from '@mui/material'
 import { clearCurrentMetrics } from '~store/modules/server/actions'
+import { GenericError } from '~util/genericerror'
 
 import { authSelectors } from '../../../store/selectors'
 
@@ -27,6 +28,11 @@ export const ProNetworkSelect: React.FC<{
   const titleStyle = {
     textAlign: 'center',
   } as any
+
+  // if statement for if no network display message no networks
+  if (networkNames.length === 0) {
+    return <GenericError />
+  }
 
   return (
     <Grid container justifyContent="space-around" alignItems="center">

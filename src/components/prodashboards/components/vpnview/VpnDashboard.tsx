@@ -8,6 +8,7 @@ import { ExtClientViewVpn } from './components/ExtClientViewVpn'
 import { useSelector } from 'react-redux'
 import { proSelectors } from '~store/selectors'
 import { ExternalClient, Node } from '~store/types'
+import { ExtClientEditVpn } from './components/ExtClientEditVpn'
 
 export const VpnDashboard: React.FC = () => {
   const { path } = useRouteMatch()
@@ -44,6 +45,11 @@ export const VpnDashboard: React.FC = () => {
         <Route path={`${path}/vpnview`}>
           <Grid>
             <ExtClientViewVpn vpns={vpns} clients={clients} />
+          </Grid>
+        </Route>
+        <Route path={`${path}/vpnview`}>
+          <Grid>
+            <ExtClientEditVpn />
           </Grid>
         </Route>
       </Switch>
