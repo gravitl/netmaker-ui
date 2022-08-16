@@ -1,10 +1,10 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import { Grid, Modal, Typography, Box, Tooltip } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useHistory, useRouteMatch, useParams } from 'react-router'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
-import { NmForm, NmFormInputText } from '~components/form'
+import { NmForm, NmFormInputText, validate } from '~components/form'
 import { proSelectors, authSelectors } from '~store/selectors'
 import { grey } from '@mui/material/colors'
 import { NetworkUser } from '~store/types'
@@ -152,6 +152,7 @@ export const NetworkUserEdit: React.FC<{}> = () => {
                   >
                     <NmFormInputText
                       defaultValue={currentClient.accesslevel}
+                      InputProps={{ inputProps: { min: 0, max: 3 } }}
                       name="accesslevel"
                       label={String(t('pro.networkusers.accesslevel'))}
                       type="number"
@@ -166,6 +167,7 @@ export const NetworkUserEdit: React.FC<{}> = () => {
                   >
                     <NmFormInputText
                       defaultValue={currentClient.nodelimit}
+                      InputProps={{ inputProps: { min: 0 } }}
                       name="nodelimit"
                       label={String(t('pro.networkusers.nodelimit'))}
                       type="number"
@@ -179,6 +181,7 @@ export const NetworkUserEdit: React.FC<{}> = () => {
                   >
                     <NmFormInputText
                       defaultValue={currentClient.clientlimit}
+                      InputProps={{ inputProps: { min: 0 } }}
                       name="clientlimit"
                       label={String(t('pro.networkusers.clientlimit'))}
                       type="number"
