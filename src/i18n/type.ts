@@ -201,6 +201,7 @@ export interface LanguageResource {
     extclients: string
     extclient: string
     create: string
+    disabled: string
     delete: string
     viewing: string
     none: string
