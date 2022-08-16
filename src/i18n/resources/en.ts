@@ -206,6 +206,7 @@ export const en: LanguageResource = {
     extclients: 'External Clients',
     extclient: 'Ext Client',
     create: 'Create Ext Client',
+    disabled: 'You have reached your client limit',
     delete: 'Delete Ext Client',
     viewing: 'Viewing Ext Client',
     none: 'No Ext Clients Found',

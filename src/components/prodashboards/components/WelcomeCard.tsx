@@ -2,21 +2,17 @@ import * as React from 'react'
 import { Link } from 'react-router-dom'
 import Avatar from '@mui/material/Avatar'
 import Card from '@mui/material/Card'
-import CardActions from '@mui/material/CardActions'
 import { grey } from '@mui/material/colors'
 import { useSelector } from 'react-redux'
-import { networkSelectors } from '~store/selectors'
 import CardContent from '@mui/material/CardContent'
 import Typography from '@mui/material/Typography'
 import { useTranslation } from 'react-i18next'
 import ThreePIcon from '@mui/icons-material/ThreeP'
-import { Button, Grid, useTheme } from '@mui/material'
+import { Button, useTheme } from '@mui/material'
 import { authSelectors } from '~store/selectors'
 
 export default function WelcomeCard() {
   const { t } = useTranslation()
-  const networks = useSelector(networkSelectors.getNetworks)
-  const networkCount = !!networks ? networks.length : 0
   const theme = useTheme()
   const user = useSelector(authSelectors.getUser)
 
@@ -26,6 +22,7 @@ export default function WelcomeCard() {
     height: '100%',
     width: '50%',
     MaxWidth: '50%',
+    minHeight: '15em',
   }
 
   const cardContentStyle = {
@@ -68,25 +65,6 @@ export default function WelcomeCard() {
             </Typography>
           </div>
         </CardContent>
-        <CardActions>
-          <Grid container justifyContent="right" alignItems="right">
-            <Grid item xs={1.5}>
-              <Typography variant="body2" color="primary">
-                {`${t('pro.label.networknumber')}`}
-              </Typography>
-            </Grid>
-            <Grid item xs={1}>
-              <Avatar
-                sx={{ bgcolor: grey[900] }}
-                aria-label={String(t('common.count'))}
-              >
-                <Typography variant="body1" color="white">
-                  {networkCount}
-                </Typography>
-              </Avatar>
-            </Grid>
-          </Grid>
-        </CardActions>
       </Card>
     </Button>
   )

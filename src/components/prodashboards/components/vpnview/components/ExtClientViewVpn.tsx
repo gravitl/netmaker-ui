@@ -52,7 +52,6 @@ const columns: TableColumns<Node> = [
     label: i18n.t('ingress.add'),
     minWidth: 45,
     align: 'center',
-
     format: (_, node) => <ExtClientCreateButtonVpn node={node} />,
   },
 ]
@@ -61,7 +60,10 @@ const centerText = {
   textAlign: 'center',
 }
 
-export const ExtClientViewVpn: React.FC<{vpns: Node[], clients: ExternalClient[]}> = ({vpns, clients}) => {
+export const ExtClientViewVpn: React.FC<{
+  vpns: Node[]
+  clients: ExternalClient[]
+}> = ({ vpns, clients }) => {
   const { path, url } = useRouteMatch()
   const { t } = useTranslation()
   const { netid } = useParams<{ netid: string }>()
@@ -82,7 +84,7 @@ export const ExtClientViewVpn: React.FC<{vpns: Node[], clients: ExternalClient[]
   })
 
   if (!vpns || !vpns.length) {
-    return <GenericError message={t('ingress.none')}/>
+    return <GenericError message={t('ingress.none')} />
   }
 
   const extColumns: TableColumns<ExternalClient> = [
