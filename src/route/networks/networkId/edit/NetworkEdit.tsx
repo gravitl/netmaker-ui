@@ -266,6 +266,7 @@ export const NetworkEdit: React.FC<{
               name="prosettings.defaultaccesslevel"
               label={String(t('pro.network.defaultaccesslevel'))}
               type="number"
+              InputProps={{ inputProps: { min: 0, max: 3 } }}
             />
           </Tooltip>
         </Grid>
@@ -278,6 +279,7 @@ export const NetworkEdit: React.FC<{
               name="prosettings.defaultusernodelimit"
               label={String(t('pro.network.defaultusernodelimit'))}
               type="number"
+              InputProps={{ inputProps: { min: 0 } }}
             />
           </Tooltip>
         </Grid>
@@ -290,6 +292,7 @@ export const NetworkEdit: React.FC<{
               name="prosettings.defaultuserclientlimit"
               label={String(t('pro.network.defaultuserclientlimit'))}
               type="number"
+              InputProps={{ inputProps: { min: 0 } }}
             />
           </Tooltip>
         </Grid>
