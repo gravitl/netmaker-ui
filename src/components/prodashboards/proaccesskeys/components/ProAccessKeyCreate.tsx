@@ -10,7 +10,7 @@ import {
   clearTempKey,
 } from '../../../../store/modules/network/actions'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
-import AccessKeyDetails from '../../../../i18n/AccessKeyDetails'
+import AccessKeyDetails from '../../../../route/accesskeys/components/AccessKeyDetails'
 
 export const ProAccessKeyCreate: React.FC = () => {
   const listOfNetworks = useSelector(networkSelectors.getNetworks)
