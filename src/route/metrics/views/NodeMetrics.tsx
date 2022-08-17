@@ -268,7 +268,14 @@ export const NodeMetrics: React.FC = () => {
       labelKey: 'pro.metrickeys.latency',
       minWidth: 100,
       align: 'center',
-      format: (value) => <Typography variant="h5">{value}</Typography>,
+      format: (value) =>
+        value === 0 ? (
+          <Typography variant="h5">
+            {String(t('pro.metrickeys.lessthanone'))}
+          </Typography>
+        ) : (
+          <Typography variant="h5">{value}</Typography>
+        ),
     },
     {
       id: 'totalsent',
