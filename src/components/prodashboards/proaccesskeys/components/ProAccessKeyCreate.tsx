@@ -1,26 +1,16 @@
 import React, { useCallback } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useRouteMatch, useParams, useHistory } from 'react-router-dom'
-import { networkSelectors } from '../../../../store/selectors'
+import { proSelectors } from '../../../../store/selectors'
 import { useTranslation } from 'react-i18next'
 import { Grid, Typography } from '@mui/material'
 import { NmForm, NmFormInputText } from '~components/form'
-import {
-  createAccessKey,
-  clearTempKey,
-} from '../../../../store/modules/network/actions'
+import { clearCurrentAccessKey, proCreateAccessKey } from '~store/modules/pro/actions'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
-import AccessKeyDetails from '../../../../i18n/AccessKeyDetails'
+import AccessKeyDetails from '../../../../route/accesskeys/components/AccessKeyDetails'
 
 export const ProAccessKeyCreate: React.FC = () => {
-  const listOfNetworks = useSelector(networkSelectors.getNetworks)
-  const tempKey = useSelector(networkSelectors.getTempKey)
-  const networkNames = []
-  if (listOfNetworks) {
-    for (let i = 0; i < listOfNetworks.length; i++) {
-      networkNames.push(listOfNetworks[i].netid)
-    }
-  }
+  const tempKey = useSelector(proSelectors.getCurrentAccessKey)
   const history = useHistory()
   const { netid } = useParams<{ netid: string }>()
   const { url } = useRouteMatch()
@@ -39,7 +29,7 @@ export const ProAccessKeyCreate: React.FC = () => {
   const handleOpen = () => setModalOpen(true)
 
   const handleClose = useCallback(() => {
-    dispatch(clearTempKey())
+    dispatch(clearCurrentAccessKey())
     setModalOpen(false)
     history.goBack()
   }, [dispatch, history])
@@ -66,7 +56,7 @@ export const ProAccessKeyCreate: React.FC = () => {
   const onSubmit = useCallback(
     (data: CreateAccessKey) => {
       dispatch(
-        createAccessKey.request({
+        proCreateAccessKey.request({
           netid,
           newAccessKey: {
             name: data.name || '',

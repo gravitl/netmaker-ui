@@ -1,5 +1,5 @@
 import { MutableRequired } from '../acls'
-import { Node, ExternalClient, Network, NodePayload, NetworkPayload } from '../../types'
+import { Node, ExternalClient, Network, NodePayload, NetworkPayload, AccessKey } from '../../types'
 
 export type UserGroups = MutableRequired<{ [groupName: string]: void }>
 
@@ -68,4 +68,18 @@ export interface NetworkUserUpdatePayload {
 export interface NetworkUserGetPayload {
   Request: { networkUserID: string }
   Response: NetworkUserDataMapPayload
+}
+
+export interface ProCreateAccessKeyPayload {
+  Request: {
+    netid: string
+    newAccessKey: {
+      name: string
+      uses: number
+    }
+  }
+  Response: {
+    netid: string
+    newAccessKey: AccessKey
+  }
 }

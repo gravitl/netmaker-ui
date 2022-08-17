@@ -210,7 +210,6 @@ export const ExtClientViewVpn: React.FC<{
           justifyContent="center"
           alignItems="center"
         >
-          {' '}
           {data.user.accesslevel > NET_ADMIN_ACCESS_LVL && (
             <>
               <Grid item xs={4}>

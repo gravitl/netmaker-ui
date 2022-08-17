@@ -2,8 +2,8 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { proSelectors } from '~store/selectors'
-import { NetAdminDashboard } from './NetAdminDashboard'
-import { NodeUserDashboard } from '../NodeUserDashboard'
+import { NetAdminDashboard } from '../dashboards/NetAdminDashboard'
+import { NodeUserDashboard } from '../dashboards/NodeUserDashboard'
 import {
   NET_ADMIN_ACCESS_LVL,
   NODE_ACCESS_LVL,
@@ -11,7 +11,7 @@ import {
 } from '../ProConsts'
 
 import { NotFound } from '~util/errorpage'
-import { VpnDashboard } from './vpnview/VpnDashboard'
+import { VpnDashboard } from '../dashboards/VpnDashboard'
 
 export default function NetUserView() {
   const { netid } = useParams<{ netid: string }>()

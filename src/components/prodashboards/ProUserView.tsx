@@ -7,7 +7,7 @@ import { ProNetworkSelect } from './components/ProNetworkSelect'
 import { useSelector } from 'react-redux'
 import { proSelectors } from '~store/types'
 import Loading from '~components/Loading'
-import NetUserView from './components/NetUserView'
+import NetUserView from './views/NetUserView'
 
 export const ProUserView: React.FC = () => {
   const { path } = useRouteMatch()
