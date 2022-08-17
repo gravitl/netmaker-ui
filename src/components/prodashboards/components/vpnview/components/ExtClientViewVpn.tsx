@@ -14,6 +14,7 @@ import { DownloadExtClientButtonVpn } from './DownloadExtClientButtonVpn'
 import { DeleteExtClientButtonVpn } from './DeleteExtClientButtonVpn'
 import { EditExtClientButtonVpn } from './EditExtClientButtonVpn'
 import Avatar from '@mui/material/Avatar'
+import { NET_ADMIN_ACCESS_LVL } from '~components/prodashboards/ProConsts'
 
 import {
   CheckBox,
@@ -209,38 +210,43 @@ export const ExtClientViewVpn: React.FC<{
           justifyContent="center"
           alignItems="center"
         >
-          <Grid item xs={4}>
-            <Avatar
-              sx={{
-                bgcolor: grey[700],
-                width: 100,
-                height: 100,
-              }}
-              aria-label={String(t('common.clientsused'))}
-            >
-              <Typography
-                variant="body1"
-                style={{ fontSize: '.9em', textAlign: 'center' }}
-              >
-                {String(t('common.clientsused'))}
-                {clientCount}
-              </Typography>
-            </Avatar>
-          </Grid>
-          <Grid item xs={1}>
-            <Avatar
-              sx={{ bgcolor: grey[700], width: 100, height: 100 }}
-              aria-label={String(t('common.clientsavailable'))}
-            >
-              <Typography
-                variant="body1"
-                style={{ fontSize: '.9em', textAlign: 'center' }}
-              >
-                {String(t('common.clientsavailable'))}
-                {clientsLeft}
-              </Typography>
-            </Avatar>
-          </Grid>
+          {' '}
+          {data.user.accesslevel > NET_ADMIN_ACCESS_LVL && (
+            <>
+              <Grid item xs={4}>
+                <Avatar
+                  sx={{
+                    bgcolor: grey[700],
+                    width: 100,
+                    height: 100,
+                  }}
+                  aria-label={String(t('common.clientsused'))}
+                >
+                  <Typography
+                    variant="body1"
+                    style={{ fontSize: '.9em', textAlign: 'center' }}
+                  >
+                    {String(t('common.clientsused'))}
+                    {clientCount}
+                  </Typography>
+                </Avatar>
+              </Grid>
+              <Grid item xs={1}>
+                <Avatar
+                  sx={{ bgcolor: grey[700], width: 100, height: 100 }}
+                  aria-label={String(t('common.clientsavailable'))}
+                >
+                  <Typography
+                    variant="body1"
+                    style={{ fontSize: '.9em', textAlign: 'center' }}
+                  >
+                    {String(t('common.clientsavailable'))}
+                    {clientsLeft}
+                  </Typography>
+                </Avatar>
+              </Grid>
+            </>
+          )}
         </Grid>
 
         <Grid
