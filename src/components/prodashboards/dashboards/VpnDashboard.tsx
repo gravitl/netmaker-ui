@@ -3,11 +3,11 @@ import React from 'react'
 import { useRouteMatch, Switch, Route, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
-import ExtAccessCard from '../NetAdminCards/ExtAccessCard'
+import ExtAccessCard from '../components/NetAdminCards/ExtAccessCard'
 import { useSelector } from 'react-redux'
 import { proSelectors } from '~store/selectors'
 import { ExternalClient } from '~store/types'
-import { RemoteAccessView } from './RemoteAccessView'
+import { RemoteAccessView } from '../components/vpnview/RemoteAccessView'
 
 export const VpnDashboard: React.FC = () => {
   const { path } = useRouteMatch()

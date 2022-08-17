@@ -8,10 +8,9 @@ import {
   Route,
   Switch,
   Link,
-  useHistory,
 } from 'react-router-dom'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
-import { NodeId } from '../../../route/nodes/netid/nodeId/NodeId'
+import { NodeId } from '../../../../route/nodes/netid/nodeId/NodeId'
 import {
   Chip,
   Grid,
@@ -26,13 +25,12 @@ import {
   AltRoute,
   Delete,
   Search,
-  Sync,
   CallMerge,
   CallSplit,
 } from '@mui/icons-material'
-import { CreateEgress } from '../../../route/nodes/netid/components/CreateEgress'
-import { CreateRelay } from '../../../route/nodes/netid/components/CreateRelay'
-import { NetworkSelect } from '../../../components/NetworkSelect'
+import { CreateEgress } from '../../../../route/nodes/netid/components/CreateEgress'
+import { CreateRelay } from '../../../../route/nodes/netid/components/CreateRelay'
+import { NetworkSelect } from '../../../NetworkSelect'
 import { useDispatch, useSelector } from 'react-redux'
 import { deleteNode, setNodeSort } from '~store/modules/node/actions'
 import CustomizedDialogs from '~components/dialog/CustomDialog'
@@ -42,8 +40,8 @@ import { Tablefilter } from '~components/filter/Tablefilter'
 import { useEffect, useState } from 'react'
 import { GenericError } from '~util/genericerror'
 import { NmLink } from '~components/Link'
-import { i18n } from '../../../i18n/i18n'
-import { TableToggleButton } from '../../../route/nodes/netid/components/TableToggleButton'
+import { i18n } from '../../../../i18n/i18n'
+import { TableToggleButton } from '../../../../route/nodes/netid/components/TableToggleButton'
 
 export const NodeAccessView: React.FC<{ nodes: Node[]; isNetAdmin?: boolean }> =
   ({ nodes, isNetAdmin }) => {
@@ -54,7 +52,6 @@ export const NodeAccessView: React.FC<{ nodes: Node[]; isNetAdmin?: boolean }> =
     const [filterNodes, setFilterNodes] = React.useState(nodes)
     const [selected, setSelected] = React.useState({} as Node)
     const dispatch = useDispatch()
-    const history = useHistory()
     const [searchTerm, setSearchTerm] = useState(' ')
 
     useEffect(() => {
@@ -82,12 +79,6 @@ export const NodeAccessView: React.FC<{ nodes: Node[]; isNetAdmin?: boolean }> =
       title: t('breadcrumbs.nodes'),
     })
 
-    const syncNodes = () => {
-      if (!!netid) {
-        history.push(`/nodes/${netid}`)
-      }
-    }
-
     if (!nodes) {
       return <GenericError />
     }
@@ -99,9 +90,10 @@ export const NodeAccessView: React.FC<{ nodes: Node[]; isNetAdmin?: boolean }> =
         minWidth: 100,
         sortable: true,
         format: (value, node) =>
-          isNetAdmin ? (
             <NmLink
-              to={`/nodes/${node.network}/${encodeURIComponent(node.id)}`}
+              to={isNetAdmin ? 
+                `/prouser/${node.network}/nodeview/edit/${encodeURIComponent(node.id)}` : 
+                `/prouser/${node.network}/nodeview/view/${encodeURIComponent(node.id)}`}
               sx={{ textTransform: 'none' }}
             >
               {value}
@@ -109,9 +101,6 @@ export const NodeAccessView: React.FC<{ nodes: Node[]; isNetAdmin?: boolean }> =
                 node.ispending === 'yes' ? ` (${i18n.t('common.pending')})` : ''
               }`}
             </NmLink>
-          ) : (
-            value
-          ),
       },
       {
         id: 'address',
@@ -310,15 +299,8 @@ export const NodeAccessView: React.FC<{ nodes: Node[]; isNetAdmin?: boolean }> =
                         onChange={handleFilter}
                       />
                     </Grid>
-                    <Grid item xs={7.5} md={3} paddingBottom="1rem">
+                    <Grid item xs={7.5} md={4} paddingBottom="1rem">
                       <NetworkSelect selectAll />
-                    </Grid>
-                    <Grid item xs={1} md={1}>
-                      <Tooltip title={t('node.sync') as string} placement="top">
-                        <IconButton color="primary" onClick={syncNodes}>
-                          <Sync />
-                        </IconButton>
-                      </Tooltip>
                     </Grid>
                   </Grid>
                 </Grid>

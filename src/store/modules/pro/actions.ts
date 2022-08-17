@@ -1,11 +1,13 @@
-import { createAsyncAction } from 'typesafe-actions'
+import { createAction, createAsyncAction } from 'typesafe-actions'
 import { UserGroupsPayload, UserGroupDelorCreate } from '.'
 import {
   NetworkUsersPayload,
   NetworkUserDelPayload,
   NetworkUserUpdatePayload,
   NetworkUserGetPayload,
+  ProCreateAccessKeyPayload,
 } from '.'
+import { TempKey } from '../network'
 
 export const getUserGroups = createAsyncAction(
   'Pro_getUserGroups',
@@ -56,3 +58,16 @@ export const getNetworkUserData = createAsyncAction(
   NetworkUserGetPayload['Response'],
   Error
 >()
+
+export const proCreateAccessKey = createAsyncAction(
+  'Pro_proCreateAccessKey_Request',
+  'Pro_proCreateAccessKey_Success',
+  'Pro_proCreateAccessKey_Failure'
+)<
+  ProCreateAccessKeyPayload['Request'],
+  ProCreateAccessKeyPayload['Response'],
+  Error
+>()
+
+export const clearCurrentAccessKey = createAction('clearCurrentAccessKey')<void>()
+export const setCurrentAccessKey = createAction('setCurrentAccessKey')<TempKey>()

@@ -51,7 +51,7 @@ export const ProAccessKeyTable: React.FC<{}> = () => {
       format: (value) => (
         <NmLink
           sx={{ textTransform: 'none' }}
-          to={`/prouser/${netid}/accesskeys/${value}`}
+          to={`/prouser/${netid}/accesskeys/view/${value}`}
         >
           {value}
         </NmLink>
@@ -69,7 +69,6 @@ export const ProAccessKeyTable: React.FC<{}> = () => {
 
   const handleClose = () => {
     setOpen(false)
-    history.goBack()
   }
 
   const handleOpen = (selected: string) => {
@@ -84,7 +83,7 @@ export const ProAccessKeyTable: React.FC<{}> = () => {
         name: selectedKey!,
       })
     )
-    history.push(`/access-keys/${netid}`)
+    history.push(`/prouser/${netid}/accesskeys`)
   }
 
   return (

@@ -23,3 +23,5 @@ export const networkUserData = createSelector(
 export const getNetworkUserNetworks = createSelector(getProState, (pro) =>
   Object.keys(pro.networkUserData)
 )
+
+export const getCurrentAccessKey = createSelector(getProState, (pro) => pro.currentAccessKey)

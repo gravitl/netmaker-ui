@@ -7,6 +7,7 @@ import {
   deleteNetworkUser,
   updateNetworkUser,
   getNetworkUserData,
+  proCreateAccessKey,
 } from './actions'
 import { AxiosResponse } from 'axios'
 import { NetworksUsersMap, NetworkUserDataMapPayload, UserGroups } from './types'
@@ -174,6 +175,41 @@ function* handleUpdateNetworkUser(
   }
 }
 
+function* handleProCreateAccessKeyRequest(
+  action: ReturnType<typeof proCreateAccessKey['request']>
+) {
+  try {
+    yield fork(generatorToastSaga, {
+      success: proCreateAccessKey['success'],
+      error: proCreateAccessKey['failure'],
+      params: {
+        pending: i18n.t('common.pending'),
+        success: i18n.t('toast.create.success.accesskey'),
+        error: (error) =>
+          `${i18n.t('toast.create.failure.accesskey')}\n${
+            error.response.data.Message
+          }`,
+      },
+    })
+
+    action.payload.newAccessKey.uses = Number(action.payload.newAccessKey.uses)
+
+    const response: AxiosResponse = yield apiRequestWithAuthSaga(
+      'post',
+      `/networks/${action.payload.netid}/keys`,
+      action.payload.newAccessKey,
+      {}
+    )
+
+    yield put(proCreateAccessKey['success']({ 
+      netid: action.payload.netid,
+      newAccessKey: response.data, 
+    }))
+  } catch (e: unknown) {
+    yield put(proCreateAccessKey['failure'](e as Error))
+  }
+}
+
 export function* saga() {
   yield all([
     takeEvery(getType(getUserGroups['request']), handleGetUserGroupsRequest),
@@ -183,5 +219,6 @@ export function* saga() {
     takeEvery(getType(deleteNetworkUser['request']), handleDeleteNetworkUser),
     takeEvery(getType(updateNetworkUser['request']), handleUpdateNetworkUser),
     takeEvery(getType(getNetworkUserData['request']), handleGetNetworkUserData),
+    takeEvery(getType(proCreateAccessKey['request']), handleProCreateAccessKeyRequest),
   ])
 }

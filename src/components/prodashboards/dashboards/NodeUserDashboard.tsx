@@ -3,24 +3,22 @@ import React from 'react'
 import { useRouteMatch, Switch, Route, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
-import NodeAccessCard from './components/NetAdminCards/NodeAccessCard'
-import ExtAccessCard from './components/NetAdminCards/ExtAccessCard'
-import { NodeAccessView } from './components/NodeAccessView'
+import NodeAccessCard from '../components/NetAdminCards/NodeAccessCard'
+import ExtAccessCard from '../components/NetAdminCards/ExtAccessCard'
 import { useSelector } from 'react-redux'
 import { proSelectors } from '~store/selectors'
-import { ExternalClient, Node } from '~store/types'
-import { RemoteAccessView } from './components/vpnview/RemoteAccessView'
+import { ExternalClient } from '~store/types'
+import { RemoteAccessView } from '../components/vpnview/RemoteAccessView'
+import { ProNodesView } from '../components/nodes/ProNodesView'
 
 export const NodeUserDashboard: React.FC = () => {
   const { path } = useRouteMatch()
   const { t } = useTranslation()
   const { netid } = useParams<{ netid: string }>()
   const netData = useSelector(proSelectors.networkUserData)[netid]
-  let nodes = [] as Node[]
   let clients = [] as ExternalClient[]
 
   if (!!netData) {
-    nodes = netData.nodes
     clients = netData.clients
   }
 
@@ -55,7 +53,7 @@ export const NodeUserDashboard: React.FC = () => {
         </Route>
         <Route path={`${path}/nodeview`}>
           <Grid>
-            <NodeAccessView nodes={nodes} isNetAdmin={true} />
+            <ProNodesView />
           </Grid>
         </Route>
       </Switch>
