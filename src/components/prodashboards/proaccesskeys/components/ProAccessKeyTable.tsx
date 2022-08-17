@@ -51,7 +51,7 @@ export const ProAccessKeyTable: React.FC<{}> = () => {
       format: (value) => (
         <NmLink
           sx={{ textTransform: 'none' }}
-          to={`/access-keys/${netid}/details/${value}`}
+          to={`/prouser/${netid}/accesskeys/${value}`}
         >
           {value}
         </NmLink>

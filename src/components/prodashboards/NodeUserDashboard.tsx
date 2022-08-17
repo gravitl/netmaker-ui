@@ -47,7 +47,7 @@ export const NodeUserDashboard: React.FC = () => {
           </Grid>
         </Route>
         <Route path={`${path}/vpnview`}>
-          <Grid container justifyContent='center' alignItems='center'>
+          <Grid container justifyContent="center" alignItems="center">
             <Grid item xs={12}>
               <RemoteAccessView />
             </Grid>
@@ -55,7 +55,7 @@ export const NodeUserDashboard: React.FC = () => {
         </Route>
         <Route path={`${path}/nodeview`}>
           <Grid>
-            <NodeAccessView nodes={nodes} />
+            <NodeAccessView nodes={nodes} isNetAdmin={true} />
           </Grid>
         </Route>
       </Switch>

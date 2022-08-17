@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 import { ProAccessKeyCreate } from './components/ProAccessKeyCreate'
 import { ProAccessKeyTable } from './components/ProAccessKeyTable'
+import { AccessKeyView } from '../../../route/accesskeys/components/AccessKeyView'
 
 export const ProDashboardAccessKeys: React.FC = () => {
   const { path } = useRouteMatch()
@@ -28,6 +29,9 @@ export const ProDashboardAccessKeys: React.FC = () => {
               <ProAccessKeyTable />
             </Grid>
           </Grid>
+        </Route>
+        <Route path={`${path}/:keyname`}>
+          <AccessKeyView />
         </Route>
 
         <Route path={`${path}/create`}>
