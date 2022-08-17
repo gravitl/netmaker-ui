@@ -18,6 +18,10 @@ export const en: LanguageResource = {
       totalsent: 'Total Sent',
       totalreceived: 'Total Received',
       syncmetrics: 'Refresh Metrics',
+      lessthanone: '< 1',
+      datasent: 'Data Sent',
+      datareceived: 'Data Received',
+      peerconnections: 'Peer Connections',
     },
     label: {
       usergroup: 'User Group',

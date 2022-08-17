@@ -314,7 +314,9 @@ export const NodeMetrics: React.FC = () => {
           alignItems="center"
         >
           <Grid item xs={10} style={styles.center}>
-            <Typography variant="h4">Data Sent</Typography>
+            <Typography variant="h4">
+              {String(t('pro.metrickeys.datasent'))}
+            </Typography>
           </Grid>
           <Grid item xs={12}>
             <SentChart totalSent={totalSent} duration={duration} />
@@ -329,7 +331,9 @@ export const NodeMetrics: React.FC = () => {
           alignItems="center"
         >
           <Grid item xs={10} style={styles.center}>
-            <Typography variant="h4">Data Received</Typography>
+            <Typography variant="h4">
+              {String(t('pro.metrickeys.datareceived'))}
+            </Typography>
           </Grid>
           <Grid item xs={12}>
             <ReceivedChart totalReceived={totalReceived} duration={duration} />
@@ -345,7 +349,9 @@ export const NodeMetrics: React.FC = () => {
           style={styles.topMargin}
         >
           <Grid item xs={6.5} md={5.5} style={styles.center}>
-            <Typography variant="h4">Peer Connections</Typography>
+            <Typography variant="h4">
+              {String(t('pro.metrickeys.peerconnections'))}
+            </Typography>
           </Grid>
           <Grid item xs={5} md={5.5}>
             <div style={styles.center}>
