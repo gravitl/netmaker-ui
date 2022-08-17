@@ -3,18 +3,18 @@ import React from 'react'
 import { useRouteMatch, Switch, Route, useHistory } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
-import ProAccessKeyCard from './NetAdminCards/ProAccessKeyCard'
-import AdminNetworkCard from './NetAdminCards/AdminNetwork'
-import { NodeAccessView } from './NodeAccessView'
+import ProAccessKeyCard from '../components/NetAdminCards/ProAccessKeyCard'
+import AdminNetworkCard from '../components/NetAdminCards/AdminNetwork'
 import { useSelector } from 'react-redux'
 import { Network, proSelectors } from '~store/types'
 import { useParams } from 'react-router-dom'
-import { ExternalClient, Node } from '~store/types'
-import NodeAccessCard from './NetAdminCards/NodeAccessCard'
-import ExtAccessCard from './NetAdminCards/ExtAccessCard'
+import { ExternalClient } from '~store/types'
+import NodeAccessCard from '../components/NetAdminCards/NodeAccessCard'
+import ExtAccessCard from '../components/NetAdminCards/ExtAccessCard'
 import { ProDashboardAccessKeys } from '../proaccesskeys/ProDashboardAccessKeys'
 import { ProNetworkEdit } from '../networksView/pronetworkId/edit/ProNetworkEdit'
-import { RemoteAccessView } from './vpnview/RemoteAccessView'
+import { RemoteAccessView } from '../components/vpnview/RemoteAccessView'
+import { ProNodesView } from '../components/nodes/ProNodesView'
 
 export const NetAdminDashboard: React.FC = () => {
   const { path } = useRouteMatch()
@@ -22,12 +22,10 @@ export const NetAdminDashboard: React.FC = () => {
   const { netid } = useParams<{ netid: string }>()
   const netData = useSelector(proSelectors.networkUserData)[netid]
   const history = useHistory()
-  let nodes = [] as Node[]
   let clients = [] as ExternalClient[]
   let network = {} as Network
 
   if (!!netData) {
-    nodes = netData.nodes
     clients = netData.clients
     network = netData.networks.filter((net) => net.netid === netid)[0]
   }
@@ -70,7 +68,7 @@ export const NetAdminDashboard: React.FC = () => {
         </Route>
         <Route path={`${path}/nodeview`}>
           <Grid>
-            <NodeAccessView nodes={nodes} isNetAdmin={true} />
+            <ProNodesView />
           </Grid>
         </Route>
         <Route path={`${path}/accesskeys`}>

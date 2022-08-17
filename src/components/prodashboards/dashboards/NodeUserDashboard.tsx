@@ -3,13 +3,15 @@ import React from 'react'
 import { useRouteMatch, Switch, Route, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
-import ExtAccessCard from '../NetAdminCards/ExtAccessCard'
+import NodeAccessCard from '../components/NetAdminCards/NodeAccessCard'
+import ExtAccessCard from '../components/NetAdminCards/ExtAccessCard'
 import { useSelector } from 'react-redux'
 import { proSelectors } from '~store/selectors'
 import { ExternalClient } from '~store/types'
-import { RemoteAccessView } from './RemoteAccessView'
+import { RemoteAccessView } from '../components/vpnview/RemoteAccessView'
+import { ProNodesView } from '../components/nodes/ProNodesView'
 
-export const VpnDashboard: React.FC = () => {
+export const NodeUserDashboard: React.FC = () => {
   const { path } = useRouteMatch()
   const { t } = useTranslation()
   const { netid } = useParams<{ netid: string }>()
@@ -21,7 +23,7 @@ export const VpnDashboard: React.FC = () => {
   }
 
   useLinkBreadcrumb({
-    title: t('breadcrumbs.netadmindashboard'),
+    title: t('breadcrumbs.nodeuserdashboard'),
   })
 
   return (
@@ -35,13 +37,23 @@ export const VpnDashboard: React.FC = () => {
             alignItems="center"
           >
             <Grid item xs={12} sm={6} md={5}>
+              <NodeAccessCard />
+            </Grid>
+            <Grid item xs={12} sm={6} md={5}>
               <ExtAccessCard clients={clients} />
             </Grid>
           </Grid>
         </Route>
         <Route path={`${path}/vpnview`}>
+          <Grid container justifyContent="center" alignItems="center">
+            <Grid item xs={12}>
+              <RemoteAccessView />
+            </Grid>
+          </Grid>
+        </Route>
+        <Route path={`${path}/nodeview`}>
           <Grid>
-            <RemoteAccessView />
+            <ProNodesView />
           </Grid>
         </Route>
       </Switch>

@@ -1,5 +1,6 @@
 import { produce } from 'immer'
 import { createReducer } from 'typesafe-actions'
+import { TempKey } from '../network'
 import {
   getUserGroups,
   deleteUserGroup,
@@ -8,6 +9,9 @@ import {
   deleteNetworkUser,
   updateNetworkUser,
   getNetworkUserData,
+  proCreateAccessKey,
+  clearCurrentAccessKey,
+  setCurrentAccessKey,
 } from './actions'
 import { NetworksUsersMap, NetworkUserDataMap } from './types'
 import { netUserDataPayloadToNetUserData } from './utils'
@@ -17,6 +21,7 @@ export const reducer = createReducer({
   userGroups: [] as string[],
   networkUsers: {} as NetworksUsersMap,
   networkUserData: {} as NetworkUserDataMap,
+  currentAccessKey: {} as TempKey,
 })
 .handleAction(getNetworkUserData['success'], (state, payload) =>
     produce(state, (draftState) => {
@@ -151,5 +156,29 @@ export const reducer = createReducer({
   .handleAction(updateNetworkUser['failure'], (state, _) =>
     produce(state, (draftState) => {
       draftState.isProcessing = false
+    })
+  )
+  .handleAction(proCreateAccessKey['success'], (state, action) =>
+    produce(state, (draftState) => {
+      const index = draftState.networkUserData[action.payload.netid].networks.findIndex(
+        (network) => network.netid === action.payload.netid
+      )
+      if (~index) {
+        draftState.currentAccessKey = {
+          accessString: action.payload.newAccessKey.accessstring,
+          value: action.payload.newAccessKey.value,
+        }
+      }
+    })
+  )
+  .handleAction(clearCurrentAccessKey, (state, _) =>
+    produce(state, (draftState) => {
+      draftState.currentAccessKey.accessString = ''
+      draftState.currentAccessKey.value = ''
+    })
+  )
+  .handleAction(setCurrentAccessKey, (state, action) =>
+    produce(state, (draftState) => {
+      draftState.currentAccessKey = { ...action.payload }
     })
   )

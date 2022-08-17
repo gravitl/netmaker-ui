@@ -16,6 +16,7 @@ export interface LanguageResource {
       totalsent: string
       totalreceived: string
       syncmetrics: string
+      lessthanone: string
     }
     label: {
       usergroup: string
