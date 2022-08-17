@@ -4,13 +4,14 @@ import { useParams } from 'react-router-dom'
 import { proSelectors } from '~store/selectors'
 import { NetAdminDashboard } from './NetAdminDashboard'
 import { NodeUserDashboard } from '../NodeUserDashboard'
+import {
+  NET_ADMIN_ACCESS_LVL,
+  NODE_ACCESS_LVL,
+  CLIENT_ACCESS_LVL,
+} from '../ProConsts'
 
 import { NotFound } from '~util/errorpage'
 import { VpnDashboard } from './vpnview/VpnDashboard'
-
-const NET_ADMIN_ACCESS_LVL = 0
-const NODE_ACCESS_LVL = 1
-const CLIENT_ACCESS_LVL = 2
 
 export default function NetUserView() {
   const { netid } = useParams<{ netid: string }>()
