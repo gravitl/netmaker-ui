@@ -86,6 +86,7 @@ export interface ExternalClient {
   ingressgatewayendpoint: string
   lastmodified: number
   enabled: boolean
+  ownerid: string
 }
 
 export interface GetNodesPayload {
