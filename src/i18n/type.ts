@@ -17,6 +17,9 @@ export interface LanguageResource {
       totalreceived: string
       syncmetrics: string
       lessthanone: string
+      datasent: string
+      datareceived: string
+      peerconnections: string
     }
     label: {
       usergroup: string

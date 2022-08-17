@@ -19,6 +19,9 @@ export const en: LanguageResource = {
       totalreceived: 'Total Received',
       syncmetrics: 'Refresh Metrics',
       lessthanone: '< 1',
+      datasent: 'Data Sent',
+      datareceived: 'Data Received',
+      peerconnections: 'Peer Connections',
     },
     label: {
       usergroup: 'User Group',
