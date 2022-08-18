@@ -74,8 +74,6 @@ export const reducer = createReducer({
       } else {
         draftState.nodes = []
       }
-      console.log(JSON.stringify(draftState.nodes))
-
       draftState.isFetching = false
     })
   )
@@ -83,10 +81,6 @@ export const reducer = createReducer({
     produce(state, (draftState) => {
       draftState.externalClients = action.payload || []
       draftState.isFetchingClients = false
-      console.log(
-        'externalclients:',
-        JSON.stringify(draftState.externalClients)
-      )
     })
   )
   .handleAction(getNodes['failure'], (state, action) =>

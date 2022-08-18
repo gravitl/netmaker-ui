@@ -26,3 +26,7 @@ export const getAttempts = createSelector(
   getServer,
   (server) => server.attempts
 )
+export const hasFetchedNodeMetrics = createSelector(
+  getServer,
+  (server) => server.fetchedNodeMetrics
+)

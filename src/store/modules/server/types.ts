@@ -76,13 +76,12 @@ export interface MetricsContainer {
 }
 
 export interface NodeMetric {
+  node_name: string
   uptime: number
   totaltime: number
   latency: number
   totalreceived: number
-  receivedhourly: number
   totalsent: number
-  senthourly: number
   actualuptime: number
   percentup: number
   connected: boolean

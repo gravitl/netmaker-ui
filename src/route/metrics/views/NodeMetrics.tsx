@@ -15,9 +15,8 @@ import { UptimeChart } from './charts/Uptime'
 import { SentChart } from './charts/SentChart'
 import { ReceivedChart } from './charts/ReceivedChart'
 import { useSelector, useDispatch } from 'react-redux'
-import { nodeSelectors, serverSelectors } from '~store/selectors'
-import { NodeMetric, NodeMetricsContainer } from '~store/types'
-import { useNodesByNetworkId } from '~util/network'
+import { serverSelectors } from '~store/selectors'
+import { NodeMetric } from '~store/types'
 import {
   clearCurrentMetrics,
   getNodeMetrics,
@@ -27,6 +26,8 @@ import { Modify } from 'src/types/react-app-env'
 import MetricButton from '../components/MetricButton'
 import { Search, Sync } from '@mui/icons-material'
 import { MAX_ATTEMPTS } from '../util'
+import Loading from '~components/Loading'
+import { NotFound } from '~util/errorpage'
 
 const styles = {
   center: {
@@ -58,20 +59,15 @@ export const NodeMetrics: React.FC = () => {
   const dispatch = useDispatch()
   const { t } = useTranslation()
   const { netid, nodeid } = useParams<{ nodeid: string; netid: string }>()
-  const allNodes = useNodesByNetworkId(netid)
-  const extClients = useSelector(nodeSelectors.getExtClients)
   const metrics = useSelector(serverSelectors.getNodeMetrics)
   const isFetching = useSelector(serverSelectors.isFetchingServerConfig)
+  const hasFetchedNodeMetrics = useSelector(serverSelectors.hasFetchedNodeMetrics)
   const attempts = useSelector(serverSelectors.getAttempts)
   const [initialLoad, setInitialLoad] = React.useState(true)
-  const [currentNodeMetrics, setCurrentNodeMetrics] = React.useState(
-    {} as NodeMetricsContainer
-  )
   const [currentPeerMetrics, setCurrentPeerMetrics] = React.useState(
     [] as NodeMetricID[]
   )
-  var nodeNameMap: Map<string, string> = new Map()
-  const [filterNodes, setFilterNodes] = React.useState(allNodes)
+  const [filterString, setFilterString] = React.useState('')
 
   const syncMetrics = () => {
     dispatch(clearCurrentMetrics())
@@ -87,30 +83,13 @@ export const NodeMetrics: React.FC = () => {
     title: netid,
   })
 
-  if (!!allNodes) {
-    allNodes.map((node) => nodeNameMap.set(node.id, node.name))
-  }
-  if (!!extClients) {
-    extClients.map((client) =>
-      nodeNameMap.set(client.clientid, client.clientid)
-    )
-  }
-
   const handleFilter = (event: { target: { value: string } }) => {
     const { value } = event.target
     const searchTerm = value.trim()
     if (!!!searchTerm) {
-      setFilterNodes(allNodes)
+      setFilterString('')
     } else {
-      if (!!allNodes) {
-        setFilterNodes(
-          allNodes.filter((node) =>
-            `${node.name}${node.address}${node.id}${node.network}`.includes(
-              searchTerm
-            )
-          )
-        )
-      }
+        setFilterString(value)
     }
   }
 
@@ -157,77 +136,48 @@ export const NodeMetrics: React.FC = () => {
       }
     }
 
-    if (
-      (!!!currentNodeMetrics && !isFetching) ||
-      !!!Object.keys(currentNodeMetrics).length ||
-      !!!metrics ||
-      Object.keys(currentNodeMetrics).length !== Object.keys(metrics).length ||
-      (!!Object.keys(currentNodeMetrics.connectivity).length &&
-        !!~Object.keys(currentNodeMetrics.connectivity).findIndex(
-          (currID) => currID === nodeid
-        ))
-    ) {
+    if (!hasFetchedNodeMetrics || !metrics) {
       if (attempts < MAX_ATTEMPTS)
         dispatch(getNodeMetrics.request({ ID: nodeid, Network: netid }))
       setCurrentPeerMetrics([])
     }
     if (
-      !!metrics &&
-      Object.keys(currentNodeMetrics).length !== Object.keys(metrics).length
-    ) {
-      setCurrentNodeMetrics(metrics)
-    }
-    if (
-      !!Object.keys(currentNodeMetrics).length &&
-      !!!currentPeerMetrics.length &&
-      !!Object.keys(currentNodeMetrics.connectivity).length &&
-      !!nodeNameMap &&
-      !!nodeNameMap.get &&
-      nodeNameMap.size === allNodes?.length
+      hasFetchedNodeMetrics && 
+      metrics &&
+      !currentPeerMetrics.length
     ) {
       const newPeerMetrics = [] as NodeMetricID[]
-      Object.keys(currentNodeMetrics.connectivity).map((peerID) => {
-        const name = nodeNameMap.get(peerID)
-        if (!!name) {
+      Object.keys(metrics.connectivity).map((peerID) => {
           newPeerMetrics.push({
-            ...currentNodeMetrics.connectivity[peerID],
+            ...metrics.connectivity[peerID],
             id: peerID,
-            name,
+            name: metrics.connectivity[peerID].node_name
           })
-        }
         return null
       })
       setCurrentPeerMetrics(newPeerMetrics)
     }
-    if (!!!metrics) {
-      setCurrentNodeMetrics({} as NodeMetricsContainer)
-    }
-    // eslint-disable-next-line
   }, [
     dispatch,
-    currentNodeMetrics,
     metrics,
     netid,
     nodeid,
-    allNodes,
     currentPeerMetrics,
     attempts,
     isFetching,
+    hasFetchedNodeMetrics,
+    initialLoad,
   ])
 
   let totalSent = 0
   let duration = 0
   let totalReceived = 0
-  if (
-    !!currentNodeMetrics &&
-    !!currentNodeMetrics.connectivity &&
-    !!Object.keys(currentNodeMetrics.connectivity).length
-  ) {
-    Object.keys(currentNodeMetrics.connectivity).map((peerID) => {
-      totalSent += currentNodeMetrics.connectivity[peerID].totalsent
-      totalReceived += currentNodeMetrics.connectivity[peerID].totalreceived
-      if (!!!duration && currentNodeMetrics.connectivity[peerID].connected) {
-        duration = currentNodeMetrics.connectivity[peerID].actualuptime
+  if (hasFetchedNodeMetrics && metrics) {
+    Object.keys(metrics.connectivity).map((peerID) => {
+      totalSent += metrics.connectivity[peerID].totalsent
+      totalReceived += metrics.connectivity[peerID].totalreceived
+      if (!!!duration && metrics.connectivity[peerID].connected) {
+        duration = metrics.connectivity[peerID].actualuptime
       }
       return null
     })
@@ -300,6 +250,14 @@ export const NodeMetrics: React.FC = () => {
       ),
     },
   ]
+
+  if (isFetching) {
+    return <Loading />
+  }
+
+  if (!hasFetchedNodeMetrics) {
+    return <NotFound />
+  }
 
   return (
     <Grid container justifyContent="center" alignItems="center">
@@ -386,13 +344,13 @@ export const NodeMetrics: React.FC = () => {
             </Tooltip>
           </Grid>
           <Grid item xs={12} style={styles.topMargin}>
-            {!!filterNodes && filterNodes.length ? (
+            {!!filterString ? (
               <NmTable
                 columns={columns}
                 rows={currentPeerMetrics.filter(
-                  (node) => !!~filterNodes.findIndex((n) => n.id === node.id)
+                  (node) => `${node.name}${node.id}`.includes(filterString)
                 )}
-                getRowId={(row) => row.name}
+                getRowId={(row) => row.node_name}
               />
             ) : (
               <NmTable

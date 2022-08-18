@@ -33,7 +33,7 @@ const makeSelectNodeByNetworkId = () =>
     (nodes, id) => nodes.filter(nodesByNetworkIdPredicate(id))
   )
 
-export const useNodesByNetworkId = (id: Network['netid']) => {
+export const useNodesByNetworkId = (id: Network['netid']) : Array<Node> | undefined => {
   const selectNodes = useMemo(makeSelectNodeByNetworkId, [])
   return useSelector<RootState, Array<Node> | undefined>((state) =>
     selectNodes(state, id)
