@@ -10,6 +10,7 @@ export const reducer = createReducer({
   nodeMetrics: {} as NodeMetricsContainer | undefined,
   metrics: {} as MetricsContainer | undefined,
   attempts: 0,
+  fetchedNodeMetrics: false,
 })
   .handleAction(getServerConfig['request'], (state, _) =>
     produce(state, (draftState) => {
@@ -96,13 +97,15 @@ export const reducer = createReducer({
     produce(state, (draftState) => {
       draftState.isFetching = true
       draftState.attempts++
+      draftState.fetchedNodeMetrics = false
     })
   )
   .handleAction(getNodeMetrics['success'], (state, payload) => 
     produce(state, (draftState) => {
-      draftState.isFetching = false
       draftState.nodeMetrics = payload.payload
       draftState.attempts = 0
+      draftState.fetchedNodeMetrics = true
+      draftState.isFetching = false
     })
   )
   .handleAction(getNodeMetrics['failure'], (state, _) => 
