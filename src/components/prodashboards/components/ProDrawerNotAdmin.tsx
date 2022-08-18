@@ -342,9 +342,6 @@ export default function ProDrawerNotAdmin() {
             ))}
         </List>
       </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3, margin: '1em 0 1em 0' }}>
-        <DrawerHeader />
-      </Box>
     </Box>
   )
 }
