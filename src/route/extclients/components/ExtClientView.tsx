@@ -26,6 +26,7 @@ import { IconButton, Tooltip } from '@mui/material'
 import { updateExternalClient } from '~store/modules/node/actions'
 import CustomizedDialogs from '~components/dialog/CustomDialog'
 import { MultiCopy } from '~components/CopyText'
+import { NotFound } from '~util/errorpage'
 
 const columns: TableColumns<Node> = [
   {
@@ -78,7 +79,7 @@ export const ExtClientView: React.FC = () => {
   })
 
   if (!listOfNodes) {
-    return <div>{t('error.notfound')}</div>
+    return <NotFound />
   }
 
   const gateways = filterIngressGateways(listOfNodes)
@@ -221,8 +222,8 @@ export const ExtClientView: React.FC = () => {
         >
           <Grid item xs={6} sx={{ margin: '0.5em 0em 1em 0em' }}>
             <NetworkSelect />
-            </Grid>
-            <Grid item xs={12}>
+          </Grid>
+          <Grid item xs={12}>
             <hr />
             <CustomizedDialogs
               open={!!selectedClient && !!selectedClient.clientid}
@@ -268,7 +269,7 @@ export const ExtClientView: React.FC = () => {
                   },
                 }),
               ]}
-              tableId='_gateways'
+              tableId="_gateways"
             />
           </Grid>
           <Grid
@@ -291,7 +292,7 @@ export const ExtClientView: React.FC = () => {
                 )
               })}
               getRowId={(row) => row.clientid}
-              tableId='_extClients'
+              tableId="_extClients"
             />
           </Grid>
         </Grid>
