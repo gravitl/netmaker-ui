@@ -48,6 +48,7 @@ export interface Node {
   isdocker: boolean
   isk8s: boolean
   ishub: boolean
+  connected: boolean
 }
 
 export type NodePayload = Modify<
@@ -67,6 +68,7 @@ export type NodePayload = Modify<
     isdocker: 'yes' | 'no'
     isk8s: 'yes' | 'no'
     ishub: 'yes' | 'no'
+    connected: 'yes' | 'no'
   }
 >
 

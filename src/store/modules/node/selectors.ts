@@ -24,7 +24,4 @@ export const getShouldSignOut = createSelector(
   (node) => node.shouldSignOut
 )
 
-export const getNodeSort = createSelector(
-  getNodeState,
-  (node) => node.nodeSort
-)
+export const getNodeSort = createSelector(getNodeState, (node) => node.nodeSort)
