@@ -103,6 +103,7 @@ export const en: LanguageResource = {
     ascend: 'Sort Ascending',
     descend: 'Sort Descending ',
     sortby: 'Sort by',
+    connected: 'Connected',
   },
   dashboard: {
     title: 'Netmaker Dashboard',
@@ -281,6 +282,7 @@ export const en: LanguageResource = {
       'On a point-to-site network, this node is the only one all peers connect to',
     nodeislocal:
       'If on, will only communicate over the local address (Assumes IsLocal turned to {yes} on the network level.)',
+    isnodeconnected: 'If on, the node is connected to the network',
   },
   node: {
     nodes: 'Nodes',
@@ -365,6 +367,7 @@ export const en: LanguageResource = {
     error: 'Node has no Connectivity',
     warning: 'Node has connectivity issues',
     connected: 'Node is connected to ',
+    togglenode: 'Connected',
     validation: {
       relayaddress: 'Please enter a valid relay address range (IPv4 or IPv6)',
       egressgatewayrange:
