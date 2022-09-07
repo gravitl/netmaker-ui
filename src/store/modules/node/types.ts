@@ -24,6 +24,7 @@ export interface Node {
   checkininterval: number
   password: string
   network: string
+  privatenetworkid: string
   ispending: string
   isrelay: boolean
   isrelayed: boolean

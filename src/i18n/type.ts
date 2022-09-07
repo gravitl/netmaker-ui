@@ -201,6 +201,7 @@ export interface LanguageResource {
     isdnson: string
     networkhub: string
     nodeislocal: string
+    privatenetworkid: string
   }
   network: {
     allowmanualsignup: string
@@ -328,6 +329,7 @@ export interface LanguageResource {
     error: string
     warning: string
     connected: string
+    privatenetworkid: string
     validation: {
       relayaddress: string
       egressgatewayrange: string

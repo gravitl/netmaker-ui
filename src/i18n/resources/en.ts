@@ -281,6 +281,8 @@ export const en: LanguageResource = {
       'On a point-to-site network, this node is the only one all peers connect to',
     nodeislocal:
       'If on, will only communicate over the local address (Assumes IsLocal turned to {yes} on the network level.)',
+    privatenetworkid:
+      'If not empty, the node with the same ID will connect from the Local Address',
   },
   node: {
     nodes: 'Nodes',
@@ -365,6 +367,7 @@ export const en: LanguageResource = {
     error: 'Node has no Connectivity',
     warning: 'Node has connectivity issues',
     connected: 'Node is connected to ',
+    privatenetworkid: 'Private Network ID',
     validation: {
       relayaddress: 'Please enter a valid relay address range (IPv4 or IPv6)',
       egressgatewayrange:

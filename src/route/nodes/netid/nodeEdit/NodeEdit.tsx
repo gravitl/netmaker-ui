@@ -478,6 +478,15 @@ export const NodeEdit: React.FC<{
             />
           </Tooltip>
         </Grid>
+        <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
+          <Tooltip title={String(t('helper.privatenetworkid'))} placement="top">
+            <NmFormInputText
+              label={String(t('node.privatenetworkid'))}
+              name={'privatenetworkid'}
+              defaultValue={node.privatenetworkid}
+            />
+          </Tooltip>
+        </Grid>
 
         <Grid container justifyContent="space-between" alignItems="center">
           <Grid item xs={10} sm={4} md={2} sx={rowMargin}>
