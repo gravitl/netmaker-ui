@@ -20,6 +20,7 @@ export const nodeToNodePayload = (node: Node): NodePayload => {
     isdocker: node.isdocker ? 'yes' : 'no',
     isk8s: node.isk8s ? 'yes' : 'no',
     ishub: node.ishub ? 'yes' : 'no',
+    connected: node.connected ? 'yes' : 'no',
   }
 }
 export const nodePayloadToNode = (node: NodePayload): Node => {
@@ -42,6 +43,7 @@ export const nodePayloadToNode = (node: NodePayload): Node => {
     isdocker: node.isdocker === 'yes',
     isk8s: node.isk8s === 'yes',
     ishub: node.ishub === 'yes',
+    connected: node.connected === 'yes',
   }
 }
 

@@ -40,7 +40,7 @@ export const useNode = (name: Node['name']) => {
 }
 
 export const filterIngressGateways = (nodes: Node[]) => {
-  return nodes.filter((node) => node.ingressgatewayrange)
+  return nodes.filter((node) => node.isingressgateway)
 }
 
 export const filterExtClientsByNetwork = (

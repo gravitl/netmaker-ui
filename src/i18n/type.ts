@@ -101,6 +101,7 @@ export interface LanguageResource {
     descend: string
     sortby: string
     lowercase: string
+    connected: string
   }
   dashboard: {
     title: string
@@ -201,6 +202,7 @@ export interface LanguageResource {
     isdnson: string
     networkhub: string
     nodeislocal: string
+    isnodeconnected: string
     privatenetworkid: string
   }
   network: {
@@ -329,6 +331,7 @@ export interface LanguageResource {
     error: string
     warning: string
     connected: string
+    togglenode: string
     privatenetworkid: string
     validation: {
       relayaddress: string
