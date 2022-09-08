@@ -196,6 +196,7 @@ export const NodeEdit: React.FC<{
                 ? String(t('node.endpointdisable'))
                 : String(t('node.endpointenable'))
             }
+            placement="top"
           >
             <span>
               <NmFormInputText
