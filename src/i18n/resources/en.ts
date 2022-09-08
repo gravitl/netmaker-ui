@@ -282,6 +282,9 @@ export const en: LanguageResource = {
       'On a point-to-site network, this node is the only one all peers connect to',
     nodeislocal:
       'If on, will only communicate over the local address (Assumes IsLocal turned to {yes} on the network level.)',
+    isnodeconnected: 'If on, the node is connected to the network',
+    privatenetworkid:
+    'If not empty, the node with the same ID will connect from the Local Address',
   },
   node: {
     nodes: 'Nodes',

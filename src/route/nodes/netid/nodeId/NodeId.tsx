@@ -25,7 +25,6 @@ import { approveNode, deleteNode } from '~modules/node/actions'
 import CustomDialog from '~components/dialog/CustomDialog'
 import { useNetwork } from '~util/network'
 import { authSelectors } from '~store/selectors'
-import { NmFormInputSwitch } from '~components/form'
 
 export const NodeId: React.FC = () => {
   const { path, url } = useRouteMatch()
@@ -327,6 +326,13 @@ export const NodeId: React.FC = () => {
               disabled
               value={node.network}
               label={String(t('node.network'))}
+            />
+          </Grid>
+          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
+            <TextField
+              disabled
+              value={node.privatenetworkid}
+              label={String(t('node.privatenetworkid'))}
             />
           </Grid>
           <Grid item xs={12}>
