@@ -167,6 +167,7 @@ export interface LanguageResource {
     disconnected: string
     clientsused: string
     clientsavailable: string
+    connected: string
   }
   dashboard: {
     title: string
@@ -270,6 +271,7 @@ export interface LanguageResource {
     isdnson: string
     networkhub: string
     nodeislocal: string
+    isnodeconnected: string
   }
   network: {
     allowmanualsignup: string
@@ -401,6 +403,7 @@ export interface LanguageResource {
     error: string
     warning: string
     connected: string
+    togglenode: string
     validation: {
       relayaddress: string
       egressgatewayrange: string

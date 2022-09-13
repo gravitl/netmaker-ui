@@ -26,6 +26,7 @@ import CustomDialog from '~components/dialog/CustomDialog'
 import { useNetwork } from '~util/network'
 import { authSelectors } from '~store/selectors'
 import { nodeACLValues } from '~store/types'
+import { NmFormInputSwitch } from '~components/form'
 
 export const NodeId: React.FC = () => {
   const { path, url } = useRouteMatch()
@@ -366,6 +367,15 @@ export const NodeId: React.FC = () => {
                   control={<SwitchField checked={node.ishub} disabled />}
                   disabled
                 />
+              </Grid>
+              <Grid item xs={10} sm={4} md={2} sx={rowMargin}>
+                <span>
+                  <FormControlLabel
+                    label={String(t('node.togglenode'))}
+                    name={'connected'}
+                    control={<SwitchField checked={node.connected} disabled />}
+                  />
+                </span>
               </Grid>
             </Grid>
           </Grid>
