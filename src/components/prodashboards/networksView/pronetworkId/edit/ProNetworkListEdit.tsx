@@ -52,9 +52,13 @@ export const ProNetworkListEdit: React.FC<{ netid: string, field: 'users' | 'gro
 
   if (!!network && !!network.prosettings) {
       if (field === 'groups') {
-        initialState.choices = network.prosettings.allowedgroups.join(',')
+        if (network.prosettings.allowedgroups) {
+          initialState.choices = network.prosettings.allowedgroups.join(',')
+        }
       } else {
-        initialState.choices = network.prosettings.allowedusers.join(',')
+        if (network.prosettings.allowedusers) {
+          initialState.choices = network.prosettings.allowedusers.join(',')
+        }
       }
   }
 
