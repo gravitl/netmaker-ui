@@ -63,7 +63,7 @@ const columns: TableColumns<User> = [
   },
 ]
 
-export const UserTable: React.FC = () => {
+export const UserTableEE: React.FC = () => {
   const users = useSelector(authSelectors.getUsers)
   const { Component: Dialog, setProps } = useDialog()
   const { t } = useTranslation()

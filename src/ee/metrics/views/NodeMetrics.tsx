@@ -25,7 +25,7 @@ import { NmTable, TableColumns } from '~components/Table'
 import { Modify } from 'src/types/react-app-env'
 import MetricButton from '../components/MetricButton'
 import { Search, Sync } from '@mui/icons-material'
-import { MAX_ATTEMPTS } from '../util'
+import { MAX_ATTEMPTS } from '~components/utils'
 import Loading from '~components/Loading'
 import { NotFound } from '~util/errorpage'
 

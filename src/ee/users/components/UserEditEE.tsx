@@ -21,7 +21,7 @@ import { NmLink } from '~components/Link'
 import { User } from '~store/types'
 import { getNetworkUsers } from '~store/modules/pro/actions'
 
-export const UserEdit: React.FC = () => {
+export const UserEditEE: React.FC = () => {
   const { t } = useTranslation()
   const { username } = useParams<{ username: string }>()
   const { Component: Dialog, setProps: setDialog } = useDialog()

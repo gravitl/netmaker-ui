@@ -30,7 +30,6 @@ export const reducer = createReducer({
         draftState.networkUserData = newData
       }
       // draftState.isProcessing = false
-      console.log("USER DATA:", JSON.stringify(draftState.networkUserData))
     })
   )
   .handleAction(getNetworkUserData['failure'], (state, _) =>

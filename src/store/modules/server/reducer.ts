@@ -47,6 +47,7 @@ export const reducer = createReducer({
       draftState.config.Verbosity = action.payload.Verbosity
       draftState.config.Version = action.payload.Version
       draftState.config.RCE = action.payload.RCE === 'on'
+      draftState.config.IsEE = action.payload.IsEE === 'yes'
     })
   )
   .handleAction(getServerConfig['failure'], (state, _) =>

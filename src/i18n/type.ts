@@ -521,6 +521,7 @@ export interface LanguageResource {
         dns: string
         user: string
         admin: string
+        usergroup: string
       }
       failure: {
         accesskey: string
@@ -531,6 +532,7 @@ export interface LanguageResource {
         dns: string
         user: string
         admin: string
+        usergroup: string
       }
     }
     delete: {

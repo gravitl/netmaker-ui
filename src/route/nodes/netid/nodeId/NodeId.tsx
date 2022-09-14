@@ -26,7 +26,7 @@ import CustomDialog from '~components/dialog/CustomDialog'
 import { useNetwork } from '~util/network'
 import { authSelectors } from '~store/selectors'
 import { nodeACLValues } from '~store/types'
-import { NmFormInputSwitch } from '~components/form'
+import { NotFound } from '~util/errorpage'
 
 export const NodeId: React.FC = () => {
   const { path, url } = useRouteMatch()
@@ -58,7 +58,7 @@ export const NodeId: React.FC = () => {
   const handleApproveClose = () => setApproveOpen(false)
 
   if (!node || !network) {
-    return <div>Not Found</div>
+    return <NotFound />
   }
 
   const handleDeleteNode = () => {

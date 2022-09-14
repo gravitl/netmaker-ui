@@ -16,6 +16,8 @@ import { useTranslation } from 'react-i18next'
 import { KeyboardArrowRight } from '@mui/icons-material'
 import { Button, Grid, useTheme } from '@mui/material'
 import BottomIcon from '@mui/icons-material/HomeRepairService';
+import { useSelector } from 'react-redux'
+import { serverSelectors } from '~store/selectors'
 
 const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
   '&.MuiSpeedDial-directionRight': {
@@ -27,6 +29,7 @@ const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
 export default function AdminCard() {
   const { t } = useTranslation()
   const theme = useTheme()
+  const serverConfig = useSelector(serverSelectors.getServerConfig)
 
   const cardStyle = {
     marginBottom: '1em',
@@ -51,15 +54,20 @@ export default function AdminCard() {
       ),
       name: t('pro.logs'),
     },
-    {
-      icon: (
-        <Link color="primary" to="/metrics/MetricsTable">
-          <MetricsIcon />
-        </Link>
-      ),
-      name: t('pro.metrics'),
-    },
   ]
+
+  if (serverConfig.IsEE) {
+    actions.push(
+      {
+        icon: (
+          <Link color="primary" to="/metrics/MetricsTable">
+            <MetricsIcon />
+          </Link>
+        ),
+        name: t('pro.metrics'),
+      }
+    )
+  }
 
   return (
     <Button

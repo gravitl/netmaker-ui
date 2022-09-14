@@ -256,6 +256,7 @@ export const ProNetworkEdit: React.FC<{
             />
           </Grid>
         </Tooltip>
+        {serverConfig.IsEE && <>
         <Grid item xs={12} style={{ marginTop: '1rem' }}></Grid>
         <Grid item xs={12} sm={4} md={3.1}>
           <Tooltip
@@ -341,6 +342,8 @@ export const ProNetworkEdit: React.FC<{
             </Grid>
           </Grid>
         </Grid>
+        </>
+        }
       </Grid>
     </NmForm>
   )
