@@ -50,6 +50,7 @@ export interface Node {
   ishub: boolean
   defaultacl: boolean | undefined
   ownerid: string
+  connected: boolean
 }
 
 export type NodePayload = Modify<
@@ -71,6 +72,7 @@ export type NodePayload = Modify<
     ishub: 'yes' | 'no'
     defaultacl: 'yes' | 'no' | 'unset'
     ownerid: string
+    connected: 'yes' | 'no'
   }
 >
 
