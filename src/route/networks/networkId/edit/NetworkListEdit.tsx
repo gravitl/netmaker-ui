@@ -11,6 +11,7 @@ import { proSelectors, authSelectors } from '~store/selectors'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 import { useRouteMatch, useHistory } from 'react-router-dom'
 import { Network } from '~store/types'
+import { NotFound } from '~util/errorpage'
 
 export const NetworkListEdit: React.FC<{ netid: string, field: 'users' | 'groups' }> = ({
   netid,
@@ -52,9 +53,13 @@ export const NetworkListEdit: React.FC<{ netid: string, field: 'users' | 'groups
 
   if (!!network && !!network.prosettings) {
       if (field === 'groups') {
-        initialState.choices = network.prosettings.allowedgroups.join(',')
+        if (network.prosettings.allowedgroups) {
+          initialState.choices = network.prosettings.allowedgroups.join(',')
+        }
       } else {
-        initialState.choices = network.prosettings.allowedusers.join(',')
+        if (network.prosettings.allowedusers) {
+          initialState.choices = network.prosettings.allowedusers.join(',')
+        }
       }
   }
 
@@ -92,9 +97,7 @@ export const NetworkListEdit: React.FC<{ netid: string, field: 'users' | 'groups
 
   if (!!!network || !!!network.prosettings) {
     return (
-        <div style={{ textAlign: 'center', margin: '1em 0 1em 0' }}>
-          <Typography variant="h5">{`${t('error.notfound')}`}</Typography>
-        </div>
+        <NotFound />
       )
   }
 

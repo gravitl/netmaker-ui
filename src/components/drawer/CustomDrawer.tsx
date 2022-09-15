@@ -341,12 +341,14 @@ export default function CustomDrawer() {
                 </ListItemIcon>
                 <ListItemText primary={t('pro.logs')} />
               </ListItemButton>
-              <ListItemButton component={Link} to="/metrics">
-                <ListItemIcon aria-label={String(t('pro.metrics'))}>
-                  <MetricsIcon />
-                </ListItemIcon>
-                <ListItemText primary={t('pro.metrics')} />
-              </ListItemButton>
+              {serverConfig.IsEE &&
+                <ListItemButton component={Link} to="/metrics">
+                  <ListItemIcon aria-label={String(t('pro.metrics'))}>
+                    <MetricsIcon />
+                  </ListItemIcon>
+                  <ListItemText primary={t('pro.metrics')} />
+                </ListItemButton>
+              }
             </List>
             <Divider />
           </>

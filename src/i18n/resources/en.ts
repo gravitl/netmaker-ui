@@ -565,6 +565,7 @@ export const en: LanguageResource = {
         dns: 'Successfully created DNS Entry!',
         user: 'Successfully created User!',
         admin: 'Successfully created new Admin!',
+        usergroup: 'Successfully created new user group!',
       },
       failure: {
         accesskey: 'Failed to create Access Key.',
@@ -575,6 +576,7 @@ export const en: LanguageResource = {
         dns: 'Failed to create the DNS Entry.',
         user: 'Failed to create new User.',
         admin: 'Failed to create Admin.',
+        usergroup: 'Failed to create new user group.',
       },
     },
     delete: {

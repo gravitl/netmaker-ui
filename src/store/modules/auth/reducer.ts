@@ -83,7 +83,6 @@ export const reducer = createReducer({
         token: action.payload.token,
         user: draftState.user,
       })
-      console.log('USER API TOKEN:', action.payload.token)
       const userSettings = ls.get<LocalSettings | undefined>(SETTINGS_KEY)
       if (!!userSettings && !!userSettings.userSettings.length && !!draftState.user) {
         const settings = userSettings.userSettings.filter(settings => settings.username === decoded.UserName)[0]

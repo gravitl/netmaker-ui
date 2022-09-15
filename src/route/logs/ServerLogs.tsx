@@ -18,7 +18,7 @@ import { LinearProgress } from '@mui/material'
 import { getServerLogs } from '~store/modules/server/actions'
 import { Search, Sync } from '@mui/icons-material'
 import { authSelectors } from '~store/selectors'
-import { MAX_ATTEMPTS } from '../metrics/util'
+import { MAX_ATTEMPTS } from '~components/utils'
 
 export const ServerLogs: React.FC = () => {
   const { path, url } = useRouteMatch()

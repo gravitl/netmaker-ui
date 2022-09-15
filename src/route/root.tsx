@@ -11,28 +11,21 @@ import { Grid } from '@mui/material'
 import { AccessKeys } from './accesskeys/AccessKeys'
 import { ExtClients } from './extclients/ExtClients'
 import { RouterState } from '~store/modules/router/Component'
-import { Users } from './users/Users'
+import { UsersEE } from '../ee/users/UsersEE'
 import { DNS } from './dns/DNS'
 import { Graphs } from './graph/Graphs'
 import { NodeAcls } from './node_acls/NodeACLs'
 import { ServerLogs } from './logs/ServerLogs'
-import { MetricRoute } from './metrics/MetricRoute'
+import { MetricRoute } from '../ee/metrics/MetricRoute'
 import { UserGroups } from './usergroups/UserGroups'
 import { NetworkUsers } from './networkusers/NetworkUsers'
 import ProDrawerNotAdmin from '~components/prodashboards/components/ProDrawerNotAdmin'
-import { authSelectors } from '~store/types'
+import { authSelectors, serverSelectors } from '~store/types'
 import { useSelector } from 'react-redux'
 import { ProUserView } from '~components/prodashboards/ProUserView'
 import WelcomeCard from '~components/prodashboards/components/WelcomeCard'
-
-function NoMatch() {
-  const location = useLocation()
-  return (
-    <div>
-      No match for <code>{location.pathname}</code>
-    </div>
-  )
-}
+import { NotFound } from '~util/errorpage'
+import { UsersCommunity } from './users/UsersCommunity'
 
 function Routes() {
   let location = useLocation()
@@ -46,6 +39,7 @@ function Routes() {
   // the modal.
   const from = (location.state as any)?.from
   const user = useSelector(authSelectors.getUser)
+  const serverConfig = useSelector(serverSelectors.getServerConfig)
 
   return (
     <Grid container justifyContent="right">
@@ -91,9 +85,11 @@ function Routes() {
           <PrivateRoute path="/logs">
             <ServerLogs />
           </PrivateRoute>
-          <PrivateRoute path="/metrics">
-            <MetricRoute />
-          </PrivateRoute>
+          {serverConfig.IsEE &&
+            <PrivateRoute path="/metrics" >
+              <MetricRoute />
+            </PrivateRoute>
+          }
           <PrivateRoute path="/usergroups">
             <UserGroups />
           </PrivateRoute>
@@ -109,11 +105,11 @@ function Routes() {
               return !!user?.isAdmin
             }}
           >
-            <Users />
+            {serverConfig.IsEE ? <UsersEE /> : <UsersCommunity />}
           </PrivateRoute>
           <Route path="/login" children={<Login />} />
           <Route path="*">
-            <NoMatch />
+            <NotFound />
           </Route>
         </Switch>
         <RouterState />

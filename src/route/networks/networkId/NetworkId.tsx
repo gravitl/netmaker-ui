@@ -8,7 +8,7 @@ import {
 } from '@mui/material'
 import React, { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import {
   useRouteMatch,
   useHistory,
@@ -25,14 +25,15 @@ import { AccessKeys } from './accesskeys/AccessKeys'
 import { useNetwork } from '~util/network'
 import { NotFound } from '~util/errorpage'
 import { NetworkListEdit } from './edit/NetworkListEdit'
+import { serverSelectors } from '~store/selectors'
 
 export const NetworkId: React.FC = () => {
   const { path, url } = useRouteMatch()
   const history = useHistory()
   const { t } = useTranslation()
-
   const { netid } = useParams<{ netid: string }>()
   const network = useNetwork(netid)
+  const serverConfig = useSelector(serverSelectors.getServerConfig)
 
   useLinkBreadcrumb({
     link: url,
@@ -322,6 +323,7 @@ export const NetworkId: React.FC = () => {
                 disabled
               />
             </Grid>
+            { serverConfig.IsEE && <>
             <Grid item xs={12} style={{marginTop: '1rem'}}></Grid>
             <Grid item xs={12} sm={4} md={3.1}>
               <TextField
@@ -364,6 +366,8 @@ export const NetworkId: React.FC = () => {
                 label={String(t('pro.network.allowedusers'))}
               />
             </Grid>
+            </>
+            }
           </Grid>
         </Route>
       </Switch>

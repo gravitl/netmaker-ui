@@ -4,14 +4,14 @@ import { useRouteMatch, Switch, Route, useHistory } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 import { NmLink } from '~components/index'
-import { UserTable } from './components/UserTable'
-import { UserCreate } from './create/UserCreate'
-import { UserEdit } from './userId/UserEdit'
-import { UserChangePassword } from './userId/UserChangePassword'
-import { UserGroupEdit } from './userId/UserGroupEdit'
+import { UserTableEE } from './components/UserTableEE'
+import { UserCreate } from '../../route/users/create/UserCreate'
+import { UserEditEE } from './components/UserEditEE'
+import { UserChangePassword } from '../../route/users/userId/UserChangePassword'
+import { UserGroupEdit } from './components/UserGroupEdit'
 import { Sync } from '@mui/icons-material'
 
-export const Users: React.FC = () => {
+export const UsersEE: React.FC = () => {
   const { path } = useRouteMatch()
   const { t } = useTranslation()
   const history = useHistory()
@@ -72,16 +72,16 @@ export const Users: React.FC = () => {
               </Grid>
             </Grid>
           </Grid>
-          <UserTable />
+          <UserTableEE />
         </Route>
         <Route exact path={`${path}/:username/groups`}>
           <UserGroupEdit />
-        </Route>
+        </Route> 
         <Route path={`${path}/create`}>
           <UserCreate />
         </Route>
         <Route path={`${path}/:username`}>
-          <UserEdit />
+          <UserEditEE />
           <UserChangePassword />
         </Route>
       </Switch>

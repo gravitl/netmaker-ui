@@ -23,6 +23,7 @@ export interface ServerConfig {
   Verbosity: number // 0
   Version: string // "v0.7.3"
   RCE: boolean // "on"
+  IsEE: boolean // yes or no
 }
 export interface GetServerConfigPayload {
   Request: {
@@ -53,6 +54,7 @@ export interface GetServerConfigPayload {
     Verbosity: number
     Version: string
     RCE: string
+    IsEE: string // yes or no
   }
 }
 
