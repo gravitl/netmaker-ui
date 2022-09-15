@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Button, Grid, Tooltip } from '@mui/material'
 import { makeStyles, createStyles } from '@mui/styles'
 import {
@@ -18,6 +18,7 @@ import {
 import { randomNetworkName, randomCIDR, randomCIDR6 } from '~util/fields'
 import { useHistory } from 'react-router'
 import { correctIPv4CidrRegex, correctIpv6Regex } from '~util/regex'
+import { serverSelectors } from '~store/selectors'
 
 interface CreateNetwork {
   addressrange: string
@@ -66,6 +67,7 @@ const useStyles = makeStyles(() =>
 export const NetworkCreate: React.FC = () => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
+  const serverConfig = useSelector(serverSelectors.getServerConfig)
   const history = useHistory()
   const classes = useStyles()
   const [viewLocal, setViewLocal] = React.useState(false)
@@ -86,18 +88,18 @@ export const NetworkCreate: React.FC = () => {
           ispointtosite: data.ispointtosite ? 'yes' : 'no',
           defaultacl: data.defaultacl ? 'yes' : 'no',
           prosettings: {
-            defaultaccesslevel: Number(data.defaultaccesslevel),
+            defaultaccesslevel: serverConfig.IsEE ? 3 : Number(data.defaultaccesslevel),
             defaultusernodelimit: Number(data.defaultusernodelimit),
             defaultuserclientlimit: Number(data.defaultuserclientlimit),
             allowedusers: [],
-            allowedgroups: [],
+            allowedgroups: ['*'],
           },
         })
       )
       dispatch(getNetworks.request())
       history.push('/networks')
     },
-    [dispatch, history]
+    [dispatch, history, serverConfig]
   )
   //create network validation with messages
   const createNetworkValidation = useMemo(
@@ -389,6 +391,7 @@ export const NetworkCreate: React.FC = () => {
               />
             )}
           </Grid>
+          {serverConfig.IsEE && <>
           <Grid
             item
             xs={12}
@@ -446,6 +449,8 @@ export const NetworkCreate: React.FC = () => {
               />
             </Tooltip>
           </Grid>
+          </>
+          }
         </Grid>
       </NmForm>
     </div>
