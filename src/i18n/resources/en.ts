@@ -32,7 +32,7 @@ export const en: LanguageResource = {
       welcome: 'Welcome ',
       welcomecard: 'Please click to continue',
       networknumber: 'Number of Networks available:',
-      vpnaccess: 'VPN Access',
+      vpnaccess: 'Remote Access',
       clientconfig: 'Manage your client configuration',
       userpermissions: 'User Permissions',
     },
