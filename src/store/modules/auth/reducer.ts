@@ -68,12 +68,14 @@ export const reducer = createReducer({
         IsAdmin: boolean
         UserName: string
         Networks: Array<string>
+        Groups: Array<string>
         exp: number
       } = jwtDecode(action.payload.token)
       draftState.user = {
         isAdmin: decoded.IsAdmin,
         name: decoded.UserName,
         networks: decoded.Networks,
+        groups: decoded.Groups,
         exp: decoded.exp,
       }
       draftState.authError = false
@@ -154,6 +156,7 @@ export const reducer = createReducer({
           isAdmin: user.isadmin,
           name: user.username,
           networks: user.networks,
+          groups: user.groups,
           exp: 0,
         }))
       } else {
@@ -168,6 +171,7 @@ export const reducer = createReducer({
         name: payload.username,
         exp: 0,
         networks: payload.networks,
+        groups: []
       })
     })
   )
@@ -186,6 +190,7 @@ export const reducer = createReducer({
           name: payload.username,
           isAdmin: payload.isadmin,
           networks: payload.networks,
+          groups: payload.groups, 
           exp: draftState.users[index].exp
         }
       }

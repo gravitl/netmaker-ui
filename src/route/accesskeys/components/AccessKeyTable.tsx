@@ -93,13 +93,14 @@ export const AccessKeyTable: React.FC<{}> = () => {
   return (
     <Grid container>
       <Grid item xs={12} md={12}>
-        <Grid container 
-              direction="row"
-              display={'flex'}
-              justifyContent="space-between"
-              alignItems="center"
-              marginLeft="4rem"
-               >     
+        <Grid
+          container
+          direction="row"
+          display={'flex'}
+          justifyContent="space-between"
+          alignItems="center"
+          marginLeft="4rem"
+        >
           <Grid item xs={8} md={5}>
             <div style={{ textAlign: 'center' }}>
               <Typography variant="h4">

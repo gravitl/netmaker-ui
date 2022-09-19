@@ -1,6 +1,68 @@
 import { LanguageResource } from '../type'
 
 export const en: LanguageResource = {
+  pro: {
+    logs: 'Server Logs',
+    refresh: 'Refresh',
+    metrics: 'Metrics',
+    admin: 'Admin',
+    admintools: 'Admin Tools',
+    nometrics: 'No Metrics Available',
+    choose: 'Make Selection(s)',
+    metrickeys: {
+      latency: 'Latency (ms)',
+      uptime: 'Uptime',
+      totaltime: 'Duration',
+      percentup: 'Percent UP',
+      connected: 'Connected',
+      totalsent: 'Total Sent',
+      totalreceived: 'Total Received',
+      syncmetrics: 'Refresh Metrics',
+      lessthanone: '< 1',
+      datasent: 'Data Sent',
+      datareceived: 'Data Received',
+      peerconnections: 'Peer Connections',
+    },
+    label: {
+      usergroup: 'User Group',
+      usergroups: 'User Groups',
+      networkuser: 'Network User',
+      networkusers: 'Network Users',
+      selectnetwork: 'Select Network',
+      welcome: 'Welcome ',
+      welcomecard: 'Please click to continue',
+      networknumber: 'Number of Networks available:',
+      vpnaccess: 'VPN Access',
+      clientconfig: 'Manage your client configuration',
+      userpermissions: 'User Permissions',
+    },
+    networkusers: {
+      none: 'No Network Users Found',
+      deleteconfirm: 'Are you sure you want to remove this network user?',
+      accesslevel: 'User Access Level',
+      nodelimit: 'Node Limit',
+      clientlimit: 'Client Limit',
+      groups: 'User Groups',
+      nodes: 'User Nodes',
+      clients: 'User Ext. Clients',
+    },
+    network: {
+      defaultaccesslevel: 'Default Access Level',
+      defaultusernodelimit: 'Default User Node Limit',
+      defaultuserclientlimit: 'Default User Client Limit',
+      allowedusers: 'Allowed Users',
+      allowedgroups: 'Allowed Groups',
+      networkedit: 'Edit Network',
+      managenetwork: 'Manage your network',
+    },
+    helpers: {
+      accesslevel:
+        ' 0 - NET ADMIN, 1 - NODE/REMOTE ACCESS, 2 - REMOTE ACCESS, 3 - NO_ACCESS',
+      usernodelimit: 'The number of nodes a user may create on the network',
+      userclientlimit:
+        'Number of External Client configurations a user can create on a network if Ingress gateways present',
+    },
+  },
   header: {
     login: 'Login',
     logout: 'Logout',
@@ -61,6 +123,9 @@ export const en: LanguageResource = {
     createrelay: 'Create Relay',
     graphs: 'Graphs',
     acls: 'ACLs',
+    userdashboard: 'User Dashboard',
+    netadmindashboard: 'Network Administrator Dashboard',
+    nodeuserdashboard: 'Node User Dashboard',
   },
   common: {
     disabled: 'Disabled',
@@ -103,6 +168,9 @@ export const en: LanguageResource = {
     ascend: 'Sort Ascending',
     descend: 'Sort Descending ',
     sortby: 'Sort by',
+    disconnected: 'Disconnected',
+    clientsused: 'Clients Used:',
+    clientsavailable: 'Clients Available:',
     connected: 'Connected',
   },
   dashboard: {
@@ -133,14 +201,17 @@ export const en: LanguageResource = {
   error: {
     notfound:
       'Looks like you have lost your way, Netmaker has a route for that!',
+    noresults: 'No results found',
     network: 'Could not reach server',
     tokenexpire: 'Session has expired',
     unauthorized: 'Unauthorized access attempted',
+    overload: 'Too many failed requests, refresh to retry',
   },
   extclient: {
     extclients: 'External Clients',
     extclient: 'Ext Client',
     create: 'Create Ext Client',
+    disabled: 'You have reached your client limit',
     delete: 'Delete Ext Client',
     viewing: 'Viewing Ext Client',
     none: 'No Ext Clients Found',
@@ -206,6 +277,9 @@ export const en: LanguageResource = {
     validation: {
       ipv4: 'Please enter a valid IPv4 address',
       ipv6: 'Please enter a valid IPv6 address',
+      accesslevel: 'Value must be Between 0 and 3 see tooltip for more info',
+      nodelimit: 'Value must be 0 or greater',
+      clientlimit: 'Value must be 0 or greater',
     },
   },
   helper: {
@@ -358,6 +432,7 @@ export const en: LanguageResource = {
     isingressrelay: 'Is Ingress and Relay',
     isrelayed: 'Being Relayed',
     ishub: 'Is Network Hub',
+    defaultacl: 'Node ACL Rule',
     onehub: 'This node is currently the hub',
     createhub: 'Make this node the hub',
     updatenode: 'Update Node',
@@ -468,6 +543,7 @@ export const en: LanguageResource = {
         user: 'User Updated!',
         approve: 'Node Approved!',
         nodeacl: 'ACL Updated!',
+        networkuser: 'Network User Updated!',
       },
       failure: {
         node: 'Node updated failed!',
@@ -476,6 +552,7 @@ export const en: LanguageResource = {
         user: 'Failed to update user!',
         approve: 'Failed to approve node!',
         nodeacl: 'Failed to update ACL!',
+        networkuser: 'Failed to update Network User!',
       },
     },
     create: {
@@ -488,6 +565,7 @@ export const en: LanguageResource = {
         dns: 'Successfully created DNS Entry!',
         user: 'Successfully created User!',
         admin: 'Successfully created new Admin!',
+        usergroup: 'Successfully created new user group!',
       },
       failure: {
         accesskey: 'Failed to create Access Key.',
@@ -498,6 +576,7 @@ export const en: LanguageResource = {
         dns: 'Failed to create the DNS Entry.',
         user: 'Failed to create new User.',
         admin: 'Failed to create Admin.',
+        usergroup: 'Failed to create new user group.',
       },
     },
     delete: {
@@ -510,6 +589,8 @@ export const en: LanguageResource = {
         dns: 'Successfully removed the DNS Entry!',
         user: 'Successfully deleted User!',
         node: 'Successfully deleted Node!',
+        usergroups: 'Successfully deleted User Group!',
+        networkuser: 'Successfully deleted Network User!',
       },
       failure: {
         accesskey: 'Failed to remove Access Key.',
@@ -520,6 +601,8 @@ export const en: LanguageResource = {
         dns: 'Failed to remove the DNS Entry.',
         user: 'Failed to remove User.',
         node: 'Failed to remove Node.',
+        usergroups: 'Failed to remove User Group.',
+        networkuser: 'Failed to remove Network User.',
       },
     },
     login: {

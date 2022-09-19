@@ -7,10 +7,13 @@ import CardActions from '@mui/material/CardActions'
 import SpeedDial from '@mui/material/SpeedDial'
 import SpeedDialAction from '@mui/material/SpeedDialAction'
 import PreviewIcon from '@mui/icons-material/Preview'
-import CreateIcon from '@mui/icons-material/AddBox'
+// import CreateIcon from '@mui/icons-material/AddBox'
+import GroupsIcon from '@mui/icons-material/Groups'
+import NetworkUsersIcon from '@mui/icons-material/Engineering'
+
 import { grey } from '@mui/material/colors'
 import { useSelector } from 'react-redux'
-import { authSelectors } from '~store/types'
+import { authSelectors, serverSelectors } from '~store/types'
 
 import CardContent from '@mui/material/CardContent'
 import Typography from '@mui/material/Typography'
@@ -28,6 +31,7 @@ const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
 export default function UserCard() {
   const { t } = useTranslation()
   const users = useSelector(authSelectors.getUsers)
+  const serverConfig = useSelector(serverSelectors.getServerConfig)
   const userCount = users.length
   const theme = useTheme()
 
@@ -52,17 +56,28 @@ export default function UserCard() {
           <PreviewIcon />
         </Link>
       ),
-      name: t('common.view'),
-    },
-    {
-      icon: (
-        <Link color="primary" to="/users/create">
-          <CreateIcon />
-        </Link>
-      ),
-      name: t('common.create'),
+      name: `${t('common.view')} ${t('header.users')}`,
     },
   ]
+
+  if (serverConfig.IsEE) {
+    actions.push({
+      icon: (
+        <Link color="primary" to="/user-permissions">
+          <NetworkUsersIcon />
+        </Link>
+      ),
+      name: `${t('common.manage')} ${t('pro.label.userpermissions')}`,
+    })
+    actions.push({
+      icon: (
+        <Link color="primary" to="/usergroups">
+          <GroupsIcon />
+        </Link>
+      ),
+      name: `${t('common.manage')} ${t('pro.label.usergroups')}`,
+    })
+  }
 
   return (
     <Button component={Link} to={'/users'} color={'inherit'} fullWidth style={{textTransform: 'none'}}>

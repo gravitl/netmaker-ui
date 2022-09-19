@@ -11,19 +11,21 @@ import { Grid } from '@mui/material'
 import { AccessKeys } from './accesskeys/AccessKeys'
 import { ExtClients } from './extclients/ExtClients'
 import { RouterState } from '~store/modules/router/Component'
-import { Users } from './users/Users'
+import { UsersEE } from '../ee/users/UsersEE'
 import { DNS } from './dns/DNS'
 import { Graphs } from './graph/Graphs'
 import { NodeAcls } from './node_acls/NodeACLs'
-
-function NoMatch() {
-  const location = useLocation()
-  return (
-    <div>
-      No match for <code>{location.pathname}</code>
-    </div>
-  )
-}
+import { ServerLogs } from './logs/ServerLogs'
+import { MetricRoute } from '../ee/metrics/MetricRoute'
+import { UserGroups } from './usergroups/UserGroups'
+import { NetworkUsers } from './networkusers/NetworkUsers'
+import ProDrawerNotAdmin from '~components/prodashboards/components/ProDrawerNotAdmin'
+import { authSelectors, serverSelectors } from '~store/types'
+import { useSelector } from 'react-redux'
+import { ProUserView } from '~components/prodashboards/ProUserView'
+import WelcomeCard from '~components/prodashboards/components/WelcomeCard'
+import { NotFound } from '~util/errorpage'
+import { UsersCommunity } from './users/UsersCommunity'
 
 function Routes() {
   let location = useLocation()
@@ -36,19 +38,31 @@ function Routes() {
   // we show the gallery in the background, behind
   // the modal.
   const from = (location.state as any)?.from
+  const user = useSelector(authSelectors.getUser)
+  const serverConfig = useSelector(serverSelectors.getServerConfig)
 
   return (
     <Grid container justifyContent="right">
       <Grid item xs={12}>
         <CustomDrawer />
       </Grid>
+      {!user?.isAdmin && (
+        <>
+          <Grid item xs={12}>
+            <ProDrawerNotAdmin />
+          </Grid>
+        </>
+      )}
       <Grid item xs={12}>
         <Switch location={from || location}>
           <PrivateRoute exact path="/">
-            <Dashboard />
+            {user?.isAdmin ? <Dashboard /> : <WelcomeCard />}
           </PrivateRoute>
           <PrivateRoute path="/networks">
             <Networks />
+          </PrivateRoute>
+          <PrivateRoute path="/prouser">
+            {user?.isAdmin ? <Dashboard /> : <ProUserView />}
           </PrivateRoute>
           <PrivateRoute path="/nodes">
             <Nodes />
@@ -68,6 +82,20 @@ function Routes() {
           <PrivateRoute path="/acls">
             <NodeAcls />
           </PrivateRoute>
+          <PrivateRoute path="/logs">
+            <ServerLogs />
+          </PrivateRoute>
+          {serverConfig.IsEE &&
+            <PrivateRoute path="/metrics" >
+              <MetricRoute />
+            </PrivateRoute>
+          }
+          <PrivateRoute path="/usergroups">
+            <UserGroups />
+          </PrivateRoute>
+          <PrivateRoute path="/user-permissions">
+            <NetworkUsers />
+          </PrivateRoute>
           <PrivateRoute
             path="/users"
             to={{ pathname: '/' }}
@@ -77,11 +105,11 @@ function Routes() {
               return !!user?.isAdmin
             }}
           >
-            <Users />
+            {serverConfig.IsEE ? <UsersEE /> : <UsersCommunity />}
           </PrivateRoute>
           <Route path="/login" children={<Login />} />
           <Route path="*">
-            <NoMatch />
+            <NotFound />
           </Route>
         </Switch>
         <RouterState />
