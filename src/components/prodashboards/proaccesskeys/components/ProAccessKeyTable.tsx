@@ -10,7 +10,6 @@ import { deleteAccessKey } from '~store/modules/network/actions'
 import CustomDialog from '~components/dialog/CustomDialog'
 import { Button, Grid, Typography } from '@mui/material'
 import { proSelectors } from '~store/selectors'
-import { GenericError } from '~util/genericerror'
 
 export const ProAccessKeyTable: React.FC<{}> = () => {
   const { t } = useTranslation()
@@ -87,10 +86,6 @@ export const ProAccessKeyTable: React.FC<{}> = () => {
     history.push(`/prouser/${netid}/accesskeys`)
   }
 
-  if (!network.accesskeys || !network.accesskeys.length) {
-    return <GenericError />
-  }
-
   return (
     <Grid container>
       <Grid item xs={12} md={12}>
@@ -124,7 +119,7 @@ export const ProAccessKeyTable: React.FC<{}> = () => {
       </Grid>
       <NmTable
         columns={columns}
-        rows={network.accesskeys}
+        rows={network.accesskeys || []}
         getRowId={(row) => row.name}
         actions={[
           (row) => ({
