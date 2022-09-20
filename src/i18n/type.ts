@@ -104,6 +104,8 @@ export interface LanguageResource {
     manual: string
     joincommand: string
     clickinstall: string
+    joinloginbasic: string
+    joinloginoauth: string
   }
   breadcrumbs: {
     home: string
