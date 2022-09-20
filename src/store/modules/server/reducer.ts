@@ -1,11 +1,16 @@
 import { produce } from 'immer'
 import { createReducer } from 'typesafe-actions'
-import { getServerConfig } from './actions'
-import { ServerConfig } from './types'
+import { clearCurrentMetrics, getMetrics, getNodeMetrics, getServerConfig, getServerLogs } from './actions'
+import { ServerConfig, NodeMetricsContainer, MetricsContainer } from './types'
 
 export const reducer = createReducer({
   config: {} as ServerConfig,
   isFetching: false,
+  logs: [] as string[],
+  nodeMetrics: {} as NodeMetricsContainer | undefined,
+  metrics: {} as MetricsContainer | undefined,
+  attempts: 0,
+  fetchedNodeMetrics: false,
 })
   .handleAction(getServerConfig['request'], (state, _) =>
     produce(state, (draftState) => {
@@ -42,11 +47,78 @@ export const reducer = createReducer({
       draftState.config.Verbosity = action.payload.Verbosity
       draftState.config.Version = action.payload.Version
       draftState.config.RCE = action.payload.RCE === 'on'
+      draftState.config.IsEE = action.payload.IsEE === 'yes'
     })
   )
   .handleAction(getServerConfig['failure'], (state, _) =>
     produce(state, (draftState) => {
       draftState.isFetching = false
       draftState.config = {} as ServerConfig
+    })
+  )
+  .handleAction(getServerLogs['request'], (state, _) => 
+    produce(state, (draftState) => {
+      draftState.isFetching = true
+      draftState.attempts++
+    })
+  )
+  .handleAction(getServerLogs['success'], (state, payload) => 
+    produce(state, (draftState) => {
+      draftState.isFetching = false
+      draftState.logs = payload.payload.split('\n')
+      draftState.attempts = 0
+    })
+  )
+  .handleAction(getServerLogs['failure'], (state, _) => 
+    produce(state, (draftState) => {
+      draftState.isFetching = false
+      draftState.logs = []
+    })
+  )
+  .handleAction(getMetrics['request'], (state, _) => 
+    produce(state, (draftState) => {
+      draftState.isFetching = true
+      draftState.attempts++
+    })
+  )
+  .handleAction(getMetrics['success'], (state, payload) => 
+    produce(state, (draftState) => {
+      draftState.isFetching = false
+      draftState.metrics = payload.payload
+      draftState.attempts = 0
+    })
+  )
+  .handleAction(getMetrics['failure'], (state, _) => 
+    produce(state, (draftState) => {
+      draftState.isFetching = false
+      draftState.metrics = undefined
+    })
+  )
+  .handleAction(getNodeMetrics['request'], (state, _) => 
+    produce(state, (draftState) => {
+      draftState.isFetching = true
+      draftState.attempts++
+      draftState.fetchedNodeMetrics = false
+    })
+  )
+  .handleAction(getNodeMetrics['success'], (state, payload) => 
+    produce(state, (draftState) => {
+      draftState.nodeMetrics = payload.payload
+      draftState.attempts = 0
+      draftState.fetchedNodeMetrics = true
+      draftState.isFetching = false
+    })
+  )
+  .handleAction(getNodeMetrics['failure'], (state, _) => 
+    produce(state, (draftState) => {
+      draftState.isFetching = false
+      draftState.nodeMetrics = undefined
+    })
+  )
+  .handleAction(clearCurrentMetrics, (state, _) =>
+    produce(state, (draftState) => {
+      draftState.isFetching = false
+      draftState.metrics = undefined
+      draftState.nodeMetrics = undefined
     })
   )

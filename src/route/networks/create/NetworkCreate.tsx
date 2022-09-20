@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Button, Grid, Tooltip } from '@mui/material'
 import { makeStyles, createStyles } from '@mui/styles'
 import {
@@ -18,6 +18,7 @@ import {
 import { randomNetworkName, randomCIDR, randomCIDR6 } from '~util/fields'
 import { useHistory } from 'react-router'
 import { correctIPv4CidrRegex, correctIpv6Regex } from '~util/regex'
+import { serverSelectors } from '~store/selectors'
 
 interface CreateNetwork {
   addressrange: string
@@ -30,6 +31,9 @@ interface CreateNetwork {
   defaultudpholepunch: boolean
   ispointtosite: boolean
   defaultacl: boolean
+  defaultaccesslevel: number
+  defaultusernodelimit: number
+  defaultuserclientlimit: number
 }
 
 const initialState: CreateNetwork = {
@@ -43,6 +47,9 @@ const initialState: CreateNetwork = {
   defaultudpholepunch: false,
   ispointtosite: false,
   defaultacl: true,
+  defaultaccesslevel: 3,
+  defaultusernodelimit: 0,
+  defaultuserclientlimit: 0,
 }
 
 const useStyles = makeStyles(() =>
@@ -60,6 +67,7 @@ const useStyles = makeStyles(() =>
 export const NetworkCreate: React.FC = () => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
+  const serverConfig = useSelector(serverSelectors.getServerConfig)
   const history = useHistory()
   const classes = useStyles()
   const [viewLocal, setViewLocal] = React.useState(false)
@@ -79,15 +87,22 @@ export const NetworkCreate: React.FC = () => {
           defaultudpholepunch: data.defaultudpholepunch ? 'yes' : 'no',
           ispointtosite: data.ispointtosite ? 'yes' : 'no',
           defaultacl: data.defaultacl ? 'yes' : 'no',
+          prosettings: {
+            defaultaccesslevel: serverConfig.IsEE ? 3 : Number(data.defaultaccesslevel),
+            defaultusernodelimit: Number(data.defaultusernodelimit),
+            defaultuserclientlimit: Number(data.defaultuserclientlimit),
+            allowedusers: [],
+            allowedgroups: ['*'],
+          },
         })
       )
       dispatch(getNetworks.request())
       history.push('/networks')
     },
-    [dispatch, history]
+    [dispatch, history, serverConfig]
   )
-  //create ip validation with messages
-  const createipValidation = useMemo(
+  //create network validation with messages
+  const createNetworkValidation = useMemo(
     () =>
       validate<CreateNetwork>({
         addressrange: (addressrange, formData) => {
@@ -111,6 +126,33 @@ export const NetworkCreate: React.FC = () => {
                 type: 'value',
               }
             : undefined
+        },
+        defaultaccesslevel: (defaultaccesslevel) => {
+          if (defaultaccesslevel < 0 || defaultaccesslevel > 3) {
+            return {
+              message: t('network.validation.accesslevel'),
+              type: 'value',
+            }
+          }
+          return undefined
+        },
+        defaultusernodelimit: (value) => {
+          if (value < 0) {
+            return {
+              message: t('network.validation.nodelimit'),
+              type: 'value',
+            }
+          }
+          return undefined
+        },
+        defaultuserclientlimit: (value) => {
+          if (value < 0) {
+            return {
+              message: t('network.validation.clientlimit'),
+              type: 'value',
+            }
+          }
+          return undefined
         },
       }),
     [t]
@@ -144,7 +186,7 @@ export const NetworkCreate: React.FC = () => {
     >
       <NmForm
         initialState={initialState}
-        resolver={createipValidation}
+        resolver={createNetworkValidation}
         onSubmit={onSubmit}
         submitProps={{
           variant: 'contained',
@@ -251,13 +293,7 @@ export const NetworkCreate: React.FC = () => {
               />
             )}
           </Grid>
-          {/* <Grid item xs={12} sm={12} md={7} className={classes.center + ' ' + classes.rowMargin}>
-          <NmFormInputText
-            style={{width: '90%'}}
-            name={'addressrange'}
-            label={String(t('network.addressrange'))}
-          />
-        </Grid> */}
+
           <Grid
             item
             xs={12}
@@ -355,6 +391,66 @@ export const NetworkCreate: React.FC = () => {
               />
             )}
           </Grid>
+          {serverConfig.IsEE && <>
+          <Grid
+            item
+            xs={12}
+            sm={12}
+            md={3}
+            className={classes.center + ' ' + classes.rowMargin}
+          >
+            <Tooltip
+              title={t('pro.helpers.accesslevel') as string}
+              placement="top"
+            >
+              <NmFormInputText
+                name="defaultaccesslevel"
+                label={String(t('pro.network.defaultaccesslevel'))}
+                type="number"
+                defaultValue={3}
+              />
+            </Tooltip>
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            sm={12}
+            md={3}
+            className={classes.center + ' ' + classes.rowMargin}
+          >
+            <Tooltip
+              title={t('pro.helpers.usernodelimit') as string}
+              placement="top"
+            >
+              <NmFormInputText
+                name="defaultusernodelimit"
+                label={String(t('pro.network.defaultusernodelimit'))}
+                type="number"
+                defaultValue={0}
+              />
+            </Tooltip>
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            sm={12}
+            md={3}
+            className={classes.center + ' ' + classes.rowMargin}
+          >
+            <Tooltip
+              title={t('pro.helpers.userclientlimit') as string}
+              placement="top"
+            >
+              <NmFormInputText
+                name="defaultuserclientlimit"
+                label={String(t('pro.network.defaultuserclientlimit'))}
+                type="number"
+                defaultValue={0}
+              />
+            </Tooltip>
+          </Grid>
+          </>
+          }
         </Grid>
       </NmForm>
     </div>

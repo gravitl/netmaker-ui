@@ -1,5 +1,5 @@
 import { all, put, select, takeEvery } from 'redux-saga/effects'
-import { getServerConfig } from './actions'
+import { getMetrics, getNodeMetrics, getServerConfig, getServerLogs } from './actions'
 import { login } from '../auth/actions'
 import { getToken } from '../auth/selectors'
 import { getType } from 'typesafe-actions'
@@ -31,12 +31,71 @@ function* handleGetServerConfigRequest(
   }
 }
 
+function* handleGetServerLogsRequest(
+  _: ReturnType<typeof getServerLogs['request']>
+) {
+  try {
+    const response: AxiosResponse = yield apiRequestWithAuthSaga(
+      'get',
+      '/logs',
+      {}
+    )
+    yield put(getServerLogs['success'](response.data))
+  } catch (e: unknown) {
+    yield put(getServerLogs['failure'](e as Error))
+  }
+}
+
+function* handleGetAllMetrics(
+  action: ReturnType<typeof getMetrics['request']>
+) {
+  try {
+    const response: AxiosResponse = yield apiRequestWithAuthSaga(
+      'get',
+      !!action.payload ? `/metrics/${action.payload}` : '/metrics',
+      {}
+    )
+    yield put(getMetrics['success'](response.data))
+  } catch (e: unknown) {
+    yield put(getMetrics['failure'](e as Error))
+  }
+}
+
+
+function* handleGetNodeMetrics(
+  action: ReturnType<typeof getNodeMetrics['request']>
+) {
+  try {
+    const response: AxiosResponse = yield apiRequestWithAuthSaga(
+      'get',
+      `/metrics/${action.payload.Network}/${action.payload.ID}`,
+      {}
+    )
+    yield put(getNodeMetrics['success'](response.data))
+  } catch (e: unknown) {
+    yield put(getNodeMetrics['failure'](e as Error))
+  }
+}
+
+
 export function* saga() {
   yield all([
     takeEvery(login['success'], handleLoginSuccess),
     takeEvery(
       getType(getServerConfig['request']),
       handleGetServerConfigRequest
+    ),
+    takeEvery(
+      getType(getServerLogs['request']),
+      handleGetServerLogsRequest
+    ),
+    takeEvery(
+      getType(getNodeMetrics['request']),
+      handleGetNodeMetrics
+    ),
+    takeEvery(
+      getType(getMetrics['request']),
+      handleGetAllMetrics
     ),
     handleLoginSuccess(),
   ])

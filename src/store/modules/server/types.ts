@@ -23,6 +23,7 @@ export interface ServerConfig {
   Verbosity: number // 0
   Version: string // "v0.7.3"
   RCE: boolean // "on"
+  IsEE: boolean // yes or no
 }
 export interface GetServerConfigPayload {
   Request: {
@@ -53,5 +54,52 @@ export interface GetServerConfigPayload {
     Verbosity: number
     Version: string
     RCE: string
+    IsEE: string // yes or no
   }
+}
+
+export interface LogsPayload {
+  Request: undefined
+  Response: string
+}
+
+export type MetricID = string
+
+export type NodeMetricsTable = Record<string, NodeMetric>
+
+export type MetricsTable = Record<string, NodeMetricsContainer>
+
+export interface NodeMetricsContainer {
+  connectivity: NodeMetricsTable
+}
+
+export interface MetricsContainer {
+  nodes: MetricsTable
+}
+
+export interface NodeMetric {
+  node_name: string
+  uptime: number
+  totaltime: number
+  latency: number
+  totalreceived: number
+  totalsent: number
+  actualuptime: number
+  percentup: number
+  connected: boolean
+}
+
+export interface NodeMetricsID {
+  ID: string
+  Network: string
+}
+
+export interface NodeMetrics {
+  Request: NodeMetricsID
+  Response: NodeMetricsContainer
+}
+
+export interface Metrics {
+  Request: string | undefined
+  Response: MetricsContainer
 }

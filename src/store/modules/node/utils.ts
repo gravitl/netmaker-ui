@@ -20,6 +20,7 @@ export const nodeToNodePayload = (node: Node): NodePayload => {
     isdocker: node.isdocker ? 'yes' : 'no',
     isk8s: node.isk8s ? 'yes' : 'no',
     ishub: node.ishub ? 'yes' : 'no',
+    defaultacl: node.defaultacl === undefined ? 'unset' : node.defaultacl ? 'yes' : 'no',
     connected: node.connected ? 'yes' : 'no',
   }
 }
@@ -43,6 +44,7 @@ export const nodePayloadToNode = (node: NodePayload): Node => {
     isdocker: node.isdocker === 'yes',
     isk8s: node.isk8s === 'yes',
     ishub: node.ishub === 'yes',
+    defaultacl: node.defaultacl === 'unset' ? undefined : node.defaultacl === 'yes' ? true : false,
     connected: node.connected === 'yes',
   }
 }

@@ -4,12 +4,12 @@ import { useRouteMatch, Switch, Route } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 import { NmLink } from '~components/index'
-import { UserTable } from './components/UserTable'
+import { UserTableCommunity } from './components/UserTableCommunity'
 import { UserCreate } from './create/UserCreate'
-import { UserEdit } from './userId/UserEdit'
+import { UserEditCommunity } from './userId/UserEditCommunity'
 import { UserChangePassword } from './userId/UserChangePassword'
 
-export const Users: React.FC = () => {
+export const UsersCommunity: React.FC = () => {
   const { path } = useRouteMatch()
   const { t } = useTranslation()
 
@@ -29,23 +29,23 @@ export const Users: React.FC = () => {
               justifyContent="flex-end"
               alignItems="center"
             >
-              <Grid item xs={8}>
+              <Grid item xs={9}>
                 <h2>{t('users.header')}</h2>
               </Grid>
-              <Grid item xs={1}>
-                <NmLink variant="contained" to={{ pathname: '/users/create' }}>
+              <Grid item xs={2}>
+                <NmLink fullWidth variant="contained" to={{ pathname: '/users/create' }}>
                   {t('users.create.button')}
                 </NmLink>
               </Grid>
             </Grid>
           </Grid>
-          <UserTable />
+          <UserTableCommunity />
         </Route>
         <Route path={`${path}/create`}>
           <UserCreate />
         </Route>
         <Route path={`${path}/:username`}>
-          <UserEdit />
+          <UserEditCommunity />
           <UserChangePassword />
         </Route>
       </Switch>

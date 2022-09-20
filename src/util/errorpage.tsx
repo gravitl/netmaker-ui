@@ -1,4 +1,4 @@
-import { Grid } from '@mui/material'
+import { Button, Grid } from '@mui/material'
 import Typography from '@mui/material/Typography'
 import { useTranslation } from 'react-i18next'
 import Logo from '../netmaker-logo.png'
@@ -6,6 +6,7 @@ import DarkLogo from '../netmaker-logo-2.png'
 import { useSelector } from 'react-redux'
 import { authSelectors } from '~store/selectors'
 import WarningIcon from '@mui/icons-material/Warning'
+import { Link } from 'react-router-dom'
 
 export const NotFound: React.FC = () => {
   const { t } = useTranslation()
@@ -23,9 +24,16 @@ export const NotFound: React.FC = () => {
       React.ImgHTMLAttributes<HTMLImageElement>,
       HTMLImageElement
     >,
+    center: {
+      textAlign: 'center'
+    } as React.DetailedHTMLProps<
+      React.ImgHTMLAttributes<HTMLImageElement>,
+      HTMLImageElement
+    >,
   }
 
   return (
+    <div style={styles.center}>
     <Grid container justifyContent="center" alignItems="center">
       <Grid item xs={10} sx={{ marginTop: '1em' }}>
         <WarningIcon style={{ fontSize: '2em' }} />
@@ -43,12 +51,15 @@ export const NotFound: React.FC = () => {
         </div>
       </Grid>
       <Grid item xs={10} sx={{ marginTop: '3em' }}>
-        <img
-          style={styles.logo}
-          src={inDarkMode ? DarkLogo : Logo}
-          alt="Netmaker makes networks."
-        />
+        <Button component={Link} to='/'>
+          <img
+            style={styles.logo}
+            src={inDarkMode ? DarkLogo : Logo}
+            alt="Netmaker makes networks."
+          />
+        </Button>
       </Grid>
     </Grid>
+    </div>
   )
 }

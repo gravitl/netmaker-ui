@@ -3,6 +3,7 @@ export interface User {
   isAdmin: boolean
   exp: number
   networks: null | Array<string>
+  groups: null | Array<string>
 }
 
 export interface LocalStorageUserKeyValue {
@@ -85,6 +86,7 @@ export interface UpdateUserNetworks {
     username: string
     isadmin: boolean
     networks: Array<string>
+    groups: Array<string>
   }
   Response: UpdateUserNetworks['Request']
 }

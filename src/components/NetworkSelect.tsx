@@ -1,10 +1,11 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
 import { networkSelectors } from '../store/selectors'
 import { useTranslation } from 'react-i18next'
 import CustomSelect from '~components/select/CustomSelect'
 import { FormControl, Grid } from '@mui/material'
+import { clearCurrentMetrics } from '~store/modules/server/actions'
 
 export const NetworkSelect: React.FC<{
   selectAll? : boolean
@@ -13,6 +14,7 @@ export const NetworkSelect: React.FC<{
   const { t } = useTranslation()
   const history = useHistory()
   const { netid } = useParams<{netid?: string}>()
+  const dispatch = useDispatch()
 
   if (selectAll && !!netid) {
     networkNames.push(t('common.selectall'))
@@ -25,6 +27,7 @@ export const NetworkSelect: React.FC<{
       <CustomSelect
         placeholder={`${t('common.select')} ${t('network.network')}`}
         onSelect={(selected) => {
+          dispatch(clearCurrentMetrics())
           const netIndex = history.location.pathname.indexOf(netid!)
           if(netid === undefined) {
             history.push(`${history.location.pathname}/${selected}`)

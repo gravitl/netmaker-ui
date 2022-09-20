@@ -48,6 +48,8 @@ export interface Node {
   isdocker: boolean
   isk8s: boolean
   ishub: boolean
+  defaultacl: boolean | undefined
+  ownerid: string
   connected: boolean
 }
 
@@ -68,6 +70,8 @@ export type NodePayload = Modify<
     isdocker: 'yes' | 'no'
     isk8s: 'yes' | 'no'
     ishub: 'yes' | 'no'
+    defaultacl: 'yes' | 'no' | 'unset'
+    ownerid: string
     connected: 'yes' | 'no'
   }
 >
@@ -84,6 +88,7 @@ export interface ExternalClient {
   ingressgatewayendpoint: string
   lastmodified: number
   enabled: boolean
+  ownerid: string
 }
 
 export interface GetNodesPayload {
@@ -230,4 +235,10 @@ export type shouldSignOut = '' | 'network' | 'auth'
 export interface NodeSort {
   value: 'name' | 'address' | 'network'
   ascending: boolean
+}
+
+export const nodeACLValues = {
+  unset: 'UNSET',
+  allow: 'ALLOW',
+  deny: 'DENY',
 }

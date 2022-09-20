@@ -25,7 +25,8 @@ import { approveNode, deleteNode } from '~modules/node/actions'
 import CustomDialog from '~components/dialog/CustomDialog'
 import { useNetwork } from '~util/network'
 import { authSelectors } from '~store/selectors'
-import { NmFormInputSwitch } from '~components/form'
+import { nodeACLValues } from '~store/types'
+import { NotFound } from '~util/errorpage'
 
 export const NodeId: React.FC = () => {
   const { path, url } = useRouteMatch()
@@ -57,7 +58,7 @@ export const NodeId: React.FC = () => {
   const handleApproveClose = () => setApproveOpen(false)
 
   if (!node || !network) {
-    return <div>Not Found</div>
+    return <NotFound />
   }
 
   const handleDeleteNode = () => {
@@ -147,6 +148,13 @@ export const NodeId: React.FC = () => {
                 style={{ width: '50%', margin: '4px' }}
               >
                 {t('header.acls')}
+              </NmLink>
+              <NmLink
+                to={`/metrics/${netid}/${nodeId}`}
+                variant="outlined"
+                style={{ width: '50%', margin: '4px' }}
+              >
+                {t('pro.metrics')}
               </NmLink>
               <Button
                 disabled={node.isserver}
@@ -327,6 +335,14 @@ export const NodeId: React.FC = () => {
               disabled
               value={node.network}
               label={String(t('node.network'))}
+            />
+          </Grid>
+          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
+            <TextField
+              disabled
+              value={node.defaultacl === undefined ? nodeACLValues.unset : 
+                node.defaultacl ? nodeACLValues.allow : nodeACLValues.deny}
+              label={String(t('node.defaultacl'))}
             />
           </Grid>
           <Grid item xs={12}>

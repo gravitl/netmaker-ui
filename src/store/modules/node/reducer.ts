@@ -50,14 +50,14 @@ export const reducer = createReducer({
   )
   .handleAction(setNodeSort, (state, action) =>
     produce(state, (draftState) => {
-        draftState.nodeSort = action.payload
-        const { value, ascending } = action.payload
-        draftState.nodes = draftState.nodes.sort((a, b) =>
-          a[value].localeCompare(b[value])
-        )
-        if (!ascending) {
-          draftState.nodes = draftState.nodes.reverse()
-        }
+      draftState.nodeSort = action.payload
+      const { value, ascending } = action.payload
+      draftState.nodes = draftState.nodes.sort((a, b) =>
+        a[value].localeCompare(b[value])
+      )
+      if (!ascending) {
+        draftState.nodes = draftState.nodes.reverse()
+      }
     })
   )
   .handleAction(getNodes['success'], (state, action) =>
@@ -74,7 +74,6 @@ export const reducer = createReducer({
       } else {
         draftState.nodes = []
       }
-
       draftState.isFetching = false
     })
   )
