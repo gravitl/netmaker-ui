@@ -33,7 +33,6 @@ export const ProNetworkSelect: React.FC<{
   if (networkNames.length === 0) {
     return <GenericError />
   }
-  console.log(networkNames)
 
   return (
     <Grid container justifyContent="space-around" alignItems="center">
