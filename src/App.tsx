@@ -15,7 +15,6 @@ import LocalizationProvider from '@mui/lab/LocalizationProvider'
 import Routes from './route/root'
 import { PathBreadcrumbsProvider } from './components/PathBreadcrumbs'
 import { getNodes } from '~store/modules/node/actions'
-import { getNetworkUserData } from '~store/modules/pro/actions'
 
 function App() {
   const dispatch = useDispatch()
@@ -35,8 +34,6 @@ function App() {
         dispatch(logout())
       } else if (isLoggedIn && token && user && user.isAdmin) {
         dispatch(getNodes.request({ token }))
-      } else if (isLoggedIn && token && user && !user.isAdmin) {
-        dispatch(getNetworkUserData.request({networkUserID: user.name}))
       }
       
     }, 7500)
