@@ -108,6 +108,8 @@ export const en: LanguageResource = {
     manual: 'Manual Install',
     joincommand: 'Join Command',
     clickinstall: 'View Netclient Install Instructions',
+    joinloginbasic: 'Join via Basic Auth',
+    joinloginoauth: 'Join via SSO',
   },
   breadcrumbs: {
     home: 'Home',
