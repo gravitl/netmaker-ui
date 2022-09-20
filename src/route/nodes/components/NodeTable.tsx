@@ -12,11 +12,15 @@ import { i18n } from '../../../i18n/i18n'
 import { deleteNode } from '~store/modules/node/actions'
 import CustomizedDialogs from '~components/dialog/CustomDialog'
 import { MultiCopy } from '~components/CopyText'
+import { useSelector } from 'react-redux'
+import { serverSelectors } from '~store/selectors'
+import { FailoverButton } from '../../../ee/nodes/FailoverButton'
 
 export const NodeTable: React.FC<{ nodes: Node[] }> = ({ nodes }) => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const [selected, setSelected] = React.useState({} as Node)
+  const serverConfig = useSelector(serverSelectors.getServerConfig)
 
   const columns: TableColumns<Node> = [
     {
@@ -146,6 +150,22 @@ export const NodeTable: React.FC<{ nodes: Node[] }> = ({ nodes }) => {
       },
     },
   ]
+
+  if (serverConfig.IsEE) {
+    const oldColumn = columns[columns.length - 1]
+    columns[columns.length - 1] = {
+      id: 'failover',
+      labelKey: 'node.failover',
+      minWidth: 30,
+      align: 'center',
+      format: (_, row) => (
+        <FailoverButton
+          node={row}
+        />
+      ),
+    }
+    columns.push(oldColumn)
+  }
 
   useLinkBreadcrumb({
     title: t('breadcrumbs.nodes'),

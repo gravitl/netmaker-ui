@@ -57,6 +57,7 @@ export interface LanguageResource {
       accesslevel: string
       usernodelimit: string
       userclientlimit: string
+      failover: string
     }
   }
   header: {
@@ -104,6 +105,8 @@ export interface LanguageResource {
     manual: string
     joincommand: string
     clickinstall: string
+    joinloginbasic: string
+    joinloginoauth: string
   }
   breadcrumbs: {
     home: string
@@ -418,6 +421,7 @@ export interface LanguageResource {
     version: string
     addresses: string
     udpdisabled: string
+    failover: string
   }
   login: {
     validation: {
@@ -522,6 +526,7 @@ export interface LanguageResource {
         user: string
         admin: string
         usergroup: string
+        failover: string
       }
       failure: {
         accesskey: string
@@ -533,6 +538,7 @@ export interface LanguageResource {
         user: string
         admin: string
         usergroup: string
+        failover: string
       }
     }
     delete: {

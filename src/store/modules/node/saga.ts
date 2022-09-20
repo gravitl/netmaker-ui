@@ -229,19 +229,19 @@ function* handleCreateIngressNodeRequest(
         pending: i18n.t('common.pending', {
           nodeid: action.payload.nodeid,
         }),
-        success: i18n.t('toast.create.success.ingress', {
+        success: i18n.t(action.payload.failover ? 'toast.create.success.failover' : 'toast.create.success.ingress', {
           nodeid: action.payload.nodeid,
         }),
-        error: e => `${i18n.t('toast.create.failure.ingress', {
+        error: e => `${i18n.t(action.payload.failover ? 'toast.create.failure.failover' :'toast.create.failure.ingress', {
           nodeid: action.payload.nodeid,
-        })} : ${e.response.data.Message}`,
+        })}`,
       },
     })
 
     const response: AxiosResponse<NodePayload> = yield apiRequestWithAuthSaga(
       'post',
       `/nodes/${action.payload.netid}/${action.payload.nodeid}/createingress`,
-      {},
+      {failover: action.payload.failover ? true : false},
       {}
     )
 

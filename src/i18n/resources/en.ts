@@ -61,6 +61,7 @@ export const en: LanguageResource = {
       usernodelimit: 'The number of nodes a user may create on the network',
       userclientlimit:
         'Number of External Client configurations a user can create on a network if Ingress gateways present',
+      failover: 'This Indicates the node may be used by other nodes to route traffic automatically if unstable connections are detected',
     },
   },
   header: {
@@ -108,6 +109,8 @@ export const en: LanguageResource = {
     manual: 'Manual Install',
     joincommand: 'Join Command',
     clickinstall: 'View Netclient Install Instructions',
+    joinloginbasic: 'Join via Basic Auth',
+    joinloginoauth: 'Join via SSO',
   },
   breadcrumbs: {
     home: 'Home',
@@ -458,6 +461,7 @@ export const en: LanguageResource = {
     version: 'Version',
     addresses: 'Addresses',
     udpdisabled: 'UDP hole punching is disabled on the network',
+    failover: 'Failover',
   },
   login: {
     validation: {
@@ -566,6 +570,7 @@ export const en: LanguageResource = {
         user: 'Successfully created User!',
         admin: 'Successfully created new Admin!',
         usergroup: 'Successfully created new user group!',
+        failover: 'Successfully added failover gateway to node!'
       },
       failure: {
         accesskey: 'Failed to create Access Key.',
@@ -577,6 +582,7 @@ export const en: LanguageResource = {
         user: 'Failed to create new User.',
         admin: 'Failed to create Admin.',
         usergroup: 'Failed to create new user group.',
+        failover: 'Failed to add failover gateway to node.'
       },
     },
     delete: {

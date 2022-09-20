@@ -10,6 +10,7 @@ import { serverSelectors } from '~store/types'
 import copy from 'copy-to-clipboard'
 import { grey } from '@mui/material/colors'
 import { authSelectors } from '~store/selectors'
+import { BACKEND_URL } from '../../../config'
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -40,12 +41,16 @@ export default function AccessKeyDetails(Props: {
   handleOpen: () => void
   handleClose: () => void
   open: boolean
+  netID?: string
 }) {
   const { t } = useTranslation()
   const version = extractVersion(
     useSelector(serverSelectors.getServerConfig).Version
   )
   const inDarkMode = useSelector(authSelectors.isInDarkMode)
+  const user = useSelector(authSelectors.getUser)
+  let backendURL = BACKEND_URL.includes('https://') ?
+    BACKEND_URL.split('https://')[1] : ''
 
   const styles = {
     centerStyle: {
@@ -63,6 +68,18 @@ export default function AccessKeyDetails(Props: {
 
   const getJoinCommand = (accessToken: string) => {
     return `netclient join -t ${accessToken}`
+  }
+
+  const getJoinCommandLoginBasic = () => {
+    if (Props.netID && user && user.name && backendURL)
+      return `netclient join -n ${Props.netID} -u ${user.name} -s ${backendURL}`
+    return `netclient join -n <network-name> -u <user name> -s <netmaker api domain>`
+  }
+
+  const getJoinCommandLoginOauth = () => {
+    if (Props.netID && backendURL)
+      return `netclient join -n ${Props.netID} -s ${backendURL}`
+    return `netclient join -n <network-name> -s <netmaker api domain>`
   }
 
   return (
@@ -201,6 +218,63 @@ export default function AccessKeyDetails(Props: {
                   <IconButton
                     onClick={() =>
                       copy(getDockerRunCommand(Props.accessString))
+                    }
+                  >
+                    <ContentCopy />
+                  </IconButton>
+                </Tooltip>
+              </Grid>
+              
+              <Grid item xs={3} style={styles.centerStyle}>
+                <h3>{t('accesskey.joinloginbasic')}</h3>
+              </Grid>
+
+              <Grid item xs={7} style={styles.centeredText}>
+                <TextField
+                  fullWidth
+                  maxRows={1}
+                  value={getJoinCommandLoginBasic()}
+                  sx={{
+                    backgroundColor: inDarkMode ? '#272727' : grey[100],
+                  }}
+                />
+              </Grid>
+              <Grid item xs={1} style={styles.centerStyle}>
+                <Tooltip
+                  title={`${t('common.copy')} ${t('accesskey.joinloginbasic')}`}
+                  placement="top"
+                >
+                  <IconButton
+                    onClick={() =>
+                      copy(getJoinCommandLoginBasic())
+                    }
+                  >
+                    <ContentCopy />
+                  </IconButton>
+                </Tooltip>
+              </Grid>
+              <Grid item xs={3} style={styles.centerStyle}>
+                <h3>{t('accesskey.joinloginoauth')}</h3>
+              </Grid>
+
+              <Grid item xs={7} style={styles.centeredText}>
+                <TextField
+                  fullWidth
+                  maxRows={1}
+                  value={getJoinCommandLoginOauth()}
+                  sx={{
+                    backgroundColor: inDarkMode ? '#272727' : grey[100],
+                  }}
+                />
+              </Grid>
+              <Grid item xs={1} style={styles.centerStyle}>
+                <Tooltip
+                  title={`${t('common.copy')} ${t('accesskey.joinloginoauth')}`}
+                  placement="top"
+                >
+                  <IconButton
+                    onClick={() =>
+                      copy(getJoinCommandLoginOauth())
                     }
                   >
                     <ContentCopy />
