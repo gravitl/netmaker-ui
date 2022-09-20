@@ -15,6 +15,11 @@ import { generatorToastSaga } from '../toast/saga'
 import { i18n } from '../../../i18n/i18n'
 import { getType } from 'typesafe-actions'
 import { getServerConfig } from '../server/selectors'
+import { getServerConfig as getConf } from '../server/actions'
+import { createExternalClient, deleteExternalClient, deleteNode, updateExternalClient, updateNode } from '../node/actions'
+import { createAccessKey, deleteAccessKey, updateNetwork } from '../network/actions'
+import { login } from '../auth/actions'
+import { getUser } from '../auth/selectors'
 
 const userGroups = 'usergroups'
 
@@ -109,10 +114,11 @@ function* handleGetNetworkUserData(
 ) {
   try {
     const serverConfig: ReturnType<typeof getServerConfig> = yield select(getServerConfig)
+    const user: ReturnType<typeof getUser> = yield select(getUser)
 
     if (serverConfig.IsEE) {
       const response: AxiosResponse<NetworkUserDataMapPayload> =
-        yield apiRequestWithAuthSaga('get', `/networkusers/data/${action.payload.networkUserID}/me`, {})
+        yield apiRequestWithAuthSaga('get', `/networkusers/data/${action.payload.networkUserID || user?.name}/me`, {})
       yield put(getNetworkUserData['success'](response.data))
     }
   } catch (e: unknown) {
@@ -170,7 +176,6 @@ function* handleUpdateNetworkUser(
 ) {
   try {
     const serverConfig: ReturnType<typeof getServerConfig> = yield select(getServerConfig)
-
     if (serverConfig.IsEE) {
       yield fork(generatorToastSaga, {
         success: updateNetworkUser['success'],
@@ -242,6 +247,17 @@ export function* saga() {
     takeEvery(getType(getNetworkUsers['request']), handleGetNetworkUsers),
     takeEvery(getType(updateNetworkUser['request']), handleUpdateNetworkUser),
     takeEvery(getType(getNetworkUserData['request']), handleGetNetworkUserData),
+    takeEvery(getType(getConf['success']), handleGetNetworkUserData),
+    takeEvery(getType(login['success']), handleGetNetworkUserData),
+    takeEvery(getType(updateNode['success']), handleGetNetworkUserData),
+    takeEvery(getType(updateNetwork['success']), handleGetNetworkUserData),
+    takeEvery(getType(updateExternalClient['success']), handleGetNetworkUserData),
+    takeEvery(getType(createExternalClient['success']), handleGetNetworkUserData),
+    takeEvery(getType(deleteNode['success']), handleGetNetworkUserData),
+    takeEvery(getType(deleteExternalClient['success']), handleGetNetworkUserData),
+    takeEvery(getType(createAccessKey['success']), handleGetNetworkUserData),
+    takeEvery(getType(deleteAccessKey['success']), handleGetNetworkUserData),
     takeEvery(getType(proCreateAccessKey['request']), handleProCreateAccessKeyRequest),
+    takeEvery(getType(proCreateAccessKey['success']), handleGetNetworkUserData),
   ])
 }
