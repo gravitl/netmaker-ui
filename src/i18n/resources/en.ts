@@ -359,7 +359,7 @@ export const en: LanguageResource = {
     nodeislocal:
       'If on, will only communicate over the local address (Assumes IsLocal turned to {yes} on the network level.)',
     isnodeconnected: 'If on, the node is connected to the network',
-    failover: 'If enabled, the node is designated as a failover candidate incase a node can not connect to one or more peers. (Suited for public facing nodes)'
+    failover: 'If enabled, the node is designated as a failover candidate in case a node can not connect to one or more peers. (Suited for public facing nodes)'
   },
   node: {
     nodes: 'Nodes',
