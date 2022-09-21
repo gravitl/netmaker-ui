@@ -274,6 +274,7 @@ export interface LanguageResource {
     networkhub: string
     nodeislocal: string
     isnodeconnected: string
+    failover: string
   }
   network: {
     allowmanualsignup: string
@@ -420,6 +421,7 @@ export interface LanguageResource {
     version: string
     addresses: string
     udpdisabled: string
+    failover: string
   }
   login: {
     validation: {

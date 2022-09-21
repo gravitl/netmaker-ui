@@ -24,7 +24,7 @@ import { NodeEdit } from '../nodeEdit/NodeEdit'
 import { approveNode, deleteNode } from '~modules/node/actions'
 import CustomDialog from '~components/dialog/CustomDialog'
 import { useNetwork } from '~util/network'
-import { authSelectors } from '~store/selectors'
+import { authSelectors, serverSelectors } from '~store/selectors'
 import { nodeACLValues } from '~store/types'
 import { NotFound } from '~util/errorpage'
 
@@ -40,6 +40,7 @@ export const NodeId: React.FC = () => {
   const user = useSelector(authSelectors.getUser)
   const [open, setOpen] = React.useState(false)
   const [approveOpen, setApproveOpen] = React.useState(false)
+  const serverConfig = useSelector(serverSelectors.getServerConfig)
 
   useLinkBreadcrumb({
     link: url,
@@ -347,28 +348,28 @@ export const NodeId: React.FC = () => {
           </Grid>
           <Grid item xs={12}>
             <Grid container justifyContent="space-between" alignItems="center">
-              <Grid item xs={10} sm={4} md={2} sx={rowMargin}>
+              <Grid item xs={10} sm={4} md={1.6} sx={rowMargin}>
                 <FormControlLabel
                   label={String(t('node.dnson'))}
                   control={<SwitchField checked={node.dnson} disabled />}
                   disabled
                 />
               </Grid>
-              <Grid item xs={10} sm={4} md={2} sx={rowMargin}>
+              <Grid item xs={10} sm={4} md={1.6} sx={rowMargin}>
                 <FormControlLabel
                   label={String(t('node.islocal'))}
                   control={<SwitchField checked={node.islocal} disabled />}
                   disabled
                 />
               </Grid>
-              <Grid item xs={10} sm={4} md={2} sx={rowMargin}>
+              <Grid item xs={10} sm={4} md={1.6} sx={rowMargin}>
                 <FormControlLabel
                   label={String(t('node.ishub'))}
                   control={<SwitchField checked={node.ishub} disabled />}
                   disabled
                 />
               </Grid>
-              <Grid item xs={10} sm={4} md={2} sx={rowMargin}>
+              <Grid item xs={10} sm={4} md={1.6} sx={rowMargin}>
                 <span>
                   <FormControlLabel
                     label={String(t('node.togglenode'))}
@@ -377,6 +378,17 @@ export const NodeId: React.FC = () => {
                   />
                 </span>
               </Grid>
+              {serverConfig.IsEE && 
+              <Grid item xs={10} sm={4} md={1.6} sx={rowMargin}>
+                <span>
+                  <FormControlLabel
+                    label={String(t('node.failover'))}
+                    name={'failover'}
+                    control={<SwitchField checked={node.failover} disabled />}
+                  />
+                </span>
+              </Grid>
+              }
             </Grid>
           </Grid>
         </Grid>

@@ -544,6 +544,22 @@ export const NodeEdit: React.FC<{
               </span>
             </Tooltip>
           </Grid>
+          {serverConfig.IsEE &&
+          <Grid item xs={10} sm={4} md={2} sx={rowMargin}>
+            <Tooltip
+              title={String(t('helper.failover'))}
+              placement="top"
+            >
+              <span>
+                <NmFormInputSwitch
+                  label={String(t('node.failover'))}
+                  name={'failover'}
+                  defaultValue={node.failover}
+                />
+              </span>
+            </Tooltip>
+          </Grid>
+        }
         </Grid>
       </Grid>
     </NmForm>
