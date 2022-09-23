@@ -15,7 +15,7 @@ import Typography from '@mui/material/Typography'
 import { useTranslation } from 'react-i18next'
 import { KeyboardArrowRight } from '@mui/icons-material'
 import { Button, Grid, useTheme } from '@mui/material'
-import BottomIcon from '@mui/icons-material/HomeRepairService';
+import BottomIcon from '@mui/icons-material/HomeRepairService'
 import { useSelector } from 'react-redux'
 import { serverSelectors } from '~store/selectors'
 
@@ -49,7 +49,7 @@ export default function AdminCard() {
     {
       icon: (
         <Link color="primary" to="/logs">
-          <LogsIcon />
+          <LogsIcon color="primary" />
         </Link>
       ),
       name: t('pro.logs'),
@@ -57,16 +57,14 @@ export default function AdminCard() {
   ]
 
   if (serverConfig.IsEE) {
-    actions.push(
-      {
-        icon: (
-          <Link color="primary" to="/metrics/MetricsTable">
-            <MetricsIcon />
-          </Link>
-        ),
-        name: t('pro.metrics'),
-      }
-    )
+    actions.push({
+      icon: (
+        <Link color="primary" to="/metrics/MetricsTable">
+          <MetricsIcon color="primary" />
+        </Link>
+      ),
+      name: t('pro.metrics'),
+    })
   }
 
   return (
@@ -119,15 +117,15 @@ export default function AdminCard() {
               </StyledSpeedDial>
             </Grid>
             <Grid item xs={1}>
-                <Avatar
-                  sx={{ bgcolor: grey[900] }}
-                  aria-label={String(t('common.count'))}
-                >
-                  <Typography variant="body1" color='white'>
-                   <BottomIcon />
-                  </Typography>
-                </Avatar>
-              </Grid>
+              <Avatar
+                sx={{ bgcolor: grey[900] }}
+                aria-label={String(t('common.count'))}
+              >
+                <Typography variant="body1" color="white">
+                  <BottomIcon />
+                </Typography>
+              </Avatar>
+            </Grid>
           </Grid>
         </CardActions>
       </Card>
