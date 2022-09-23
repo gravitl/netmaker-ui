@@ -31,7 +31,7 @@ export const reducer = createReducer({
   isFetchingClients: false as boolean,
   qrData: '' as string,
   shouldSignOut: '' as shouldSignOut,
-  nodeSort: { value: 'name' && 'id', ascending: true } as NodeSort,
+  nodeSort: { value: 'name', ascending: true } as NodeSort,
 })
   .handleAction(setShouldLogout, (state, action) =>
     produce(state, (draftState) => {
@@ -65,8 +65,11 @@ export const reducer = createReducer({
       if (!!action.payload && action.payload.length) {
         draftState.nodes = action.payload.map(nodePayloadToNode)
         const { value, ascending } = state.nodeSort
+
         draftState.nodes = draftState.nodes.sort((a, b) =>
-          a[value].localeCompare(b[value])
+          a[value] === b[value]
+            ? `${a[value]}${a.id}`.localeCompare(`${b[value]}${b.id}`)
+            : a[value].localeCompare(b[value])
         )
         if (!ascending) {
           draftState.nodes = draftState.nodes.reverse()

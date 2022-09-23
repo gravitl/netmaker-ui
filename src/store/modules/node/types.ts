@@ -233,7 +233,7 @@ export interface DeleteIngressNodePayload {
 export type shouldSignOut = '' | 'network' | 'auth'
 
 export interface NodeSort {
-  value: 'name' | 'address' | 'network' | 'id'
+  value: 'name' | 'address' | 'network'
   ascending: boolean
 }
 
