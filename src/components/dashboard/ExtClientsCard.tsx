@@ -42,7 +42,7 @@ export default function ExtClientsCard() {
     {
       icon: (
         <Link to="/ext-clients">
-          <PreviewIcon />
+          <PreviewIcon color="primary" />
         </Link>
       ),
       name: t('common.view'),
@@ -58,7 +58,13 @@ export default function ExtClientsCard() {
   } as any
 
   return (
-    <Button component={Link} to={'/ext-clients'} color={'inherit'} fullWidth style={{textTransform: 'none'}}>
+    <Button
+      component={Link}
+      to={'/ext-clients'}
+      color={'inherit'}
+      fullWidth
+      style={{ textTransform: 'none' }}
+    >
       <Card
         sx={{ minWidth: 275, backgroundColor: grey[200] }}
         variant="outlined"
@@ -69,22 +75,24 @@ export default function ExtClientsCard() {
             sx={{ bgcolor: grey[900] }}
             aria-label={String(t('breadcrumbs.extClients'))}
           >
-            <Devices sx={{color: theme.palette.common.white}} />
+            <Devices sx={{ color: theme.palette.common.white }} />
           </Avatar>
           <div style={cardContentStyle}>
-            <Typography variant="h5" component="div" color='black'>
+            <Typography variant="h5" component="div" color="black">
               {t('breadcrumbs.extClients')}
             </Typography>
-            <Typography variant="body2" color='primary'>
+            <Typography variant="body2" color="primary">
               {`${t('common.manage')} ${t('breadcrumbs.extClients')}`}
             </Typography>
           </div>
         </CardContent>
         <CardActions>
-          <Grid container justifyContent='space-around' alignItems='center'>
-              <Grid item xs={10}>
+          <Grid container justifyContent="space-around" alignItems="center">
+            <Grid item xs={10}>
               <StyledSpeedDial
-                ariaLabel={`${t('common.manage')} ${t('breadcrumbs.extClients')}`}
+                ariaLabel={`${t('common.manage')} ${t(
+                  'breadcrumbs.extClients'
+                )}`}
                 icon={<KeyboardArrowRight />}
                 direction={'right'}
               >
@@ -97,18 +105,18 @@ export default function ExtClientsCard() {
                   />
                 ))}
               </StyledSpeedDial>
-              </Grid>
-              <Grid item xs={1}>
-                <Avatar
-                  sx={{ bgcolor: grey[900] }}
-                  aria-label={String(t('common.count'))}
-                >
-                  <Typography variant="body1" color='white'>
-                    {clientCount}
-                  </Typography>
-                </Avatar>
-              </Grid>
             </Grid>
+            <Grid item xs={1}>
+              <Avatar
+                sx={{ bgcolor: grey[900] }}
+                aria-label={String(t('common.count'))}
+              >
+                <Typography variant="body1" color="white">
+                  {clientCount}
+                </Typography>
+              </Avatar>
+            </Grid>
+          </Grid>
         </CardActions>
       </Card>
     </Button>

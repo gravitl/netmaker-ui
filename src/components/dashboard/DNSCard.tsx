@@ -50,7 +50,7 @@ export default function NodeCard() {
     {
       icon: (
         <Link to="/dns">
-          <PreviewIcon />
+          <PreviewIcon color="primary" />
         </Link>
       ),
       name: t('common.view'),
@@ -58,28 +58,37 @@ export default function NodeCard() {
   ]
 
   return (
-    <Button component={Link} to={'/dns'} color={'inherit'} fullWidth style={{textTransform: 'none'}}>
+    <Button
+      component={Link}
+      to={'/dns'}
+      color={'inherit'}
+      fullWidth
+      style={{ textTransform: 'none' }}
+    >
       <Card
         sx={{ minWidth: 275, backgroundColor: grey[200] }}
         variant="outlined"
         style={cardStyle}
       >
         <CardContent>
-          <Avatar sx={{ bgcolor: grey[900] }} aria-label={String(t('breadcrumbs.dns'))}>
-            <Language sx={{color: theme.palette.common.white}} />
+          <Avatar
+            sx={{ bgcolor: grey[900] }}
+            aria-label={String(t('breadcrumbs.dns'))}
+          >
+            <Language sx={{ color: theme.palette.common.white }} />
           </Avatar>
           <div style={cardContentStyle}>
-            <Typography variant="h5" component="div" color='black'>
+            <Typography variant="h5" component="div" color="black">
               {t('breadcrumbs.dns')}
             </Typography>
-            <Typography variant="body2" color='primary'>
+            <Typography variant="body2" color="primary">
               {`${t('common.manage')} ${t('breadcrumbs.dns')}`}
             </Typography>
           </div>
         </CardContent>
         <CardActions>
-          <Grid container justifyContent='space-around' alignItems='center'>
-              <Grid item xs={10}>
+          <Grid container justifyContent="space-around" alignItems="center">
+            <Grid item xs={10}>
               <StyledSpeedDial
                 ariaLabel={`${t('common.manage')} ${t('breadcrumbds.dns')}`}
                 icon={<KeyboardArrowRight />}
@@ -94,18 +103,18 @@ export default function NodeCard() {
                   />
                 ))}
               </StyledSpeedDial>
-              </Grid>
-              <Grid item xs={1}>
-                <Avatar
-                  sx={{ bgcolor: grey[900] }}
-                  aria-label={String(t('common.count'))}
-                >
-                    <Typography variant="body1" color='white'>
-                      {dnsCount}
-                    </Typography>
-                </Avatar>
-              </Grid>
             </Grid>
+            <Grid item xs={1}>
+              <Avatar
+                sx={{ bgcolor: grey[900] }}
+                aria-label={String(t('common.count'))}
+              >
+                <Typography variant="body1" color="white">
+                  {dnsCount}
+                </Typography>
+              </Avatar>
+            </Grid>
+          </Grid>
         </CardActions>
       </Card>
     </Button>

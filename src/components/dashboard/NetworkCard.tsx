@@ -49,7 +49,7 @@ export default function NetworkCard() {
     {
       icon: (
         <Link color="primary" to="/networks">
-          <PreviewIcon />
+          <PreviewIcon color="primary" />
         </Link>
       ),
       name: t('common.view'),
@@ -57,7 +57,7 @@ export default function NetworkCard() {
     {
       icon: (
         <Link color="primary" to="/networks/create">
-          <CreateIcon />
+          <CreateIcon color="primary" />
         </Link>
       ),
       name: t('common.create'),
@@ -65,7 +65,7 @@ export default function NetworkCard() {
     {
       icon: (
         <Link color="primary" to="/graphs">
-          <AccountTree />
+          <AccountTree color="primary" />
         </Link>
       ),
       name: t('breadcrumbs.graphs'),
@@ -73,54 +73,63 @@ export default function NetworkCard() {
   ]
 
   return (
-    <Button component={Link} to={'/networks'} color={'inherit'} fullWidth style={{textTransform: 'none'}}>
+    <Button
+      component={Link}
+      to={'/networks'}
+      color={'inherit'}
+      fullWidth
+      style={{ textTransform: 'none' }}
+    >
       <Card
         sx={{ minWidth: 275, backgroundColor: grey[200] }}
         variant="outlined"
         style={cardStyle}
       >
         <CardContent>
-          <Avatar sx={{ bgcolor: grey[900] }} aria-label={String(t('network.networks'))}>
-            <Wifi sx={{color: theme.palette.common.white}} />
+          <Avatar
+            sx={{ bgcolor: grey[900] }}
+            aria-label={String(t('network.networks'))}
+          >
+            <Wifi sx={{ color: theme.palette.common.white }} />
           </Avatar>
           <div style={cardContentStyle}>
-            <Typography variant="h5" component="div" color='black'>
+            <Typography variant="h5" component="div" color="black">
               {t('network.networks')}
             </Typography>
-            <Typography variant="body2" color='primary'>
+            <Typography variant="body2" color="primary">
               {`${t('common.manage')} ${t('network.networks')}`}
             </Typography>
           </div>
         </CardContent>
         <CardActions>
-          <Grid container justifyContent='space-around' alignItems='center'>
-              <Grid item xs={10}>
+          <Grid container justifyContent="space-around" alignItems="center">
+            <Grid item xs={10}>
               <StyledSpeedDial
-                  ariaLabel={`${t('common.manage')} ${t('network.networks')}`}
-                  icon={<KeyboardArrowRight />}
-                  direction={'right'}
-                >
-                  {actions.map((action) => (
-                    <SpeedDialAction
-                      color="primary"
-                      key={action.name}
-                      icon={action.icon}
-                      tooltipTitle={action.name}
-                    />
-                  ))}
-                </StyledSpeedDial>
-              </Grid>
-              <Grid item xs={1}>
-                <Avatar
-                  sx={{ bgcolor: grey[900] }}
-                  aria-label={String(t('common.count'))}
-                >
-                    <Typography variant="body1" color='white'>
-                      {networkCount}
-                    </Typography>
-                </Avatar>
-              </Grid>
+                ariaLabel={`${t('common.manage')} ${t('network.networks')}`}
+                icon={<KeyboardArrowRight />}
+                direction={'right'}
+              >
+                {actions.map((action) => (
+                  <SpeedDialAction
+                    color="primary"
+                    key={action.name}
+                    icon={action.icon}
+                    tooltipTitle={action.name}
+                  />
+                ))}
+              </StyledSpeedDial>
             </Grid>
+            <Grid item xs={1}>
+              <Avatar
+                sx={{ bgcolor: grey[900] }}
+                aria-label={String(t('common.count'))}
+              >
+                <Typography variant="body1" color="white">
+                  {networkCount}
+                </Typography>
+              </Avatar>
+            </Grid>
+          </Grid>
         </CardActions>
       </Card>
     </Button>

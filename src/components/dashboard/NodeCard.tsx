@@ -47,7 +47,7 @@ export default function NodeCard() {
     {
       icon: (
         <Link to="/nodes">
-          <PreviewIcon />
+          <PreviewIcon color="primary" />
         </Link>
       ),
       name: t('common.view'),

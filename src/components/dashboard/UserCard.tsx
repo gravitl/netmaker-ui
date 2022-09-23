@@ -53,7 +53,7 @@ export default function UserCard() {
     {
       icon: (
         <Link color="primary" to="/users">
-          <PreviewIcon />
+          <PreviewIcon color="primary" />
         </Link>
       ),
       name: `${t('common.view')} ${t('header.users')}`,
@@ -64,7 +64,7 @@ export default function UserCard() {
     actions.push({
       icon: (
         <Link color="primary" to="/user-permissions">
-          <NetworkUsersIcon />
+          <NetworkUsersIcon color="primary" />
         </Link>
       ),
       name: `${t('common.manage')} ${t('pro.label.userpermissions')}`,
@@ -72,7 +72,7 @@ export default function UserCard() {
     actions.push({
       icon: (
         <Link color="primary" to="/usergroups">
-          <GroupsIcon />
+          <GroupsIcon color="primary" />
         </Link>
       ),
       name: `${t('common.manage')} ${t('pro.label.usergroups')}`,
@@ -80,56 +80,65 @@ export default function UserCard() {
   }
 
   return (
-    <Button component={Link} to={'/users'} color={'inherit'} fullWidth style={{textTransform: 'none'}}>
-    <Card
-      sx={{ minWidth: 275, backgroundColor: grey[200] }}
-      variant="outlined"
-      style={cardStyle}
+    <Button
+      component={Link}
+      to={'/users'}
+      color={'inherit'}
+      fullWidth
+      style={{ textTransform: 'none' }}
     >
-      <CardContent>
-        <Avatar sx={{ bgcolor: grey[900] }} aria-label={String(t('users.header'))}>
-          <UsersIcon sx={{color: theme.palette.common.white}} />
-        </Avatar>
-        <div style={cardContentStyle}>
-          <Typography variant="h5" component="div" color='black'>
-            {t('users.header')}
-          </Typography>
-          <Typography variant="body2" color='primary'>
-            {`${t('common.manage')} ${t('users.header')}`}
-          </Typography>
-        </div>
-      </CardContent>
-      <CardActions>
-        <Grid container justifyContent='space-around' alignItems='center'>
-          <Grid item xs={10}>
-            <StyledSpeedDial
-              ariaLabel={`${t('common.manage')} ${t('user.header')}`}
-              icon={<KeyboardArrowRight />}
-              direction={'right'}
-            >
-            {actions.map((action) => (
-              <SpeedDialAction
-                color="primary"
-                key={action.name}
-                icon={action.icon}
-                tooltipTitle={action.name}
-              />
-            ))}
-          </StyledSpeedDial>
-          </Grid>
-          <Grid item xs={1}>
-            <Avatar
-              sx={{ bgcolor: grey[900] }}
-              aria-label={String(t('common.count'))}
-            >
-                <Typography variant="body1" color='white'>
+      <Card
+        sx={{ minWidth: 275, backgroundColor: grey[200] }}
+        variant="outlined"
+        style={cardStyle}
+      >
+        <CardContent>
+          <Avatar
+            sx={{ bgcolor: grey[900] }}
+            aria-label={String(t('users.header'))}
+          >
+            <UsersIcon sx={{ color: theme.palette.common.white }} />
+          </Avatar>
+          <div style={cardContentStyle}>
+            <Typography variant="h5" component="div" color="black">
+              {t('users.header')}
+            </Typography>
+            <Typography variant="body2" color="primary">
+              {`${t('common.manage')} ${t('users.header')}`}
+            </Typography>
+          </div>
+        </CardContent>
+        <CardActions>
+          <Grid container justifyContent="space-around" alignItems="center">
+            <Grid item xs={10}>
+              <StyledSpeedDial
+                ariaLabel={`${t('common.manage')} ${t('user.header')}`}
+                icon={<KeyboardArrowRight />}
+                direction={'right'}
+              >
+                {actions.map((action) => (
+                  <SpeedDialAction
+                    color="primary"
+                    key={action.name}
+                    icon={action.icon}
+                    tooltipTitle={action.name}
+                  />
+                ))}
+              </StyledSpeedDial>
+            </Grid>
+            <Grid item xs={1}>
+              <Avatar
+                sx={{ bgcolor: grey[900] }}
+                aria-label={String(t('common.count'))}
+              >
+                <Typography variant="body1" color="white">
                   {userCount}
                 </Typography>
-            </Avatar>
+              </Avatar>
+            </Grid>
           </Grid>
-        </Grid>
-      </CardActions>
-    </Card>
+        </CardActions>
+      </Card>
     </Button>
   )
 }

@@ -10,7 +10,12 @@ import { grey } from '@mui/material/colors'
 import CardContent from '@mui/material/CardContent'
 import Typography from '@mui/material/Typography'
 import { useTranslation } from 'react-i18next'
-import { AccountTree, EditLocationAlt, KeyboardArrowRight, PreviewOutlined } from '@mui/icons-material'
+import {
+  AccountTree,
+  EditLocationAlt,
+  KeyboardArrowRight,
+  PreviewOutlined,
+} from '@mui/icons-material'
 import { Button, Grid, useTheme } from '@mui/material'
 
 const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
@@ -42,7 +47,7 @@ export default function GraphCard() {
     {
       icon: (
         <Link to="/graphs">
-          <PreviewOutlined />
+          <PreviewOutlined color="primary" />
         </Link>
       ),
       name: t('common.view'),
@@ -50,54 +55,63 @@ export default function GraphCard() {
   ]
 
   return (
-    <Button component={Link} to={'/graphs'} color={'inherit'} fullWidth style={{textTransform: 'none'}}>
-    <Card
-      sx={{ minWidth: 275, backgroundColor: grey[200] }}
-      variant="outlined"
-      style={cardStyle}
+    <Button
+      component={Link}
+      to={'/graphs'}
+      color={'inherit'}
+      fullWidth
+      style={{ textTransform: 'none' }}
     >
-      <CardContent>
-        <Avatar sx={{ bgcolor: grey[900] }} aria-label={String(t('network.graphs'))}>
-          <AccountTree sx={{color: theme.palette.common.white}} />
-        </Avatar>
-        <div style={cardContentStyle}>
-          <Typography variant="h5" component="div" color='black'>
-            {t('network.graphs')}
-          </Typography>
-          <Typography variant="body2" color='primary'>
-            {`${t('common.manage')} ${t('node.nodevisual')}`}
-          </Typography>
-        </div>
-      </CardContent>
-      <CardActions>
-        <Grid container justifyContent='space-around' alignItems='center'>
+      <Card
+        sx={{ minWidth: 275, backgroundColor: grey[200] }}
+        variant="outlined"
+        style={cardStyle}
+      >
+        <CardContent>
+          <Avatar
+            sx={{ bgcolor: grey[900] }}
+            aria-label={String(t('network.graphs'))}
+          >
+            <AccountTree sx={{ color: theme.palette.common.white }} />
+          </Avatar>
+          <div style={cardContentStyle}>
+            <Typography variant="h5" component="div" color="black">
+              {t('network.graphs')}
+            </Typography>
+            <Typography variant="body2" color="primary">
+              {`${t('common.manage')} ${t('node.nodevisual')}`}
+            </Typography>
+          </div>
+        </CardContent>
+        <CardActions>
+          <Grid container justifyContent="space-around" alignItems="center">
             <Grid item xs={10}>
-            <StyledSpeedDial
-              ariaLabel={`${t('common.manage')} ${t('node.nodevisual')}`}
-              icon={<KeyboardArrowRight />}
-              direction={'right'}
-            >
-              {actions.map((action) => (
-                <SpeedDialAction
-                  color="primary"
-                  key={action.name}
-                  icon={action.icon}
-                  tooltipTitle={action.name}
-                />
-              ))}
-            </StyledSpeedDial>
+              <StyledSpeedDial
+                ariaLabel={`${t('common.manage')} ${t('node.nodevisual')}`}
+                icon={<KeyboardArrowRight />}
+                direction={'right'}
+              >
+                {actions.map((action) => (
+                  <SpeedDialAction
+                    color="primary"
+                    key={action.name}
+                    icon={action.icon}
+                    tooltipTitle={action.name}
+                  />
+                ))}
+              </StyledSpeedDial>
             </Grid>
             <Grid item xs={1}>
               <Avatar
                 sx={{ bgcolor: grey[900] }}
                 aria-label={`${t('network.graphs')}-icon`}
               >
-                  <EditLocationAlt sx={{color: theme.palette.common.white}} />
+                <EditLocationAlt sx={{ color: theme.palette.common.white }} />
               </Avatar>
             </Grid>
           </Grid>
-      </CardActions>
-    </Card>
+        </CardActions>
+      </Card>
     </Button>
   )
 }
