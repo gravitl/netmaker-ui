@@ -31,7 +31,7 @@ export const reducer = createReducer({
   isFetchingClients: false as boolean,
   qrData: '' as string,
   shouldSignOut: '' as shouldSignOut,
-  nodeSort: { value: 'name', ascending: true } as NodeSort,
+  nodeSort: { value: 'name' && 'id', ascending: true } as NodeSort,
 })
   .handleAction(setShouldLogout, (state, action) =>
     produce(state, (draftState) => {
