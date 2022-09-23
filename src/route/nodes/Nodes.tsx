@@ -40,7 +40,9 @@ export const Nodes: React.FC = () => {
     } else {
       setFilterNodes(
         listOfNodes.filter((node) =>
-          `${node.name}${node.address}${node.network}`.includes(searchTerm)
+          `${node.name}${node.address}${node.network}${node.id}`.includes(
+            searchTerm
+          )
         )
       )
     }
