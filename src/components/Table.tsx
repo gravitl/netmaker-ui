@@ -18,6 +18,7 @@ import { useTranslation } from 'react-i18next'
 import { useQuery } from '~util/query'
 import { authSelectors } from '~store/types'
 import { setUserSettings } from '~store/modules/auth/actions'
+import { isJSDocUnknownTag } from 'typescript'
 
 type Column<Row> = {
   [Key in keyof Row]: {
@@ -126,8 +127,17 @@ export function NmTable<T>({
 
   return (
     <Paper
-      sx={{ width: '100%', overflow: 'hidden' }}
-      style={{ paddingLeft: '2rem', paddingRight: '2rem' }}
+      sx={{
+        width: '90vw',
+        overflow: 'hidden',
+      }}
+      style={{
+        position: 'absolute',
+        left: '50%',
+        top: '50%',
+        transform: 'translate(-50%, -50%)',
+        marginBottom: '20em',
+      }}
     >
       <TableContainer
         sx={{ height: 'auto', maxHeight: '32rem' }}
