@@ -57,14 +57,21 @@ export function Login() {
   }
 
   return (
-      <Modal
-        style={{ display: 'flex', flex: 1}}
-        open={true}
-        onClose={() => {
-          history.goBack()
+    <Modal
+      style={{ display: 'flex', flex: 1 }}
+      open={true}
+      onClose={() => {
+        history.goBack()
+      }}
+    >
+      <Box
+        style={{
+          ...styles.modal,
+          backgroundColor: theme.palette.background.paper,
         }}
       >
-        <Box style={{...styles.modal, backgroundColor: theme.palette.background.paper }}>{authRenderSwitch()}</Box>
-      </Modal>
+        {authRenderSwitch()}
+      </Box>
+    </Modal>
   )
 }
