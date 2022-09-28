@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { useRouteMatch, useParams, Route, Switch } from 'react-router-dom'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 import { Grid, Typography } from '@mui/material'
-import { i18n } from '../../../../../i18n/i18n'
+import { i18n } from '../../../i18n/i18n'
 import { useSelector } from 'react-redux'
 import { ExtClientCreateButtonVpn } from './ExtClientCreateButtonVpn'
 import { proSelectors } from '~store/types'
@@ -14,7 +14,7 @@ import { DownloadExtClientButtonVpn } from './DownloadExtClientButtonVpn'
 import { DeleteExtClientButtonVpn } from './DeleteExtClientButtonVpn'
 import { EditExtClientButtonVpn } from './EditExtClientButtonVpn'
 import Avatar from '@mui/material/Avatar'
-import { NET_ADMIN_ACCESS_LVL } from '~components/prodashboards/ProConsts'
+import { NET_ADMIN_ACCESS_LVL } from '../../proutils/ProConsts'
 
 import {
   CheckBox,

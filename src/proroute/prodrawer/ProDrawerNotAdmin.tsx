@@ -28,9 +28,9 @@ import { useLocation, useRouteMatch, Link } from 'react-router-dom'
 import { authSelectors, serverSelectors } from '~store/types'
 import { logout } from '~store/modules/auth/actions'
 import { NmLink } from '~components/Link'
-import { UI_VERSION } from 'src/config'
-import Logo from '../../../netmaker-logo.png'
-import DarkLogo from '../../../netmaker-logo-2.png'
+import { UI_VERSION } from '../../config'
+import Logo from '../../netmaker-logo.png'
+import DarkLogo from '../../netmaker-logo-2.png'
 import { setUserSettings } from '~store/modules/auth/actions'
 
 const drawerWidth = 240

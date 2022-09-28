@@ -10,7 +10,7 @@ import {
   NmFormInputText,
   validate,
 } from '../../../components/form'
-import { useLinkBreadcrumb } from 'src/proroute/proutils/PathBreadcrumbs'
+import { useLinkBreadcrumb } from '../../../components/PathBreadcrumbs'
 import { createNetwork, getNetworks } from '~store/modules/network/actions'
 import { randomNetworkName, randomCIDR, randomCIDR6 } from '~util/fields'
 import { useHistory } from 'react-router'

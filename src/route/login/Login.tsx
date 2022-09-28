@@ -3,8 +3,8 @@ import { useSelector } from 'react-redux'
 import { Modal, Box, useTheme } from '@mui/material'
 import { useHistory } from 'react-router-dom'
 import { authSelectors } from '../../store/selectors'
-import ProLogin from 'src/proroute/prologin/Login'
-import CreateAdmin from 'src/proroute/prologin/CreateAdmin'
+import ProLogin from '../../proroute/prologin/Login'
+import CreateAdmin from '../../proroute/prologin/CreateAdmin'
 
 const styles = {
   centerText: {

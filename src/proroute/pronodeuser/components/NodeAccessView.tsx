@@ -2,15 +2,9 @@ import React from 'react'
 import { NmTable, TableColumns } from '~components/Table'
 import { Node } from '~modules/node'
 import { useTranslation } from 'react-i18next'
-import {
-  useRouteMatch,
-  useParams,
-  Route,
-  Switch,
-  Link,
-} from 'react-router-dom'
+import { useRouteMatch, useParams, Route, Switch, Link } from 'react-router-dom'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
-import { NodeId } from '../../../../route/nodes/netid/nodeId/NodeId'
+import { NodeId } from '../../../route/nodes/netid/nodeId/NodeId'
 import {
   Chip,
   Grid,
@@ -28,9 +22,9 @@ import {
   CallMerge,
   CallSplit,
 } from '@mui/icons-material'
-import { CreateEgress } from '../../../../route/nodes/netid/components/CreateEgress'
-import { CreateRelay } from '../../../../route/nodes/netid/components/CreateRelay'
-import { NetworkSelect } from '../../../NetworkSelect'
+import { CreateEgress } from '../../../route/nodes/netid/components/CreateEgress'
+import { CreateRelay } from '../../../route/nodes/netid/components/CreateRelay'
+import { NetworkSelect } from '~components/NetworkSelect'
 import { useDispatch, useSelector } from 'react-redux'
 import { deleteNode, setNodeSort } from '~store/modules/node/actions'
 import CustomizedDialogs from '~components/dialog/CustomDialog'
@@ -40,8 +34,8 @@ import { Tablefilter } from '~components/filter/Tablefilter'
 import { useEffect, useState } from 'react'
 import { GenericError } from '~util/genericerror'
 import { NmLink } from '~components/Link'
-import { i18n } from '../../../../i18n/i18n'
-import { TableToggleButton } from '../../../../route/nodes/netid/components/TableToggleButton'
+import { i18n } from '../../../i18n/i18n'
+import { TableToggleButton } from '../../../route/nodes/netid/components/TableToggleButton'
 
 export const NodeAccessView: React.FC<{ nodes: Node[]; isNetAdmin?: boolean }> =
   ({ nodes, isNetAdmin }) => {
@@ -89,18 +83,25 @@ export const NodeAccessView: React.FC<{ nodes: Node[]; isNetAdmin?: boolean }> =
         labelKey: 'node.name',
         minWidth: 100,
         sortable: true,
-        format: (value, node) =>
-            <NmLink
-              to={isNetAdmin ? 
-                `/prouser/${node.network}/nodeview/edit/${encodeURIComponent(node.id)}` : 
-                `/prouser/${node.network}/nodeview/view/${encodeURIComponent(node.id)}`}
-              sx={{ textTransform: 'none' }}
-            >
-              {value}
-              {`${
-                node.ispending === 'yes' ? ` (${i18n.t('common.pending')})` : ''
-              }`}
-            </NmLink>
+        format: (value, node) => (
+          <NmLink
+            to={
+              isNetAdmin
+                ? `/prouser/${node.network}/nodeview/edit/${encodeURIComponent(
+                    node.id
+                  )}`
+                : `/prouser/${node.network}/nodeview/view/${encodeURIComponent(
+                    node.id
+                  )}`
+            }
+            sx={{ textTransform: 'none' }}
+          >
+            {value}
+            {`${
+              node.ispending === 'yes' ? ` (${i18n.t('common.pending')})` : ''
+            }`}
+          </NmLink>
+        ),
       },
       {
         id: 'address',

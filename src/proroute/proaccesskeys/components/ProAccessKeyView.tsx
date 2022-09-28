@@ -2,7 +2,7 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { proSelectors } from '~store/types'
 import { useHistory, useParams } from 'react-router'
-import AccessKeyDetails from '../../../../route/accesskeys/components/AccessKeyDetails'
+import AccessKeyDetails from '../../../route/accesskeys/components/AccessKeyDetails'
 import { useTranslation } from 'react-i18next'
 import { NotFound } from '~util/errorpage'
 

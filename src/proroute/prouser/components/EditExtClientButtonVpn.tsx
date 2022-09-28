@@ -1,6 +1,6 @@
 import React from 'react'
 import { Tooltip } from '@mui/material'
-import { i18n } from '../../../../../i18n/i18n'
+import { i18n } from '../../../i18n/i18n'
 import { ExternalClient } from '~store/types'
 import { useRouteMatch } from 'react-router'
 import { NmLink } from '~components/Link'

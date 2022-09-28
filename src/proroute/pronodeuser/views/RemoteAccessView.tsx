@@ -3,12 +3,12 @@ import React from 'react'
 import { useRouteMatch, Switch, Route, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
-import { ExtClientViewVpn } from './components/ExtClientViewVpn'
+import { ExtClientViewVpn } from '../../../proroute/prouser/components/ExtClientViewVpn'
 import { useSelector } from 'react-redux'
 import { proSelectors } from '~store/selectors'
 import { ExternalClient, Node } from '~store/types'
-import { ExtClientEditVpn } from './components/ExtClientEditVpn'
-import { QrCodeViewVpn } from './components/QrCodeViewVpn'
+import { ExtClientEditVpn } from '../../../proroute/prouser/components/ExtClientEditVpn'
+import { QrCodeViewVpn } from '../../../proroute/prouser/components/QrCodeViewVpn'
 
 export const RemoteAccessView: React.FC = () => {
   const { path } = useRouteMatch()
@@ -38,7 +38,7 @@ export const RemoteAccessView: React.FC = () => {
             alignItems="center"
           >
             <Grid item xs={12}>
-                <ExtClientViewVpn vpns={vpns} clients={clients} />
+              <ExtClientViewVpn vpns={vpns} clients={clients} />
             </Grid>
           </Grid>
         </Route>

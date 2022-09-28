@@ -2,11 +2,11 @@ import { Container, Grid } from '@mui/material'
 import React from 'react'
 import { useRouteMatch, Switch, Route } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { useLinkBreadcrumb } from '../proutils/PathBreadcrumbs'
+import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 import { ProNetworkSelect } from '../proutils/ProNetworkSelect'
 import { useSelector } from 'react-redux'
 import { proSelectors } from '~store/types'
-import Loading from '../proutils/Loading'
+import Loading from '~components/Loading'
 import NetUserView from '../proaccessleveldashboards/NetUserSwitch'
 
 export const ProUserView: React.FC = () => {

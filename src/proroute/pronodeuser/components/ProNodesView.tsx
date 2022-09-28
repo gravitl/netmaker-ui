@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux'
 import { proSelectors } from '~store/selectors'
 import { Node } from '~store/types'
 import { NodeAccessView } from './NodeAccessView'
-import { NET_ADMIN_ACCESS_LVL } from '~components/prodashboards/ProConsts'
+import { NET_ADMIN_ACCESS_LVL } from '../../proutils/ProConsts'
 import { ProNodeId } from './ProNodeId'
 import { NotFound } from '~util/errorpage'
 import { ProNodeEdit } from './ProNodeEdit'
@@ -33,10 +33,13 @@ export const ProNodesView: React.FC = () => {
             alignItems="center"
           >
             <Grid item xs={12}>
-                <NodeAccessView
-                    nodes={nodes} 
-                    isNetAdmin={netData.user && netData.user.accesslevel === NET_ADMIN_ACCESS_LVL}
-                />
+              <NodeAccessView
+                nodes={nodes}
+                isNetAdmin={
+                  netData.user &&
+                  netData.user.accesslevel === NET_ADMIN_ACCESS_LVL
+                }
+              />
             </Grid>
           </Grid>
         </Route>
@@ -45,13 +48,13 @@ export const ProNodesView: React.FC = () => {
             <ProNodeId />
           </Grid>
         </Route>
-        {netData.user.accesslevel === NET_ADMIN_ACCESS_LVL && 
+        {netData.user.accesslevel === NET_ADMIN_ACCESS_LVL && (
           <Route path={`${path}/edit/:nodeid`}>
             <Grid>
               <ProNodeEdit />
             </Grid>
           </Route>
-        }
+        )}
       </Switch>
     </Container>
   )
