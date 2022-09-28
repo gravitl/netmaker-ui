@@ -12,7 +12,6 @@ import {
   TableCellProps,
   IconButton,
   Tooltip,
-  Container,
   Box,
 } from '@mui/material'
 import { useRouteMatch, useHistory } from 'react-router-dom'
@@ -20,7 +19,6 @@ import { useTranslation } from 'react-i18next'
 import { useQuery } from '~util/query'
 import { authSelectors } from '~store/types'
 import { setUserSettings } from '~store/modules/auth/actions'
-import { isJSDocUnknownTag } from 'typescript'
 
 type Column<Row> = {
   [Key in keyof Row]: {
