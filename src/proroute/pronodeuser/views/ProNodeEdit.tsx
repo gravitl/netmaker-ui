@@ -10,7 +10,7 @@ import {
   NmFormInputText,
   validate,
 } from '~components/form'
-import { useLinkBreadcrumb } from 'src/proroute/proutils/PathBreadcrumbs'
+import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 import { getCommaSeparatedArray } from '~util/fields'
 import { useNodeById } from '~util/node'
 import { useNetwork } from '~util/network'

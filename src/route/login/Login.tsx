@@ -3,8 +3,8 @@ import { useSelector } from 'react-redux'
 import { Modal, Box, useTheme } from '@mui/material'
 import { useHistory } from 'react-router-dom'
 import { authSelectors } from '../../store/selectors'
-import LoginView from '../../components/views/Login'
-import CreateAdminView from '../../components/views/CreateAdmin'
+import ProLogin from 'src/proroute/prologin/Login'
+import CreateAdmin from 'src/proroute/prologin/CreateAdmin'
 
 const styles = {
   centerText: {
@@ -52,8 +52,8 @@ export function Login() {
   const theme = useTheme()
 
   const authRenderSwitch = () => {
-    if (hasAdmin) return <LoginView />
-    return <CreateAdminView />
+    if (hasAdmin) return <ProLogin />
+    return <CreateAdmin />
   }
 
   return (

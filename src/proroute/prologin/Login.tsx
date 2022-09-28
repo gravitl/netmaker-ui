@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo } from 'react'
 import { CircularProgress, Grid, Typography } from '@mui/material'
-import { NmForm, NmFormInputText, validate } from '../form'
+import { NmForm, NmFormInputText, validate } from '~components/form'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { correctUserNameRegex, correctPasswordRegex } from '../../util/regex'
@@ -27,7 +27,7 @@ const styles = {
   },
 } as any
 
-export default function Login() {
+export default function ProLogin() {
   const dispatch = useDispatch()
   const isLogginIn = useSelector(authSelectors.isLogginIn)
   const isLoggedIn = useSelector(authSelectors.getLoggedIn)

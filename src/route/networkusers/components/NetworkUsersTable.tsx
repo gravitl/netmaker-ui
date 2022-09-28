@@ -68,14 +68,13 @@ export const NetworkUsersTable: React.FC<{}> = () => {
       label: t('node.nodes'),
       minWidth: 170,
       sortable: true,
-      format: (_, obj) => (<span>
-        {obj.nodes.map(n => 
-          <NmLink
-            sx={{ textTransform: 'none' }}
-            to={`/nodes/${netid}/${n}`}
-          >
-            {n}
-          </NmLink>)}
+      format: (_, obj) => (
+        <span>
+          {obj.nodes.map((n) => (
+            <NmLink sx={{ textTransform: 'none' }} to={`/nodes/${netid}/${n}`}>
+              {n}
+            </NmLink>
+          ))}
         </span>
       ),
       align: 'center',
@@ -86,10 +85,7 @@ export const NetworkUsersTable: React.FC<{}> = () => {
       minWidth: 170,
       sortable: true,
       format: (_, obj) => (
-        <NmLink
-          sx={{ textTransform: 'none' }}
-          to={`/ext-clients/${netid}`}
-        >
+        <NmLink sx={{ textTransform: 'none' }} to={`/ext-clients/${netid}`}>
           {obj.clients.join(',')}
         </NmLink>
       ),
@@ -119,13 +115,14 @@ export const NetworkUsersTable: React.FC<{}> = () => {
   return (
     <Grid container>
       <Grid item xs={12} md={12}>
-        <Grid container 
-              direction="row"
-              display={'flex'}
-              justifyContent="space-evenly"
-              alignItems="center"
-              marginLeft="4rem"
-               >     
+        <Grid
+          container
+          direction="row"
+          display={'flex'}
+          justifyContent="space-evenly"
+          alignItems="center"
+          marginLeft="4rem"
+        >
           <Grid item xs={8} md={6}>
             <div style={{ textAlign: 'center' }}>
               <Typography variant="h4">

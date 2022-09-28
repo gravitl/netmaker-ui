@@ -1,8 +1,8 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
-import { NmLink } from '../../../components'
+import { NmLink } from '~components/Link'
 import { AccessKey } from '../../../store/modules/network'
-import { NmTable, TableColumns } from '../../../components/Table'
+import { NmTable, TableColumns } from '~components/Table'
 import { Delete } from '@mui/icons-material'
 import { useTranslation } from 'react-i18next'
 import { useParams, useHistory, useRouteMatch } from 'react-router-dom'
@@ -10,7 +10,7 @@ import { deleteAccessKey } from '~store/modules/network/actions'
 import { useNetwork } from '~util/network'
 import CustomDialog from '~components/dialog/CustomDialog'
 import { Button, Grid, Typography } from '@mui/material'
-import { NetworkSelect } from '~components/NetworkSelect'
+import { NetworkSelect } from 'src/route/extclients/components/NetworkSelect'
 
 export const AccessKeyTable: React.FC<{}> = () => {
   const { t } = useTranslation()

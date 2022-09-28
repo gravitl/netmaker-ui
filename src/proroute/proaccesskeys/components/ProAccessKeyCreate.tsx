@@ -9,7 +9,7 @@ import {
   clearCurrentAccessKey,
   proCreateAccessKey,
 } from '~store/modules/pro/actions'
-import { useLinkBreadcrumb } from 'src/proroute/proutils/PathBreadcrumbs'
+import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 import AccessKeyDetails from '../../../route/accesskeys/components/AccessKeyDetails'
 
 export const ProAccessKeyCreate: React.FC = () => {

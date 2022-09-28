@@ -1,11 +1,11 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
-import { NmLink } from '../../../components'
+import { NmLink } from '~components/Link'
 import { Network } from '../../../store/modules/network'
 import { datePickerConverter } from '../../../util/unixTime'
-import { NmTable, TableColumns } from '../../../components/Table'
+import { NmTable, TableColumns } from '~components/Table'
 import { Autorenew, Delete } from '@mui/icons-material'
-import CopyText from '../../../components/CopyText'
+import CopyText from '~components/CopyText'
 
 import { useTranslation } from 'react-i18next'
 import {
