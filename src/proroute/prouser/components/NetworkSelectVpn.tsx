@@ -1,12 +1,12 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { useRouteMatch, useHistory } from 'react-router-dom'
-import { networkSelectors } from '../../../store/selectors'
+import { networkSelectors } from '~store/types'
 import { useTranslation } from 'react-i18next'
 import CustomSelect from '../../../components/CustomSelect'
 import { Grid } from '@mui/material'
 
-export const NetworkSelect: React.FC = () => {
+export const NetworkSelectVpn: React.FC = () => {
   const listOfNetworks = useSelector(networkSelectors.getNetworks)
   const networkNames = []
   if (listOfNetworks) {

@@ -1,25 +1,25 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
-import { NmLink } from '~components/Link'
-import { AccessKey } from '../../../store/modules/network'
-import { NmTable, TableColumns } from '~components/Table'
+import { useDispatch, useSelector } from 'react-redux'
+import { NmLink } from '../../../components/Link'
+import { AccessKey } from '~store/types'
+import { NmTable, TableColumns } from '../../../components/Table'
 import { Delete } from '@mui/icons-material'
 import { useTranslation } from 'react-i18next'
 import { useParams, useHistory, useRouteMatch } from 'react-router-dom'
 import { deleteAccessKey } from '~store/modules/network/actions'
-import { useNetwork } from '~util/network'
 import CustomDialog from '~components/dialog/CustomDialog'
 import { Button, Grid, Typography } from '@mui/material'
-import { NetworkSelect } from '../../../route/extclients/components/NetworkSelect'
+import { proSelectors } from '~store/selectors'
 
-export const AccessKeyTable: React.FC<{}> = () => {
+export const ProAccessKeyTable: React.FC<{}> = () => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const history = useHistory()
   const [open, setOpen] = React.useState(false)
   const [selectedKey, setSelectedKey] = React.useState('')
   const { netid } = useParams<{ netid: string }>()
-  const network = useNetwork(netid)
+  const userData = useSelector(proSelectors.networkUserData)[netid]
+  const network = userData.networks.filter((net) => net.netid === netid)[0]
   const { url } = useRouteMatch()
 
   if (!!!network) {
@@ -38,9 +38,6 @@ export const AccessKeyTable: React.FC<{}> = () => {
             </Typography>
           </div>
         </Grid>
-        <Grid item xs={5}>
-          <NetworkSelect />
-        </Grid>
       </Grid>
     )
   }
@@ -54,7 +51,7 @@ export const AccessKeyTable: React.FC<{}> = () => {
       format: (value) => (
         <NmLink
           sx={{ textTransform: 'none' }}
-          to={`/access-keys/${netid}/details/${value}`}
+          to={`/prouser/${netid}/accesskeys/view/${value}`}
         >
           {value}
         </NmLink>
@@ -72,7 +69,6 @@ export const AccessKeyTable: React.FC<{}> = () => {
 
   const handleClose = () => {
     setOpen(false)
-    history.goBack()
   }
 
   const handleOpen = (selected: string) => {
@@ -87,7 +83,7 @@ export const AccessKeyTable: React.FC<{}> = () => {
         name: selectedKey!,
       })
     )
-    history.push(`/access-keys/${netid}`)
+    history.push(`/prouser/${netid}/accesskeys`)
   }
 
   return (
@@ -108,9 +104,7 @@ export const AccessKeyTable: React.FC<{}> = () => {
               </Typography>
             </div>
           </Grid>
-          <Grid item xs={10} md={3}>
-            <NetworkSelect />
-          </Grid>
+
           <Grid item xs={8} md={3}>
             <Button
               fullWidth
@@ -125,7 +119,7 @@ export const AccessKeyTable: React.FC<{}> = () => {
       </Grid>
       <NmTable
         columns={columns}
-        rows={network.accesskeys}
+        rows={network.accesskeys || []}
         getRowId={(row) => row.name}
         actions={[
           (row) => ({
