@@ -10,7 +10,7 @@ import { deleteAccessKey } from '~store/modules/network/actions'
 import { useNetwork } from '~util/network'
 import CustomDialog from '~components/dialog/CustomDialog'
 import { Button, Grid, Typography } from '@mui/material'
-import { NetworkSelect } from '../../../route/extclients/components/NetworkSelect'
+import { NetworkSelect } from '~components/NetworkSelect'
 
 export const AccessKeyTable: React.FC<{}> = () => {
   const { t } = useTranslation()
