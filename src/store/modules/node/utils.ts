@@ -22,6 +22,7 @@ export const nodeToNodePayload = (node: Node): NodePayload => {
     ishub: node.ishub ? 'yes' : 'no',
     defaultacl: node.defaultacl === undefined ? 'unset' : node.defaultacl ? 'yes' : 'no',
     connected: node.connected ? 'yes' : 'no',
+    failover: node.failover ? 'yes' : 'no',
   }
 }
 export const nodePayloadToNode = (node: NodePayload): Node => {
@@ -46,6 +47,7 @@ export const nodePayloadToNode = (node: NodePayload): Node => {
     ishub: node.ishub === 'yes',
     defaultacl: node.defaultacl === 'unset' ? undefined : node.defaultacl === 'yes' ? true : false,
     connected: node.connected === 'yes',
+    failover: node.failover === 'yes',
   }
 }
 

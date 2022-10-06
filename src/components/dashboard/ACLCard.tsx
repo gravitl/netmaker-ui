@@ -12,7 +12,12 @@ import { grey } from '@mui/material/colors'
 import CardContent from '@mui/material/CardContent'
 import Typography from '@mui/material/Typography'
 import { useTranslation } from 'react-i18next'
-import { DeviceHub, KeyboardArrowRight, ViewList as ACLIcon, VpnLockOutlined } from '@mui/icons-material'
+import {
+  DeviceHub,
+  KeyboardArrowRight,
+  ViewList as ACLIcon,
+  VpnLockOutlined,
+} from '@mui/icons-material'
 import { Button, Grid, useTheme } from '@mui/material'
 
 const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
@@ -44,7 +49,7 @@ export default function ACLCard() {
     {
       icon: (
         <Link color="primary" to="/acls">
-          <DeviceHub />
+          <DeviceHub color="primary" />
         </Link>
       ),
       name: `${t('common.view')} ${t('acls.nodes')}`,
@@ -52,54 +57,63 @@ export default function ACLCard() {
   ]
 
   return (
-    <Button component={Link} to={'/acls'} color={'inherit'} fullWidth style={{textTransform: 'none'}}>
-    <Card
-      sx={{ minWidth: 275, backgroundColor: grey[200] }}
-      variant="outlined"
-      style={cardStyle}
+    <Button
+      component={Link}
+      to={'/acls'}
+      color={'inherit'}
+      fullWidth
+      style={{ textTransform: 'none' }}
     >
-      <CardContent>
-        <Avatar sx={{ bgcolor: grey[900] }} aria-label={String(t('users.header'))}>
-          <ACLIcon sx={{color: theme.palette.common.white}}/>
-        </Avatar>
-        <div style={cardContentStyle}>
-          <Typography variant="h5" component="div" color='black'>
-            {t('acls.fullname')}
-          </Typography>
-          <Typography variant="body2" color='primary'>
-            {`${t('common.manage')} ${t('header.acls')}`}
-          </Typography>
-        </div>
-      </CardContent>
-      <CardActions>
-        <Grid container justifyContent='space-around' alignItems='center'>
-          <Grid item xs={10}>
-            <StyledSpeedDial
-              ariaLabel={`${t('common.manage')} ${t('header.acls')}`}
-              icon={<KeyboardArrowRight />}
-              direction={'right'}
-            >
-            {actions.map((action) => (
-              <SpeedDialAction
-                color="primary"
-                key={action.name}
-                icon={action.icon}
-                tooltipTitle={action.name}
-              />
-            ))}
-          </StyledSpeedDial>
+      <Card
+        sx={{ minWidth: 275, backgroundColor: grey[200] }}
+        variant="outlined"
+        style={cardStyle}
+      >
+        <CardContent>
+          <Avatar
+            sx={{ bgcolor: grey[900] }}
+            aria-label={String(t('users.header'))}
+          >
+            <ACLIcon sx={{ color: theme.palette.common.white }} />
+          </Avatar>
+          <div style={cardContentStyle}>
+            <Typography variant="h5" component="div" color="black">
+              {t('acls.fullname')}
+            </Typography>
+            <Typography variant="body2" color="primary">
+              {`${t('common.manage')} ${t('header.acls')}`}
+            </Typography>
+          </div>
+        </CardContent>
+        <CardActions>
+          <Grid container justifyContent="space-around" alignItems="center">
+            <Grid item xs={10}>
+              <StyledSpeedDial
+                ariaLabel={`${t('common.manage')} ${t('header.acls')}`}
+                icon={<KeyboardArrowRight />}
+                direction={'right'}
+              >
+                {actions.map((action) => (
+                  <SpeedDialAction
+                    color="primary"
+                    key={action.name}
+                    icon={action.icon}
+                    tooltipTitle={action.name}
+                  />
+                ))}
+              </StyledSpeedDial>
+            </Grid>
+            <Grid item xs={1}>
+              <Avatar
+                sx={{ bgcolor: grey[900] }}
+                aria-label={String(t('acl.aclicon'))}
+              >
+                <VpnLockOutlined sx={{ color: theme.palette.common.white }} />
+              </Avatar>
+            </Grid>
           </Grid>
-          <Grid item xs={1}>
-            <Avatar
-              sx={{ bgcolor: grey[900] }}
-              aria-label={String(t('acl.aclicon'))}
-            >
-              <VpnLockOutlined sx={{color: theme.palette.common.white}} />
-            </Avatar>
-          </Grid>
-        </Grid>
-      </CardActions>
-    </Card>
+        </CardActions>
+      </Card>
     </Button>
   )
 }

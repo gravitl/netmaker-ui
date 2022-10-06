@@ -51,6 +51,7 @@ export interface Node {
   defaultacl: boolean | undefined
   ownerid: string
   connected: boolean
+  failover: boolean
 }
 
 export type NodePayload = Modify<
@@ -73,6 +74,7 @@ export type NodePayload = Modify<
     defaultacl: 'yes' | 'no' | 'unset'
     ownerid: string
     connected: 'yes' | 'no'
+    failover: 'yes' | 'no'
   }
 >
 
@@ -218,6 +220,7 @@ export interface CreatIngressNodePayload {
   Request: {
     netid: string
     nodeid: string
+    failover?: boolean
   }
   Response: NodePayload
 }

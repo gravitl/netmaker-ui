@@ -31,7 +31,8 @@ export default function AccessKeyCard() {
   const networks = useSelector(networkSelectors.getNetworks)
   let accessKeyCount = 0
   for (let i = 0; i < networks.length; i++) {
-    if (!!networks[i].accesskeys) accessKeyCount += networks[i].accesskeys.length
+    if (!!networks[i].accesskeys)
+      accessKeyCount += networks[i].accesskeys.length
   }
 
   const cardStyle = {
@@ -52,7 +53,7 @@ export default function AccessKeyCard() {
     {
       icon: (
         <Link to="/access-keys">
-          <PreviewIcon />
+          <PreviewIcon color="primary" />
         </Link>
       ),
       name: t('common.view'),
@@ -61,7 +62,13 @@ export default function AccessKeyCard() {
   ]
 
   return (
-    <Button component={Link} to={'/access-keys'} color={'inherit'} fullWidth style={{textTransform: 'none'}}>
+    <Button
+      component={Link}
+      to={'/access-keys'}
+      color={'inherit'}
+      fullWidth
+      style={{ textTransform: 'none' }}
+    >
       <Card
         sx={{ minWidth: 275, backgroundColor: grey[200] }}
         variant="outlined"
@@ -69,36 +76,38 @@ export default function AccessKeyCard() {
       >
         <CardContent>
           <Avatar
-            sx={{ bgcolor: grey[900]}}
+            sx={{ bgcolor: grey[900] }}
             aria-label={String(t('breadcrumbs.accessKeys'))}
           >
             <VpnKey sx={{ color: theme.palette.common.white }} />
           </Avatar>
           <div style={cardContentStyle}>
-            <Typography variant="h5" component="div" color='black'>
+            <Typography variant="h5" component="div" color="black">
               {t('breadcrumbs.accessKeys')}
             </Typography>
-            <Typography variant="body2" color='primary'>
+            <Typography variant="body2" color="primary">
               {`${t('common.manage')} ${t('breadcrumbs.accessKeys')}`}
             </Typography>
           </div>
         </CardContent>
         <CardActions>
-          <Grid container justifyContent='space-around' alignItems='center'>
+          <Grid container justifyContent="space-around" alignItems="center">
             <Grid item xs={10}>
-                <StyledSpeedDial
-                  ariaLabel={`${t('common.manage')} ${t('breadcrumbs.accessKeys')}`}
-                  icon={<KeyboardArrowRight />}
-                  direction={'right'}
-                >
-                  {actions.map((action) => (
-                    <SpeedDialAction
-                      color="primary"
-                      key={action.name}
-                      icon={action.icon}
-                      tooltipTitle={action.name}
-                    />
-                  ))}
+              <StyledSpeedDial
+                ariaLabel={`${t('common.manage')} ${t(
+                  'breadcrumbs.accessKeys'
+                )}`}
+                icon={<KeyboardArrowRight />}
+                direction={'right'}
+              >
+                {actions.map((action) => (
+                  <SpeedDialAction
+                    color="primary"
+                    key={action.name}
+                    icon={action.icon}
+                    tooltipTitle={action.name}
+                  />
+                ))}
               </StyledSpeedDial>
             </Grid>
             <Grid item xs={1}>
@@ -106,8 +115,8 @@ export default function AccessKeyCard() {
                 sx={{ bgcolor: grey[900] }}
                 aria-label={String(t('common.count'))}
               >
-                <Typography variant="body1" color='white'>
-                {accessKeyCount}
+                <Typography variant="body1" color="white">
+                  {accessKeyCount}
                 </Typography>
               </Avatar>
             </Grid>

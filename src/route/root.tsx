@@ -19,11 +19,11 @@ import { ServerLogs } from './logs/ServerLogs'
 import { MetricRoute } from '../ee/metrics/MetricRoute'
 import { UserGroups } from './usergroups/UserGroups'
 import { NetworkUsers } from './networkusers/NetworkUsers'
-import ProDrawerNotAdmin from '~components/prodashboards/components/ProDrawerNotAdmin'
+import ProDrawerNotAdmin from '../proroute/prodrawer/ProDrawerNotAdmin'
 import { authSelectors, serverSelectors } from '~store/types'
 import { useSelector } from 'react-redux'
-import { ProUserView } from '~components/prodashboards/ProUserView'
-import WelcomeCard from '~components/prodashboards/components/WelcomeCard'
+import { ProUserView } from '../proroute/prouser/ProUserView'
+import WelcomeCard from '../proroute/proaccessleveldashboards/components/WelcomeCard'
 import { NotFound } from '~util/errorpage'
 import { UsersCommunity } from './users/UsersCommunity'
 
@@ -85,11 +85,11 @@ function Routes() {
           <PrivateRoute path="/logs">
             <ServerLogs />
           </PrivateRoute>
-          {serverConfig.IsEE &&
-            <PrivateRoute path="/metrics" >
+          {serverConfig.IsEE && (
+            <PrivateRoute path="/metrics">
               <MetricRoute />
             </PrivateRoute>
-          }
+          )}
           <PrivateRoute path="/usergroups">
             <UserGroups />
           </PrivateRoute>

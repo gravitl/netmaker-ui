@@ -1,6 +1,6 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import CustomSelect from '~components/select/CustomSelect'
+import CustomSelect from '../../../components/CustomSelect'
 import { Grid } from '@mui/material'
 
 export const DNSSelect: React.FC<{

@@ -43,9 +43,10 @@ import { deleteNode, setNodeSort } from '~store/modules/node/actions'
 import CustomizedDialogs from '~components/dialog/CustomDialog'
 import { HubButton } from './components/HubButton'
 import { MultiCopy } from '~components/CopyText'
-import { nodeSelectors } from '~store/selectors'
+import { nodeSelectors, serverSelectors } from '~store/selectors'
 import { Tablefilter } from '~components/filter/Tablefilter'
 import { useEffect, useState } from 'react'
+import { FailoverButton } from '../../../ee/nodes/FailoverButton'
 
 export const NetworkNodes: React.FC = () => {
   const { path, url } = useRouteMatch()
@@ -60,6 +61,7 @@ export const NetworkNodes: React.FC = () => {
   const dispatch = useDispatch()
   const history = useHistory()
   const [searchTerm, setSearchTerm] = useState(' ')
+  const serverConfig = useSelector(serverSelectors.getServerConfig)
 
   useEffect(() => {
     if (!!!searchTerm) {
@@ -238,6 +240,22 @@ export const NetworkNodes: React.FC = () => {
         />
       ),
     })
+  }
+
+  if (serverConfig.IsEE) {
+    const oldColumn = columns[columns.length - 1]
+    columns[columns.length - 1] = {
+      id: 'failover',
+      labelKey: 'node.failover',
+      minWidth: 30,
+      align: 'center',
+      format: (_, row) => (
+        <FailoverButton
+          node={row}
+        />
+      ),
+    }
+    columns.push(oldColumn)
   }
 
   const handleClose = () => {
