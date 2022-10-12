@@ -86,9 +86,14 @@ function Routes() {
             <ServerLogs />
           </PrivateRoute>
           {serverConfig.IsEE && (
+            <>
             <PrivateRoute path="/metrics">
               <MetricRoute />
             </PrivateRoute>
+            <PrivateRoute path="/ec">
+              <MetricRoute />
+            </PrivateRoute>
+            </>
           )}
           <PrivateRoute path="/usergroups">
             <UserGroups />
