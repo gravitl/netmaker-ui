@@ -114,11 +114,17 @@ function* handleGetNetworkUserData(
 ) {
   try {
     const serverConfig: ReturnType<typeof getServerConfig> = yield select(getServerConfig)
-    const user: ReturnType<typeof getUser> = yield select(getUser)
+    let user: ReturnType<typeof getUser> = yield select(getUser)
+    if (!user) {
+      for(let i = 0; i < 5; i++) {
+        yield new Promise(r => setTimeout(r, 500));
+        user = yield select(getUser)
+      }
+    }
 
-    if (serverConfig.IsEE) {
+    if (serverConfig.IsEE && user) {
       const response: AxiosResponse<NetworkUserDataMapPayload> =
-        yield apiRequestWithAuthSaga('get', `/networkusers/data/${action.payload.networkUserID || user?.name}/me`, {})
+        yield apiRequestWithAuthSaga('get', `/networkusers/data/${action.payload.networkUserID || user.name}/me`, {})
       yield put(getNetworkUserData['success'](response.data))
     }
   } catch (e: unknown) {
