@@ -140,6 +140,9 @@ import { GenericError } from '~util/genericerror'
         minWidth: 100,
         align: 'center',
         format: (value) =>
+        value < 0 ? <Typography variant="h5">
+          {'N/A'}
+        </Typography> :
           value === 0 ? (
             <Typography variant="h5">
               {String(t('pro.metrickeys.lessthanone'))}
