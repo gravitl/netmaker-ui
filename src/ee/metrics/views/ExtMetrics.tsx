@@ -224,7 +224,7 @@ import { GenericError } from '~util/genericerror'
                       </InputAdornment>
                     ),
                   }}
-                  label={`${t('common.search')} ${t('node.nodes')}`}
+                  label={`${t('common.search')} ${t('extclient.extclients')}`}
                   onChange={handleFilter}
                 />
               </div>
