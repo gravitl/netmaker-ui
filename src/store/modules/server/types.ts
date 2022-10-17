@@ -77,6 +77,8 @@ export interface MetricsContainer {
   nodes: MetricsTable
 }
 
+export type NetworkMetrics = Record<string, NodeMetricsTable>
+
 export type ExtMetrics = Record<string, NodeMetricsTable>
 
 export interface NodeMetric {
@@ -109,4 +111,9 @@ export interface Metrics {
 export interface ExtMetricsPayload {
   Request: void
   Response: ExtMetrics
+}
+
+export interface NetworkMetricsPayload {
+  Request: void
+  Response: NetworkMetrics
 }
