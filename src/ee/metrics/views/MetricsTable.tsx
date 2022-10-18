@@ -1,4 +1,5 @@
 import {
+  Button,
   Grid,
   IconButton,
   InputAdornment,
@@ -25,7 +26,7 @@ import {
   // RestartAlt,
   // Search,
 } from '@mui/icons-material'
-import { useParams } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { serverSelectors, nodeSelectors, authSelectors } from '~store/selectors'
@@ -221,7 +222,7 @@ export const MetricsTable: React.FC = () => {
   return (
     <Grid container justifyContent="center" alignItems="center">
       {!!netid && !!nodeNameMap && (
-        <Grid item xs={8} md={6}>
+        <Grid item xs={6} md={4}>
           <div style={titleStyle}>
             <Typography variant="h5">
               {`${t('pro.metrics')} : ${netid}`}
@@ -229,7 +230,7 @@ export const MetricsTable: React.FC = () => {
           </div>
         </Grid>
       )}
-      <Grid item xs={6} md={5.5}>
+      <Grid item xs={3} md={4.5}>
         <div style={titleStyle}>
           <TextField
             InputProps={{
@@ -242,6 +243,17 @@ export const MetricsTable: React.FC = () => {
             label={`${t('common.search')} ${t('node.nodes')}`}
             onChange={handleFilter}
           />
+        </div>
+      </Grid>
+      <Grid item xs={3} md={2.5}>
+        <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+          <Button
+            variant='outlined' 
+            component={Link}
+            to={`/ec/metrics/${netid}`} 
+            sx={{marginLeft: '1rem'}}>
+            {t('extclient.extclients')}
+          </Button>
         </div>
       </Grid>
       <Grid item xs={1} md={1}>

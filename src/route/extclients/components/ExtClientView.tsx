@@ -3,10 +3,10 @@ import { useDispatch } from 'react-redux'
 import { NmTable, TableColumns } from '~components/Table'
 import { ExternalClient, Node } from '~modules/node'
 import { useTranslation } from 'react-i18next'
-import { useRouteMatch, useParams, Route, Switch } from 'react-router-dom'
+import { useRouteMatch, useParams, Route, Switch, Link } from 'react-router-dom'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 import { useNodesByNetworkId } from '~util/network'
-import { Grid, Typography } from '@mui/material'
+import { Button, Grid, Typography } from '@mui/material'
 import { i18n } from '../../../i18n/i18n'
 import { filterExtClientsByNetwork, filterIngressGateways } from '~util/node'
 import { useSelector } from 'react-redux'
@@ -27,6 +27,7 @@ import { updateExternalClient } from '~store/modules/node/actions'
 import CustomizedDialogs from '~components/dialog/CustomDialog'
 import { MultiCopy } from '~components/CopyText'
 import { NotFound } from '~util/errorpage'
+import { serverSelectors } from '~store/types'
 
 const columns: TableColumns<Node> = [
   {
@@ -72,6 +73,7 @@ export const ExtClientView: React.FC = () => {
     {} as ExternalClient | null
   )
   const dispatch = useDispatch()
+  const serverConfig = useSelector(serverSelectors.getServerConfig)
 
   useLinkBreadcrumb({
     link: url,
@@ -220,9 +222,22 @@ export const ExtClientView: React.FC = () => {
           justifyContent="space-evenly"
           alignItems="flex-start"
         >
-          <Grid item xs={6} sx={{ margin: '0.5em 0em 1em 0em' }}>
-            <NetworkSelect />
+          <Grid item xs={8} sx={{ margin: '0.5em 0em 1em 0em' }}>
+              <NetworkSelect />
           </Grid>
+          {serverConfig.IsEE && 
+            <Grid item xs={6}>
+              <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+                <Button
+                  variant='outlined' 
+                  component={Link}
+                  to={`/ec/metrics/${netid}`} 
+                  sx={{marginLeft: '1rem', width: '50%'}}>
+                  {t('pro.metrics')}
+                </Button>
+              </div>
+            </Grid>
+            }
           <Grid item xs={12}>
             <hr />
             <CustomizedDialogs

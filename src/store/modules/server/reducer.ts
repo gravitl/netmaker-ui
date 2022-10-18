@@ -1,7 +1,7 @@
 import { produce } from 'immer'
 import { createReducer } from 'typesafe-actions'
-import { clearCurrentMetrics, getMetrics, getNodeMetrics, getServerConfig, getServerLogs } from './actions'
-import { ServerConfig, NodeMetricsContainer, MetricsContainer } from './types'
+import { clearCurrentMetrics, getExtMetrics, getMetrics, getNodeMetrics, getServerConfig, getServerLogs } from './actions'
+import { ServerConfig, NodeMetricsContainer, MetricsContainer, ExtMetrics } from './types'
 
 export const reducer = createReducer({
   config: {} as ServerConfig,
@@ -11,6 +11,8 @@ export const reducer = createReducer({
   metrics: {} as MetricsContainer | undefined,
   attempts: 0,
   fetchedNodeMetrics: false,
+  extMetrics: {} as ExtMetrics,
+  fetchingExtMetrics: false,
 })
   .handleAction(getServerConfig['request'], (state, _) =>
     produce(state, (draftState) => {
@@ -92,6 +94,23 @@ export const reducer = createReducer({
     produce(state, (draftState) => {
       draftState.isFetching = false
       draftState.metrics = undefined
+    })
+  )
+  .handleAction(getExtMetrics['request'], (state, _) => 
+    produce(state, (draftState) => {
+      draftState.fetchingExtMetrics = true
+    })
+  )
+  .handleAction(getExtMetrics['failure'], (state, _) => 
+    produce(state, (draftState) => {
+      draftState.fetchingExtMetrics = false
+      draftState.extMetrics = {}
+    })
+  )
+  .handleAction(getExtMetrics['success'], (state, { payload }) => 
+    produce(state, (draftState) => {
+      draftState.fetchingExtMetrics = false
+      draftState.extMetrics = payload
     })
   )
   .handleAction(getNodeMetrics['request'], (state, _) => 

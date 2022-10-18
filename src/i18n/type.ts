@@ -7,6 +7,7 @@ export interface LanguageResource {
     admintools: string
     nometrics: string
     choose: string
+    extmetrics: string
     metrickeys: {
       latency: string
       uptime: string
@@ -58,6 +59,7 @@ export interface LanguageResource {
       usernodelimit: string
       userclientlimit: string
       failover: string
+      noclients: string
     }
   }
   header: {
