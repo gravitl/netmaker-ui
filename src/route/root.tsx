@@ -40,6 +40,15 @@ function Routes() {
   const from = (location.state as any)?.from
   const user = useSelector(authSelectors.getUser)
   const serverConfig = useSelector(serverSelectors.getServerConfig)
+  const [isEE, setIsEE] = React.useState(false)  
+
+  React.useEffect(() => {
+    if (serverConfig && serverConfig.IsEE) {
+      setIsEE(serverConfig.IsEE)
+    } else {
+      setIsEE(false)
+    }
+  }, [serverConfig, isEE])
 
   return (
     <Grid container justifyContent="right">
@@ -54,6 +63,7 @@ function Routes() {
         </>
       )}
       <Grid item xs={12}>
+        {isEE ? 
         <Switch location={from || location}>
           <PrivateRoute exact path="/">
             {user?.isAdmin ? <Dashboard /> : <WelcomeCard />}
@@ -85,11 +95,12 @@ function Routes() {
           <PrivateRoute path="/logs">
             <ServerLogs />
           </PrivateRoute>
-          {serverConfig.IsEE && (
-            <PrivateRoute path="/metrics">
-              <MetricRoute />
-            </PrivateRoute>
-          )}
+          <PrivateRoute path="/metrics">
+            <MetricRoute />
+          </PrivateRoute>
+          <PrivateRoute path="/ec">
+            <MetricRoute />
+          </PrivateRoute>
           <PrivateRoute path="/usergroups">
             <UserGroups />
           </PrivateRoute>
@@ -100,18 +111,71 @@ function Routes() {
             path="/users"
             to={{ pathname: '/' }}
             condition={(user) => {
-              if (`/users/${user?.name}` === location.pathname && !!user)
+              if (user && `/users/${user?.name}` === location.pathname)
                 return true
               return !!user?.isAdmin
             }}
           >
-            {serverConfig.IsEE ? <UsersEE /> : <UsersCommunity />}
+           <UsersEE />
           </PrivateRoute>
           <Route path="/login" children={<Login />} />
           <Route path="*">
             <NotFound />
           </Route>
         </Switch>
+        : <Switch location={from || location}>
+            <PrivateRoute exact path="/">
+              {user?.isAdmin ? <Dashboard /> : <WelcomeCard />}
+            </PrivateRoute>
+            <PrivateRoute path="/networks">
+              <Networks />
+            </PrivateRoute>
+            <PrivateRoute path="/prouser">
+              {user?.isAdmin ? <Dashboard /> : <ProUserView />}
+            </PrivateRoute>
+            <PrivateRoute path="/nodes">
+              <Nodes />
+            </PrivateRoute>
+            <PrivateRoute path="/access-keys">
+              <AccessKeys />
+            </PrivateRoute>
+            <PrivateRoute path="/ext-clients">
+              <ExtClients />
+            </PrivateRoute>
+            <PrivateRoute path="/dns">
+              <DNS />
+            </PrivateRoute>
+            <PrivateRoute path="/graphs">
+              <Graphs />
+            </PrivateRoute>
+            <PrivateRoute path="/acls">
+              <NodeAcls />
+            </PrivateRoute>
+            <PrivateRoute path="/logs">
+              <ServerLogs />
+            </PrivateRoute>
+            <PrivateRoute path="/usergroups">
+              <UserGroups />
+            </PrivateRoute>
+            <PrivateRoute path="/user-permissions">
+              <NetworkUsers />
+            </PrivateRoute>
+            <PrivateRoute
+              path="/users"
+              to={{ pathname: '/' }}
+              condition={(user) => {
+                if (user && `/users/${user?.name}` === location.pathname)
+                  return true
+                return !!user?.isAdmin
+              }}
+            >
+            <UsersCommunity />
+            </PrivateRoute>
+            <Route path="/login" children={<Login />} />
+            <Route path="*">
+              <NotFound />
+            </Route>
+          </Switch>}
         <RouterState />
         {/* Show the modal when a background page is set */}
         {from && <Route path="/login" children={<Login />} />}

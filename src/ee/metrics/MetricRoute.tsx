@@ -6,6 +6,7 @@ import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 import { NetworkSelect } from '~components/NetworkSelect'
 import { MetricsTable } from './views/MetricsTable'
 import { NodeMetrics } from './views/NodeMetrics'
+import { ExtMetrics } from './views/ExtMetrics'
 
 export const MetricRoute: React.FC = () => {
   const { path } = useRouteMatch()
@@ -43,6 +44,9 @@ export const MetricRoute: React.FC = () => {
               <hr />
             </Grid>
           </Grid>
+        </Route>
+        <Route exact path={`/ec/metrics/:netid`}>
+          <ExtMetrics />
         </Route>
         <Route path={`${path}/:netid/:nodeid`}>
           <NodeMetrics />

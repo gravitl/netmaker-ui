@@ -9,6 +9,7 @@ export const en: LanguageResource = {
     admintools: 'Admin Tools',
     nometrics: 'No Metrics Available',
     choose: 'Make Selection(s)',
+    extmetrics: 'External Client Metrics',
     metrickeys: {
       latency: 'Latency (ms)',
       uptime: 'Uptime',
@@ -62,6 +63,7 @@ export const en: LanguageResource = {
       userclientlimit:
         'Number of External Client configurations a user can create on a network if Ingress gateways present',
       failover: 'This Indicates the node may be used by other nodes to route traffic automatically if unstable connections are detected',
+      noclients: 'There may be no clients.',
     },
   },
   header: {

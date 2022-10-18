@@ -30,3 +30,13 @@ export const hasFetchedNodeMetrics = createSelector(
   getServer,
   (server) => server.fetchedNodeMetrics
 )
+
+export const getNetworkExtMetrics = (network: string) => createSelector(
+  getServer,
+  (server) => server.extMetrics[network]
+)
+
+export const isFetchingClientMetrics = createSelector(
+  getServer,
+  (server) => server.fetchingExtMetrics
+)

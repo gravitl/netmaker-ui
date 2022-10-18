@@ -77,6 +77,8 @@ export interface MetricsContainer {
   nodes: MetricsTable
 }
 
+export type ExtMetrics = Record<string, NodeMetricsTable>
+
 export interface NodeMetric {
   node_name: string
   uptime: number
@@ -102,4 +104,9 @@ export interface NodeMetrics {
 export interface Metrics {
   Request: string | undefined
   Response: MetricsContainer
+}
+
+export interface ExtMetricsPayload {
+  Request: void
+  Response: ExtMetrics
 }
