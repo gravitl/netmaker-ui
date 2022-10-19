@@ -56,6 +56,7 @@ export default function ProCustomSelect(Props: {
           {t('pro.label.selectnetwork')}
         </InputLabel>
         <Select
+          autoFocus
           style={{
             fontSize: '1.75rem',
             height: '100%',
