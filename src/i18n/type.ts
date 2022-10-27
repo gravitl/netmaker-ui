@@ -322,6 +322,7 @@ export interface LanguageResource {
       accesslevel: string
       nodelimit: string
       clientlimit: string
+      netidcheck: string
     }
   }
   node: {

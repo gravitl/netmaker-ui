@@ -88,7 +88,9 @@ export const NetworkCreate: React.FC = () => {
           ispointtosite: data.ispointtosite ? 'yes' : 'no',
           defaultacl: data.defaultacl ? 'yes' : 'no',
           prosettings: {
-            defaultaccesslevel: serverConfig.IsEE ? 3 : Number(data.defaultaccesslevel),
+            defaultaccesslevel: serverConfig.IsEE
+              ? 3
+              : Number(data.defaultaccesslevel),
             defaultusernodelimit: Number(data.defaultusernodelimit),
             defaultuserclientlimit: Number(data.defaultuserclientlimit),
             allowedusers: [],
@@ -149,6 +151,16 @@ export const NetworkCreate: React.FC = () => {
           if (value < 0) {
             return {
               message: t('network.validation.clientlimit'),
+              type: 'value',
+            }
+          }
+          return undefined
+        },
+        // write validation for net id that lets the user know it cannot be over 12 lowercase characters
+        netid: (value) => {
+          if (value.length > 12) {
+            return {
+              message: t('network.validation.netidcheck'),
               type: 'value',
             }
           }
@@ -391,66 +403,67 @@ export const NetworkCreate: React.FC = () => {
               />
             )}
           </Grid>
-          {serverConfig.IsEE && <>
-          <Grid
-            item
-            xs={12}
-            sm={12}
-            md={3}
-            className={classes.center + ' ' + classes.rowMargin}
-          >
-            <Tooltip
-              title={t('pro.helpers.accesslevel') as string}
-              placement="top"
-            >
-              <NmFormInputText
-                name="defaultaccesslevel"
-                label={String(t('pro.network.defaultaccesslevel'))}
-                type="number"
-                defaultValue={3}
-              />
-            </Tooltip>
-          </Grid>
-          <Grid
-            item
-            xs={12}
-            sm={12}
-            md={3}
-            className={classes.center + ' ' + classes.rowMargin}
-          >
-            <Tooltip
-              title={t('pro.helpers.usernodelimit') as string}
-              placement="top"
-            >
-              <NmFormInputText
-                name="defaultusernodelimit"
-                label={String(t('pro.network.defaultusernodelimit'))}
-                type="number"
-                defaultValue={0}
-              />
-            </Tooltip>
-          </Grid>
-          <Grid
-            item
-            xs={12}
-            sm={12}
-            md={3}
-            className={classes.center + ' ' + classes.rowMargin}
-          >
-            <Tooltip
-              title={t('pro.helpers.userclientlimit') as string}
-              placement="top"
-            >
-              <NmFormInputText
-                name="defaultuserclientlimit"
-                label={String(t('pro.network.defaultuserclientlimit'))}
-                type="number"
-                defaultValue={0}
-              />
-            </Tooltip>
-          </Grid>
-          </>
-          }
+          {serverConfig.IsEE && (
+            <>
+              <Grid
+                item
+                xs={12}
+                sm={12}
+                md={3}
+                className={classes.center + ' ' + classes.rowMargin}
+              >
+                <Tooltip
+                  title={t('pro.helpers.accesslevel') as string}
+                  placement="top"
+                >
+                  <NmFormInputText
+                    name="defaultaccesslevel"
+                    label={String(t('pro.network.defaultaccesslevel'))}
+                    type="number"
+                    defaultValue={3}
+                  />
+                </Tooltip>
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                sm={12}
+                md={3}
+                className={classes.center + ' ' + classes.rowMargin}
+              >
+                <Tooltip
+                  title={t('pro.helpers.usernodelimit') as string}
+                  placement="top"
+                >
+                  <NmFormInputText
+                    name="defaultusernodelimit"
+                    label={String(t('pro.network.defaultusernodelimit'))}
+                    type="number"
+                    defaultValue={0}
+                  />
+                </Tooltip>
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                sm={12}
+                md={3}
+                className={classes.center + ' ' + classes.rowMargin}
+              >
+                <Tooltip
+                  title={t('pro.helpers.userclientlimit') as string}
+                  placement="top"
+                >
+                  <NmFormInputText
+                    name="defaultuserclientlimit"
+                    label={String(t('pro.network.defaultuserclientlimit'))}
+                    type="number"
+                    defaultValue={0}
+                  />
+                </Tooltip>
+              </Grid>
+            </>
+          )}
         </Grid>
       </NmForm>
     </div>

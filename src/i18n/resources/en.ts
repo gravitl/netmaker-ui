@@ -62,7 +62,8 @@ export const en: LanguageResource = {
       usernodelimit: 'The number of nodes a user may create on the network',
       userclientlimit:
         'Number of External Client configurations a user can create on a network if Ingress gateways present',
-      failover: 'This Indicates the node may be used by other nodes to route traffic automatically if unstable connections are detected',
+      failover:
+        'This Indicates the node may be used by other nodes to route traffic automatically if unstable connections are detected',
       noclients: 'There may be no clients.',
     },
   },
@@ -285,6 +286,7 @@ export const en: LanguageResource = {
       accesslevel: 'Value must be Between 0 and 3 see tooltip for more info',
       nodelimit: 'Value must be 0 or greater',
       clientlimit: 'Value must be 0 or greater',
+      netidcheck: 'Network ID must be less than 12 characters',
     },
   },
   helper: {
@@ -572,7 +574,7 @@ export const en: LanguageResource = {
         user: 'Successfully created User!',
         admin: 'Successfully created new Admin!',
         usergroup: 'Successfully created new user group!',
-        failover: 'Successfully added failover gateway to node!'
+        failover: 'Successfully added failover gateway to node!',
       },
       failure: {
         accesskey: 'Failed to create Access Key.',
@@ -584,7 +586,7 @@ export const en: LanguageResource = {
         user: 'Failed to create new User.',
         admin: 'Failed to create Admin.',
         usergroup: 'Failed to create new user group.',
-        failover: 'Failed to add failover gateway to node.'
+        failover: 'Failed to add failover gateway to node.',
       },
     },
     delete: {
