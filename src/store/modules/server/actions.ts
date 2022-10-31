@@ -1,5 +1,12 @@
 import { createAction, createAsyncAction } from 'typesafe-actions'
-import { GetServerConfigPayload, LogsPayload, NodeMetrics, Metrics, ExtMetricsPayload } from './types'
+import {
+  GetServerConfigPayload,
+  LogsPayload,
+  NodeMetrics,
+  Metrics,
+  ExtMetricsPayload,
+  AllMetricsPayload,
+} from './types'
 
 export const getServerConfig = createAsyncAction(
   'api_getServerConfig_Request',
@@ -14,41 +21,31 @@ export const getServerConfig = createAsyncAction(
 export const getServerLogs = createAsyncAction(
   'api_getServerLogs_Request',
   'api_getServerLogs_Success',
-  'api_getServerLogs_Failure',
-)<
-  LogsPayload['Request'],
-  LogsPayload['Response'],
-  Error
->()
+  'api_getServerLogs_Failure'
+)<LogsPayload['Request'], LogsPayload['Response'], Error>()
 
 export const getNodeMetrics = createAsyncAction(
   'api_getNodeMetrics_Request',
   'api_getNodeMetrics_Success',
-  'api_getNodeMetrics_Failure',
-)<
-  NodeMetrics['Request'],
-  NodeMetrics['Response'],
-  Error
->()
+  'api_getNodeMetrics_Failure'
+)<NodeMetrics['Request'], NodeMetrics['Response'], Error>()
 
 export const getMetrics = createAsyncAction(
   'api_getMetrics_Request',
   'api_getMetrics_Success',
-  'api_getMetrics_Failure',
-)<
-  Metrics['Request'],
-  Metrics['Response'],
-  Error
->()
+  'api_getMetrics_Failure'
+)<Metrics['Request'], Metrics['Response'], Error>()
+
+export const getAllMetrics = createAsyncAction(
+  'api_getAllMetrics_Request',
+  'api_getAllMetrics_Success',
+  'api_getAllMetrics_Failure'
+)<AllMetricsPayload['Request'], AllMetricsPayload['Response'], Error>()
 
 export const getExtMetrics = createAsyncAction(
   'api_getExtMetrics_Request',
   'api_getExtMetrics_Success',
-  'api_getExtMetrics_Failure',
-)<
-  ExtMetricsPayload['Request'],
-  ExtMetricsPayload['Response'],
-  Error
->()
+  'api_getExtMetrics_Failure'
+)<ExtMetricsPayload['Request'], ExtMetricsPayload['Response'], Error>()
 
 export const clearCurrentMetrics = createAction('clearCurrentMetrics')<void>()

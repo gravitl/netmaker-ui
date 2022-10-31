@@ -1,7 +1,21 @@
 import { produce } from 'immer'
 import { createReducer } from 'typesafe-actions'
-import { clearCurrentMetrics, getExtMetrics, getMetrics, getNodeMetrics, getServerConfig, getServerLogs } from './actions'
-import { ServerConfig, NodeMetricsContainer, MetricsContainer, ExtMetrics } from './types'
+import {
+  clearCurrentMetrics,
+  getAllMetrics,
+  getExtMetrics,
+  getMetrics,
+  getNodeMetrics,
+  getServerConfig,
+  getServerLogs,
+} from './actions'
+import {
+  ServerConfig,
+  NodeMetricsContainer,
+  MetricsContainer,
+  ExtMetrics,
+  AllMetrics,
+} from './types'
 
 export const reducer = createReducer({
   config: {} as ServerConfig,
@@ -13,6 +27,8 @@ export const reducer = createReducer({
   fetchedNodeMetrics: false,
   extMetrics: {} as ExtMetrics,
   fetchingExtMetrics: false,
+  fetchingAllMetrics: false,
+  allMetrics: {} as AllMetrics,
 })
   .handleAction(getServerConfig['request'], (state, _) =>
     produce(state, (draftState) => {
@@ -58,69 +74,88 @@ export const reducer = createReducer({
       draftState.config = {} as ServerConfig
     })
   )
-  .handleAction(getServerLogs['request'], (state, _) => 
+  .handleAction(getServerLogs['request'], (state, _) =>
     produce(state, (draftState) => {
       draftState.isFetching = true
       draftState.attempts++
     })
   )
-  .handleAction(getServerLogs['success'], (state, payload) => 
+  .handleAction(getServerLogs['success'], (state, payload) =>
     produce(state, (draftState) => {
       draftState.isFetching = false
       draftState.logs = payload.payload.split('\n')
       draftState.attempts = 0
     })
   )
-  .handleAction(getServerLogs['failure'], (state, _) => 
+  .handleAction(getServerLogs['failure'], (state, _) =>
     produce(state, (draftState) => {
       draftState.isFetching = false
       draftState.logs = []
     })
   )
-  .handleAction(getMetrics['request'], (state, _) => 
+  .handleAction(getMetrics['request'], (state, _) =>
     produce(state, (draftState) => {
       draftState.isFetching = true
       draftState.attempts++
     })
   )
-  .handleAction(getMetrics['success'], (state, payload) => 
+  .handleAction(getMetrics['success'], (state, payload) =>
     produce(state, (draftState) => {
       draftState.isFetching = false
       draftState.metrics = payload.payload
       draftState.attempts = 0
     })
   )
-  .handleAction(getMetrics['failure'], (state, _) => 
+  .handleAction(getMetrics['failure'], (state, _) =>
     produce(state, (draftState) => {
       draftState.isFetching = false
       draftState.metrics = undefined
     })
   )
-  .handleAction(getExtMetrics['request'], (state, _) => 
+  .handleAction(getAllMetrics['request'], (state, _) =>
+    produce(state, (draftState) => {
+      draftState.fetchingAllMetrics = true
+    })
+  )
+  .handleAction(getAllMetrics['failure'], (state, _) =>
+    produce(state, (draftState) => {
+      draftState.fetchingAllMetrics = false
+      draftState.allMetrics = {}
+    })
+  )
+  .handleAction(getAllMetrics['success'], (state, { payload }) =>
+    produce(state, (draftState) => {
+      draftState.fetchingAllMetrics = false
+      draftState.allMetrics = payload
+    })
+  )
+
+  .handleAction(getExtMetrics['request'], (state, _) =>
     produce(state, (draftState) => {
       draftState.fetchingExtMetrics = true
     })
   )
-  .handleAction(getExtMetrics['failure'], (state, _) => 
+
+  .handleAction(getExtMetrics['failure'], (state, _) =>
     produce(state, (draftState) => {
       draftState.fetchingExtMetrics = false
       draftState.extMetrics = {}
     })
   )
-  .handleAction(getExtMetrics['success'], (state, { payload }) => 
+  .handleAction(getExtMetrics['success'], (state, { payload }) =>
     produce(state, (draftState) => {
       draftState.fetchingExtMetrics = false
       draftState.extMetrics = payload
     })
   )
-  .handleAction(getNodeMetrics['request'], (state, _) => 
+  .handleAction(getNodeMetrics['request'], (state, _) =>
     produce(state, (draftState) => {
       draftState.isFetching = true
       draftState.attempts++
       draftState.fetchedNodeMetrics = false
     })
   )
-  .handleAction(getNodeMetrics['success'], (state, payload) => 
+  .handleAction(getNodeMetrics['success'], (state, payload) =>
     produce(state, (draftState) => {
       draftState.nodeMetrics = payload.payload
       draftState.attempts = 0
@@ -128,7 +163,7 @@ export const reducer = createReducer({
       draftState.isFetching = false
     })
   )
-  .handleAction(getNodeMetrics['failure'], (state, _) => 
+  .handleAction(getNodeMetrics['failure'], (state, _) =>
     produce(state, (draftState) => {
       draftState.isFetching = false
       draftState.nodeMetrics = undefined

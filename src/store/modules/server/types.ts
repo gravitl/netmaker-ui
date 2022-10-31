@@ -69,6 +69,7 @@ export type NodeMetricsTable = Record<string, NodeMetric>
 
 export type MetricsTable = Record<string, NodeMetricsContainer>
 
+
 export interface NodeMetricsContainer {
   connectivity: NodeMetricsTable
 }
@@ -78,6 +79,8 @@ export interface MetricsContainer {
 }
 
 export type ExtMetrics = Record<string, NodeMetricsTable>
+
+export type AllMetrics = Record<string, NodeMetricsTable>
 
 export interface NodeMetric {
   node_name: string
@@ -109,4 +112,9 @@ export interface Metrics {
 export interface ExtMetricsPayload {
   Request: void
   Response: ExtMetrics
+}
+
+export interface AllMetricsPayload {
+  Request: void
+  Response: AllMetrics
 }
