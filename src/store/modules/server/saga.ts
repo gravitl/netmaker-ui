@@ -1,5 +1,6 @@
 import { all, put, select, takeEvery } from 'redux-saga/effects'
 import {
+  getAllMetrics,
   getExtMetrics,
   getMetrics,
   getNodeMetrics,
@@ -101,7 +102,7 @@ function* handleGetAllExtMetrics(
 }
 
 function* handleGetAllMetricsNew(
-  action: ReturnType<typeof getExtMetrics['request']>
+  action: ReturnType<typeof getAllMetrics['request']>
 ) {
   try {
     let responseMetrics = {} as AllMetrics
@@ -122,10 +123,10 @@ function* handleGetAllMetricsNew(
         }
       }
 
-      yield put(getExtMetrics['success'](responseMetrics))
+      yield put(getAllMetrics['success'](responseMetrics))
     }
   } catch (e: unknown) {
-    yield put(getExtMetrics['failure'](e as Error))
+    yield put(getAllMetrics['failure'](e as Error))
   }
 }
 

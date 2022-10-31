@@ -61,7 +61,9 @@ export const NodeMetrics: React.FC = () => {
   const { netid, nodeid } = useParams<{ nodeid: string; netid: string }>()
   const metrics = useSelector(serverSelectors.getNodeMetrics)
   const isFetching = useSelector(serverSelectors.isFetchingServerConfig)
-  const hasFetchedNodeMetrics = useSelector(serverSelectors.hasFetchedNodeMetrics)
+  const hasFetchedNodeMetrics = useSelector(
+    serverSelectors.hasFetchedNodeMetrics
+  )
   const attempts = useSelector(serverSelectors.getAttempts)
   const [initialLoad, setInitialLoad] = React.useState(true)
   const [currentPeerMetrics, setCurrentPeerMetrics] = React.useState(
@@ -89,7 +91,7 @@ export const NodeMetrics: React.FC = () => {
     if (!!!searchTerm) {
       setFilterString('')
     } else {
-        setFilterString(value)
+      setFilterString(value)
     }
   }
 
@@ -124,50 +126,6 @@ export const NodeMetrics: React.FC = () => {
     }
     return bytes
   }
-
-  React.useEffect(() => {
-    if (initialLoad) {
-      dispatch(clearCurrentMetrics())
-      setInitialLoad(false)
-    }
-    window.onpopstate = () => {
-      if (!!metrics) {
-        dispatch(clearCurrentMetrics())
-      }
-    }
-
-    if (!hasFetchedNodeMetrics || !metrics) {
-      if (attempts < MAX_ATTEMPTS)
-        dispatch(getNodeMetrics.request({ ID: nodeid, Network: netid }))
-      setCurrentPeerMetrics([])
-    }
-    if (
-      hasFetchedNodeMetrics && 
-      metrics &&
-      !currentPeerMetrics.length
-    ) {
-      const newPeerMetrics = [] as NodeMetricID[]
-      Object.keys(metrics.connectivity).map((peerID) => {
-          newPeerMetrics.push({
-            ...metrics.connectivity[peerID],
-            id: peerID,
-            name: metrics.connectivity[peerID].node_name
-          })
-        return null
-      })
-      setCurrentPeerMetrics(newPeerMetrics)
-    }
-  }, [
-    dispatch,
-    metrics,
-    netid,
-    nodeid,
-    currentPeerMetrics,
-    attempts,
-    isFetching,
-    hasFetchedNodeMetrics,
-    initialLoad,
-  ])
 
   let totalSent = 0
   let duration = 0
@@ -347,8 +305,8 @@ export const NodeMetrics: React.FC = () => {
             {!!filterString ? (
               <NmTable
                 columns={columns}
-                rows={currentPeerMetrics.filter(
-                  (node) => `${node.name}${node.id}`.includes(filterString)
+                rows={currentPeerMetrics.filter((node) =>
+                  `${node.name}${node.id}`.includes(filterString)
                 )}
                 getRowId={(row) => row.node_name}
               />
