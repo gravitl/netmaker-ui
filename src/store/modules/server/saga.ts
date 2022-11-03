@@ -1,6 +1,5 @@
 import { all, put, select, takeEvery } from 'redux-saga/effects'
 import {
-  getAllMetrics,
   getExtMetrics,
   getMetrics,
   getNodeMetrics,
@@ -13,7 +12,8 @@ import { getType } from 'typesafe-actions'
 import { AxiosResponse } from 'axios'
 import { apiRequestWithAuthSaga } from '../api/saga'
 import { getNetworks } from '../network/selectors'
-import { AllMetrics, ExtMetrics } from '~store/types'
+import { getNodes } from '../node/selectors'
+import { ExtMetrics, NodeMetrics } from '~store/types'
 import { getNetworks as getNets } from '../network/actions'
 import { getServerConfig as getSC } from '../server/selectors'
 
@@ -101,45 +101,29 @@ function* handleGetAllExtMetrics(
   }
 }
 
-function* handleGetAllMetricsNew(
-  action: ReturnType<typeof getAllMetrics['request']>
-) {
-  try {
-    let responseMetrics = {} as AllMetrics
-    const networks: ReturnType<typeof getNetworks> = yield select(getNetworks)
-    const serverConfig: ReturnType<typeof getSC> = yield select(getSC)
-
-    if (serverConfig.IsEE && networks && networks.length) {
-      for (let i = 0; i < networks.length; i++) {
-        try {
-          const response: AxiosResponse = yield apiRequestWithAuthSaga(
-            'get',
-            `/metrics-ext/${networks[i].netid}`,
-            {}
-          )
-          responseMetrics[networks[i].netid] = response.data
-        } catch (e: unknown) {
-          responseMetrics[networks[i].netid] = {}
-        }
-      }
-
-      yield put(getAllMetrics['success'](responseMetrics))
-    }
-  } catch (e: unknown) {
-    yield put(getAllMetrics['failure'](e as Error))
-  }
-}
-
 function* handleGetNodeMetrics(
   action: ReturnType<typeof getNodeMetrics['request']>
 ) {
   try {
-    const response: AxiosResponse = yield apiRequestWithAuthSaga(
-      'get',
-      `/metrics/${action.payload.Network}/${action.payload.ID}`,
-      {}
-    )
-    yield put(getNodeMetrics['success'](response.data))
+    let responseMetrics = {} as NodeMetrics
+    const nodes: ReturnType<typeof getNodes> = yield select(getNodes)
+    const serverConfig: ReturnType<typeof getSC> = yield select(getSC)
+    if (serverConfig.IsEE && nodes && nodes.length) {
+      for (let i = 0; i < nodes.length; i++) {
+        try {
+          const response: AxiosResponse = yield apiRequestWithAuthSaga(
+            'get',
+            `/metrics/${nodes[i].network}/${nodes[i].id}`,
+            {}
+          )
+          responseMetrics[nodes[i].id] = response.data
+        } catch (e: unknown) {
+          responseMetrics[nodes[i].id] = { connectivity: {} }
+        }
+      }
+    }
+
+    yield put(getNodeMetrics['success'](responseMetrics))
   } catch (e: unknown) {
     yield put(getNodeMetrics['failure'](e as Error))
   }
@@ -155,6 +139,7 @@ export function* saga() {
     takeEvery(getType(getServerLogs['request']), handleGetServerLogsRequest),
     takeEvery(getType(getNodeMetrics['request']), handleGetNodeMetrics),
     takeEvery(getType(getMetrics['request']), handleGetAllMetrics),
+    takeEvery(getType(getNets['success']), handleGetNodeMetrics),
     takeEvery(getType(getNets['success']), handleGetAllExtMetrics),
     takeEvery(getType(getExtMetrics['request']), handleGetAllExtMetrics),
     handleLoginSuccess(),
