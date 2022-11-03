@@ -28,6 +28,7 @@ import { Search, Sync } from '@mui/icons-material'
 import { MAX_ATTEMPTS } from '~components/utils'
 import Loading from '~components/Loading'
 import { NotFound } from '~util/errorpage'
+import { useEffect } from 'react'
 
 const styles = {
   center: {
@@ -93,6 +94,10 @@ export const NodeMetrics: React.FC = () => {
       setFilterString(value)
     }
   }
+
+  useEffect(() => {
+    syncMetrics()
+  }, [])
 
   const handleGetBytesLabel = (bytes: number) => {
     if (bytes > 1000000000000) {
@@ -230,10 +235,6 @@ export const NodeMetrics: React.FC = () => {
     (metrics && Object.keys(metrics).length === 0)
   ) {
     return <Loading />
-  }
-
-  if (!metrics || Object.keys(metrics).length === 0) {
-    return <NotFound />
   }
 
   console.log(currentPeerMetrics)

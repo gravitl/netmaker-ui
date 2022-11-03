@@ -246,12 +246,19 @@ export const MetricsTable: React.FC = () => {
         </div>
       </Grid>
       <Grid item xs={3} md={2.5}>
-        <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
           <Button
-            variant='outlined' 
+            variant="outlined"
             component={Link}
-            to={`/ec/metrics/${netid}`} 
-            sx={{marginLeft: '1rem'}}>
+            to={`/ec/metrics/${netid}`}
+            sx={{ marginLeft: '1rem' }}
+          >
             {t('extclient.extclients')}
           </Button>
         </div>
