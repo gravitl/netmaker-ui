@@ -7,7 +7,7 @@ import {
   Tooltip,
   IconButton,
 } from '@mui/material'
-import React from 'react'
+import React, { useCallback } from 'react'
 import { useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
@@ -18,7 +18,6 @@ import { useSelector, useDispatch } from 'react-redux'
 import { serverSelectors } from '~store/selectors'
 import { NodeMetric } from '~store/types'
 import {
-  clearCurrentMetrics,
   getNodeMetrics,
 } from '~store/modules/server/actions'
 import { NmTable, TableColumns } from '~components/Table'
@@ -27,8 +26,6 @@ import MetricButton from '../components/MetricButton'
 import { Search, Sync } from '@mui/icons-material'
 import { MAX_ATTEMPTS } from '~components/utils'
 import Loading from '~components/Loading'
-import { NotFound } from '~util/errorpage'
-import { useEffect } from 'react'
 
 const styles = {
   center: {
@@ -70,10 +67,11 @@ export const NodeMetrics: React.FC = () => {
     [] as NodeMetricID[]
   )
   const [filterString, setFilterString] = React.useState('')
+  const [currentNodeID, setCurrentNodeID] = React.useState('') 
 
-  const syncMetrics = () => {
+  const syncMetrics = useCallback(() => {
     dispatch(getNodeMetrics.request())
-  }
+  }, [dispatch])
 
   useLinkBreadcrumb({
     link: `/nodes/${netid}/${nodeid}`,
@@ -94,10 +92,6 @@ export const NodeMetrics: React.FC = () => {
       setFilterString(value)
     }
   }
-
-  useEffect(() => {
-    syncMetrics()
-  }, [])
 
   const handleGetBytesLabel = (bytes: number) => {
     if (bytes > 1000000000000) {
@@ -145,7 +139,7 @@ export const NodeMetrics: React.FC = () => {
     })
   }
 
-  const columns: TableColumns<NodeMetric> = [
+  const columns: TableColumns<NodeMetricID> = [
     {
       id: 'node_name',
       label: t('node.name'),
@@ -153,7 +147,7 @@ export const NodeMetrics: React.FC = () => {
       sortable: true,
       format: (_, node) => (
         <MetricButton
-          link={`/metrics/${netid}/${node.node_name}`}
+          link={`/metrics/${netid}/${node.id}`}
           text={node.node_name}
           sx={{ textTransform: 'none' }}
         />
@@ -214,7 +208,10 @@ export const NodeMetrics: React.FC = () => {
   ]
 
   React.useEffect(() => {
-    if (JSON.stringify(metrics) !== JSON.stringify(nodeMetrics)) {
+    if (metrics && 
+      JSON.stringify(metrics) !== JSON.stringify(nodeMetrics) 
+      && metrics.connectivity
+      && Object.keys(metrics.connectivity).length) {
       const newPeerMetrics = [] as NodeMetricID[]
       Object.keys(metrics.connectivity).map((peerID) => {
         newPeerMetrics.push({
@@ -227,7 +224,12 @@ export const NodeMetrics: React.FC = () => {
       setCurrentPeerMetrics(newPeerMetrics)
       setNodeMetrics(metrics)
     }
-  }, [metrics, nodeMetrics, currentPeerMetrics])
+
+    if (currentNodeID !== nodeid) {
+      syncMetrics()
+      setCurrentNodeID(nodeid)
+    }
+  }, [metrics, nodeMetrics, currentPeerMetrics, syncMetrics, currentNodeID, nodeid])
 
   if (
     isFetching ||
