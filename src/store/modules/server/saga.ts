@@ -5,6 +5,7 @@ import {
   getNodeMetrics,
   getServerConfig,
   getServerLogs,
+  getNetworkMetrics,
 } from './actions'
 import { login } from '../auth/actions'
 import { getToken } from '../auth/selectors'
@@ -13,7 +14,7 @@ import { AxiosResponse } from 'axios'
 import { apiRequestWithAuthSaga } from '../api/saga'
 import { getNetworks } from '../network/selectors'
 import { getNodes } from '../node/selectors'
-import { ExtMetrics, NodeMetrics } from '~store/types'
+import { ExtMetrics, NetworkMetrics, NodeMetrics } from '~store/types'
 import { getNetworks as getNets } from '../network/actions'
 import { getServerConfig as getSC } from '../server/selectors'
 
@@ -129,6 +130,34 @@ function* handleGetNodeMetrics(
   }
 }
 
+//write saga named handlegetNetworkMetrics for getNetworkmetrics
+function* handleGetNetworkMetrics(
+  action: ReturnType<typeof getNetworkMetrics['request']>
+) {
+  try {
+    let responseMetrics = {} as NetworkMetrics
+    const networks: ReturnType<typeof getNetworks> = yield select(getNetworks)
+    const serverConfig: ReturnType<typeof getSC> = yield select(getSC)
+    if (serverConfig.IsEE && networks && networks.length) {
+      for (let i = 0; i < networks.length; i++) {
+        try {
+          const response: AxiosResponse = yield apiRequestWithAuthSaga(
+            'get',
+            `/metrics/${networks[i].netid}`,
+            {}
+          )
+          responseMetrics[networks[i].netid] = response.data
+        } catch (e: unknown) {
+          responseMetrics[networks[i].netid] = { nodes: {} }
+        }
+      }
+    }
+    yield put(getNetworkMetrics['success'](responseMetrics))
+  } catch (e: unknown) {
+    yield put(getNetworkMetrics['failure'](e as Error))
+  }
+}
+
 export function* saga() {
   yield all([
     takeEvery(login['success'], handleLoginSuccess),
@@ -142,6 +171,8 @@ export function* saga() {
     takeEvery(getType(getNets['success']), handleGetNodeMetrics),
     takeEvery(getType(getNets['success']), handleGetAllExtMetrics),
     takeEvery(getType(getExtMetrics['request']), handleGetAllExtMetrics),
+    takeEvery(getType(getNetworkMetrics['request']), handleGetNetworkMetrics),
+    takeEvery(getType(getNets['success']), handleGetNetworkMetrics),
     handleLoginSuccess(),
   ])
 }

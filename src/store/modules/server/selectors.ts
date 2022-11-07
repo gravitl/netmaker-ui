@@ -11,7 +11,6 @@ export const isFetchingServerConfig = createSelector(
   (server) => server.isFetching
 )
 export const getServerLogs = createSelector(getServer, (server) => server.logs)
-export const getMetrics = createSelector(getServer, (server) => server.metrics)
 export const getNodeMetrics = createSelector(
   getServer,
   (server) => server.nodeMetrics
@@ -30,6 +29,9 @@ export const getNetworkExtMetrics = (network: string) =>
 
 export const getNodeMetric = (nodeid: string) =>
   createSelector(getNodeMetrics, (nodeMetrics) => nodeMetrics[nodeid])
+
+export const getNetworkMetrics = (network: string) =>
+  createSelector(getServer, (server) => server.networkMetrics[network])
 
 export const isFetchingClientMetrics = createSelector(
   getServer,

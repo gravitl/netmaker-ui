@@ -15,7 +15,7 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material'
-import React from 'react'
+import React, { useCallback } from 'react'
 import {
   // Block,
   CheckCircle,
@@ -35,7 +35,8 @@ import { NodeMetric, MetricsContainer } from '~store/types'
 import { MAX_ATTEMPTS } from '~components/utils'
 import { getTimeMinHrs } from '../util'
 import MetricButton from '../components/MetricButton'
-import { clearCurrentMetrics } from '~store/modules/server/actions'
+import { getNetworkMetrics as getNetMetrics } from '~store/modules/server/actions'
+import { getNetworkMetrics } from '~store/modules/server/selectors'
 
 const HIGHLIGHT = '#D7BE69'
 type HoveredNode = {
@@ -55,10 +56,11 @@ const titleStyle = {
 export const MetricsTable: React.FC = () => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
-  const metrics = useSelector(serverSelectors.getMetrics)
+
   const isProcessing = useSelector(serverSelectors.isFetchingServerConfig)
   const { netid } = useParams<{ netid: string }>()
   const allNodes = useSelector(nodeSelectors.getNodes)
+  const metrics = useSelector(serverSelectors.getNetworkMetrics(netid))
   const extClients = useSelector(nodeSelectors.getExtClients)
   const inDarkMode = useSelector(authSelectors.isInDarkMode)
   const attempts = useSelector(serverSelectors.getAttempts)
@@ -77,9 +79,9 @@ export const MetricsTable: React.FC = () => {
     return !!~filterNodes.findIndex((node) => node.id === id)
   }
 
-  const syncMetrics = () => {
-    dispatch(clearCurrentMetrics())
-  }
+  const syncMetrics = useCallback(() => {
+    dispatch(getNetMetrics.request())
+  }, [dispatch])
 
   const handleFilter = (event: { target: { value: string } }) => {
     const { value } = event.target
@@ -99,25 +101,18 @@ export const MetricsTable: React.FC = () => {
 
   React.useEffect(() => {
     if (
-      (!!!Object.keys(currentMetrics).length && !isProcessing) ||
-      !!!metrics ||
-      Object.keys(currentMetrics).length !== Object.keys(metrics).length
-    ) {
-      if (attempts < MAX_ATTEMPTS) dispatch(getMetrics.request(netid))
-      setFilterNodes(allNodes)
-    }
-    if (
       !!metrics &&
       Object.keys(currentMetrics).length !== Object.keys(metrics).length
     ) {
       setCurrentMetrics(metrics)
       setFilterNodes(allNodes)
     }
-    if (!!!metrics) {
-      setCurrentMetrics({} as MetricsContainer)
+    if (!metrics) {
+      syncMetrics()
     }
   }, [
     dispatch,
+    syncMetrics,
     currentMetrics,
     metrics,
     netid,

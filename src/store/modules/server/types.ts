@@ -81,7 +81,7 @@ export type ExtMetrics = Record<string, NodeMetricsTable>
 
 export type NodeMetrics = Record<string, NodeMetricsContainer>
 
-export type NetworkMetrics = Record<string, NodeMetricsTable>
+export type NetworkMetrics = Record<string, MetricsContainer>
 
 export interface NodeMetric {
   node_name: string

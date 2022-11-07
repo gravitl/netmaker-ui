@@ -17,9 +17,7 @@ import { ReceivedChart } from './charts/ReceivedChart'
 import { useSelector, useDispatch } from 'react-redux'
 import { serverSelectors } from '~store/selectors'
 import { NodeMetric } from '~store/types'
-import {
-  getNodeMetrics,
-} from '~store/modules/server/actions'
+import { getNodeMetrics } from '~store/modules/server/actions'
 import { NmTable, TableColumns } from '~components/Table'
 import { Modify } from 'src/types/react-app-env'
 import MetricButton from '../components/MetricButton'
@@ -67,7 +65,7 @@ export const NodeMetrics: React.FC = () => {
     [] as NodeMetricID[]
   )
   const [filterString, setFilterString] = React.useState('')
-  const [currentNodeID, setCurrentNodeID] = React.useState('') 
+  const [currentNodeID, setCurrentNodeID] = React.useState('')
 
   const syncMetrics = useCallback(() => {
     dispatch(getNodeMetrics.request())
@@ -208,10 +206,12 @@ export const NodeMetrics: React.FC = () => {
   ]
 
   React.useEffect(() => {
-    if (metrics && 
-      JSON.stringify(metrics) !== JSON.stringify(nodeMetrics) 
-      && metrics.connectivity
-      && Object.keys(metrics.connectivity).length) {
+    if (
+      metrics &&
+      JSON.stringify(metrics) !== JSON.stringify(nodeMetrics) &&
+      metrics.connectivity &&
+      Object.keys(metrics.connectivity).length
+    ) {
       const newPeerMetrics = [] as NodeMetricID[]
       Object.keys(metrics.connectivity).map((peerID) => {
         newPeerMetrics.push({
@@ -229,7 +229,14 @@ export const NodeMetrics: React.FC = () => {
       syncMetrics()
       setCurrentNodeID(nodeid)
     }
-  }, [metrics, nodeMetrics, currentPeerMetrics, syncMetrics, currentNodeID, nodeid])
+  }, [
+    metrics,
+    nodeMetrics,
+    currentPeerMetrics,
+    syncMetrics,
+    currentNodeID,
+    nodeid,
+  ])
 
   if (
     isFetching ||
@@ -238,9 +245,6 @@ export const NodeMetrics: React.FC = () => {
   ) {
     return <Loading />
   }
-
-  console.log(currentPeerMetrics)
-  console.log(metrics)
 
   return (
     <Grid container justifyContent="center" alignItems="center">

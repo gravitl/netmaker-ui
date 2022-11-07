@@ -3,24 +3,19 @@ import { createReducer } from 'typesafe-actions'
 import {
   clearCurrentMetrics,
   getExtMetrics,
-  getMetrics,
+  getNetworkMetrics,
   getNodeMetrics,
   getServerConfig,
   getServerLogs,
 } from './actions'
-import {
-  ServerConfig,
-  MetricsContainer,
-  ExtMetrics,
-  NodeMetrics,
-} from './types'
+import { ServerConfig, ExtMetrics, NodeMetrics, NetworkMetrics } from './types'
 
 export const reducer = createReducer({
   config: {} as ServerConfig,
   isFetching: false,
   logs: [] as string[],
   nodeMetrics: {} as NodeMetrics,
-  metrics: {} as MetricsContainer | undefined,
+  networkMetrics: {} as NetworkMetrics,
   attempts: 0,
   fetchedNodeMetrics: false,
   extMetrics: {} as ExtMetrics,
@@ -90,25 +85,6 @@ export const reducer = createReducer({
       draftState.logs = []
     })
   )
-  .handleAction(getMetrics['request'], (state, _) =>
-    produce(state, (draftState) => {
-      draftState.isFetching = true
-      draftState.attempts++
-    })
-  )
-  .handleAction(getMetrics['success'], (state, payload) =>
-    produce(state, (draftState) => {
-      draftState.isFetching = false
-      draftState.metrics = payload.payload
-      draftState.attempts = 0
-    })
-  )
-  .handleAction(getMetrics['failure'], (state, _) =>
-    produce(state, (draftState) => {
-      draftState.isFetching = false
-      draftState.metrics = undefined
-    })
-  )
 
   .handleAction(getExtMetrics['request'], (state, _) =>
     produce(state, (draftState) => {
@@ -149,10 +125,29 @@ export const reducer = createReducer({
       draftState.nodeMetrics = {}
     })
   )
+  .handleAction(getNetworkMetrics['request'], (state, _) =>
+    produce(state, (draftState) => {
+      draftState.isFetching = true
+      draftState.attempts++
+      draftState.fetchedNodeMetrics = false
+    })
+  )
+  .handleAction(getNetworkMetrics['success'], (state, payload) =>
+    produce(state, (draftState) => {
+      draftState.networkMetrics = payload.payload
+      draftState.attempts = 0
+      draftState.isFetching = false
+    })
+  )
+  .handleAction(getNetworkMetrics['failure'], (state, _) =>
+    produce(state, (draftState) => {
+      draftState.isFetching = false
+      draftState.networkMetrics = {}
+    })
+  )
   .handleAction(clearCurrentMetrics, (state, _) =>
     produce(state, (draftState) => {
       draftState.isFetching = false
-      draftState.metrics = undefined
-      draftState.nodeMetrics = {}
+      draftState.networkMetrics = {}
     })
   )
