@@ -17,26 +17,21 @@ import {
 } from '@mui/material'
 import React, { useCallback } from 'react'
 import {
-  // Block,
   CheckCircle,
   NotInterested as NotAllowedIcon,
   RemoveCircleOutline as DisabledIcon,
   Search,
   Sync,
-  // RestartAlt,
-  // Search,
 } from '@mui/icons-material'
 import { useParams, Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { serverSelectors, nodeSelectors, authSelectors } from '~store/selectors'
-import { getMetrics } from '~store/modules/server/actions'
 import { NodeMetric, MetricsContainer } from '~store/types'
 import { MAX_ATTEMPTS } from '~components/utils'
 import { getTimeMinHrs } from '../util'
 import MetricButton from '../components/MetricButton'
 import { getNetworkMetrics as getNetMetrics } from '~store/modules/server/actions'
-import { getNetworkMetrics } from '~store/modules/server/selectors'
 
 const HIGHLIGHT = '#D7BE69'
 type HoveredNode = {

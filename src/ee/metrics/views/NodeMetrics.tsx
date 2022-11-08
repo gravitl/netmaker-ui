@@ -208,7 +208,6 @@ export const NodeMetrics: React.FC = () => {
   React.useEffect(() => {
     if (
       metrics &&
-      JSON.stringify(metrics) !== JSON.stringify(nodeMetrics) &&
       metrics.connectivity &&
       Object.keys(metrics.connectivity).length
     ) {
