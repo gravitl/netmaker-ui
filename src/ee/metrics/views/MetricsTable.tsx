@@ -15,27 +15,23 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material'
-import React from 'react'
+import React, { useCallback } from 'react'
 import {
-  // Block,
   CheckCircle,
   NotInterested as NotAllowedIcon,
   RemoveCircleOutline as DisabledIcon,
   Search,
   Sync,
-  // RestartAlt,
-  // Search,
 } from '@mui/icons-material'
 import { useParams, Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { serverSelectors, nodeSelectors, authSelectors } from '~store/selectors'
-import { getMetrics } from '~store/modules/server/actions'
 import { NodeMetric, MetricsContainer } from '~store/types'
 import { MAX_ATTEMPTS } from '~components/utils'
 import { getTimeMinHrs } from '../util'
 import MetricButton from '../components/MetricButton'
-import { clearCurrentMetrics } from '~store/modules/server/actions'
+import { getNetworkMetrics as getNetMetrics } from '~store/modules/server/actions'
 
 const HIGHLIGHT = '#D7BE69'
 type HoveredNode = {
@@ -55,10 +51,11 @@ const titleStyle = {
 export const MetricsTable: React.FC = () => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
-  const metrics = useSelector(serverSelectors.getMetrics)
+
   const isProcessing = useSelector(serverSelectors.isFetchingServerConfig)
   const { netid } = useParams<{ netid: string }>()
   const allNodes = useSelector(nodeSelectors.getNodes)
+  const metrics = useSelector(serverSelectors.getNetworkMetrics(netid))
   const extClients = useSelector(nodeSelectors.getExtClients)
   const inDarkMode = useSelector(authSelectors.isInDarkMode)
   const attempts = useSelector(serverSelectors.getAttempts)
@@ -77,9 +74,9 @@ export const MetricsTable: React.FC = () => {
     return !!~filterNodes.findIndex((node) => node.id === id)
   }
 
-  const syncMetrics = () => {
-    dispatch(clearCurrentMetrics())
-  }
+  const syncMetrics = useCallback(() => {
+    dispatch(getNetMetrics.request())
+  }, [dispatch])
 
   const handleFilter = (event: { target: { value: string } }) => {
     const { value } = event.target
@@ -99,25 +96,18 @@ export const MetricsTable: React.FC = () => {
 
   React.useEffect(() => {
     if (
-      (!!!Object.keys(currentMetrics).length && !isProcessing) ||
-      !!!metrics ||
-      Object.keys(currentMetrics).length !== Object.keys(metrics).length
-    ) {
-      if (attempts < MAX_ATTEMPTS) dispatch(getMetrics.request(netid))
-      setFilterNodes(allNodes)
-    }
-    if (
       !!metrics &&
       Object.keys(currentMetrics).length !== Object.keys(metrics).length
     ) {
       setCurrentMetrics(metrics)
       setFilterNodes(allNodes)
     }
-    if (!!!metrics) {
-      setCurrentMetrics({} as MetricsContainer)
+    if (!metrics) {
+      syncMetrics()
     }
   }, [
     dispatch,
+    syncMetrics,
     currentMetrics,
     metrics,
     netid,
@@ -246,12 +236,19 @@ export const MetricsTable: React.FC = () => {
         </div>
       </Grid>
       <Grid item xs={3} md={2.5}>
-        <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
           <Button
-            variant='outlined' 
+            variant="outlined"
             component={Link}
-            to={`/ec/metrics/${netid}`} 
-            sx={{marginLeft: '1rem'}}>
+            to={`/ec/metrics/${netid}`}
+            sx={{ marginLeft: '1rem' }}
+          >
             {t('extclient.extclients')}
           </Button>
         </div>

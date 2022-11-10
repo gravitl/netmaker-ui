@@ -35,7 +35,7 @@ import { TableToggleButton } from '../../../nodes/netid/components/TableToggleBu
 import { HubButton } from '../../../nodes/netid/components/HubButton'
 import { deleteNode } from '~store/modules/node/actions'
 import CustomizedDialogs from '~components/dialog/CustomDialog'
-import { authSelectors } from '~store/selectors'
+import { authSelectors, serverSelectors } from '~store/selectors'
 import { MultiCopy } from '~components/CopyText'
 import MetricsIcon from '@mui/icons-material/Insights'
 
@@ -65,6 +65,7 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({
   const { t } = useTranslation()
   const [open, setOpen] = React.useState(false)
   const inDarkMode = useSelector(authSelectors.isInDarkMode)
+  const serverConfig = useSelector(serverSelectors.getServerConfig)
 
   const legendData = [
     { label: `${t('node.state.normal')} ${t('node.node')}`, color: '#2b00ff' },
@@ -213,16 +214,17 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({
             <ViewList />
           </IconButton>
         </Tooltip>
-        <Tooltip title={`${t('pro.metrics')}`} placement="top">
-          <IconButton
-            component={Link}
-            to={`/metrics/${data.network}/${data.id}`}
-            aria-label="view-metrics"
-          >
-            <MetricsIcon />
-          </IconButton>
-        </Tooltip>
-
+        {serverConfig.IsEE && (
+          <Tooltip title={`${t('pro.metrics')}`} placement="top">
+            <IconButton
+              component={Link}
+              to={`/metrics/${data.network}/${data.id}`}
+              aria-label="view-metrics"
+            >
+              <MetricsIcon />
+            </IconButton>
+          </Tooltip>
+        )}
         <Tooltip
           title={`${t('common.delete')} ${t('node.node')}`}
           placement="top"

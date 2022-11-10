@@ -7,7 +7,7 @@ import {
   Tooltip,
   IconButton,
 } from '@mui/material'
-import React from 'react'
+import React, { useCallback } from 'react'
 import { useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
@@ -17,17 +17,13 @@ import { ReceivedChart } from './charts/ReceivedChart'
 import { useSelector, useDispatch } from 'react-redux'
 import { serverSelectors } from '~store/selectors'
 import { NodeMetric } from '~store/types'
-import {
-  clearCurrentMetrics,
-  getNodeMetrics,
-} from '~store/modules/server/actions'
+import { getNodeMetrics } from '~store/modules/server/actions'
 import { NmTable, TableColumns } from '~components/Table'
 import { Modify } from 'src/types/react-app-env'
 import MetricButton from '../components/MetricButton'
 import { Search, Sync } from '@mui/icons-material'
 import { MAX_ATTEMPTS } from '~components/utils'
 import Loading from '~components/Loading'
-import { NotFound } from '~util/errorpage'
 
 const styles = {
   center: {
@@ -59,19 +55,21 @@ export const NodeMetrics: React.FC = () => {
   const dispatch = useDispatch()
   const { t } = useTranslation()
   const { netid, nodeid } = useParams<{ nodeid: string; netid: string }>()
-  const metrics = useSelector(serverSelectors.getNodeMetrics)
+  const metrics = useSelector(serverSelectors.getNodeMetric(nodeid))
   const isFetching = useSelector(serverSelectors.isFetchingServerConfig)
-  const hasFetchedNodeMetrics = useSelector(serverSelectors.hasFetchedNodeMetrics)
+  const hasFetched = useSelector(serverSelectors.hasFetchedNodeMetrics)
+  const [nodeMetrics, setNodeMetrics] = React.useState(metrics)
+
   const attempts = useSelector(serverSelectors.getAttempts)
-  const [initialLoad, setInitialLoad] = React.useState(true)
   const [currentPeerMetrics, setCurrentPeerMetrics] = React.useState(
     [] as NodeMetricID[]
   )
   const [filterString, setFilterString] = React.useState('')
+  const [currentNodeID, setCurrentNodeID] = React.useState('')
 
-  const syncMetrics = () => {
-    dispatch(clearCurrentMetrics())
-  }
+  const syncMetrics = useCallback(() => {
+    dispatch(getNodeMetrics.request())
+  }, [dispatch])
 
   useLinkBreadcrumb({
     link: `/nodes/${netid}/${nodeid}`,
@@ -89,7 +87,7 @@ export const NodeMetrics: React.FC = () => {
     if (!!!searchTerm) {
       setFilterString('')
     } else {
-        setFilterString(value)
+      setFilterString(value)
     }
   }
 
@@ -125,54 +123,10 @@ export const NodeMetrics: React.FC = () => {
     return bytes
   }
 
-  React.useEffect(() => {
-    if (initialLoad) {
-      dispatch(clearCurrentMetrics())
-      setInitialLoad(false)
-    }
-    window.onpopstate = () => {
-      if (!!metrics) {
-        dispatch(clearCurrentMetrics())
-      }
-    }
-
-    if (!hasFetchedNodeMetrics || !metrics) {
-      if (attempts < MAX_ATTEMPTS)
-        dispatch(getNodeMetrics.request({ ID: nodeid, Network: netid }))
-      setCurrentPeerMetrics([])
-    }
-    if (
-      hasFetchedNodeMetrics && 
-      metrics &&
-      !currentPeerMetrics.length
-    ) {
-      const newPeerMetrics = [] as NodeMetricID[]
-      Object.keys(metrics.connectivity).map((peerID) => {
-          newPeerMetrics.push({
-            ...metrics.connectivity[peerID],
-            id: peerID,
-            name: metrics.connectivity[peerID].node_name
-          })
-        return null
-      })
-      setCurrentPeerMetrics(newPeerMetrics)
-    }
-  }, [
-    dispatch,
-    metrics,
-    netid,
-    nodeid,
-    currentPeerMetrics,
-    attempts,
-    isFetching,
-    hasFetchedNodeMetrics,
-    initialLoad,
-  ])
-
   let totalSent = 0
   let duration = 0
   let totalReceived = 0
-  if (hasFetchedNodeMetrics && metrics) {
+  if (hasFetched && metrics) {
     Object.keys(metrics.connectivity).map((peerID) => {
       totalSent += metrics.connectivity[peerID].totalsent
       totalReceived += metrics.connectivity[peerID].totalreceived
@@ -185,14 +139,14 @@ export const NodeMetrics: React.FC = () => {
 
   const columns: TableColumns<NodeMetricID> = [
     {
-      id: 'name',
+      id: 'node_name',
       label: t('node.name'),
       minWidth: 170,
       sortable: true,
       format: (_, node) => (
         <MetricButton
           link={`/metrics/${netid}/${node.id}`}
-          text={node.name}
+          text={node.node_name}
           sx={{ textTransform: 'none' }}
         />
       ),
@@ -251,12 +205,44 @@ export const NodeMetrics: React.FC = () => {
     },
   ]
 
-  if (isFetching) {
-    return <Loading />
-  }
+  React.useEffect(() => {
+    if (
+      metrics &&
+      metrics.connectivity &&
+      Object.keys(metrics.connectivity).length
+    ) {
+      const newPeerMetrics = [] as NodeMetricID[]
+      Object.keys(metrics.connectivity).map((peerID) => {
+        newPeerMetrics.push({
+          ...metrics.connectivity[peerID],
+          id: peerID,
+          name: metrics.connectivity[peerID].node_name,
+        })
+        return null
+      })
+      setCurrentPeerMetrics(newPeerMetrics)
+      setNodeMetrics(metrics)
+    }
 
-  if (!hasFetchedNodeMetrics) {
-    return <NotFound />
+    if (currentNodeID !== nodeid) {
+      syncMetrics()
+      setCurrentNodeID(nodeid)
+    }
+  }, [
+    metrics,
+    nodeMetrics,
+    currentPeerMetrics,
+    syncMetrics,
+    currentNodeID,
+    nodeid,
+  ])
+
+  if (
+    isFetching ||
+    !hasFetched ||
+    (metrics && Object.keys(metrics).length === 0)
+  ) {
+    return <Loading />
   }
 
   return (
@@ -347,8 +333,8 @@ export const NodeMetrics: React.FC = () => {
             {!!filterString ? (
               <NmTable
                 columns={columns}
-                rows={currentPeerMetrics.filter(
-                  (node) => `${node.name}${node.id}`.includes(filterString)
+                rows={currentPeerMetrics.filter((node) =>
+                  `${node.name}${node.id}`.includes(filterString)
                 )}
                 getRowId={(row) => row.node_name}
               />
@@ -356,7 +342,7 @@ export const NodeMetrics: React.FC = () => {
               <NmTable
                 columns={columns}
                 rows={currentPeerMetrics}
-                getRowId={(row) => row.name}
+                getRowId={(row) => row.node_name}
               />
             )}
           </Grid>

@@ -2,7 +2,7 @@
   <img style="width:50%;" src="src/netmaker-logo.png"><break/>
 </p>
 
-## v0.16.2
+## v0.16.3
 
 ## For more information, visit one of the official documentation sites:
 
@@ -12,7 +12,7 @@
 ## To run dev server:
 
 1. `npm i`
-2. `npm start`
+2. `npm start` or `NODE_OPTIONS=--openssl-legacy-provider npm start` for newer versions of node due [this bug](https://github.com/webpack/webpack/issues/14532) in webpack
 
 Runs the app in the development mode.  
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.

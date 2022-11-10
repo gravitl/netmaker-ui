@@ -1,12 +1,20 @@
 import { all, put, select, takeEvery } from 'redux-saga/effects'
-import { getExtMetrics, getMetrics, getNodeMetrics, getServerConfig, getServerLogs } from './actions'
+import {
+  getExtMetrics,
+  getMetrics,
+  getNodeMetrics,
+  getServerConfig,
+  getServerLogs,
+  getNetworkMetrics,
+} from './actions'
 import { login } from '../auth/actions'
 import { getToken } from '../auth/selectors'
 import { getType } from 'typesafe-actions'
 import { AxiosResponse } from 'axios'
 import { apiRequestWithAuthSaga } from '../api/saga'
 import { getNetworks } from '../network/selectors'
-import { ExtMetrics } from '~store/types'
+import { getNodes } from '../node/selectors'
+import { ExtMetrics, NetworkMetrics, NodeMetrics } from '~store/types'
 import { getNetworks as getNets } from '../network/actions'
 import { getServerConfig as getSC } from '../server/selectors'
 
@@ -86,7 +94,7 @@ function* handleGetAllExtMetrics(
           responseMetrics[networks[i].netid] = {}
         }
       }
-    
+
       yield put(getExtMetrics['success'](responseMetrics))
     }
   } catch (e: unknown) {
@@ -94,22 +102,61 @@ function* handleGetAllExtMetrics(
   }
 }
 
-
 function* handleGetNodeMetrics(
   action: ReturnType<typeof getNodeMetrics['request']>
 ) {
   try {
-    const response: AxiosResponse = yield apiRequestWithAuthSaga(
-      'get',
-      `/metrics/${action.payload.Network}/${action.payload.ID}`,
-      {}
-    )
-    yield put(getNodeMetrics['success'](response.data))
+    let responseMetrics = {} as NodeMetrics
+    const nodes: ReturnType<typeof getNodes> = yield select(getNodes)
+    const serverConfig: ReturnType<typeof getSC> = yield select(getSC)
+    if (serverConfig.IsEE && nodes && nodes.length) {
+      for (let i = 0; i < nodes.length; i++) {
+        try {
+          const response: AxiosResponse = yield apiRequestWithAuthSaga(
+            'get',
+            `/metrics/${nodes[i].network}/${nodes[i].id}`,
+            {}
+          )
+          responseMetrics[nodes[i].id] = response.data
+        } catch (e: unknown) {
+          responseMetrics[nodes[i].id] = { connectivity: {} }
+        }
+      }
+    }
+
+    yield put(getNodeMetrics['success'](responseMetrics))
   } catch (e: unknown) {
     yield put(getNodeMetrics['failure'](e as Error))
   }
 }
 
+//write saga named handlegetNetworkMetrics for getNetworkmetrics
+function* handleGetNetworkMetrics(
+  action: ReturnType<typeof getNetworkMetrics['request']>
+) {
+  try {
+    let responseMetrics = {} as NetworkMetrics
+    const networks: ReturnType<typeof getNetworks> = yield select(getNetworks)
+    const serverConfig: ReturnType<typeof getSC> = yield select(getSC)
+    if (serverConfig.IsEE && networks && networks.length) {
+      for (let i = 0; i < networks.length; i++) {
+        try {
+          const response: AxiosResponse = yield apiRequestWithAuthSaga(
+            'get',
+            `/metrics/${networks[i].netid}`,
+            {}
+          )
+          responseMetrics[networks[i].netid] = response.data
+        } catch (e: unknown) {
+          responseMetrics[networks[i].netid] = { nodes: {} }
+        }
+      }
+    }
+    yield put(getNetworkMetrics['success'](responseMetrics))
+  } catch (e: unknown) {
+    yield put(getNetworkMetrics['failure'](e as Error))
+  }
+}
 
 export function* saga() {
   yield all([
@@ -118,26 +165,14 @@ export function* saga() {
       getType(getServerConfig['request']),
       handleGetServerConfigRequest
     ),
-    takeEvery(
-      getType(getServerLogs['request']),
-      handleGetServerLogsRequest
-    ),
-    takeEvery(
-      getType(getNodeMetrics['request']),
-      handleGetNodeMetrics
-    ),
-    takeEvery(
-      getType(getMetrics['request']),
-      handleGetAllMetrics
-    ),
-    takeEvery(
-      getType(getNets['success']),
-      handleGetAllExtMetrics,
-    ),
-    takeEvery(
-      getType(getExtMetrics['request']),
-      handleGetAllExtMetrics,
-    ),
+    takeEvery(getType(getServerLogs['request']), handleGetServerLogsRequest),
+    takeEvery(getType(getNodeMetrics['request']), handleGetNodeMetrics),
+    takeEvery(getType(getMetrics['request']), handleGetAllMetrics),
+    takeEvery(getType(getNets['success']), handleGetNodeMetrics),
+    takeEvery(getType(getNets['success']), handleGetAllExtMetrics),
+    takeEvery(getType(getExtMetrics['request']), handleGetAllExtMetrics),
+    takeEvery(getType(getNetworkMetrics['request']), handleGetNetworkMetrics),
+    takeEvery(getType(getNets['success']), handleGetNetworkMetrics),
     handleLoginSuccess(),
   ])
 }
