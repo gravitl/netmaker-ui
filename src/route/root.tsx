@@ -125,13 +125,10 @@ function Routes() {
         </Switch>
         : <Switch location={from || location}>
             <PrivateRoute exact path="/">
-              {user?.isAdmin ? <Dashboard /> : <WelcomeCard />}
+              {<Dashboard />}
             </PrivateRoute>
             <PrivateRoute path="/networks">
               <Networks />
-            </PrivateRoute>
-            <PrivateRoute path="/prouser">
-              {user?.isAdmin ? <Dashboard /> : <ProUserView />}
             </PrivateRoute>
             <PrivateRoute path="/nodes">
               <Nodes />
