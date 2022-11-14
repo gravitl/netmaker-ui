@@ -60,7 +60,11 @@ export function Login() {
     <Modal
       style={{ display: 'flex', flex: 1 }}
       open={true}
-      onClose={() => {
+      onClose={(ev: object, reason: string) => {
+        const ignorableReasons = ['escapeKeyDown', 'backdropClick']
+        if (ignorableReasons.includes(reason)) {
+          return
+        }
         history.goBack()
       }}
     >
