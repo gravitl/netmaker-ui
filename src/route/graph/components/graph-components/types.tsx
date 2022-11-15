@@ -1,3 +1,5 @@
+import { NodeConnectivityStatus } from "~store/types"
+
 // interfaces and types for use in graph-components
 export interface DataNode {
     type: DataNodeType
@@ -19,6 +21,7 @@ export interface AltDataNode {
 export interface Edge {
     from: string
     to: string
+    status: NodeConnectivityStatus
 }
 
 export type DataNodeType = 'normal' | '1&e' | 'ingress' | 'egress' | 'i&r' | 'e&r' | 'relay' | 'relayed' | 'extclient' | 'cidr' | 'i&e&r'
