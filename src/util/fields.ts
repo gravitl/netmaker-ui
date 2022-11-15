@@ -92,6 +92,7 @@ export const getCommaSeparatedArray = (values: string) => {
   return newArray as []
 }
 
+// TODO: replace w/ getConnectivityStatus in util/node.ts
 // Returns level of health of a node
 // 2 - unhealthy (hasn't checked in for 30 min)
 // 1 - warning (hasn't checked in for 5 min)

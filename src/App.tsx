@@ -43,14 +43,16 @@ function App() {
   const theme = useCurrentTheme(userSettings.mode || 'dark')
 
   return (
-    <PathBreadcrumbsProvider>
-      <ThemeProvider theme={theme}>
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <Routes />
-          <ToastContainer containerId="App.tsx" />
-        </LocalizationProvider>
-      </ThemeProvider>
-    </PathBreadcrumbsProvider>
+    <React.StrictMode>
+      <PathBreadcrumbsProvider>
+        <ThemeProvider theme={theme}>
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <Routes />
+            <ToastContainer containerId="App.tsx" />
+          </LocalizationProvider>
+        </ThemeProvider>
+      </PathBreadcrumbsProvider>
+    </React.StrictMode>
   )
 }
 
