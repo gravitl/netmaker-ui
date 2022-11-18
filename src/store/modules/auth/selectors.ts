@@ -24,5 +24,5 @@ export const getUserSettings = createSelector(
 )
 export const isInDarkMode = createSelector(
   getAuth,
-  (auth) => auth.userSettings.mode === 'dark'
+  (auth) => !!!auth.userSettings.mode || auth.userSettings.mode === 'dark'
 )
