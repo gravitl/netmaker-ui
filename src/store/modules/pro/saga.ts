@@ -17,8 +17,8 @@ import { getType } from 'typesafe-actions'
 import { getServerConfig } from '../server/selectors'
 import { getServerConfig as getConf } from '../server/actions'
 import { createExternalClient, deleteExternalClient, deleteNode, updateExternalClient, updateNode } from '../node/actions'
-import { createAccessKey, deleteAccessKey, updateNetwork } from '../network/actions'
-import { login } from '../auth/actions'
+import { createAccessKey, deleteAccessKey, getNetworks, updateNetwork } from '../network/actions'
+import { getAllUsers, login } from '../auth/actions'
 import { getUser } from '../auth/selectors'
 
 const userGroups = 'usergroups'
@@ -265,5 +265,11 @@ export function* saga() {
     takeEvery(getType(deleteAccessKey['success']), handleGetNetworkUserData),
     takeEvery(getType(proCreateAccessKey['request']), handleProCreateAccessKeyRequest),
     takeEvery(getType(proCreateAccessKey['success']), handleGetNetworkUserData),
+    takeEvery(getType(getAllUsers['success']), handleGetUserGroupsRequest),
+    takeEvery(getType(getNetworks['success']), handleGetUserGroupsRequest),
+    takeEvery(getType(login['success']), handleGetUserGroupsRequest),
+    takeEvery(getType(getNetworks['success']), handleGetNetworkUsers),
+    takeEvery(getType(getAllUsers['success']), handleGetNetworkUsers),
+    takeEvery(getType(login['success']), handleGetNetworkUsers),
   ])
 }
