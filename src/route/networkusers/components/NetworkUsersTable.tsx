@@ -1,5 +1,5 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { NmLink } from '../../../components'
 import { NmTable, TableColumns } from '../../../components/Table'
 import { Edit } from '@mui/icons-material'
@@ -10,6 +10,7 @@ import { NetworkSelect } from '~components/NetworkSelect'
 import { NetworkUser } from '~store/types'
 import { proSelectors } from '~store/selectors'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
+import { getNetworkUsers } from '~store/modules/pro/actions'
 
 export const NetworkUsersTable: React.FC<{}> = () => {
   const { t } = useTranslation()
@@ -18,11 +19,18 @@ export const NetworkUsersTable: React.FC<{}> = () => {
   const { netid } = useParams<{ netid: string }>()
   const { url } = useRouteMatch()
   const netUsers = useSelector(proSelectors.networkUsers)
+  const dispatch = useDispatch()
 
   useLinkBreadcrumb({
     link: url,
     title: netid,
   })
+
+  React.useEffect(() => {
+    if (!!!netUsers || !!!Object.keys(netUsers).length) {
+      dispatch(getNetworkUsers.request())
+    }
+  }, [netUsers, dispatch])
 
   if (!!!netUsers[netid] || !!!netUsers[netid].length) {
     return (

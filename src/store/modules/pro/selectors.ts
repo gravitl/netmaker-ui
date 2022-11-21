@@ -25,3 +25,5 @@ export const getNetworkUserNetworks = createSelector(getProState, (pro) =>
 )
 
 export const getCurrentAccessKey = createSelector(getProState, (pro) => pro.currentAccessKey)
+
+export const isCreatingGroup = createSelector(getProState, (pro) => pro.isCreatingGroup)

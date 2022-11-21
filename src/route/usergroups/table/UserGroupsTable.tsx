@@ -5,7 +5,7 @@ import { NmTable, TableColumns } from '~components/Table'
 import { Delete } from '@mui/icons-material'
 import { useDialog } from '~components/ConfirmDialog'
 import { useTranslation } from 'react-i18next'
-import { deleteUserGroup } from '~store/modules/pro/actions'
+import { deleteUserGroup, getUserGroups } from '~store/modules/pro/actions'
 import { IconButton, Tooltip } from '@mui/material'
 
 type UserGroup = {
@@ -24,6 +24,12 @@ export const UserGroupsTable: React.FC = () => {
       currentGroups.push({groupname: userGroups[i]})
     }
   }
+
+  React.useEffect(() => {
+    if (!!!userGroups || !!!userGroups.length) {
+      dispatch(getUserGroups.request())
+    }
+  }, [userGroups, dispatch])
 
   const columns: TableColumns<UserGroup> = [
     {
