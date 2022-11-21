@@ -151,12 +151,6 @@ function Routes() {
             <PrivateRoute path="/logs">
               <ServerLogs />
             </PrivateRoute>
-            <PrivateRoute path="/usergroups">
-              <UserGroups />
-            </PrivateRoute>
-            <PrivateRoute path="/user-permissions">
-              <NetworkUsers />
-            </PrivateRoute>
             <PrivateRoute
               path="/users"
               to={{ pathname: '/' }}

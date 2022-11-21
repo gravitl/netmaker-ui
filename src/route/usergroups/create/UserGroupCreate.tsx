@@ -37,7 +37,7 @@ export const UserGroupCreate: React.FC = () => {
   const { t } = useTranslation()
   const location = useLocation<{ from?: Location }>()
   const history = useHistory()
-  const isCreating = useSelector(proSelectors.isProcessing)
+  const isCreating = useSelector(proSelectors.isCreatingGroup)
   const formRef = React.createRef<FormRef<CreateGroup>>()
   const { Component: Dialog, setProps: setDialog } = useDialog()
   const initialState: CreateGroup = {

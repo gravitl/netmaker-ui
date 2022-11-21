@@ -22,6 +22,7 @@ export const reducer = createReducer({
   networkUsers: {} as NetworksUsersMap,
   networkUserData: {} as NetworkUserDataMap,
   currentAccessKey: {} as TempKey,
+  isCreatingGroup: false as boolean,
 })
 .handleAction(getNetworkUserData['success'], (state, payload) =>
     produce(state, (draftState) => {
@@ -84,17 +85,17 @@ export const reducer = createReducer({
   )
   .handleAction(createUserGroup['request'], (state, _) =>
     produce(state, (draftState) => {
-      draftState.isProcessing = true
+      draftState.isCreatingGroup = true
     })
   )
   .handleAction(createUserGroup['failure'], (state, _) =>
     produce(state, (draftState) => {
-      draftState.isProcessing = false
+      draftState.isCreatingGroup = false
     })
   )
   .handleAction(createUserGroup['success'], (state, payload) =>
     produce(state, (draftState) => {
-      draftState.isProcessing = false
+      draftState.isCreatingGroup = false
       draftState.userGroups.push(payload.payload.groupName)
     })
   )
