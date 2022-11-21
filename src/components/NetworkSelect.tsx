@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
 import { networkSelectors } from '~store/selectors'
@@ -46,7 +46,7 @@ export const NetworkSelect: React.FC<{
   const theme = useTheme()
   const [selectedNetworkName, setSelectedNetworkName] = useState('')
 
-  const onNetworkChange = (networkId: string) => {
+  const onNetworkChange = useCallback((networkId: string) => {
     setSelectedNetworkName(networkId)
 
     dispatch(clearCurrentMetrics())
@@ -59,7 +59,7 @@ export const NetworkSelect: React.FC<{
     } else if (netid !== undefined) {
       history.push(history.location.pathname.replace(netid!, networkId))
     }
-  }
+  }, [dispatch, history, netid, selectAll, t])
 
   // extract network ids and
   // auto-select network from url
@@ -69,7 +69,7 @@ export const NetworkSelect: React.FC<{
     if (netid) {
       onNetworkChange(netid)
     }
-  }, [networks])
+  }, [networks, netid, onNetworkChange])
 
   if (
     selectAll &&
