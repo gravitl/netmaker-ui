@@ -15,6 +15,7 @@ import { MultiCopy } from '~components/CopyText'
 import { useSelector } from 'react-redux'
 import { serverSelectors } from '~store/selectors'
 import { FailoverButton } from '../../../ee/nodes/FailoverButton'
+import { getConnectivityStatus } from '~util/node'
 
 export const NodeTable: React.FC<{ nodes: Node[] }> = ({ nodes }) => {
   const { t } = useTranslation()
@@ -128,25 +129,29 @@ export const NodeTable: React.FC<{ nodes: Node[] }> = ({ nodes }) => {
       labelKey: 'node.status',
       minWidth: 170,
       align: 'center',
-      format: (lastcheckin) => {
-        const time = Date.now() / 1000
-        if (time - lastcheckin >= 1800)
-          return (
-            <Tooltip title={t('node.error') as string} placement="top">
-              <Chip color="error" label="ERROR" />
-            </Tooltip>
-          )
-        if (time - lastcheckin >= 300)
-          return (
-            <Tooltip title={t('node.warning') as string} placement="top">
-              <Chip color="warning" label="WARNING" />
-            </Tooltip>
-          )
-        return (
-          <Tooltip title={t('node.healthy') as string} placement="top">
-            <Chip color="success" label="HEALTHY" />
-          </Tooltip>
-        )
+      format: (lastCheckInTime) => {
+        const status = getConnectivityStatus(lastCheckInTime)
+        
+        switch(status) {
+          case 'error':
+            return (
+              <Tooltip title={t('node.error') as string} placement="top">
+                <Chip color="error" label="ERROR" />
+              </Tooltip>
+            )
+          case 'warning':
+            return (
+              <Tooltip title={t('node.warning') as string} placement="top">
+                <Chip color="warning" label="WARNING" />
+              </Tooltip>
+            )
+          default:
+            return (
+              <Tooltip title={t('node.healthy') as string} placement="top">
+                <Chip color="success" label="HEALTHY" />
+              </Tooltip>
+            )
+        }
       },
     },
   ]

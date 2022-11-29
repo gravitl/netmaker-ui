@@ -245,3 +245,5 @@ export const nodeACLValues = {
   allow: 'ALLOW',
   deny: 'DENY',
 }
+
+export type NodeConnectivityStatus = 'healthy' | 'warning' | 'error' | 'unknown'

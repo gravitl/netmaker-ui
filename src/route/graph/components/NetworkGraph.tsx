@@ -16,7 +16,7 @@ import {
   ZoomControl,
   FullScreenControl,
 } from 'react-sigma-v2'
-import { filterExtClientsByNetwork } from '~util/node'
+import { filterExtClientsByNetwork, getEdgeConnectivity } from '~util/node'
 import { nodeSelectors, aclSelectors, authSelectors } from '~store/selectors'
 import { AltDataNode, DataNode, Edge } from './graph-components/types'
 import { NetworkSelect } from '~components/NetworkSelect'
@@ -126,6 +126,7 @@ export const NetworkGraph: React.FC = () => {
       data.edges.push({
         from: node.id,
         to: node.egressgatewayranges[i],
+        status: 'unknown',  // TODO: cross-check whether this can be determined
       })
     }
   }
@@ -144,6 +145,7 @@ export const NetworkGraph: React.FC = () => {
         data.edges.push({
           from: clients[i].clientid,
           to: node.id,
+          status: getEdgeConnectivity(node, clients[i]),
         })
       }
     }
@@ -168,6 +170,7 @@ export const NetworkGraph: React.FC = () => {
           data.edges.push({
             from: currentNode.id,
             to: node.id,
+            status: getEdgeConnectivity(currentNode, node),
           })
         }
       }
@@ -260,10 +263,12 @@ export const NetworkGraph: React.FC = () => {
           data.edges.push({
             from: innerNode.id,
             to: hubNode.id,
+            status: getEdgeConnectivity(innerNode, hubNode),
           })
           data.edges.push({
             from: hubNode.id,
             to: innerNode.id,
+            status: getEdgeConnectivity(innerNode, hubNode),
           })
         }
       }
@@ -363,6 +368,7 @@ export const NetworkGraph: React.FC = () => {
           data.edges.push({
             from: innerNode.id,
             to: outerNode.id,
+            status: getEdgeConnectivity(innerNode, outerNode),
           })
         }
       }
@@ -401,37 +407,35 @@ export const NetworkGraph: React.FC = () => {
         </Grid>
       </Grid>
       <Grid item xs={12} sm={8}>
-        <React.StrictMode>
-          <div
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '100%',
+          }}
+        >
+          <SigmaContainer
             style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              width: '100%',
+              height: '35em',
+              width: '600px',
+              backgroundColor: inDarkMode ? '#272727' : '#f0f0f0',
             }}
           >
-            <SigmaContainer
-              style={{
-                height: '35em',
-                width: '600px',
-                backgroundColor: inDarkMode ? '#272727' : '#f0f0f0',
-              }}
-            >
-              <NodeGraph
-                data={data}
-                handleViewNode={handleSetNode}
-                handleViewAlt={handleSetAlt}
-              />
-              <ControlsContainer position={'top-right'}>
-                <ZoomControl />
-                <FullScreenControl />
-              </ControlsContainer>
-              <ControlsContainer position={'top-left'}>
-                <SearchControl />
-              </ControlsContainer>
-            </SigmaContainer>
-          </div>
-        </React.StrictMode>
+            <NodeGraph
+              data={data}
+              handleViewNode={handleSetNode}
+              handleViewAlt={handleSetAlt}
+            />
+            <ControlsContainer position={'top-right'}>
+              <ZoomControl />
+              <FullScreenControl />
+            </ControlsContainer>
+            <ControlsContainer position={'top-left'}>
+              <SearchControl />
+            </ControlsContainer>
+          </SigmaContainer>
+        </div>
       </Grid>
       <Grid item xs={12} sm={4}>
         <div
