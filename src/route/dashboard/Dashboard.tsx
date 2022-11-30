@@ -14,6 +14,7 @@ import { useSelector } from 'react-redux'
 import { authSelectors } from '~store/types'
 import ACLCard from '~components/dashboard/ACLCard'
 import GraphCard from '~components/dashboard/GraphCard'
+import './dashboard-styles.css'
 
 export const Dashboard: React.FC = () => {
   const { path } = useRouteMatch()
