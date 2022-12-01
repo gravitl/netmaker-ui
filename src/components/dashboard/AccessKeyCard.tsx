@@ -1,5 +1,5 @@
-import * as React from 'react'
-import { Link } from 'react-router-dom'
+import { useCallback } from 'react'
+import { Link, useHistory } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { styled } from '@mui/material/styles'
 import Card from '@mui/material/Card'
@@ -7,7 +7,6 @@ import CardActions from '@mui/material/CardActions'
 import SpeedDial from '@mui/material/SpeedDial'
 import SpeedDialAction from '@mui/material/SpeedDialAction'
 import PreviewIcon from '@mui/icons-material/Preview'
-// import CreateIcon from '@mui/icons-material/AddBox';
 import { grey } from '@mui/material/colors'
 import Avatar from '@mui/material/Avatar'
 import { networkSelectors } from '~store/selectors'
@@ -15,7 +14,7 @@ import CardContent from '@mui/material/CardContent'
 import Typography from '@mui/material/Typography'
 import { useTranslation } from 'react-i18next'
 import { KeyboardArrowRight, VpnKey } from '@mui/icons-material'
-import { Button, Grid, useTheme } from '@mui/material'
+import { Grid, useTheme } from '@mui/material'
 
 const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
   '&.MuiSpeedDial-directionRight': {
@@ -27,6 +26,7 @@ const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
 export default function AccessKeyCard() {
   const { t } = useTranslation()
   const theme = useTheme()
+  const history = useHistory()
 
   const networks = useSelector(networkSelectors.getNetworks)
   let accessKeyCount = 0
@@ -58,21 +58,22 @@ export default function AccessKeyCard() {
       ),
       name: t('common.view'),
     },
-    // { icon: <Link to='/access-keys/create' ><CreateIcon /></Link>, name: t('common.create')},
   ]
 
+  const goToRoute = useCallback(
+    (route: string) => {
+      history.push(route)
+    },
+    [history]
+  )
+
   return (
-    <Button
-      component={Link}
-      to={'/access-keys'}
-      color={'inherit'}
-      fullWidth
-      style={{ textTransform: 'none' }}
-    >
       <Card
         sx={{ minWidth: 275, backgroundColor: grey[200] }}
         variant="outlined"
         style={cardStyle}
+        onClick={() => goToRoute('/access-keys')}
+        className="clickable"
       >
         <CardContent>
           <Avatar
@@ -123,6 +124,5 @@ export default function AccessKeyCard() {
           </Grid>
         </CardActions>
       </Card>
-    </Button>
   )
 }

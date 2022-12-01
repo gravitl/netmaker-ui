@@ -117,8 +117,8 @@ export const ServerLogs: React.FC = () => {
               <Paper style={{ maxHeight: '50vh', overflow: 'auto' }}>
                 {attempts >= MAX_ATTEMPTS && <Typography color="red">{t('error.overload')}</Typography> }
                 {isFetching && <LinearProgress />}
-                {showlogs.map((log) => (
-                  <Typography variant="body2">{log}</Typography>
+                {showlogs.map((log, i) => (
+                  <Typography variant="body2" key={i}>{log}</Typography>
                 ))}
               </Paper>
             </Grid>
