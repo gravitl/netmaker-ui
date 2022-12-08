@@ -35,7 +35,6 @@ export const NodeEdit: React.FC<{
   const { url } = useRouteMatch()
   const { t } = useTranslation()
   const dispatch = useDispatch()
-
   const serverConfig = useSelector(serverSelectors.getServerConfig)
   const { netid, nodeId } = useParams<{ nodeId: string; netid: string }>()
   const node = useNodeById(decodeURIComponent(nodeId))
@@ -44,6 +43,13 @@ export const NodeEdit: React.FC<{
   const createIPValidation = useMemo(
     () =>
       validate<Node>({
+        name: (name, formData) => {
+          const nameRegex = /^[a-zA-Z0-9-]+$/
+          const message = t('error.name')
+
+          if (!nameRegex.test(name)) return { message, type: 'value', }
+          return undefined
+        },
         address: (address, formData) => {
           if (!formData.address) {
             return undefined

@@ -212,6 +212,7 @@ export const en: LanguageResource = {
     tokenexpire: 'Session has expired',
     unauthorized: 'Unauthorized access attempted',
     overload: 'Too many failed requests, refresh to retry',
+    name: 'Invalid name. name can only include alphanumeric and dash characters',
   },
   extclient: {
     extclients: 'External Clients',
