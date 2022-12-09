@@ -16,13 +16,14 @@ import {
   Resolver,
   DeepPartial,
   UseFormReset,
+  FieldValues,
 } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { FormContext } from './internal/formContext'
 import { AdminPanelSettings, Cancel } from '@mui/icons-material'
 import { BACKEND_URL } from '../../config'
 
-interface FormProps<T> extends Omit<BoxProps, 'onSubmit' | 'component'> {
+interface FormProps<T extends FieldValues> extends Omit<BoxProps, 'onSubmit' | 'component'> {
   initialState: UnpackNestedValue<DeepPartial<T>>
   disabled?: boolean
   submitText?: string
@@ -37,12 +38,12 @@ interface FormProps<T> extends Omit<BoxProps, 'onSubmit' | 'component'> {
   onCancel?: () => void
 }
 
-export interface FormRef<T> {
+export interface FormRef<T extends FieldValues> {
   reset: UseFormReset<T>
   values: UnpackNestedValue<T>
 }
 
-export const NmForm = React.forwardRef(function NmFormInternal<T>(
+export const NmForm = React.forwardRef(function NmFormInternal<T extends FieldValues>(
   {
     initialState,
     disabled,

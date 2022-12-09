@@ -206,6 +206,7 @@ export interface LanguageResource {
     tokenexpire: string
     unauthorized: string
     overload: string
+    name: string
   }
   extclient: {
     extclients: string

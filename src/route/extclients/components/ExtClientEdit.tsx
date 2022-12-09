@@ -1,11 +1,11 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import { Grid, Modal, Typography, Box } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useHistory, useRouteMatch, useParams } from 'react-router'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 import { updateExternalClient } from '~store/modules/node/actions'
-import { NmForm, NmFormInputText } from '~components/form'
+import { NmForm, NmFormInputText, validate } from '~components/form'
 import { nodeSelectors, authSelectors } from '~store/selectors'
 import { grey } from '@mui/material/colors'
 
@@ -84,6 +84,16 @@ export const ExtClientEdit: React.FC<{}> = () => {
     },
   } as any
 
+  const validationFunc = useMemo(() => validate<UpdateClient>({
+    clientid(value, formData) {
+      const nameRegex = /^[a-zA-Z0-9-]+$/
+      const message = t('error.name')
+
+      if (!nameRegex.test(value)) return { message, type: 'value', }
+      return undefined
+    },
+  }), [t])
+
   return (
     <Modal open={true} onClose={handleClose}>
       <Box style={boxStyle.modal}>
@@ -107,6 +117,7 @@ export const ExtClientEdit: React.FC<{}> = () => {
                 fullWidth: true,
                 type: 'submit',
               }}
+              resolver={validationFunc}
             >
               <NmFormInputText
                 name="clientid"
