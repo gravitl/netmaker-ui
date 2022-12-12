@@ -470,6 +470,7 @@ export interface LanguageResource {
       username: string
       password: string
       confirmation: string
+      groupname: string
     }
     update: {
       header: string

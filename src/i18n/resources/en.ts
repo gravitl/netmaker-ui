@@ -515,6 +515,7 @@ export const en: LanguageResource = {
       password:
         'Invalid password provided. Must be between 5 to 64 characters with no white space.',
       confirmation: 'Confirmation password does not match given password.',
+      groupname: 'Group name is mandatory'
     },
     table: {
       name: 'Username',

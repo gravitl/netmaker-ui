@@ -44,7 +44,7 @@ export interface ActionIconProps {
 export interface Props<Row> {
   columns: TableColumns<Row>
   rows: Array<Row>
-  getRowId: (row: Row) => React.Key
+  getRowId: (row: Row, index?: number) => React.Key
   rowsPerPageOptions?: Array<number>
   actions?: Array<(row: Row) => ActionIconProps>
   tableId?: string
@@ -174,13 +174,13 @@ export function NmTable<T>({
             <TableBody>
               {rows
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row) => {
+                .map((row, i) => {
                   return (
                     <TableRow
                       hover
                       role="checkbox"
                       tabIndex={-1}
-                      key={getRowId(row)}
+                      key={getRowId(row, i)}
                     >
                       {columns.map((column) => {
                         const value = row[column.id]
