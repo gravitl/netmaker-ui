@@ -13,7 +13,7 @@ import {
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 import { getCommaSeparatedArray } from '~util/fields'
 import { useNodeById } from '~util/node'
-import { useNetwork } from '~util/network'
+import { byteArrayToString, useNetwork } from '~util/network'
 import { serverSelectors } from '~store/selectors'
 import { Node, nodeACLValues } from '~store/modules/node/types'
 import { datePickerConverter } from '~util/unixTime'
@@ -282,10 +282,16 @@ export const NodeEdit: React.FC<{
         </Grid>
         <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <Tooltip title={String(t('helper.localaddress'))} placement="top">
-            <NmFormInputText
+            <NmFormOptionSelect
               defaultValue={node.localaddress}
-              name={'localaddress'}
               label={String(t('node.localaddress'))}
+              name="localaddress"
+              selections={
+                node.interfaces?.map((iface, i) => ({
+                  key: `${iface.name} (${byteArrayToString(iface.address.ip)})`,
+                  option: byteArrayToString(iface.address.ip),
+                })) ?? []
+              }
             />
           </Tooltip>
         </Grid>
@@ -482,14 +488,19 @@ export const NodeEdit: React.FC<{
         <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <Tooltip title={String(t('helper.defaultacl'))} placement="top">
             <NmFormOptionSelect
-              defaultValue={node.defaultacl === undefined ? nodeACLValues.unset : 
-                node.defaultacl ? nodeACLValues.allow : nodeACLValues.deny}
+              defaultValue={
+                node.defaultacl === undefined
+                  ? nodeACLValues.unset
+                  : node.defaultacl
+                  ? nodeACLValues.allow
+                  : nodeACLValues.deny
+              }
               label={String(t('node.defaultacl'))}
               name={'defaultacl'}
               selections={[
-                {key: nodeACLValues.unset, option: undefined},
-                {key: nodeACLValues.allow, option: true},
-                {key: nodeACLValues.deny, option: false},
+                { key: nodeACLValues.unset, option: undefined },
+                { key: nodeACLValues.allow, option: true },
+                { key: nodeACLValues.deny, option: false },
               ]}
             />
           </Tooltip>
