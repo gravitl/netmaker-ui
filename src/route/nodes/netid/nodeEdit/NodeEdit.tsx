@@ -13,7 +13,7 @@ import {
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 import { getCommaSeparatedArray } from '~util/fields'
 import { useNodeById } from '~util/node'
-import { byteArrayToString, useNetwork } from '~util/network'
+import { useNetwork } from '~util/network'
 import { serverSelectors } from '~store/selectors'
 import { Node, nodeACLValues } from '~store/modules/node/types'
 import { datePickerConverter } from '~util/unixTime'
@@ -288,8 +288,8 @@ export const NodeEdit: React.FC<{
               name="localaddress"
               selections={
                 node.interfaces?.map((iface, i) => ({
-                  key: `${iface.name} (${byteArrayToString(iface.address.ip)})`,
-                  option: byteArrayToString(iface.address.ip),
+                  key: `${iface.Name} (${iface.Address.IP})`,
+                  option: iface.Address.IP,
                 })) ?? []
               }
             />
