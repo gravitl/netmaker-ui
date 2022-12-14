@@ -56,8 +56,9 @@ export interface Node {
 }
 
 export interface Interface {
-  Name: string
-  Address: { IP: string; Mask: string }
+  name: string
+  address: { IP: string; Mask: string }
+  addressString: string
 }
 
 export type NodePayload = Modify<

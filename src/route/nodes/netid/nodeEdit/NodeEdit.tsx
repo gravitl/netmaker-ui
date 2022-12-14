@@ -287,9 +287,9 @@ export const NodeEdit: React.FC<{
               label={String(t('node.localaddress'))}
               name="localaddress"
               selections={
-                node.interfaces?.map((iface, i) => ({
-                  key: `${iface.Name} (${iface.Address.IP})`,
-                  option: iface.Address.IP,
+                node.interfaces?.map((iface) => ({
+                  key: `${iface.name} (${iface.addressString})`,
+                  option: iface.addressString,
                 })) ?? []
               }
             />
