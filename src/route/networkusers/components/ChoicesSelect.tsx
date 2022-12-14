@@ -39,7 +39,7 @@ export default function ChoicesSelect(props: {
   const [choices, setChoices] = React.useState<string[]>([])
   const { t } = useTranslation()
 
-  const handleChange = (event: SelectChangeEvent<typeof choices>) => {
+  const handleChange = React.useCallback((event: SelectChangeEvent<typeof choices>) => {
     const {
       target: { value },
     } = event
@@ -52,13 +52,13 @@ export default function ChoicesSelect(props: {
     } else {
       props.onSelect(value.join(','))
     }
-  }
+  }, [props])
 
-  const handleSelectAll = () => {
+  const handleSelectAll = React.useCallback(() => {
     const newValues = props.options.join(',')
     setChoices(props.options)
     props.onSelect(newValues)
-  }
+  }, [props])
 
   return (
     <Grid container justifyContent="space-evenly" alignItems="center">
@@ -87,9 +87,9 @@ export default function ChoicesSelect(props: {
             )}
             MenuProps={MenuProps}
           >
-            {props.options.map((option) => (
+            {props.options.map((option, i) => (
               <MenuItem
-                key={option}
+                key={`${option}-${i}`}
                 value={option}
                 style={getStyles(option, choices, theme)}
               >

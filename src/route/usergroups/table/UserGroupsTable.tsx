@@ -9,7 +9,8 @@ import { deleteUserGroup, getUserGroups } from '~store/modules/pro/actions'
 import { IconButton, Tooltip } from '@mui/material'
 
 type UserGroup = {
-  groupname: string
+  groupname: string;
+  action?: any;
 }
 
 export const UserGroupsTable: React.FC = () => {
@@ -40,7 +41,7 @@ export const UserGroupsTable: React.FC = () => {
       align: 'center',
     },
     {
-      id: 'groupname',
+      id: 'action',
       labelKey: 'common.delete',
       minWidth: 100,
       align: 'center',
@@ -70,7 +71,7 @@ export const UserGroupsTable: React.FC = () => {
       <NmTable
         columns={columns}
         rows={currentGroups}
-        getRowId={(row) => row.groupname}
+        getRowId={(row, i) => `${row.groupname}-${i}`}
       />
       <Dialog />
     </>

@@ -77,7 +77,7 @@ export const UserGroupCreate: React.FC = () => {
     () =>
       validate<CreateGroup>({
         groupName: (groupName) => !!!groupName ? {
-          message: t('pro.validation.groupname'),
+          message: t('users.validation.groupname'),
           type: 'value',
         }
       : undefined,

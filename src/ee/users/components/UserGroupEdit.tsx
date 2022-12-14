@@ -21,7 +21,7 @@ export const UserGroupEdit: React.FC<{}> = () => {
   const currentUsers = useSelector(authSelectors.getUsers)
   let currentClient = undefined as User | undefined
   if (!!currentUsers) {
-    currentClient = currentUsers.filter(user => user.name === username)[0]
+    currentClient = currentUsers.filter((user) => user.name === username)[0]
   }
 
   useLinkBreadcrumb({
@@ -55,90 +55,92 @@ export const UserGroupEdit: React.FC<{}> = () => {
 
   const onSubmit = useCallback(
     (data: Data) => {
-        if (!!currentClient) {
-            const newRanges = data.choices.split(',')
-            for (let i = 0; i < newRanges.length; i++) {
-                newRanges[i] = newRanges[i].trim()
-            }
-            let newClient = {...currentClient}
-            newClient.groups = newRanges
-
-            dispatch(
-                updateUserNetworks.request({
-                    username: currentClient.name,
-                    networks: currentClient.networks as string[],
-                    groups: newClient.groups,
-                    isadmin: currentClient.isAdmin,
-                })
-            )
-            history.push(`/users`)
+      if (!!currentClient) {
+        const newRanges = data.choices.split(',')
+        for (let i = 0; i < newRanges.length; i++) {
+          newRanges[i] = newRanges[i].trim()
         }
+        let newClient = { ...currentClient }
+        newClient.groups = newRanges
+
+        dispatch(
+          updateUserNetworks.request({
+            username: currentClient.name,
+            networks: currentClient.networks as string[],
+            groups: newClient.groups,
+            isadmin: currentClient.isAdmin,
+          })
+        )
+        history.push(`/users`)
+      }
     },
     [dispatch, history, currentClient]
   )
 
   if (!!!currentClient) {
     return (
-        <div style={{ textAlign: 'center', margin: '1em 0 1em 0' }}>
-          <Typography variant="h5">{`${t('error.notfound')}`}</Typography>
-        </div>
-      )
+      <div style={{ textAlign: 'center', margin: '1em 0 1em 0' }}>
+        <Typography variant="h5">{`${t('error.notfound')}`}</Typography>
+      </div>
+    )
   }
 
   const formRef = React.createRef<FormRef<Data>>()
 
   return (
     <Grid
-        container
-        display="flex"
-        justifyContent="space-evenly"
-        alignItems="center"
-        style={{ marginBottom: '2em' }}
-        >
-        <Grid item xs={12}>
-            <div style={{ textAlign: 'center', margin: '1em 0 1em 0' }}>
-                <Typography variant="h5">
-                    {`${t('common.edit')} ${currentClient.name} ${t('pro.networkusers.groups')}`}
-                </Typography>
-            </div>
-        </Grid>
-        <Grid item xs={12} md={10}>
-            <Box style={{backgroundColor: theme.palette.background.paper}}>
-                <NmForm
-                initialState={initialState}
-                onSubmit={onSubmit}
-                submitProps={{
-                    fullWidth: true,
-                    variant: 'contained',
-                }}
-                submitText={t('common.submit')}
-                sx={{ margin: '2em 0 2em 0' }}
-                ref={formRef}
-                >
+      container
+      display="flex"
+      justifyContent="space-evenly"
+      alignItems="center"
+      style={{ marginBottom: '2em' }}
+    >
+      <Grid item xs={12}>
+        <div style={{ textAlign: 'center', margin: '1em 0 1em 0' }}>
+          <Typography variant="h5">
+            {`${t('common.edit')} ${currentClient.name} ${t(
+              'pro.networkusers.groups'
+            )}`}
+          </Typography>
+        </div>
+      </Grid>
+      <Grid item xs={12} md={10}>
+        <Box style={{ backgroundColor: theme.palette.background.paper }}>
+          <NmForm
+            initialState={initialState}
+            onSubmit={onSubmit}
+            submitProps={{
+              fullWidth: true,
+              variant: 'contained',
+            }}
+            submitText={t('common.submit')}
+            sx={{ margin: '2em 0 2em 0' }}
+            ref={formRef}
+          >
             <Grid
-                container
-                justifyContent="space-around"
-                alignItems="center"
-                sx={{ margin: '1em 0 1em 0' }}
+              container
+              justifyContent="space-around"
+              alignItems="center"
+              sx={{ margin: '1em 0 1em 0' }}
             >
-                <Grid item xs={12} sm={5}>
-                    <NmFormInputText
-                        multiline
-                        minRows={2}
-                        fullWidth
-                        disabled
-                        name={'choices'}
-                        label={String(t('pro.networkusers.groups'))}
-                        sx={{ height: '100%', margin: '1em 0 1em 0' }}
-                    />
-                </Grid>
-                <Grid item xs={12} sm={5}>
-                    <ChoicesSelect options={groups} onSelect={updateChoices} />
-                </Grid>
+              <Grid item xs={12} sm={5}>
+                <NmFormInputText
+                  multiline
+                  minRows={2}
+                  fullWidth
+                  disabled
+                  name={'choices'}
+                  label={String(t('pro.networkusers.groups'))}
+                  sx={{ height: '100%', margin: '1em 0 1em 0' }}
+                />
+              </Grid>
+              <Grid item xs={12} sm={5}>
+                <ChoicesSelect options={groups} onSelect={updateChoices} />
+              </Grid>
             </Grid>
-            </NmForm>
-            </Box>
-        </Grid>
+          </NmForm>
+        </Box>
+      </Grid>
     </Grid>
   )
 }
