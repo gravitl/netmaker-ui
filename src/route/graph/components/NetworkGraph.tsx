@@ -1,5 +1,5 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
+import React, { useMemo } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import CustomDialog from '~components/dialog/CustomDialog'
 // import { Node } from '~store/types'
@@ -21,6 +21,10 @@ import { nodeSelectors, aclSelectors, authSelectors } from '~store/selectors'
 import { AltDataNode, DataNode, Edge } from './graph-components/types'
 import { NetworkSelect } from '~components/NetworkSelect'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
+import {
+  clearCurrentACL,
+  getNodeACLContainer,
+} from '~store/modules/acls/actions'
 
 export const NetworkGraph: React.FC = () => {
   // const networks = useSelector(networkSelectors.getNetworks)
@@ -29,7 +33,8 @@ export const NetworkGraph: React.FC = () => {
   const { url } = useRouteMatch()
   const { netid } = useParams<{ netid: string }>()
   const currentNetwork = useNetwork(netid)
-  const listOfNodes = useNodesByNetworkId(netid) || []
+  const tmpNodes = useNodesByNetworkId(netid)
+  const listOfNodes = useMemo(() => tmpNodes || [], [tmpNodes])
   const currentNetworkACL = useSelector(aclSelectors.getCurrentACL)
   const currentNodeACLs = Object.keys(currentNetworkACL)
   const [selectedNode, setSelectedNode] = React.useState({} as Node)
@@ -39,11 +44,31 @@ export const NetworkGraph: React.FC = () => {
   const extClients = useSelector(nodeSelectors.getExtClients)
   const clients = filterExtClientsByNetwork(extClients, netid)
   const inDarkMode = useSelector(authSelectors.isInDarkMode)
+  const dispatch = useDispatch()
+  const isProcessing = useSelector(aclSelectors.isProcessing)
 
   useLinkBreadcrumb({
     link: url,
     title: netid,
   })
+
+  React.useEffect(() => {
+    if (!!!currentNodeACLs.length && !isProcessing) {
+      dispatch(getNodeACLContainer.request({ netid }))
+    } else if (
+      !!!listOfNodes.length ||
+      !!!currentNodeACLs.filter((acl) => acl === listOfNodes[0].id).length
+    ) {
+      dispatch(clearCurrentACL(''))
+    }
+  }, [
+    dispatch,
+    netid,
+    currentNetworkACL,
+    currentNodeACLs,
+    listOfNodes,
+    isProcessing,
+  ])
 
   const handleClose = () => {
     setOpen(false)
