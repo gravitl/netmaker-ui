@@ -52,6 +52,13 @@ export interface Node {
   ownerid: string
   connected: boolean
   failover: boolean
+  interfaces?: Interface[]
+}
+
+export interface Interface {
+  name: string
+  address: { IP: string; Mask: string }
+  addressString: string
 }
 
 export type NodePayload = Modify<

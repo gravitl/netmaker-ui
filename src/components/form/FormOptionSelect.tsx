@@ -11,7 +11,7 @@ export const NmFormOptionSelect: React.FC<
   > & {
     name: string
     rightAlign?: boolean
-    selections: {key: string, option: any}[]
+    selections: { key: string; option: any }[]
   }
 > = ({ name, disabled, rightAlign, selections, ...textfieldProps }) => {
   const { control, disabled: formDisabled } = useFormControl()
@@ -22,21 +22,23 @@ export const NmFormOptionSelect: React.FC<
       control={control}
       render={({ field: { onChange, value }, fieldState: { error } }) => (
         <FormControl sx={{ minWidth: '80%' }}>
-        <InputLabel id={`select-${value}`}>{textfieldProps.label}</InputLabel>
-        <Select
-          disabled={formDisabled}
-          labelId="simple-select-label"
-          id="simple-select-label"
-          value={value}
-          label={textfieldProps.label}
-          onChange={onChange}
-          fullWidth
-        >
-          {selections.map(({key, option}) =>
-            <MenuItem key={key} value={option}>{key}</MenuItem>
-          )}
-        </Select>
-      </FormControl>
+          <InputLabel id={`${name}-select`}>{textfieldProps.label}</InputLabel>
+          <Select
+            disabled={formDisabled}
+            labelId={`${name}-select`}
+            id={`${name}-select`}
+            value={value}
+            label={textfieldProps.label}
+            onChange={onChange}
+            fullWidth
+          >
+            {selections.map(({ key, option }) => (
+              <MenuItem key={key} value={option}>
+                {key}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
       )}
     />
   )
