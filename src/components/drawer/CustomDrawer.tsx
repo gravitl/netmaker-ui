@@ -28,6 +28,7 @@ import MetricsIcon from '@mui/icons-material/Insights'
 import LibraryBooks from '@mui/icons-material/LibraryBooks'
 import Person from '@mui/icons-material/Person'
 import VpnKey from '@mui/icons-material/VpnKey'
+import ComputerIcon from '@mui/icons-material/Computer';
 import { PathBreadcrumbs } from '~components/PathBreadcrumbs'
 import { useTranslation } from 'react-i18next'
 import { ListItemButton, Switch } from '@mui/material'
@@ -328,6 +329,15 @@ export default function CustomDrawer() {
                   <ViewList />
                 </ListItemIcon>
                 <ListItemText primary={t('header.acls')} />
+              </ListItemButton>
+              <ListItemButton
+                component={Link}
+                to={`/hosts`}
+              >
+                <ListItemIcon aria-label={String(t('hosts.hosts'))}>
+                  <ComputerIcon />
+                </ListItemIcon>
+                <ListItemText primary={t('hosts.hosts')} />
               </ListItemButton>
               <ListItemButton component={Link} to="/users">
                 <ListItemIcon aria-label={String(t('users.header'))}>

@@ -132,6 +132,7 @@ export const en: LanguageResource = {
     userdashboard: 'User Dashboard',
     netadmindashboard: 'Network Administrator Dashboard',
     nodeuserdashboard: 'Node User Dashboard',
+    hosts: 'Hosts',
   },
   common: {
     disabled: 'Disabled',
@@ -622,4 +623,10 @@ export const en: LanguageResource = {
       failure: 'Failed to login',
     },
   },
+  hosts: {
+    hosts: 'Hosts',
+    localaddress: 'Local Address',
+    makedefault: 'Click to make this host default',
+    removedefault: 'Click to remove default from host',
+  }
 }

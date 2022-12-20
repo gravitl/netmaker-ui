@@ -127,6 +127,7 @@ export interface LanguageResource {
     userdashboard: string
     netadmindashboard: string
     nodeuserdashboard: string
+    hosts: string
   }
   common: {
     disabled: string
@@ -577,4 +578,5 @@ export interface LanguageResource {
       failure: string
     }
   }
+  hosts: Record<string, string>
 }
