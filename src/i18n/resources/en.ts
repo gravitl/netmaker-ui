@@ -135,6 +135,8 @@ export const en: LanguageResource = {
     hosts: 'Hosts',
   },
   common: {
+    isconnected: 'Is Connected',
+    network: 'Network',
     daemoninstalled: 'Daemon installed',
     debug: 'Debug',
     isdefault: 'Is Default',
