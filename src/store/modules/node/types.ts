@@ -13,16 +13,11 @@ export interface Node {
   postdown: string
   allowedips: []
   persistentkeepalive: number
-  accesskey: string
   interface: string
   lastmodified: number
-  keyupdatetimestamp: number
   expdatetime: number
-  lastpeerupdate: number
   lastcheckin: number
   macaddress: string
-  checkininterval: number
-  password: string
   network: string
   ispending: string
   isrelay: boolean
@@ -31,25 +26,21 @@ export interface Node {
   isegressgateway: boolean
   isingressgateway: boolean
   egressgatewayranges: []
-  ingressgatewayrange: string
   isstatic: boolean
   udpholepunch: boolean
   dnson: boolean
   isdualstack: boolean
   isserver: boolean
-  action: string
   islocal: boolean
   localrange: string
   ipforwarding: boolean
   os: string
   mtu: number
   version: string
-  commid: string
   isdocker: boolean
   isk8s: boolean
   ishub: boolean
   defaultacl: boolean | undefined
-  ownerid: string
   connected: boolean
   failover: boolean
   interfaces?: Interface[]
@@ -79,7 +70,6 @@ export type NodePayload = Modify<
     isk8s: 'yes' | 'no'
     ishub: 'yes' | 'no'
     defaultacl: 'yes' | 'no' | 'unset'
-    ownerid: string
     connected: 'yes' | 'no'
     failover: 'yes' | 'no'
   }

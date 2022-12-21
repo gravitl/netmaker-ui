@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   Paper,
@@ -47,6 +47,10 @@ export interface Props<Row> {
   getRowId: (row: Row, index?: number) => React.Key
   rowsPerPageOptions?: Array<number>
   actions?: Array<(row: Row) => ActionIconProps>
+  actionsHeader?: {
+    width: number
+    element: ReactNode
+  }
   tableId?: string
 }
 
@@ -73,6 +77,7 @@ function renderActionIcon(
  */
 export function NmTable<T>({
   actions,
+  actionsHeader,
   columns,
   rows,
   getRowId,
@@ -167,7 +172,12 @@ export function NmTable<T>({
                   </TableCell>
                 ))}
                 {actions?.map((_, i) => (
-                  <TableCell width={40} key={`a${i}`} />
+                  <TableCell
+                    width={actionsHeader?.width ?? 60}
+                    key={`a${i}`}
+                  >
+                    {actionsHeader?.element ?? ''}
+                  </TableCell>
                 ))}
               </TableRow>
             </TableHead>

@@ -129,52 +129,7 @@ export interface LanguageResource {
     nodeuserdashboard: string
     hosts: string
   }
-  common: {
-    disabled: string
-    notFound: string
-    version: string
-    server: string
-    delete: string
-    cancel: string
-    save: string
-    submit: string
-    reset: string
-    edit: string
-    create: string
-    accept: string
-    view: string
-    autofill: string
-    manage: string
-    select: string
-    name: string
-    copy: string
-    selectall: string
-    count: string
-    search: string
-    pending: string
-    cidr: string
-    type: string
-    max: string
-    min: string
-    chars: string
-    optional: string
-    submitchanges: string
-    loading: string
-    confirmsubmit: string
-    disable: string
-    enable: string
-    togglelite: string
-    toggledark: string
-    copytext: string
-    ascend: string
-    descend: string
-    sortby: string
-    lowercase: string
-    disconnected: string
-    clientsused: string
-    clientsavailable: string
-    connected: string
-  }
+  common: Record<string, string>
   dashboard: {
     title: string
   }

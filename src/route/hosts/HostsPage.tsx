@@ -29,16 +29,12 @@ const mockHosts: Host[] = [
 ]
 
 export const HostsPage: React.FC = () => {
-  const { path, url } = useRouteMatch()
+  const { path } = useRouteMatch()
   const { t } = useTranslation()
-
-  useLinkBreadcrumb({
-    link: url,
-    title: t('breadcrumbs.hosts'),
-  })
 
   const titleStyle = {
     textAlign: 'center',
+    marginBottom: '2rem',
   } as any
 
   const loadHosts = useCallback(() => {
@@ -52,23 +48,25 @@ export const HostsPage: React.FC = () => {
 
   return (
     <Container maxWidth="xl">
-      <Grid
-        container
-        direction="row"
-        justifyContent="center"
-        alignItems="center"
-      >
-        <Grid item xs={12}>
-          <div style={titleStyle}>
-            <Typography variant="h5">{t('hosts.hosts')}</Typography>
-          </div>
-        </Grid>
-      </Grid>
       <Switch>
+        {/* all hosts page */}
         <Route exact path={path}>
+          <Grid
+            container
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <Grid item xs={12}>
+              <div style={titleStyle}>
+                <Typography variant="h5">{t('hosts.hosts')}</Typography>
+              </div>
+            </Grid>
+          </Grid>
           <HostsTable hosts={filteredHosts} />
         </Route>
 
+        {/* host details page */}
         <Route path={`${path}/:hostId`}>
           <HostsDetailPage />
         </Route>

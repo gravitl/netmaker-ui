@@ -83,13 +83,18 @@ export const HostsTable: FC<{ hosts: Host[] }> = ({ hosts }) => {
         columns={columns}
         rows={hosts}
         getRowId={(host) => host.id}
+        actionsHeader={{ element: 'Set Default Node', width: 150 }}
         actions={[
           (host) => ({
             tooltip: host.isdefault
               ? t('hosts.removedefault')
               : t('hosts.makedefault'),
             disabled: false,
-            icon: host.isdefault ? <CheckCircle /> : <RadioButtonUnchecked />,
+            icon: host.isdefault ? (
+              <CheckCircle color="success" />
+            ) : (
+              <RadioButtonUnchecked />
+            ),
             onClick: () => {
               toggleDefaultness(host)
             },
