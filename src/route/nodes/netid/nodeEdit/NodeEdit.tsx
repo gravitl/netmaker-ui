@@ -35,7 +35,6 @@ export const NodeEdit: React.FC<{
   const { url } = useRouteMatch()
   const { t } = useTranslation()
   const dispatch = useDispatch()
-
   const serverConfig = useSelector(serverSelectors.getServerConfig)
   const { netid, nodeId } = useParams<{ nodeId: string; netid: string }>()
   const node = useNodeById(decodeURIComponent(nodeId))
@@ -44,6 +43,13 @@ export const NodeEdit: React.FC<{
   const createIPValidation = useMemo(
     () =>
       validate<Node>({
+        name: (name, formData) => {
+          const nameRegex = /^[a-zA-Z0-9-]+$/
+          const message = t('error.name')
+
+          if (!nameRegex.test(name)) return { message, type: 'value', }
+          return undefined
+        },
         address: (address, formData) => {
           if (!formData.address) {
             return undefined
@@ -282,10 +288,16 @@ export const NodeEdit: React.FC<{
         </Grid>
         <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <Tooltip title={String(t('helper.localaddress'))} placement="top">
-            <NmFormInputText
+            <NmFormOptionSelect
               defaultValue={node.localaddress}
-              name={'localaddress'}
               label={String(t('node.localaddress'))}
+              name="localaddress"
+              selections={
+                node.interfaces?.map((iface) => ({
+                  key: `${iface.name} (${iface.addressString})`,
+                  option: iface.addressString,
+                })) ?? []
+              }
             />
           </Tooltip>
         </Grid>
@@ -482,14 +494,19 @@ export const NodeEdit: React.FC<{
         <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <Tooltip title={String(t('helper.defaultacl'))} placement="top">
             <NmFormOptionSelect
-              defaultValue={node.defaultacl === undefined ? nodeACLValues.unset : 
-                node.defaultacl ? nodeACLValues.allow : nodeACLValues.deny}
+              defaultValue={
+                node.defaultacl === undefined
+                  ? nodeACLValues.unset
+                  : node.defaultacl
+                  ? nodeACLValues.allow
+                  : nodeACLValues.deny
+              }
               label={String(t('node.defaultacl'))}
               name={'defaultacl'}
               selections={[
-                {key: nodeACLValues.unset, option: undefined},
-                {key: nodeACLValues.allow, option: true},
-                {key: nodeACLValues.deny, option: false},
+                { key: nodeACLValues.unset, option: undefined },
+                { key: nodeACLValues.allow, option: true },
+                { key: nodeACLValues.deny, option: false },
               ]}
             />
           </Tooltip>

@@ -206,6 +206,7 @@ export interface LanguageResource {
     tokenexpire: string
     unauthorized: string
     overload: string
+    name: string
   }
   extclient: {
     extclients: string
@@ -470,6 +471,7 @@ export interface LanguageResource {
       username: string
       password: string
       confirmation: string
+      groupname: string
     }
     update: {
       header: string

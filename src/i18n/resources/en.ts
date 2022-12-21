@@ -212,6 +212,7 @@ export const en: LanguageResource = {
     tokenexpire: 'Session has expired',
     unauthorized: 'Unauthorized access attempted',
     overload: 'Too many failed requests, refresh to retry',
+    name: 'Invalid name. name can only include alphanumeric and dash characters',
   },
   extclient: {
     extclients: 'External Clients',
@@ -515,6 +516,7 @@ export const en: LanguageResource = {
       password:
         'Invalid password provided. Must be between 5 to 64 characters with no white space.',
       confirmation: 'Confirmation password does not match given password.',
+      groupname: 'Group name is mandatory'
     },
     table: {
       name: 'Username',

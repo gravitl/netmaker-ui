@@ -47,3 +47,9 @@ export const useNodeCountByNetworkId = (id: Network['netid']) => {
   }
   return 0
 }
+
+// Convert byte array to string.
+// Useful for converting IP addresses from backend to readable string
+export function byteArrayToString(byteArray: any): string {
+  return btoa(String.fromCharCode(...new Uint8Array(byteArray)));
+}

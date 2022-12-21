@@ -44,10 +44,10 @@ const ConfirmDialog: React.FC<Props & { visible: boolean }> = ({
         )}
       </DialogContent>
       <DialogActions>
-        <Button color="primary" variant="contained" onClick={onCancel}>
+        <Button color="secondary" variant="contained" onClick={onCancel}>
           {t('dialog.cancel')}
         </Button>
-        <Button color="secondary" variant="contained" onClick={onSubmit}>
+        <Button color="primary" variant="contained" onClick={onSubmit}>
           {t('dialog.confirm')}
         </Button>
       </DialogActions>
@@ -88,7 +88,7 @@ export const useDialog = () => {
   return {
     Component: () => (
       <ConfirmDialog
-        {...props}
+        {...props!}
         onSubmit={onSubmit}
         onCancel={onCancel}
         visible={false}
