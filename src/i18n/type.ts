@@ -465,6 +465,7 @@ export interface LanguageResource {
         approve: string
         nodeacl: string
         networkuser: string
+        host: string
       }
       failure: {
         node: string
@@ -474,6 +475,7 @@ export interface LanguageResource {
         approve: string
         nodeacl: string
         networkuser: string
+        host: string
       }
     }
     create: {
@@ -514,6 +516,7 @@ export interface LanguageResource {
         node: string
         usergroups: string
         networkuser: string
+        host: string
       }
       failure: {
         accesskey: string
@@ -526,6 +529,7 @@ export interface LanguageResource {
         node: string
         usergroups: string
         networkuser: string
+        host: string
       }
     }
     login: {

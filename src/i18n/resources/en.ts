@@ -577,6 +577,7 @@ export const en: LanguageResource = {
         approve: 'Node Approved!',
         nodeacl: 'ACL Updated!',
         networkuser: 'Network User Updated!',
+        host: 'Host Updated!',
       },
       failure: {
         node: 'Node updated failed!',
@@ -586,6 +587,7 @@ export const en: LanguageResource = {
         approve: 'Failed to approve node!',
         nodeacl: 'Failed to update ACL!',
         networkuser: 'Failed to update Network User!',
+        host: 'Failed to update Host!',
       },
     },
     create: {
@@ -626,6 +628,7 @@ export const en: LanguageResource = {
         node: 'Successfully deleted Node!',
         usergroups: 'Successfully deleted User Group!',
         networkuser: 'Successfully deleted Network User!',
+        host: 'Successfully deleted Host!',
       },
       failure: {
         accesskey: 'Failed to remove Access Key.',
@@ -638,6 +641,7 @@ export const en: LanguageResource = {
         node: 'Failed to remove Node.',
         usergroups: 'Failed to remove User Group.',
         networkuser: 'Failed to remove Network User.',
+        host: 'Failed to remove Host!',
       },
     },
     login: {

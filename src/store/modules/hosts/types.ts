@@ -30,3 +30,20 @@ export interface Host {
   nodes: Node[]
   isdefault: boolean
 }
+
+export interface GetHostsPayload {
+  Request: void
+  Response: Host[]
+}
+
+export interface UpdateHostPayload {
+  Request: Host
+  Response: Host
+}
+
+export interface DeleteHostPayload {
+  Request: {
+    hostid: string
+  }
+  Response: Host
+}
