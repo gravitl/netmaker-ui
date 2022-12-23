@@ -135,6 +135,8 @@ export const en: LanguageResource = {
     hosts: 'Hosts',
   },
   common: {
+    confirmdeletequestion: 'Are you sure you want to delete',
+    confirmdelete: 'Confirm Delete',
     isconnected: 'Is Connected',
     network: 'Network',
     daemoninstalled: 'Daemon installed',
@@ -659,5 +661,6 @@ export const en: LanguageResource = {
     removedefault: 'Click to remove default from host',
     connectednetworkstitle: 'Connected networks (Nodes)',
     proxyenabled: 'Proxy Enabled',
+    nohostconnected: 'No hosts connected to this server',
   },
 }

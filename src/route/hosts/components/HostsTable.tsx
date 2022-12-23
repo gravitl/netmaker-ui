@@ -1,4 +1,4 @@
-import { FC, useState, useCallback } from 'react'
+import { FC, useState, useCallback, useMemo } from 'react'
 import { NmLink } from '~components/index'
 import { useTranslation } from 'react-i18next'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
@@ -10,11 +10,16 @@ import CopyText from '~components/CopyText'
 // import { useSelector } from 'react-redux'
 // import { serverSelectors } from '~store/selectors'
 import { Host } from '~store/modules/hosts/types'
+import { Grid, TextField } from '@mui/material'
 
-export const HostsTable: FC<{ hosts: Host[] }> = ({ hosts }) => {
+interface HostsTableProps {
+  hosts: Host[]
+  onToggleDefaultness: (host: Host) => void
+}
+
+export const HostsTable: FC<HostsTableProps> = (props) => {
   const { t } = useTranslation()
-  // const dispatch = useDispatch()
-  // const [selected, setSelected] = useState({} as Host)
+  const [searchFilter, setSearchFilter] = useState('')
 
   useLinkBreadcrumb({
     title: t('breadcrumbs.hosts'),
@@ -56,59 +61,59 @@ export const HostsTable: FC<{ hosts: Host[] }> = ({ hosts }) => {
     },
   ]
 
-  // const handleClose = () => {
-  //   setSelected({} as Host)
-  // }
+  const filteredHosts = useMemo(() => {
+    return props.hosts.filter((host) =>
+      host.name.toLocaleLowerCase().includes(searchFilter.toLocaleLowerCase())
+    )
+  }, [props.hosts, searchFilter])
 
-  // const handleOpen = (host: Host) => {
-  //   setSelected(host)
-  // }
-
-  // const handleDeleteHost = () => {
-  //   if (selected.name) {
-  //     dispatch(
-  //       deleteHost.request({
-  //         hostId: selected.id,
-  //       })
-  //     )
-  //     handleClose()
-  //   }
-  // }
-
-  const toggleDefaultness = useCallback((host: Host) => {}, [])
+  const toggleDefaultness = useCallback(
+    (host: Host) => {
+      props.onToggleDefaultness(host)
+    },
+    [props]
+  )
 
   return (
     <>
-      <NmTable
-        columns={columns}
-        rows={hosts}
-        getRowId={(host) => host.id}
-        actionsHeader={{ element: 'Set Default Node', width: 150 }}
-        actions={[
-          (host) => ({
-            tooltip: host.isdefault
-              ? t('hosts.removedefault')
-              : t('hosts.makedefault'),
-            disabled: false,
-            icon: host.isdefault ? (
-              <CheckCircle color="success" />
-            ) : (
-              <RadioButtonUnchecked />
-            ),
-            onClick: () => {
-              toggleDefaultness(host)
-            },
-          }),
-        ]}
-      />
+      {/* search row */}
+      <Grid item xs={12} style={{ marginBottom: '1rem' }}>
+        <TextField
+          fullWidth
+          size="small"
+          label={t('common.search')}
+          placeholder={t('common.searchbyname')}
+          value={searchFilter}
+          onInput={(ev: any) => setSearchFilter(ev.target.value)}
+        />
+      </Grid>
 
-      {/* <CustomizedDialogs
-        open={!!selected.name}
-        handleClose={handleClose}
-        handleAccept={handleDeleteHost}
-        message={t('node.deleteconfirm')}
-        title={`${t('common.delete')} ${selected.name}`}
-      /> */}
+      {props.hosts.length === 0 ? (
+        <div>{t('hosts.nohostconnected')}</div>
+      ) : (
+        <NmTable
+          columns={columns}
+          rows={filteredHosts}
+          getRowId={(host) => host.id}
+          actionsHeader={{ element: 'Set Default Node', width: 150 }}
+          actions={[
+            (host) => ({
+              tooltip: host.isdefault
+                ? t('hosts.removedefault')
+                : t('hosts.makedefault'),
+              disabled: false,
+              icon: host.isdefault ? (
+                <CheckCircle color="success" />
+              ) : (
+                <RadioButtonUnchecked />
+              ),
+              onClick: () => {
+                toggleDefaultness(host)
+              },
+            }),
+          ]}
+        />
+      )}
     </>
   )
 }

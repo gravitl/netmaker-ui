@@ -72,26 +72,26 @@ export const HostEditPage: FC<{ onCancel: () => void }> = ({ onCancel }) => {
   }
 
   return (
-    <Grid container>
-      <Grid item xs={12}>
-        <div style={{ textAlign: 'center', margin: '0.5em 0 1em 0' }}>
-          <Typography variant="h5">
-            {`${t('hosts.details')}: ${host.name}(${host.id})`}
-          </Typography>
-        </div>
-      </Grid>
+    <NmForm
+      resolver={hostFormValidator}
+      initialState={{ ...host }}
+      onSubmit={onSubmit}
+      onCancel={onCancel}
+      submitProps={{
+        variant: 'contained',
+        fullWidth: true,
+      }}
+      sx={rowMargin}
+    >
+      <Grid container>
+        <Grid item xs={12}>
+          <div style={{ textAlign: 'center', margin: '0.5em 0 1em 0' }}>
+            <Typography variant="h5">
+              {`${t('hosts.details')}: ${host.name}(${host.id})`}
+            </Typography>
+          </div>
+        </Grid>
 
-      <NmForm
-        resolver={hostFormValidator}
-        initialState={{ ...host }}
-        onSubmit={onSubmit}
-        onCancel={onCancel}
-        submitProps={{
-          variant: 'contained',
-          fullWidth: true,
-        }}
-        sx={rowMargin}
-      >
         <Grid item xs={12} md={4} sx={rowMargin}>
           <Tooltip title={String(t('common.name'))}>
             <span>
@@ -128,19 +128,21 @@ export const HostEditPage: FC<{ onCancel: () => void }> = ({ onCancel }) => {
           </Tooltip>
         </Grid>
 
-        <Tooltip title={String(t('helper.localaddress'))}>
-          <NmFormOptionSelect
-            defaultValue={host.localaddress}
-            label={String(t('hosts.localaddress'))}
-            name="localaddress"
-            selections={
-              host.interfaces.map((iface) => ({
-                key: `${iface.name} (${iface.addressString})`,
-                option: iface.addressString,
-              })) ?? []
-            }
-          />
-        </Tooltip>
+        <Grid item xs={12} md={3} sx={rowMargin}>
+          <Tooltip title={String(t('helper.localaddress'))}>
+            <NmFormOptionSelect
+              defaultValue={host.localaddress}
+              label={String(t('hosts.localaddress'))}
+              name="localaddress"
+              selections={
+                host.interfaces.map((iface) => ({
+                  key: `${iface.name} (${iface.addressString})`,
+                  option: iface.addressString,
+                })) ?? []
+              }
+            />
+          </Tooltip>
+        </Grid>
         <Grid item xs={12} md={3} sx={rowMargin}>
           <Tooltip title={String(t('common.localrange'))}>
             <span>
@@ -176,7 +178,7 @@ export const HostEditPage: FC<{ onCancel: () => void }> = ({ onCancel }) => {
             </span>
           </Tooltip>
         </Grid>
-      </NmForm>
-    </Grid>
+      </Grid>
+    </NmForm>
   )
 }

@@ -33,13 +33,13 @@ function* handleUpdateHostRequest(
         pending: i18n.t('common.pending', {
           hostid: action.payload.id,
         }),
-        success: i18n.t('toast.update.success.nodeacl', {
+        success: i18n.t('toast.update.success.host', {
           hostid: action.payload.id,
         }),
         error: (e) =>
-          `${i18n.t('toast.update.failure.nodeacl', {
+          `${i18n.t('toast.update.failure.host', {
             hostid: action.payload.id,
-          })} : ${e.response.data.Message}`,
+          })}: ${e.response.data.Message || ''}`,
       },
     })
 
@@ -67,13 +67,13 @@ function* handleDeleteHostRequest(
         pending: i18n.t('common.pending', {
           hostid: action.payload.hostid,
         }),
-        success: i18n.t('toast.delete.success.nodeacl', {
+        success: i18n.t('toast.delete.success.host', {
           hostid: action.payload.hostid,
         }),
         error: (e) =>
-          `${i18n.t('toast.delete.failure.nodeacl', {
+          `${i18n.t('toast.delete.failure.host', {
             hostid: action.payload.hostid,
-          })} : ${e.response.data.Message}`,
+          })}: ${e.response.data.Message || ''}`,
       },
     })
 
