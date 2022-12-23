@@ -3,7 +3,7 @@ import React, { useCallback, useMemo } from 'react'
 import { useRouteMatch, Switch, Route } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
-import { HostsDetailPage } from './HostsDetailPage'
+import { HostDetailPage } from './HostDetailPage'
 import { HostsTable } from './components/HostsTable'
 import { Host } from '~store/modules/hosts/types'
 
@@ -68,7 +68,7 @@ export const HostsPage: React.FC = () => {
 
         {/* host details page */}
         <Route path={`${path}/:hostId`}>
-          <HostsDetailPage />
+          <HostDetailPage />
         </Route>
       </Switch>
     </Container>

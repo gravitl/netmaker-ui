@@ -236,6 +236,8 @@ export const en: LanguageResource = {
     unauthorized: 'Unauthorized access attempted',
     overload: 'Too many failed requests, refresh to retry',
     name: 'Invalid name. name can only include alphanumeric and dash characters',
+    verbositymustbeinrange: 'Verbosity must be between 1 and 4 inclusive',
+    portmustbeinrange: 'Port number cannot be less than 1',
   },
   extclient: {
     extclients: 'External Clients',
@@ -539,7 +541,7 @@ export const en: LanguageResource = {
       password:
         'Invalid password provided. Must be between 5 to 64 characters with no white space.',
       confirmation: 'Confirmation password does not match given password.',
-      groupname: 'Group name is mandatory'
+      groupname: 'Group name is mandatory',
     },
     table: {
       name: 'Username',
@@ -656,5 +658,6 @@ export const en: LanguageResource = {
     makedefault: 'Click to make this host default',
     removedefault: 'Click to remove default from host',
     connectednetworkstitle: 'Connected networks (Nodes)',
-  }
+    proxyenabled: 'Proxy Enabled',
+  },
 }

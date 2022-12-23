@@ -31,7 +31,7 @@ import { Host } from '~store/modules/hosts/types'
 import { NodeTable } from '../nodes/components/NodeTable'
 import { HostNetworksTable } from './components/HostNetworksTable'
 
-export const HostsDetailPage: FC = () => {
+export const HostDetailPage: FC = () => {
   const { path, url } = useRouteMatch()
   const history = useHistory()
   const { t } = useTranslation()
@@ -72,15 +72,6 @@ export const HostsDetailPage: FC = () => {
     // )
     // history.push(
     //   `/${t('breadcrumbs.networks')}/${netid}/${t('breadcrumbs.nodes')}`
-    // )
-  }, [])
-
-  const handleApproveHost = useCallback(() => {
-    // dispatch(
-    //   approveNode.request({
-    //     netid: host.network,
-    //     nodeid: host.id,
-    //   })
     // )
   }, [])
 
@@ -279,6 +270,16 @@ export const HostsDetailPage: FC = () => {
                 label={String(t('common.daemoninstalled'))}
                 control={
                   <SwitchField checked={host.daemoninstalled} disabled />
+                }
+                disabled
+              />
+            </Grid>
+
+            <Grid item xs={12} md={3} sx={rowMargin}>
+              <FormControlLabel
+                label={String(t('hosts.proxyenabled'))}
+                control={
+                  <SwitchField checked={host.proxyenabled} disabled />
                 }
                 disabled
               />

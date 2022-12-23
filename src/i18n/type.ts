@@ -155,15 +155,7 @@ export interface LanguageResource {
     name: string
     nodeaddress: string
   }
-  error: {
-    notfound: string
-    network: string
-    noresults: string
-    tokenexpire: string
-    unauthorized: string
-    overload: string
-    name: string
-  }
+  error: Record<string, string>
   extclient: {
     extclients: string
     extclient: string

@@ -1,0 +1,182 @@
+import { FC, useCallback, useMemo } from 'react'
+import { Grid, Typography, Tooltip } from '@mui/material'
+import { useTranslation } from 'react-i18next'
+import { useRouteMatch, useParams } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { NmForm, NmFormInputText, validate } from '~components/form'
+import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
+import { NmFormOptionSelect } from '~components/form/FormOptionSelect'
+import { Host } from '~store/types'
+import { useGetHostById } from '~util/hosts'
+import { updateHost } from '~store/modules/hosts/actions'
+
+export const HostEditPage: FC<{ onCancel: () => void }> = ({ onCancel }) => {
+  const { url } = useRouteMatch()
+  const { t } = useTranslation()
+  const dispatch = useDispatch()
+  const { hostId } = useParams<{ hostId: string }>()
+  const host = useGetHostById(decodeURIComponent(hostId))
+
+  const rowMargin = {
+    margin: '1em 0 1em 0',
+  }
+  useLinkBreadcrumb({
+    link: url,
+    title: decodeURIComponent(t('common.edit')),
+  })
+
+  const hostFormValidator = useMemo(
+    () =>
+      validate<Host>({
+        name: (value, formData) => {
+          const nameRegex = /^[a-zA-Z0-9-]+$/
+          const message = t('error.name')
+
+          if (!nameRegex.test(value)) return { message, type: 'value' }
+          return undefined
+        },
+        verbosity: (value, formData) => {
+          const message = t('error.verbositymustbeinrange')
+          if (value > 4 || value < 1) {
+            return { message, type: 'value' }
+          }
+          return undefined
+        },
+        listenport: (value, formData) => {
+          const message = t('error.portmustbeinrange')
+          if (value < 1) {
+            return { message, type: 'value' }
+          }
+          return undefined
+        },
+        proxy_listen_port: (value, formData) => {
+          const message = t('error.portmustbeinrange')
+          if (value < 1) {
+            return { message, type: 'value' }
+          }
+          return undefined
+        },
+      }),
+    [t]
+  )
+
+  const onSubmit = useCallback(
+    (data: Host) => {
+      dispatch(updateHost.request(data))
+    },
+    [dispatch]
+  )
+
+  if (!host) {
+    return <div>Host Not Found</div>
+  }
+
+  return (
+    <Grid container>
+      <Grid item xs={12}>
+        <div style={{ textAlign: 'center', margin: '0.5em 0 1em 0' }}>
+          <Typography variant="h5">
+            {`${t('hosts.details')}: ${host.name}(${host.id})`}
+          </Typography>
+        </div>
+      </Grid>
+
+      <NmForm
+        resolver={hostFormValidator}
+        initialState={{ ...host }}
+        onSubmit={onSubmit}
+        onCancel={onCancel}
+        submitProps={{
+          variant: 'contained',
+          fullWidth: true,
+        }}
+        sx={rowMargin}
+      >
+        <Grid item xs={12} md={4} sx={rowMargin}>
+          <Tooltip title={String(t('common.name'))}>
+            <span>
+              <NmFormInputText
+                defaultValue={host.name}
+                name={'name'}
+                label={String(t('common.name'))}
+              />
+            </span>
+          </Tooltip>
+        </Grid>
+        <Grid item xs={12} md={4} sx={rowMargin}>
+          <Tooltip title={String(t('common.verbosity'))}>
+            <span>
+              <NmFormInputText
+                defaultValue={host.verbosity}
+                name={'verbosity'}
+                label={String(t('common.verbosity'))}
+                type="number"
+              />
+            </span>
+          </Tooltip>
+        </Grid>
+        <Grid item xs={12} md={4} sx={rowMargin}>
+          <Tooltip title={String(t('common.mtu'))}>
+            <span>
+              <NmFormInputText
+                defaultValue={host.mtu}
+                name={'mtu'}
+                label={String(t('common.mtu'))}
+                type="number"
+              />
+            </span>
+          </Tooltip>
+        </Grid>
+
+        <Tooltip title={String(t('helper.localaddress'))}>
+          <NmFormOptionSelect
+            defaultValue={host.localaddress}
+            label={String(t('hosts.localaddress'))}
+            name="localaddress"
+            selections={
+              host.interfaces.map((iface) => ({
+                key: `${iface.name} (${iface.addressString})`,
+                option: iface.addressString,
+              })) ?? []
+            }
+          />
+        </Tooltip>
+        <Grid item xs={12} md={3} sx={rowMargin}>
+          <Tooltip title={String(t('common.localrange'))}>
+            <span>
+              <NmFormInputText
+                defaultValue={host.localrange}
+                name={'localrange'}
+                label={String(t('common.localrange'))}
+              />
+            </span>
+          </Tooltip>
+        </Grid>
+        <Grid item xs={12} md={3} sx={rowMargin}>
+          <Tooltip title={String(t('common.listenport'))}>
+            <span>
+              <NmFormInputText
+                defaultValue={host.listenport}
+                name={'listenport'}
+                label={String(t('common.listenport'))}
+                type="number"
+              />
+            </span>
+          </Tooltip>
+        </Grid>
+        <Grid item xs={12} md={3} sx={rowMargin}>
+          <Tooltip title={String(t('common.proxylistenport'))}>
+            <span>
+              <NmFormInputText
+                defaultValue={host.proxy_listen_port}
+                name={'proxy_listen_port'}
+                label={String(t('common.proxylistenport'))}
+                type="number"
+              />
+            </span>
+          </Tooltip>
+        </Grid>
+      </NmForm>
+    </Grid>
+  )
+}

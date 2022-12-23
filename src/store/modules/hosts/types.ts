@@ -1,4 +1,4 @@
-import { Node } from '../node/types'
+import { Interface, Node } from '../node/types'
 
 /**
  * Host is the configuration for a netclient host machine.
@@ -29,6 +29,9 @@ export interface Host {
   internetgateway: string
   nodes: Node[]
   isdefault: boolean
+  interfaces: Interface[]
+  proxyenabled: boolean
+  isstatic: boolean
 }
 
 export interface GetHostsPayload {
