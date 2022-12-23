@@ -135,6 +135,8 @@ export const en: LanguageResource = {
     hosts: 'Hosts',
   },
   common: {
+    connecttonetwork: 'Connect to network',
+    disconnectfromnetwork: 'Disconnect from network',
     confirmdeletequestion: 'Are you sure you want to delete',
     confirmdelete: 'Confirm Delete',
     isconnected: 'Is Connected',
@@ -662,5 +664,7 @@ export const en: LanguageResource = {
     connectednetworkstitle: 'Connected networks (Nodes)',
     proxyenabled: 'Proxy Enabled',
     nohostconnected: 'No hosts connected to this server',
+    confirmconnect: 'Are you sure you want to connect to network',
+    confirmdisconnect: 'Are you sure you want to disconnect from network',
   },
 }
