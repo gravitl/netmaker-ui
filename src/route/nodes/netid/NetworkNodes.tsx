@@ -99,7 +99,7 @@ export const NetworkNodes: React.FC = () => {
 
   const columns: TableColumns<Node> = [
     {
-      id: 'name',
+      id: 'id',
       labelKey: 'node.name',
       minWidth: 100,
       sortable: true,
@@ -108,10 +108,7 @@ export const NetworkNodes: React.FC = () => {
           to={`/nodes/${node.network}/${encodeURIComponent(node.id)}`}
           sx={{ textTransform: 'none' }}
         >
-          {value}
-          {`${
-            node.ispending === 'yes' ? ` (${i18n.t('common.pending')})` : ''
-          }`}
+          {hostsMap[node.hostid].name}
         </NmLink>
       ),
     },

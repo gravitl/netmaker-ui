@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom'
 import { useRouteMatch, useParams } from 'react-router-dom'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 import { useTranslation } from 'react-i18next'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { createRelayNode } from '~modules/node/actions'
 import { useNodeById } from '~util/node'
 import { useNodesByNetworkId } from '~util/network'
@@ -107,8 +107,8 @@ export function CreateRelay() {
       const data = {
         name: hostsMap[nodes[i].hostid].name,
         address: nodes[i].address,
-        isserver: nodes[i].isserver,
         address6: nodes[i].address6,
+        // isserver: nodes[i].isserver,
       }
       if (nodes[i].id !== node.id) {
         nodeNames.push(data)
@@ -163,7 +163,7 @@ export function CreateRelay() {
               sx={{ textAlign: 'center', margin: '1em 0 1em 0' }}
             >
               <Typography variant="h4">
-                {`${t('node.createrelay')} : ${hostsMap[row.hostid].name}`}
+                {`${t('node.createrelay')}: ${hostsMap[node.hostid].name}`}
               </Typography>
             </Grid>
             <Grid item xs={12} sm={5}>

@@ -1,8 +1,8 @@
 import React, { ReactNode } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { IconButton, Tooltip } from '@mui/material'
-import { Block, Check } from '@mui/icons-material'
+// import { Block, Check } from '@mui/icons-material'
 import {
   updateNode,
 } from '~modules/node/actions'
@@ -46,8 +46,7 @@ export const HubButton: React.FC<{
         netid: node.network,
         token: '',
         node: {
-            ...node,
-            ishub: true
+          ...node,
         }
     })
     )
@@ -63,20 +62,19 @@ export const HubButton: React.FC<{
         open={open}
         handleClose={handleClose}
         handleAccept={createHub}
-        message={node.ishub ? disabledText : createText}
-        title={`${node.ishub ? t('common.disabled') : t('node.updatenode')} ${hostsMap[node.hostid].name}`}
+        message={createText}
+        title={`${t('node.updatenode')} ${hostsMap[node.hostid].name}`}
       />
-      <Tooltip placement="top" title={String(!node.ishub ? createText : disabledText)}>
+      <Tooltip placement="top" title={String(createText)}>
         <span>
           <IconButton
-            color={node.ishub ? 'success' : 'default'}
+            color={'default'}
             sx={hoverBlueStyle}
             onClick={handleOpen}
-            disabled={node.ishub}
             onMouseEnter={handleHoverEnter}
             onMouseLeave={handleHoverLeave}
           >
-            {!node.ishub ? SignalIcon : hovering ? <Block /> : <Check />}
+            {SignalIcon}
           </IconButton>
         </span>
       </Tooltip>
