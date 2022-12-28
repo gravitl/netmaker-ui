@@ -122,11 +122,11 @@ export const NetworkNodes: React.FC = () => {
       ),
     },
     {
-      id: 'version',
+      id: 'id',
       labelKey: 'node.version',
       minWidth: 50,
       align: 'center',
-      format: (value) => <>{!!value ? value : 'N/A'}</>,
+      format: (value, node) => <>{ hostsMap[node.hostid].version ?? 'N/A'}</>,
     },
     {
       id: 'network',
@@ -224,20 +224,20 @@ export const NetworkNodes: React.FC = () => {
   ]
 
   if (network.ispointtosite) {
-    columns.push({
-      id: 'ishub',
-      labelKey: 'node.statushub',
-      minWidth: 30,
-      align: 'center',
-      format: (_, row) => (
-        <HubButton
-          node={row}
-          createText={`${i18n.t('node.createhub')} : ${row.name}`}
-          disabledText={`${i18n.t('node.onehub')} : ${row.name}`}
-          SignalIcon={<Hub />}
-        />
-      ),
-    })
+    // columns.push({
+    //   id: 'ishub',
+    //   labelKey: 'node.statushub',
+    //   minWidth: 30,
+    //   align: 'center',
+    //   format: (_, row) => (
+    //     <HubButton
+    //       node={row}
+    //       createText={`${i18n.t('node.createhub')} : ${row.name}`}
+    //       disabledText={`${i18n.t('node.onehub')} : ${row.name}`}
+    //       SignalIcon={<Hub />}
+    //     />
+    //   ),
+    // })
   }
 
   if (serverConfig.IsEE) {
@@ -279,7 +279,6 @@ export const NetworkNodes: React.FC = () => {
   const handleNodeSortSelect = (selection: string) => {
     if (
       selection === 'address' ||
-      selection === 'name' ||
       selection === 'network'
     ) {
       dispatch(
@@ -374,10 +373,7 @@ export const NetworkNodes: React.FC = () => {
           }
           actions={[
             (row) => ({
-              tooltip: !row.isserver
-                ? t('common.delete')
-                : t('common.disabled'),
-              disabled: row.isserver,
+              tooltip: t('common.delete'),
               icon: <Delete />,
               onClick: () => {
                 handleOpen(row)
