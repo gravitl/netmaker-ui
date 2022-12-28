@@ -275,6 +275,7 @@ export interface LanguageResource {
     }
   }
   node: {
+    hostname: string
     nodes: string
     node: string
     id: string

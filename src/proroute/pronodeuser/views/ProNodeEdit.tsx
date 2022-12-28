@@ -141,12 +141,12 @@ export const ProNodeEdit: React.FC<{
           data.egressgatewayranges = newEgressRanges
         }
       }
-      if (typeof data.allowedips === 'string') {
-        const newAllowedIps = getCommaSeparatedArray(String(data.allowedips))
-        if (newAllowedIps.length) {
-          data.allowedips = newAllowedIps
-        }
-      }
+      // if (typeof data.allowedips === 'string') {
+      //   const newAllowedIps = getCommaSeparatedArray(String(data.allowedips))
+      //   if (newAllowedIps.length) {
+      //     data.allowedips = newAllowedIps
+      //   }
+      // }
       if (expTime && expTime !== data.expdatetime) {
         data.expdatetime = expTime
       }
@@ -155,7 +155,7 @@ export const ProNodeEdit: React.FC<{
         updateNode.request({
           token: '',
           netid: netid,
-          node: { ...data, isstatic: !data.isstatic },
+          node: { ...data },
         })
       )
     },
@@ -166,12 +166,10 @@ export const ProNodeEdit: React.FC<{
     return <div>Not Found</div>
   }
 
-  const isIPDynamic = !node.isstatic
-
   return (
     <NmForm
       resolver={createIPValidation}
-      initialState={{ ...node, isstatic: !node.isstatic }}
+      initialState={{ ...node }}
       onSubmit={onSubmit}
       onCancel={onCancel}
       submitProps={{
@@ -184,13 +182,11 @@ export const ProNodeEdit: React.FC<{
         <Grid item xs={12}>
           <div style={{ textAlign: 'center', margin: '0.5em 0 1em 0' }}>
             <Typography variant="h5">
-              {`${t('node.details')} : ${hostsMap[node.hostid].name}${
-                node.ispending === 'yes' ? ` (${t('common.pending')})` : ''
-              }`}
+              {`${t('node.details')}: ${hostsMap[node.hostid].name}$`}
             </Typography>
           </div>
         </Grid>
-        <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
+        {/* <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <Tooltip
             title={
               node.isstatic
@@ -207,8 +203,8 @@ export const ProNodeEdit: React.FC<{
               />
             </span>
           </Tooltip>
-        </Grid>
-        <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
+        </Grid> */}
+        {/* <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <Tooltip title={String(t('helper.dynamicendpoint'))} placement="top">
             <span>
               <NmFormInputSwitch
@@ -218,8 +214,8 @@ export const ProNodeEdit: React.FC<{
               />
             </span>
           </Tooltip>
-        </Grid>
-        <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
+        </Grid> */}
+        {/* <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <Tooltip
             title={String(t('helper.defaultlistenport'))}
             placement="top"
@@ -234,9 +230,9 @@ export const ProNodeEdit: React.FC<{
               />
             </span>
           </Tooltip>
-        </Grid>
+        </Grid> */}
 
-        <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
+        {/* <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <Tooltip
             title={
               !network?.defaultudpholepunch
@@ -254,9 +250,9 @@ export const ProNodeEdit: React.FC<{
               />
             </span>
           </Tooltip>
-        </Grid>
+        </Grid> */}
 
-        <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
+        {/* <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <Tooltip title={String(t('helper.whatisipv4'))} placement="top">
             <span>
               <NmFormInputText
@@ -267,7 +263,7 @@ export const ProNodeEdit: React.FC<{
               />
             </span>
           </Tooltip>
-        </Grid>
+        </Grid> */}
         <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <Tooltip title={String(t('helper.whatisipv6'))} placement="top">
             <span>
@@ -334,7 +330,7 @@ export const ProNodeEdit: React.FC<{
             </span>
           </Tooltip>
         </Grid>
-        <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
+        {/* <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <Tooltip title={String(t('helper.allowedips'))} placement="top">
             <NmFormInputText
               defaultValue={node.allowedips ? node.allowedips.join(',') : ''}
@@ -342,7 +338,7 @@ export const ProNodeEdit: React.FC<{
               name={'allowedips'}
             />
           </Tooltip>
-        </Grid>
+        </Grid> */}
         <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <Tooltip
             title={String(t('helper.persistentkeepalive'))}
@@ -445,7 +441,7 @@ export const ProNodeEdit: React.FC<{
             </span>
           </Tooltip>
         </Grid>
-        <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
+        {/* <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <Tooltip title={String(t('helper.nodelocalrange'))} placement="top">
             <span>
               <NmFormInputText
@@ -456,8 +452,8 @@ export const ProNodeEdit: React.FC<{
               />
             </span>
           </Tooltip>
-        </Grid>
-        <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
+        </Grid> */}
+        {/* <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <Tooltip title={String(t('helper.nodeos'))} placement="top">
             <span>
               <NmFormInputText
@@ -468,8 +464,8 @@ export const ProNodeEdit: React.FC<{
               />
             </span>
           </Tooltip>
-        </Grid>
-        <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
+        </Grid> */}
+        {/* <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <Tooltip title={String(t('helper.mtu'))} placement="top">
             <NmFormInputText
               type="number"
@@ -478,7 +474,7 @@ export const ProNodeEdit: React.FC<{
               name={'mtu'}
             />
           </Tooltip>
-        </Grid>
+        </Grid> */}
         <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <Tooltip title={String(t('helper.defaultacl'))} placement="top">
             <NmFormOptionSelect
@@ -523,7 +519,7 @@ export const ProNodeEdit: React.FC<{
               </span>
             </Tooltip>
           </Grid>
-          <Grid item xs={10} sm={4} md={2} sx={rowMargin}>
+          {/* <Grid item xs={10} sm={4} md={2} sx={rowMargin}>
             <Tooltip title={String(t('helper.networkhub'))} placement="top">
               <span>
                 <NmFormInputSwitch
@@ -534,7 +530,7 @@ export const ProNodeEdit: React.FC<{
                 />
               </span>
             </Tooltip>
-          </Grid>
+          </Grid> */}
         </Grid>
       </Grid>
     </NmForm>

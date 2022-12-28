@@ -16,8 +16,11 @@ import { useGetHostById } from '~util/hosts'
 import CustomizedDialogs from '~components/dialog/CustomDialog'
 import { updateHostNetworks } from '~store/modules/hosts/actions'
 
+interface HostNetworksTableProps {
+  hostid: string
+}
 
-export const HostNetworksTable: FC<Node> = ({ hostid: hostId }) => {
+export const HostNetworksTable: FC<HostNetworksTableProps> = ({ hostid: hostId }) => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const [targetNetwork, setTargetNetwork] = useState<Node>()

@@ -152,20 +152,20 @@ export const HostDetailPage: FC = () => {
               label={String(t('common.publickey'))}
             />
           </Grid>
-          <Grid item xs={12} md={3} sx={rowMargin}>
+          {/* <Grid item xs={12} md={3} sx={rowMargin}>
             <TextField
               disabled
               value={host.traffickeypublic}
               label={String(t('common.traffickeypublic'))}
             />
-          </Grid>
-          <Grid item xs={12} md={3} sx={rowMargin}>
+          </Grid> */}
+          {/* <Grid item xs={12} md={3} sx={rowMargin}>
             <TextField
               disabled
               value={host.localaddress}
               label={String(t('common.localaddress'))}
             />
-          </Grid>
+          </Grid> */}
           <Grid item xs={12} md={3} sx={rowMargin}>
             <TextField
               disabled
@@ -233,13 +233,13 @@ export const HostDetailPage: FC = () => {
             />
           </Grid>
 
-          <Grid item xs={12} md={3} sx={rowMargin}>
+          {/* <Grid item xs={12} md={3} sx={rowMargin}>
             <FormControlLabel
               label={String(t('common.ipforwarding'))}
               control={<SwitchField checked={host.ipforwarding} disabled />}
               disabled
             />
-          </Grid>
+          </Grid> */}
           <Grid item xs={12} md={3} sx={rowMargin}>
             <FormControlLabel
               label={String(t('common.isdefault'))}
@@ -254,13 +254,13 @@ export const HostDetailPage: FC = () => {
               disabled
             />
           </Grid>
-          <Grid item xs={12} md={3} sx={rowMargin}>
+          {/* <Grid item xs={12} md={3} sx={rowMargin}>
             <FormControlLabel
               label={String(t('common.daemoninstalled'))}
               control={<SwitchField checked={host.daemoninstalled} disabled />}
               disabled
             />
-          </Grid>
+          </Grid> */}
 
           <Grid item xs={12} md={3} sx={rowMargin}>
             <FormControlLabel

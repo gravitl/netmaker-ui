@@ -9,6 +9,10 @@ interface NodeCommonDetails {
   endpointip: Host['endpointip']
   publickey: Host['publickey']
   os: Host['os']
+  listenport: Host['listenport']
+  isstatic: Host['isstatic']
+  localrange: Host['localrange']
+  mtu: Host['mtu']
 }
 
 export const reducer = createReducer({
@@ -42,6 +46,10 @@ export const reducer = createReducer({
           endpointip: host.endpointip,
           os: host.os,
           publickey: host.publickey,
+          listenport: host.listenport,
+          isstatic: host.isstatic,
+          localrange: host.localrange,
+          mtu: host.mtu,
         }
       })
     })

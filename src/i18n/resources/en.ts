@@ -396,6 +396,7 @@ export const en: LanguageResource = {
     isnodeconnected: 'If on, the node is connected to the network',
   },
   node: {
+    hostname: 'Host name',
     nodes: 'Nodes',
     node: 'Node',
     id: 'ID',

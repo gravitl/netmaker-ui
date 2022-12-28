@@ -80,7 +80,7 @@ export const NodeAccessView: React.FC<{ nodes: Node[]; isNetAdmin?: boolean }> =
 
     const columns: TableColumns<Node> = [
       {
-        id: 'name',
+        id: 'id',
         labelKey: 'node.name',
         minWidth: 100,
         sortable: true,
@@ -97,7 +97,7 @@ export const NodeAccessView: React.FC<{ nodes: Node[]; isNetAdmin?: boolean }> =
             }
             sx={{ textTransform: 'none' }}
           >
-            {value}
+            {hostsMap[node.hostid].name} ({node.server}/{node.network})
           </NmLink>
         ),
       },
@@ -231,7 +231,6 @@ export const NodeAccessView: React.FC<{ nodes: Node[]; isNetAdmin?: boolean }> =
     const handleNodeSortSelect = (selection: string) => {
       if (
         selection === 'address' ||
-        selection === 'name' ||
         selection === 'network'
       ) {
         dispatch(
