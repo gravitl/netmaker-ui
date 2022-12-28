@@ -24,7 +24,7 @@ import { NodeEdit } from '../nodeEdit/NodeEdit'
 import { approveNode, deleteNode } from '~modules/node/actions'
 import CustomDialog from '~components/dialog/CustomDialog'
 import { useNetwork } from '~util/network'
-import { authSelectors } from '~store/selectors'
+import { authSelectors, hostsSelectors } from '~store/selectors'
 import { nodeACLValues } from '~store/types'
 import { NotFound } from '~util/errorpage'
 
@@ -33,7 +33,7 @@ export const NodeId: React.FC = () => {
   const history = useHistory()
   const { t } = useTranslation()
   const dispatch = useDispatch()
-
+  const hostsMap = useSelector(hostsSelectors.getHostsMap)
   const { netid, nodeId } = useParams<{ nodeId: string; netid: string }>()
   const node = useNodeById(decodeURIComponent(nodeId))
   const network = useNetwork(netid)
@@ -109,19 +109,19 @@ export const NodeId: React.FC = () => {
             handleClose={handleClose}
             handleAccept={handleDeleteNode}
             message={t('node.deleteconfirm')}
-            title={`${t('common.delete')} ${node.name}`}
+            title={`${t('common.delete')} ${hostsMap[node.hostid].name}`}
           />
           <CustomDialog
             open={approveOpen}
             handleClose={handleApproveClose}
             handleAccept={handleApproveNode}
             message={t('node.approveconfirm')}
-            title={`${t('node.approve')} ${node.name}`}
+            title={`${t('node.approve')} ${hostsMap[node.hostid].name}`}
           />
           <Grid item xs={12}>
             <div style={{ textAlign: 'center', margin: '1em 0 1em 0' }}>
               <Typography variant="h5">
-                {`${t('node.details')} : ${node.name}${
+                {`${t('node.details')} : ${hostsMap[node.hostid].name}${
                   node.ispending === 'yes' ? ` (${t('common.pending')})` : ''
                 }`}
               </Typography>
@@ -233,7 +233,7 @@ export const NodeId: React.FC = () => {
           <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
             <TextField
               disabled
-              value={node.name}
+              value={hostsMap[node.hostid].name}
               label={String(t('node.name'))}
             />
           </Grid>

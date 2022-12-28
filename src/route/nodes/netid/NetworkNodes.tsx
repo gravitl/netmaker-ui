@@ -43,7 +43,7 @@ import { deleteNode, setNodeSort } from '~store/modules/node/actions'
 import CustomizedDialogs from '~components/dialog/CustomDialog'
 import { HubButton } from './components/HubButton'
 import { MultiCopy } from '~components/CopyText'
-import { nodeSelectors, serverSelectors } from '~store/selectors'
+import { hostsSelectors, nodeSelectors, serverSelectors } from '~store/selectors'
 import { Tablefilter } from '~components/filter/Tablefilter'
 import { useEffect, useState } from 'react'
 import { FailoverButton } from '../../../ee/nodes/FailoverButton'
@@ -62,6 +62,7 @@ export const NetworkNodes: React.FC = () => {
   const history = useHistory()
   const [searchTerm, setSearchTerm] = useState(' ')
   const serverConfig = useSelector(serverSelectors.getServerConfig)
+  const hostsMap = useSelector(hostsSelectors.getHostsMap)
 
   useEffect(() => {
     if (!!!searchTerm) {
@@ -69,11 +70,11 @@ export const NetworkNodes: React.FC = () => {
     } else {
       setFilterNodes(
         listOfNodes.filter((node) =>
-          `${node.name}${node.address}${node.network}`.includes(searchTerm)
+          `${hostsMap[node.hostid].name}${node.address}${node.network}`.includes(searchTerm)
         )
       )
     }
-  }, [listOfNodes, searchTerm])
+  }, [hostsMap, listOfNodes, searchTerm])
 
   const handleFilter = (event: { target: { value: string } }) => {
     const { value } = event.target
@@ -157,8 +158,8 @@ export const NetworkNodes: React.FC = () => {
           which="egress"
           isOn={isegress}
           node={row}
-          createText={`${i18n.t('node.createegress')} : ${row.name}`}
-          removeText={`${i18n.t('node.removeegress')} : ${row.name}`}
+          createText={`${i18n.t('node.createegress')} : ${hostsMap[row.hostid].name}`}
+          removeText={`${i18n.t('node.removeegress')} : ${hostsMap[row.hostid].name}`}
           SignalIcon={<CallSplit />}
           withHistory
         />
@@ -174,8 +175,8 @@ export const NetworkNodes: React.FC = () => {
           which="ingress"
           isOn={isingress}
           node={row}
-          createText={`${i18n.t('node.createingress')} : ${row.name}`}
-          removeText={`${i18n.t('node.removeingress')} : ${row.name}`}
+          createText={`${i18n.t('node.createingress')} : ${hostsMap[row.hostid].name}`}
+          removeText={`${i18n.t('node.removeingress')} : ${hostsMap[row.hostid].name}`}
           SignalIcon={<CallMerge />}
         />
       ),
@@ -190,8 +191,8 @@ export const NetworkNodes: React.FC = () => {
           which="relay"
           isOn={isrelay}
           node={row}
-          createText={`${i18n.t('node.createrelay')} : ${row.name}`}
-          removeText={`${i18n.t('node.removerelay')} : ${row.name}`}
+          createText={`${i18n.t('node.createrelay')} : ${hostsMap[row.hostid].name}`}
+          removeText={`${i18n.t('node.removerelay')} : ${hostsMap[row.hostid].name}`}
           SignalIcon={<AltRoute />}
           withHistory
         />
@@ -267,7 +268,7 @@ export const NetworkNodes: React.FC = () => {
   }
 
   const handleDeleteNode = () => {
-    if (!!selected.name) {
+    if (!!selected.id) {
       dispatch(
         deleteNode.request({
           netid: selected.network,
@@ -389,11 +390,11 @@ export const NetworkNodes: React.FC = () => {
           getRowId={(row) => row.id}
         />
         <CustomizedDialogs
-          open={!!selected.name}
+          open={!!selected.id}
           handleClose={handleClose}
           handleAccept={handleDeleteNode}
           message={t('node.deleteconfirm')}
-          title={`${t('common.delete')} ${selected.name}`}
+          title={`${t('common.delete')} ${hostsMap[selected.hostid].name}`}
         />
       </Route>
       <Route

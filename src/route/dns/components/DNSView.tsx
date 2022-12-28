@@ -8,7 +8,7 @@ import { useNodesByNetworkId } from '~util/network'
 import { Button, Grid, Typography } from '@mui/material'
 import { filterCustomDNSByNetwork } from '~util/node'
 import { useSelector } from 'react-redux'
-import { DNS, networkSelectors, serverSelectors } from '~store/types'
+import { DNS, hostsSelectors, networkSelectors, serverSelectors } from '~store/types'
 import { NetworkSelect } from '~components/NetworkSelect'
 import { useDispatch } from 'react-redux'
 import { deleteDnsEntry } from '~store/modules/network/actions'
@@ -17,26 +17,6 @@ import CustomizedDialogs from '~components/dialog/CustomDialog'
 import CopyText from '~components/CopyText'
 import { NotFound } from '~util/errorpage'
 
-const columns: TableColumns<Node> = [
-  {
-    id: 'name',
-    labelKey: 'dns.entry',
-    minWidth: 150,
-    align: 'center',
-    sortable: true,
-    format: (_, node) => (
-      <CopyText value={`${node.name}.${node.network}`} type="subtitle2" />
-    ),
-  },
-  {
-    id: 'address',
-    labelKey: 'node.address',
-    minWidth: 100,
-    align: 'center',
-    sortable: true,
-    format: (value) => <CopyText value={value} type="subtitle2" />,
-  },
-]
 
 const dnsColumns: TableColumns<DNS> = [
   {
@@ -72,12 +52,35 @@ export const DNSView: React.FC = () => {
   const serverConfig = useSelector(serverSelectors.getServerConfig)
   const [selected, setSelected] = React.useState('')
   const dispatch = useDispatch()
-  // const entries =
+  const hostsMap = useSelector(hostsSelectors.getHostsMap)
   const customEntries = filterCustomDNSByNetwork(
     nodes as Node[],
     currentEntries,
-    netid
+    netid,
+    hostsMap,
   )
+
+  const columns: TableColumns<Node> = [
+    {
+      id: 'id',
+      labelKey: 'dns.entry',
+      minWidth: 150,
+      align: 'center',
+      sortable: true,
+      format: (_, node) => (
+        <CopyText value={`${hostsMap[node.hostid].name}.${node.network}`} type="subtitle2" />
+      ),
+    },
+    {
+      id: 'address',
+      labelKey: 'node.address',
+      minWidth: 100,
+      align: 'center',
+      sortable: true,
+      format: (value) => <CopyText value={value} type="subtitle2" />,
+    },
+  ]
+
   useLinkBreadcrumb({
     link: url,
     title: netid,

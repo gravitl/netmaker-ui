@@ -1,38 +1,26 @@
-import { FC, useState, useCallback, useMemo, FormEvent } from 'react'
+import { FC, useState, useCallback, useMemo } from 'react'
 import { NmLink } from '~components/index'
 import { useTranslation } from 'react-i18next'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 // import { useDispatch } from 'react-redux'
 import { NmTable, TableColumns } from '~components/Table'
-import { CheckCircle, RadioButtonUnchecked } from '@mui/icons-material'
 // import CustomizedDialogs from '~components/dialog/CustomDialog'
 import CopyText from '~components/CopyText'
 // import { useSelector } from 'react-redux'
 // import { serverSelectors } from '~store/selectors'
-import { Host } from '~store/modules/hosts/types'
 import { Node } from '~store/modules/node/types'
 import { useDispatch, useSelector } from 'react-redux'
-import { nodeSelectors } from '~store/selectors'
+import { hostsSelectors, nodeSelectors } from '~store/selectors'
 import { Button, Grid, Switch as SwitchField, TextField } from '@mui/material'
-import { useParams } from 'react-router-dom'
 import { useGetHostById } from '~util/hosts'
 import CustomizedDialogs from '~components/dialog/CustomDialog'
+import { updateHostNetworks } from '~store/modules/hosts/actions'
 
 
-type HostNetwork = Partial<Node> & {
-  server: string
-  isConnected: boolean
-}
-
-interface HostNetworksTableProps {
-  hostId: Host['id']
-}
-
-
-export const HostNetworksTable: FC<HostNetworksTableProps> = ({ hostId }) => {
+export const HostNetworksTable: FC<Node> = ({ hostid: hostId }) => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
-  const [targetNetwork, setTargetNetwork] = useState<HostNetwork>()
+  const [targetNetwork, setTargetNetwork] = useState<Node>()
   const [showOnlyConnectedNets, setShowOnlyConnectedNets] = useState(true)
   const [searchFilter, setSearchFilter] = useState('')
   const host = useGetHostById(hostId)
@@ -42,26 +30,28 @@ export const HostNetworksTable: FC<HostNetworksTableProps> = ({ hostId }) => {
     shouldShowConfirmNetStatusChangeModal,
     setShouldShowConfirmNetStatusChangeModal,
   ] = useState(false)
+  const hostsMap = useSelector(hostsSelectors.getHostsMap)
+  const nodesMap = useSelector(nodeSelectors.getNodesMap)
 
   useLinkBreadcrumb({
     title: t('breadcrumbs.hosts'),
   })
 
   const filteredNetworks = useMemo(() => {
-    let netsCopy: HostNetwork[] = []
+    let netsCopy: Node[] = []
     if (showOnlyConnectedNets) {
       netsCopy = JSON.parse(JSON.stringify(hostNodes))
       netsCopy.forEach((nw) => {
-        nw.isConnected = true
+        nw.connected = true
       })
     } else {
       netsCopy = JSON.parse(JSON.stringify(allNodes))
-      const hostNodesIds = hostNodes.map((node) => node.id)
+      const hostNodesIds = hostNodes.map((node) => nodesMap[`${host?.id}-${node}`].id)
       netsCopy.forEach((nw) => {
         if (hostNodesIds.includes(nw.id!)) {
-          nw.isConnected = true
+          nw.connected = true
         } else {
-          nw.isConnected = false
+          nw.connected = false
         }
       })
     }
@@ -69,9 +59,9 @@ export const HostNetworksTable: FC<HostNetworksTableProps> = ({ hostId }) => {
       nw.network?.toLocaleLowerCase().includes(searchFilter.toLocaleLowerCase())
     )
     return netsCopy
-  }, [allNodes, hostNodes, showOnlyConnectedNets, searchFilter])
+  }, [showOnlyConnectedNets, hostNodes, allNodes, nodesMap, host?.id, searchFilter])
 
-  const columns: TableColumns<HostNetwork> = [
+  const columns: TableColumns<Node> = [
     {
       id: 'network',
       labelKey: 'common.network',
@@ -99,13 +89,13 @@ export const HostNetworksTable: FC<HostNetworksTableProps> = ({ hostId }) => {
       ),
     },
     {
-      id: 'isConnected',
-      labelKey: 'common.isconnected',
+      id: 'connected',
+      labelKey: 'common.connected',
       minWidth: 50,
       align: 'center',
       format: (value, nw) => (
         <SwitchField
-          checked={nw.isConnected}
+          checked={nw.connected}
           onClick={() => handleOpenConfirmNetStatusChangeModal(nw)}
         />
       ),
@@ -118,19 +108,25 @@ export const HostNetworksTable: FC<HostNetworksTableProps> = ({ hostId }) => {
   }, [])
 
   const handleOpenConfirmNetStatusChangeModal = useCallback(
-    (net: HostNetwork) => {
+    (net: Node) => {
       setTargetNetwork(net)
       setShouldShowConfirmNetStatusChangeModal(true)
     },
     []
   )
 
-  const onChangeConnectionStatus = useCallback(() => {
-    if (!targetNetwork) return
-    // TODO: get all connected net names
-    // dispatch(updateHostNetworks)
+  const toggleNetworkStatus = useCallback(() => {
+    if (!targetNetwork || !host) return
+    const connectedNodesNames = new Set(host.nodes.map(n => nodesMap[`${host?.id}-${n}`].network))
+    // if connected, disconnect. else connect
+    if (targetNetwork.connected) {
+      connectedNodesNames.delete(targetNetwork.network)
+    } else {
+      connectedNodesNames.add(targetNetwork.network)
+    }
+    dispatch(updateHostNetworks.request({ id: host.id, networks: [...connectedNodesNames] }))
   },
-  [targetNetwork])
+  [dispatch, host, nodesMap, targetNetwork])
 
   return (
     <>
@@ -175,10 +171,10 @@ export const HostNetworksTable: FC<HostNetworksTableProps> = ({ hostId }) => {
       <CustomizedDialogs
         open={shouldShowConfirmNetStatusChangeModal}
         handleClose={handleCloseConfirmNetStatusChangeModal}
-        // handleAccept={toggleNetworkStatus}
-        handleAccept={() => {}}
+        // TODO
+        handleAccept={toggleNetworkStatus}
         message={t('hosts.confirmconnect')}
-        title={`${t('common.connecttonetwork')}: ${targetNetwork?.name ?? ''}`}
+        title={`${t('common.connecttonetwork')}: ${hostsMap[targetNetwork!.hostid!].name ?? ''}`}
       />
     </>
   )

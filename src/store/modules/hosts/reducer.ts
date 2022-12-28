@@ -1,11 +1,20 @@
 import { produce } from 'immer'
 import { createReducer } from 'typesafe-actions'
-import { clearHosts, getHosts, updateHost, deleteHost } from './actions'
+import { clearHosts, getHosts, updateHost, deleteHost, updateHostNetworks } from './actions'
 import { Host } from '.'
+
+interface NodeCommonDetails {
+  name: Host['name']
+  version: Host['version']
+  endpointip: Host['endpointip']
+  publickey: Host['publickey']
+  os: Host['os']
+}
 
 export const reducer = createReducer({
   isProcessing: false,
   hosts: [] as Host[],
+  hostsMap: {} as Record<string, NodeCommonDetails>,
 })
   // reset store actions
   .handleAction(clearHosts, (state, _) =>
@@ -25,6 +34,16 @@ export const reducer = createReducer({
     produce(state, (draftState) => {
       draftState.isProcessing = false
       draftState.hosts = payload.payload
+
+      payload.payload.forEach((host) => {
+        draftState.hostsMap[host.id] = {
+          name: host.name,
+          version: host.version,
+          endpointip: host.endpointip,
+          os: host.os,
+          publickey: host.publickey,
+        }
+      })
     })
   )
   .handleAction(getHosts['failure'], (state, _) =>
@@ -42,17 +61,38 @@ export const reducer = createReducer({
   .handleAction(updateHost['success'], (state, payload) =>
     produce(state, (draftState) => {
       draftState.isProcessing = false
-      const newState: Host[] = JSON.parse(JSON.stringify(state.hosts))
+      const newStateHosts: Host[] = JSON.parse(JSON.stringify(state.hosts))
       const updatedHostId = payload.payload.id
-      newState.splice(
-        newState.findIndex((host: Host) => host.id === updatedHostId),
+      newStateHosts.splice(
+        newStateHosts.findIndex((host: Host) => host.id === updatedHostId),
         1,
         payload.payload
       )
-      draftState.hosts = newState
+      draftState.hosts = newStateHosts
     })
   )
   .handleAction(updateHost['failure'], (state, _) =>
+    produce(state, (draftState) => {
+      draftState.isProcessing = false
+    })
+  )
+
+  // update host networks actions
+  .handleAction(updateHostNetworks['request'], (state, _) =>
+    produce(state, (draftState) => {
+      draftState.isProcessing = true
+    })
+  )
+  .handleAction(updateHostNetworks['success'], (state, payload) =>
+    produce(state, (draftState) => {
+      draftState.isProcessing = false
+      const newStateHosts: Host[] = JSON.parse(JSON.stringify(state.hosts))
+      const updatedHostId = payload.payload.hostid
+      newStateHosts.find((host: Host) => host.id === updatedHostId)!.nodes = payload.payload.networks
+      draftState.hosts = newStateHosts
+    })
+  )
+  .handleAction(updateHostNetworks['failure'], (state, _) =>
     produce(state, (draftState) => {
       draftState.isProcessing = false
     })

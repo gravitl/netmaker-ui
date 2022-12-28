@@ -265,7 +265,7 @@ export const HostDetailPage: FC = () => {
           <Grid item xs={12} md={3} sx={rowMargin}>
             <FormControlLabel
               label={String(t('hosts.proxyenabled'))}
-              control={<SwitchField checked={host.proxyenabled} disabled />}
+              control={<SwitchField checked={host.proxy_enabled} disabled />}
               disabled
             />
           </Grid>
@@ -279,7 +279,7 @@ export const HostDetailPage: FC = () => {
             </Grid>
 
             <Grid item xs={12} sx={rowMargin}>
-              <HostNetworksTable hostId={hostId} />
+              <HostNetworksTable hostid={hostId} />
             </Grid>
           </Grid>
         </Grid>

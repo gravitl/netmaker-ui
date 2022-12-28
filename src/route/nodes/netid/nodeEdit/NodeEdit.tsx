@@ -14,7 +14,7 @@ import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 import { getCommaSeparatedArray } from '~util/fields'
 import { useNodeById } from '~util/node'
 import { useNetwork } from '~util/network'
-import { serverSelectors } from '~store/selectors'
+import { hostsSelectors, serverSelectors } from '~store/selectors'
 import { Node, nodeACLValues } from '~store/modules/node/types'
 import { datePickerConverter } from '~util/unixTime'
 import AdapterDateFns from '@mui/lab/AdapterDateFns'
@@ -39,17 +39,11 @@ export const NodeEdit: React.FC<{
   const { netid, nodeId } = useParams<{ nodeId: string; netid: string }>()
   const node = useNodeById(decodeURIComponent(nodeId))
   const network = useNetwork(netid)
+  const hostsMap = useSelector(hostsSelectors.getHostsMap)
 
   const createIPValidation = useMemo(
     () =>
       validate<Node>({
-        name: (name, formData) => {
-          const nameRegex = /^[a-zA-Z0-9-]+$/
-          const message = t('error.name')
-
-          if (!nameRegex.test(name)) return { message, type: 'value', }
-          return undefined
-        },
         address: (address, formData) => {
           if (!formData.address) {
             return undefined
@@ -190,7 +184,7 @@ export const NodeEdit: React.FC<{
         <Grid item xs={12}>
           <div style={{ textAlign: 'center', margin: '0.5em 0 1em 0' }}>
             <Typography variant="h5">
-              {`${t('node.details')} : ${node.name}${
+              {`${t('node.details')} : ${hostsMap[node.hostid].name}${
                 node.ispending === 'yes' ? ` (${t('common.pending')})` : ''
               }`}
             </Typography>
@@ -304,7 +298,7 @@ export const NodeEdit: React.FC<{
         <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <Tooltip title={String(t('helper.nodename'))} placement="top">
             <NmFormInputText
-              defaultValue={node.name}
+              defaultValue={hostsMap[node.hostid].name}
               name={'name'}
               label={String(t('node.name'))}
             />

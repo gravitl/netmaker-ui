@@ -1,5 +1,5 @@
 import { all, fork, put, takeEvery } from 'redux-saga/effects'
-import { deleteHost, getHosts, updateHost } from './actions'
+import { deleteHost, getHosts, updateHost, updateHostNetworks } from './actions'
 import { AxiosResponse } from 'axios'
 import { Host } from './types'
 import { apiRequestWithAuthSaga } from '../api/saga'
@@ -56,6 +56,45 @@ function* handleUpdateHostRequest(
   }
 }
 
+function* handleUpdateHostNetworksRequest(
+  action: ReturnType<typeof updateHostNetworks['request']>
+) {
+  try {
+    yield fork(generatorToastSaga, {
+      success: updateHostNetworks['success'],
+      error: updateHostNetworks['failure'],
+      params: {
+        pending: i18n.t('common.pending', {
+          hostid: action.payload.id,
+        }),
+        success: i18n.t('toast.update.success.host', {
+          hostid: action.payload.id,
+        }),
+        error: (e) =>
+          `${i18n.t('toast.update.failure.host', {
+            hostid: action.payload.id,
+          })}: ${e.response.data.Message || ''}`,
+      },
+    })
+
+    const response: AxiosResponse<string[]> = yield apiRequestWithAuthSaga(
+      'put',
+      `/hosts/${action.payload.id}/networks`,
+      action.payload.networks,
+      {}
+    )
+
+    yield put(
+      updateHostNetworks['success']({
+        hostid: action.payload.id,
+        networks: response.data,
+      })
+    )
+  } catch (e: unknown) {
+    yield put(updateHostNetworks['failure'](e as Error))
+  }
+}
+
 function* handleDeleteHostRequest(
   action: ReturnType<typeof deleteHost['request']>
 ) {
@@ -93,6 +132,7 @@ export function* saga() {
   yield all([
     takeEvery(getType(getHosts['request']), handleGetHostsRequest),
     takeEvery(getType(updateHost['request']), handleUpdateHostRequest),
+    takeEvery(getType(updateHostNetworks['request']), handleUpdateHostNetworksRequest),
     takeEvery(getType(deleteHost['request']), handleDeleteHostRequest),
   ])
 }

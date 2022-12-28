@@ -1,5 +1,11 @@
 import { createAction, createAsyncAction } from 'typesafe-actions'
-import { GetHostsPayload, UpdateHostPayload, DeleteHostPayload } from '.'
+import {
+  GetHostsPayload,
+  UpdateHostPayload,
+  DeleteHostPayload,
+  UpdateHostNetworksPayload,
+  Host,
+} from '.'
 
 export const getHosts = createAsyncAction(
   'Hosts_getHosts_Request',
@@ -12,6 +18,16 @@ export const updateHost = createAsyncAction(
   'Hosts_updateHosts_Success',
   'Hosts_updateHosts_Failure'
 )<UpdateHostPayload['Request'], UpdateHostPayload['Response'], Error>()
+
+export const updateHostNetworks = createAsyncAction(
+  'Hosts_updateHostNetworks_Request',
+  'Hosts_updateHostNetworks_Success',
+  'Hosts_updateHostNetworks_Failure'
+)<
+  UpdateHostNetworksPayload['Request'],
+  { networks: UpdateHostNetworksPayload['Response']; hostid: Host['id'] },
+  Error
+>()
 
 export const deleteHost = createAsyncAction(
   'Hosts_deleteHosts_Request',

@@ -666,5 +666,6 @@ export const en: LanguageResource = {
     nohostconnected: 'No hosts connected to this server',
     confirmconnect: 'Are you sure you want to connect to network',
     confirmdisconnect: 'Are you sure you want to disconnect from network',
+    canonlyeditendpointofstatichost: 'You can only edit the endpoint of a static host',
   },
 }

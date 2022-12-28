@@ -31,7 +31,8 @@ export const reducer = createReducer({
   isFetchingClients: false as boolean,
   qrData: '' as string,
   shouldSignOut: '' as shouldSignOut,
-  nodeSort: { value: 'name', ascending: true } as NodeSort,
+  nodeSort: { value: 'network', ascending: true } as NodeSort,
+  nodesMap: {} as Record<string, Node>,
 })
   .handleAction(setShouldLogout, (state, action) =>
     produce(state, (draftState) => {
@@ -74,6 +75,11 @@ export const reducer = createReducer({
         if (!ascending) {
           draftState.nodes = draftState.nodes.reverse()
         }
+
+        // populate nodes map
+        draftState.nodes.forEach(node => {
+          draftState.nodesMap[`${node.hostid}-${node.network}`] = node
+        })
       } else {
         draftState.nodes = []
       }
@@ -108,17 +114,6 @@ export const reducer = createReducer({
       )
       if (~index) {
         const newNode = nodePayloadToNode(action.payload)
-        if (newNode.ishub && draftState.nodes[index].ishub !== newNode.ishub) {
-          // set all other nodes on same network as not hub
-          for (let i = 0; i < draftState.nodes.length; i++) {
-            if (
-              i !== index &&
-              draftState.nodes[i].network === newNode.network
-            ) {
-              draftState.nodes[i].ishub = false
-            }
-          }
-        }
         draftState.nodes[index] = newNode
       }
     })
@@ -137,12 +132,12 @@ export const reducer = createReducer({
   )
   .handleAction(approveNode['success'], (state, action) =>
     produce(state, (draftState) => {
-      const index = draftState.nodes.findIndex(
-        (node) => node.id === action.payload.nodeid
-      )
-      if (~index) {
-        draftState.nodes[index].ispending = 'no'
-      }
+      // const index = draftState.nodes.findIndex(
+      //   (node) => node.id === action.payload.nodeid
+      // )
+      // if (~index) {
+      //   draftState.nodes[index].ispending = 'no'
+      // }
     })
   )
   .handleAction(createEgressNode['success'], (state, action) =>

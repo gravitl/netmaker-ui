@@ -12,7 +12,7 @@ import {
 } from '~components/form'
 import { useLinkBreadcrumb } from '../../../components/PathBreadcrumbs'
 import { getCommaSeparatedArray } from '~util/fields'
-import { proSelectors, serverSelectors } from '~store/selectors'
+import { hostsSelectors, proSelectors, serverSelectors } from '~store/selectors'
 import { Node, nodeACLValues } from '~store/modules/node/types'
 import { datePickerConverter } from '~util/unixTime'
 import AdapterDateFns from '@mui/lab/AdapterDateFns'
@@ -39,6 +39,8 @@ export const ProNodeEdit: React.FC = () => {
   const userData = useSelector(proSelectors.networkUserData)[netid]
   let node: Node
   let network: Network
+  const hostsMap = useSelector(hostsSelectors.getHostsMap)
+
   if (!!userData) {
     node = userData.nodes.filter((n) => n.id === nodeid)[0]
     network = userData.networks.filter((n) => n.netid === netid)[0]
@@ -190,7 +192,7 @@ export const ProNodeEdit: React.FC = () => {
         <Grid item xs={12}>
           <div style={{ textAlign: 'center', margin: '0.5em 0 1em 0' }}>
             <Typography variant="h5">
-              {`${t('node.details')} : ${node.name}${
+              {`${t('node.details')} : ${hostsMap[node.hostid].name}${
                 node.ispending === 'yes' ? ` (${t('common.pending')})` : ''
               }`}
             </Typography>
@@ -292,15 +294,6 @@ export const ProNodeEdit: React.FC = () => {
               defaultValue={node.localaddress}
               name={'localaddress'}
               label={String(t('node.localaddress'))}
-            />
-          </Tooltip>
-        </Grid>
-        <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-          <Tooltip title={String(t('helper.nodename'))} placement="top">
-            <NmFormInputText
-              defaultValue={node.name}
-              name={'name'}
-              label={String(t('node.name'))}
             />
           </Tooltip>
         </Grid>

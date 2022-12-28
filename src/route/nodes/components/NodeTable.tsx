@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { NmLink } from '~components/index'
 import { useTranslation } from 'react-i18next'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
@@ -13,49 +13,29 @@ import { deleteNode } from '~store/modules/node/actions'
 import CustomizedDialogs from '~components/dialog/CustomDialog'
 import { MultiCopy } from '~components/CopyText'
 import { useSelector } from 'react-redux'
-import { serverSelectors } from '~store/selectors'
+import { hostsSelectors, serverSelectors } from '~store/selectors'
 import { FailoverButton } from '../../../ee/nodes/FailoverButton'
 import { getConnectivityStatus } from '~util/node'
+import { useHistory } from 'react-router-dom'
 
 export const NodeTable: React.FC<{ nodes: Node[] }> = ({ nodes }) => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const [selected, setSelected] = React.useState({} as Node)
   const serverConfig = useSelector(serverSelectors.getServerConfig)
+  const history = useHistory()
+  const hostsMap = useSelector(hostsSelectors.getHostsMap)
 
   const columns: TableColumns<Node> = [
     {
-      id: 'name',
-      labelKey: 'node.name',
+      id: 'hostid',
+      labelKey: 'node.hostid',
       minWidth: 100,
-      sortable: true,
-      format: (value, node) => (
-        <NmLink
-          to={`/nodes/${node.network}/${encodeURIComponent(node.id)}`}
-          sx={{ textTransform: 'none' }}
-        >
-          {value}
-          {`${
-            node.ispending === 'yes' ? ` (${i18n.t('common.pending')})` : ''
-          }`}
+      format: (value) => (
+        <NmLink sx={{ textTransform: 'none' }} to={`/hosts/${value}`}>
+          {hostsMap[value].name}
         </NmLink>
       ),
-    },
-    {
-      id: 'address',
-      labelKey: 'node.addresses',
-      minWidth: 130,
-      align: 'right',
-      format: (_, node) => (
-        <MultiCopy type="subtitle2" values={[node.address, node.address6]} />
-      ),
-    },
-    {
-      id: 'version',
-      labelKey: 'node.version',
-      minWidth: 50,
-      align: 'center',
-      format: (value) => <>{!!value ? value : 'N/A'}</>,
     },
     {
       id: 'network',
@@ -75,6 +55,25 @@ export const NodeTable: React.FC<{ nodes: Node[] }> = ({ nodes }) => {
       ),
     },
     {
+      id: 'address',
+      labelKey: 'node.addresses',
+      minWidth: 130,
+      align: 'right',
+      format: (_, node) => (
+        <MultiCopy type="subtitle2" values={[node.address, node.address6]} />
+      ),
+    },
+    {
+      id: 'hostid',
+      labelKey: 'node.hostid',
+      minWidth: 50,
+      align: 'center',
+      format: (value, node) => {
+        const version = hostsMap[value].version
+        return <>{version ? version : 'N/A'}</>
+      },
+    },
+    {
       id: 'isegressgateway',
       labelKey: 'node.statusegress',
       minWidth: 30,
@@ -84,8 +83,8 @@ export const NodeTable: React.FC<{ nodes: Node[] }> = ({ nodes }) => {
           which="egress"
           isOn={isegress}
           node={row}
-          createText={`${i18n.t('node.createegress')} : ${row.name}`}
-          removeText={`${i18n.t('node.removeegress')} : ${row.name}`}
+          createText={`${i18n.t('node.createegress')} : ${hostsMap[row.hostid].name}`}
+          removeText={`${i18n.t('node.removeegress')} : ${hostsMap[row.hostid].name}`}
           SignalIcon={<CallSplit />}
           withHistory
         />
@@ -101,8 +100,12 @@ export const NodeTable: React.FC<{ nodes: Node[] }> = ({ nodes }) => {
           which="ingress"
           isOn={isingress}
           node={row}
-          createText={`${i18n.t('node.createingress')} : ${row.name}`}
-          removeText={`${i18n.t('node.removeingress')} : ${row.name}`}
+          createText={`${i18n.t('node.createingress')} : ${
+            hostsMap[row.hostid].name
+          }`}
+          removeText={`${i18n.t('node.removeingress')} : ${
+            hostsMap[row.hostid].name
+          }`}
           SignalIcon={<CallMerge />}
         />
       ),
@@ -117,8 +120,12 @@ export const NodeTable: React.FC<{ nodes: Node[] }> = ({ nodes }) => {
           which="relay"
           isOn={isrelay}
           node={row}
-          createText={`${i18n.t('node.createrelay')} : ${row.name}`}
-          removeText={`${i18n.t('node.removerelay')} : ${row.name}`}
+          createText={`${i18n.t('node.createrelay')} : ${
+            hostsMap[row.hostid].name
+          }`}
+          removeText={`${i18n.t('node.removerelay')} : ${
+            hostsMap[row.hostid].name
+          }`}
           SignalIcon={<AltRoute />}
           withHistory
         />
@@ -131,8 +138,8 @@ export const NodeTable: React.FC<{ nodes: Node[] }> = ({ nodes }) => {
       align: 'center',
       format: (lastCheckInTime) => {
         const status = getConnectivityStatus(lastCheckInTime)
-        
-        switch(status) {
+
+        switch (status) {
           case 'error':
             return (
               <Tooltip title={t('node.error') as string} placement="top">
@@ -163,11 +170,7 @@ export const NodeTable: React.FC<{ nodes: Node[] }> = ({ nodes }) => {
       labelKey: 'node.failover',
       minWidth: 30,
       align: 'center',
-      format: (_, row) => (
-        <FailoverButton
-          node={row}
-        />
-      ),
+      format: (_, row) => <FailoverButton node={row} />,
     }
     columns.push(oldColumn)
   }
@@ -184,8 +187,15 @@ export const NodeTable: React.FC<{ nodes: Node[] }> = ({ nodes }) => {
     setSelected(node)
   }
 
+  const handleViewDetails = useCallback(
+    (node: Node) => {
+      history.push(`/nodes/${node.network}/${encodeURIComponent(node.id)}`)
+    },
+    [history]
+  )
+
   const handleDeleteNode = () => {
-    if (!!selected.name) {
+    if (selected.id) {
       dispatch(
         deleteNode.request({
           netid: selected.network,
@@ -205,21 +215,27 @@ export const NodeTable: React.FC<{ nodes: Node[] }> = ({ nodes }) => {
         getRowId={(row) => row.id}
         actions={[
           (row) => ({
-            tooltip: !row.isserver ? t('common.delete') : t('common.disabled'),
-            disabled: row.isserver,
+            tooltip: t('common.delete'),
             icon: <Delete />,
             onClick: () => {
               handleOpen(row)
             },
           }),
+          (row) => ({
+            tooltip: t('common.edit'),
+            icon: <Delete />,
+            onClick: () => {
+              handleViewDetails(row)
+            },
+          }),
         ]}
       />
       <CustomizedDialogs
-        open={!!selected.name}
+        open={!!selected.id}
         handleClose={handleClose}
         handleAccept={handleDeleteNode}
         message={t('node.deleteconfirm')}
-        title={`${t('common.delete')} ${selected.name}`}
+        title={`${t('common.delete')} ${selected.id}`}
       />
     </div>
   )

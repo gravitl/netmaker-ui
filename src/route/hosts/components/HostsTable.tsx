@@ -43,8 +43,14 @@ export const HostsTable: FC<HostsTableProps> = (props) => {
       ),
     },
     {
-      id: 'localaddress',
-      labelKey: 'hosts.localaddress',
+      id: 'endpointip',
+      labelKey: 'hosts.endpointip',
+      minWidth: 100,
+      format: (value) => <CopyText type="subtitle2" value={value} />,
+    },
+    {
+      id: 'publickey',
+      labelKey: 'hosts.publickey',
       minWidth: 100,
       format: (value) => <CopyText type="subtitle2" value={value} />,
     },
@@ -55,7 +61,8 @@ export const HostsTable: FC<HostsTableProps> = (props) => {
       align: 'center',
       format: (value, host) => (
         <>
-          {value ? value : 'N/A'} {host.os ? `(${host.os})` : ''}
+          {value ? value : 'N/A'}{' '}
+          {host.os ? `(${host.os === 'darwin' ? 'mac' : host.os})` : ''}
         </>
       ),
     },

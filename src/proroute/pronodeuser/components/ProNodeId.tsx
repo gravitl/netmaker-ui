@@ -26,7 +26,7 @@ export const ProNodeId: React.FC = () => {
   const history = useHistory()
   const { t } = useTranslation()
   const dispatch = useDispatch()
-
+  const hostsMap = useSelector(hostsSelectors.getHostsMap)
   const { netid, nodeid } = useParams<{ nodeid: string; netid: string }>()
   const userData = useSelector(proSelectors.networkUserData)[netid]
   let node : Node
@@ -78,14 +78,12 @@ export const ProNodeId: React.FC = () => {
         handleClose={handleClose}
         handleAccept={handleDeleteNode}
         message={t('node.deleteconfirm')}
-        title={`${t('common.delete')} ${node.name}`}
+        title={`${t('common.delete')} ${hostsMap[node.hostid].name}`}
       />
       <Grid item xs={12}>
         <div style={{ textAlign: 'center', margin: '1em 0 1em 0' }}>
           <Typography variant="h5">
-            {`${t('node.details')} : ${node.name}${
-              node.ispending === 'yes' ? ` (${t('common.pending')})` : ''
-            }`}
+            {`${t('node.details')} : ${hostsMap[node.hostid].name}`}
           </Typography>
         </div>
       </Grid>

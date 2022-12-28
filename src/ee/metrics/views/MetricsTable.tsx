@@ -26,7 +26,7 @@ import {
 import { useParams, Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { serverSelectors, nodeSelectors, authSelectors } from '~store/selectors'
+import { serverSelectors, nodeSelectors, authSelectors, hostsSelectors } from '~store/selectors'
 import { NodeMetric, MetricsContainer } from '~store/types'
 import { MAX_ATTEMPTS } from '~components/utils'
 import { getTimeMinHrs } from '../util'
@@ -51,7 +51,7 @@ const titleStyle = {
 export const MetricsTable: React.FC = () => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
-
+  const hostsMap = useSelector(hostsSelectors.getHostsMap)
   const isProcessing = useSelector(serverSelectors.isFetchingServerConfig)
   const { netid } = useParams<{ netid: string }>()
   const allNodes = useSelector(nodeSelectors.getNodes)
@@ -86,7 +86,7 @@ export const MetricsTable: React.FC = () => {
     } else {
       setFilterNodes(
         allNodes.filter((node) =>
-          `${node.name}${node.address}${node.id}${node.network}`.includes(
+          `${hostsMap[node.hostid].name}${node.address}${node.id}${node.network}`.includes(
             searchTerm
           )
         )
@@ -118,7 +118,7 @@ export const MetricsTable: React.FC = () => {
 
   if (!!allNodes) {
     allNodes.map((node) =>
-      nodeNameMap.set(node.id, { name: node.name, network: node.network })
+      nodeNameMap.set(node.id, { name: hostsMap[node.hostid].name, network: node.network })
     )
   }
   if (!!extClients) {

@@ -2,48 +2,58 @@ import { Modify } from '../../../types/react-app-env'
 
 export interface Node {
   id: string
+  hostid: string
   address: string
   address6: string
   localaddress: string
-  name: string
-  listenport: number
-  publickey: string
-  endpoint: string
   postup: string
   postdown: string
-  allowedips: []
   persistentkeepalive: number
   interface: string
+  macaddress: string
   lastmodified: number
   expdatetime: number
   lastcheckin: number
-  macaddress: string
+  lastpeerupdate: number
   network: string
-  ispending: string
+  networkrange: string
+  networkrange6: string
+  pendingdelete: boolean
   isrelay: boolean
   isrelayed: boolean
-  relayaddrs: []
+  relayaddrs: string[]
   isegressgateway: boolean
   isingressgateway: boolean
-  egressgatewayranges: []
-  isstatic: boolean
-  udpholepunch: boolean
+  egressgatewayranges: string[]
+  egressgatewaynatenabled: boolean
+  failovernode: string
   dnson: boolean
   isdualstack: boolean
-  isserver: boolean
   islocal: boolean
-  localrange: string
-  ipforwarding: boolean
-  os: string
-  mtu: number
-  version: string
-  isdocker: boolean
-  isk8s: boolean
-  ishub: boolean
-  defaultacl: boolean | undefined
+  server: string
+  internetgateway: string
+  defaultacl: string
   connected: boolean
   failover: boolean
-  interfaces?: Interface[]
+  
+  // name: string
+  // allowedips: string[]
+  // listenport: number
+  // publickey: string
+  // endpoint: string
+  // isserver: boolean
+  // isstatic: boolean
+  // udpholepunch: boolean
+  // ispending: string
+  // localrange: string
+  // ipforwarding: boolean
+  // os: string
+  // mtu: number
+  // version: string
+  // isdocker: boolean
+  // isk8s: boolean
+  // ishub: boolean
+  // interfaces?: Interface[]
 }
 
 export interface Interface {
@@ -233,7 +243,7 @@ export interface DeleteIngressNodePayload {
 export type shouldSignOut = '' | 'network' | 'auth'
 
 export interface NodeSort {
-  value: 'name' | 'address' | 'network'
+  value: 'address' | 'network'
   ascending: boolean
 }
 

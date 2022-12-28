@@ -7,31 +7,35 @@ import { Interface, Node } from '../node/types'
  */
 export interface Host {
   id: string
-  name: string
-  os: string
   verbosity: number
   firewallinuse: string
   version: string
-  ipforwarding: boolean
-  daemoninstalled: boolean
-  hostpass: string
+  name: string
+  os: string
   debug: boolean
-  nodepassword: string
+  isstatic: boolean
   listenport: number
-  localaddress: string
   localrange: string
   locallistenport: number
   proxy_listen_port: number
   mtu: number
+  interfaces: Interface[]
+  endpointip: string
   publickey: string
   macaddress: string
-  traffickeypublic: string
   internetgateway: string
-  nodes: Node[]
+  // nodes: Node[]
+  nodes: string[] // network names
+  proxy_enabled: boolean
   isdefault: boolean
-  interfaces: Interface[]
-  proxyenabled: boolean
-  isstatic: boolean
+
+  // localaddress: string
+  // listenaddress: number
+  // ipforwarding: boolean
+  // daemoninstalled: boolean
+  // hostpass: string
+  // nodepassword: string
+  // traffickeypublic: string
 }
 
 export interface GetHostsPayload {
@@ -42,6 +46,14 @@ export interface GetHostsPayload {
 export interface UpdateHostPayload {
   Request: Host
   Response: Host
+}
+
+export interface UpdateHostNetworksPayload {
+  Request: {
+    id: Host['id']
+    networks: Node['network'][]
+  }
+  Response: Node['network'][]
 }
 
 export interface DeleteHostPayload {

@@ -17,7 +17,7 @@ import {
   FullScreenControl,
 } from 'react-sigma-v2'
 import { filterExtClientsByNetwork, getEdgeConnectivity } from '~util/node'
-import { nodeSelectors, aclSelectors, authSelectors } from '~store/selectors'
+import { nodeSelectors, aclSelectors, authSelectors, hostsSelectors } from '~store/selectors'
 import { AltDataNode, DataNode, Edge } from './graph-components/types'
 import { NetworkSelect } from '~components/NetworkSelect'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
@@ -27,7 +27,7 @@ import {
 } from '~store/modules/acls/actions'
 
 export const NetworkGraph: React.FC = () => {
-  // const networks = useSelector(networkSelectors.getNetworks)
+  const hostsMap = useSelector(hostsSelectors.getHostsMap)
   const { t } = useTranslation()
   const [open, setOpen] = React.useState(false)
   const { url } = useRouteMatch()
@@ -217,7 +217,7 @@ export const NetworkGraph: React.FC = () => {
             data.nodeTypes.push({
               type: 'i&e&r',
               id: innerNode.id,
-              name: innerNode.name,
+              name: hostsMap[innerNode.hostid].name,
               lastCheckin: innerNode.lastcheckin,
             })
             extractEgressRanges(innerNode)
@@ -227,7 +227,7 @@ export const NetworkGraph: React.FC = () => {
             data.nodeTypes.push({
               type: 'e&r',
               id: innerNode.id,
-              name: innerNode.name,
+              name: hostsMap[innerNode.hostid].name,
               lastCheckin: innerNode.lastcheckin,
             })
             extractEgressRanges(innerNode)
@@ -236,7 +236,7 @@ export const NetworkGraph: React.FC = () => {
             data.nodeTypes.push({
               type: 'i&r',
               id: innerNode.id,
-              name: innerNode.name,
+              name: hostsMap[innerNode.hostid].name,
               lastCheckin: innerNode.lastcheckin,
             })
             extractIngressRanges(innerNode)
@@ -246,7 +246,7 @@ export const NetworkGraph: React.FC = () => {
             data.nodeTypes.push({
               type: 'egress',
               id: innerNode.id,
-              name: innerNode.name,
+              name: hostsMap[innerNode.hostid].name,
               lastCheckin: innerNode.lastcheckin,
             })
             extractEgressRanges(innerNode)
@@ -255,7 +255,7 @@ export const NetworkGraph: React.FC = () => {
             data.nodeTypes.push({
               type: 'ingress',
               id: innerNode.id,
-              name: innerNode.name,
+              name: hostsMap[innerNode.hostid].name,
               lastCheckin: innerNode.lastcheckin,
             })
             extractIngressRanges(innerNode)
@@ -264,7 +264,7 @@ export const NetworkGraph: React.FC = () => {
           data.nodeTypes.push({
             type: 'relay',
             id: innerNode.id,
-            name: innerNode.name,
+            name: hostsMap[innerNode.hostid].name,
             lastCheckin: innerNode.lastcheckin,
           })
           extractRelayedNodes(innerNode)
@@ -275,7 +275,7 @@ export const NetworkGraph: React.FC = () => {
           data.nodeTypes.push({
             type: 'normal',
             id: innerNode.id,
-            name: innerNode.name,
+            name: hostsMap[innerNode.hostid].name,
             lastCheckin: innerNode.lastcheckin,
           })
         }
@@ -311,7 +311,7 @@ export const NetworkGraph: React.FC = () => {
           data.nodeTypes.push({
             type: 'i&e&r',
             id: innerNode.id,
-            name: innerNode.name,
+            name: hostsMap[innerNode.hostid].name,
             lastCheckin: innerNode.lastcheckin,
           })
           extractEgressRanges(innerNode)
@@ -322,7 +322,7 @@ export const NetworkGraph: React.FC = () => {
           data.nodeTypes.push({
             type: '1&e',
             id: innerNode.id,
-            name: innerNode.name,
+            name: hostsMap[innerNode.hostid].name,
             lastCheckin: innerNode.lastcheckin,
           })
           extractEgressRanges(innerNode)
@@ -331,7 +331,7 @@ export const NetworkGraph: React.FC = () => {
           data.nodeTypes.push({
             type: 'e&r',
             id: innerNode.id,
-            name: innerNode.name,
+            name: hostsMap[innerNode.hostid].name,
             lastCheckin: innerNode.lastcheckin,
           })
           extractEgressRanges(innerNode)
@@ -340,7 +340,7 @@ export const NetworkGraph: React.FC = () => {
           data.nodeTypes.push({
             type: 'i&r',
             id: innerNode.id,
-            name: innerNode.name,
+            name: hostsMap[innerNode.hostid].name,
             lastCheckin: innerNode.lastcheckin,
           })
           extractIngressRanges(innerNode)
@@ -350,7 +350,7 @@ export const NetworkGraph: React.FC = () => {
           data.nodeTypes.push({
             type: 'egress',
             id: innerNode.id,
-            name: innerNode.name,
+            name: hostsMap[innerNode.hostid].name,
             lastCheckin: innerNode.lastcheckin,
           })
           extractEgressRanges(innerNode)
@@ -359,7 +359,7 @@ export const NetworkGraph: React.FC = () => {
           data.nodeTypes.push({
             type: 'ingress',
             id: innerNode.id,
-            name: innerNode.name,
+            name: hostsMap[innerNode.hostid].name,
             lastCheckin: innerNode.lastcheckin,
           })
           extractIngressRanges(innerNode)
@@ -368,7 +368,7 @@ export const NetworkGraph: React.FC = () => {
         data.nodeTypes.push({
           type: 'relay',
           id: innerNode.id,
-          name: innerNode.name,
+          name: hostsMap[innerNode.hostid].name,
           lastCheckin: innerNode.lastcheckin,
         })
         extractRelayedNodes(innerNode)
@@ -379,7 +379,7 @@ export const NetworkGraph: React.FC = () => {
         data.nodeTypes.push({
           type: 'normal',
           id: innerNode.id,
-          name: innerNode.name,
+          name: hostsMap[innerNode.hostid].name,
           lastCheckin: innerNode.lastcheckin,
         })
       }

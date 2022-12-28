@@ -6,7 +6,7 @@ import { Block, Check } from '@mui/icons-material'
 import {
   updateNode,
 } from '~modules/node/actions'
-import { Node } from '~store/types'
+import { hostsSelectors, Node } from '~store/types'
 import CustomDialog from '~components/dialog/CustomDialog'
 
 const hoverBlueStyle = {
@@ -33,7 +33,7 @@ export const HubButton: React.FC<{
   const [hovering, setHovering] = React.useState(false)
   const [open, setOpen] = React.useState(false)
   const { t } = useTranslation()
-
+  const hostsMap = useSelector(hostsSelectors.getHostsMap)
   const handleHoverEnter = () => setHovering(true)
   const handleHoverLeave = () => setHovering(false)
 
@@ -64,7 +64,7 @@ export const HubButton: React.FC<{
         handleClose={handleClose}
         handleAccept={createHub}
         message={node.ishub ? disabledText : createText}
-        title={`${node.ishub ? t('common.disabled') : t('node.updatenode')} ${node.name}`}
+        title={`${node.ishub ? t('common.disabled') : t('node.updatenode')} ${hostsMap[node.hostid].name}`}
       />
       <Tooltip placement="top" title={String(!node.ishub ? createText : disabledText)}>
         <span>

@@ -5,7 +5,6 @@ import { useRouteMatch, useParams } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { NmForm, NmFormInputText, validate } from '~components/form'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
-import { NmFormOptionSelect } from '~components/form/FormOptionSelect'
 import { Host } from '~store/types'
 import { useGetHostById } from '~util/hosts'
 import { updateHost } from '~store/modules/hosts/actions'
@@ -129,18 +128,21 @@ export const HostEditPage: FC<{ onCancel: () => void }> = ({ onCancel }) => {
         </Grid>
 
         <Grid item xs={12} md={3} sx={rowMargin}>
-          <Tooltip title={String(t('helper.localaddress'))}>
-            <NmFormOptionSelect
-              defaultValue={host.localaddress}
-              label={String(t('hosts.localaddress'))}
-              name="localaddress"
-              selections={
-                host.interfaces.map((iface) => ({
-                  key: `${iface.name} (${iface.addressString})`,
-                  option: iface.addressString,
-                })) ?? []
-              }
-            />
+          <Tooltip
+            title={
+              host.isstatic
+                ? String(t('common.endpointip'))
+                : String(t('hosts.canonlyeditendpointofstatichost'))
+            }
+          >
+            <span>
+              <NmFormInputText
+                defaultValue={host.endpointip}
+                name={'endpointip'}
+                label={String(t('common.endpointip'))}
+                disabled={!host.isstatic}
+              />
+            </span>
           </Tooltip>
         </Grid>
         <Grid item xs={12} md={3} sx={rowMargin}>
