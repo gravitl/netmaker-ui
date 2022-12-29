@@ -55,7 +55,6 @@ export const Nodes: React.FC = () => {
   const handleNodeSortSelect = (selection: string) => {
     if (
       selection === 'address' ||
-      selection === 'name' ||
       selection === 'network'
     ) {
       dispatch(

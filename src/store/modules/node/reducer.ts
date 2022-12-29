@@ -22,7 +22,7 @@ import {
   updateNode,
 } from './actions'
 import { Node, NodeSort } from './types'
-import { download, nodePayloadToNode } from './utils'
+import { download } from './utils'
 
 export const reducer = createReducer({
   nodes: [] as Array<Node>,
@@ -64,7 +64,7 @@ export const reducer = createReducer({
   .handleAction(getNodes['success'], (state, action) =>
     produce(state, (draftState) => {
       if (!!action.payload && action.payload.length) {
-        draftState.nodes = action.payload.map(nodePayloadToNode)
+        draftState.nodes = action.payload
         const { value, ascending } = state.nodeSort
 
         draftState.nodes = draftState.nodes.sort((a, b) =>
@@ -113,7 +113,7 @@ export const reducer = createReducer({
         (node) => node.id === action.payload.id
       )
       if (~index) {
-        const newNode = nodePayloadToNode(action.payload)
+        const newNode = action.payload
         draftState.nodes[index] = newNode
       }
     })
@@ -146,7 +146,7 @@ export const reducer = createReducer({
         (node) => node.id === action.payload.id
       )
       if (~index) {
-        draftState.nodes[index] = nodePayloadToNode(action.payload)
+        draftState.nodes[index] = action.payload
       }
     })
   )
@@ -156,7 +156,7 @@ export const reducer = createReducer({
         (node) => node.id === action.payload.id
       )
       if (~index) {
-        draftState.nodes[index] = nodePayloadToNode(action.payload)
+        draftState.nodes[index] = action.payload
       }
     })
   )
@@ -166,7 +166,7 @@ export const reducer = createReducer({
         (node) => node.id === action.payload.id
       )
       if (~index) {
-        draftState.nodes[index] = nodePayloadToNode(action.payload)
+        draftState.nodes[index] = action.payload
       }
     })
   )
@@ -176,7 +176,7 @@ export const reducer = createReducer({
         (node) => node.id === action.payload.id
       )
       if (~index) {
-        draftState.nodes[index] = nodePayloadToNode(action.payload)
+        draftState.nodes[index] = action.payload
         draftState.externalClients = draftState.externalClients.filter(
           (client) =>
             !(
@@ -193,7 +193,7 @@ export const reducer = createReducer({
         (node) => node.id === action.payload.id
       )
       if (~index) {
-        draftState.nodes[index] = nodePayloadToNode(action.payload)
+        draftState.nodes[index] = action.payload
       }
     })
   )
@@ -203,7 +203,7 @@ export const reducer = createReducer({
         (node) => node.id === action.payload.id
       )
       if (~index) {
-        draftState.nodes[index] = nodePayloadToNode(action.payload)
+        draftState.nodes[index] = action.payload
       }
     })
   )

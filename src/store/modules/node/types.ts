@@ -62,28 +62,28 @@ export interface Interface {
   addressString: string
 }
 
-export type NodePayload = Modify<
-  Node,
-  {
-    isegressgateway: 'yes' | 'no'
-    isingressgateway: 'yes' | 'no'
-    isstatic: 'yes' | 'no'
-    udpholepunch: 'yes' | 'no'
-    dnson: 'yes' | 'no'
-    isdualstack: 'yes' | 'no'
-    isserver: 'yes' | 'no'
-    islocal: 'yes' | 'no'
-    ipforwarding: 'yes' | 'no'
-    isrelayed: 'yes' | 'no'
-    isrelay: 'yes' | 'no'
-    isdocker: 'yes' | 'no'
-    isk8s: 'yes' | 'no'
-    ishub: 'yes' | 'no'
-    defaultacl: 'yes' | 'no' | 'unset'
-    connected: 'yes' | 'no'
-    failover: 'yes' | 'no'
-  }
->
+// export type NodePayload = Modify<
+//   Node,
+//   {
+//     isegressgateway: 'yes' | 'no'
+//     isingressgateway: 'yes' | 'no'
+//     isstatic: 'yes' | 'no'
+//     udpholepunch: 'yes' | 'no'
+//     dnson: 'yes' | 'no'
+//     isdualstack: 'yes' | 'no'
+//     isserver: 'yes' | 'no'
+//     islocal: 'yes' | 'no'
+//     ipforwarding: 'yes' | 'no'
+//     isrelayed: 'yes' | 'no'
+//     isrelay: 'yes' | 'no'
+//     isdocker: 'yes' | 'no'
+//     isk8s: 'yes' | 'no'
+//     ishub: 'yes' | 'no'
+//     defaultacl: 'yes' | 'no' | 'unset'
+//     connected: 'yes' | 'no'
+//     failover: 'yes' | 'no'
+//   }
+// >
 
 export interface ExternalClient {
   clientid: string
@@ -104,7 +104,7 @@ export interface GetNodesPayload {
   Request: {
     token: string
   }
-  Response: Array<NodePayload>
+  Response: Array<Node>
 }
 
 export interface UpdateNodePayload {
@@ -113,7 +113,7 @@ export interface UpdateNodePayload {
     netid: string
     node: Node
   }
-  Response: NodePayload
+  Response: Node
 }
 
 export interface GetExternalClientsPayload {
@@ -178,7 +178,7 @@ export interface DeleteEgressNodePayload {
     netid: string
     nodeid: string
   }
-  Response: NodePayload
+  Response: Node
 }
 
 export interface CreateEgressNodePayload {
@@ -191,7 +191,7 @@ export interface CreateEgressNodePayload {
       natEnabled: string
     }
   }
-  Response: NodePayload
+  Response: Node
 }
 
 export interface CreateRelayNodePayload {
@@ -202,7 +202,7 @@ export interface CreateRelayNodePayload {
       ranges: Array<string>
     }
   }
-  Response: NodePayload
+  Response: Node
 }
 
 export interface DeleteRelayNodePayload {
@@ -210,7 +210,7 @@ export interface DeleteRelayNodePayload {
     netid: string
     nodeid: string
   }
-  Response: NodePayload
+  Response: Node
 }
 
 export interface DeleteNodePayload {
@@ -229,7 +229,7 @@ export interface CreatIngressNodePayload {
     nodeid: string
     failover?: boolean
   }
-  Response: NodePayload
+  Response: Node
 }
 
 export interface DeleteIngressNodePayload {
@@ -237,7 +237,7 @@ export interface DeleteIngressNodePayload {
     netid: string
     nodeid: string
   }
-  Response: NodePayload
+  Response: Node
 }
 
 export type shouldSignOut = '' | 'network' | 'auth'

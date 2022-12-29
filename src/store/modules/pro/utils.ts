@@ -1,5 +1,4 @@
 import { networkPayloadToNetwork } from "../network/utils";
-import { nodePayloadToNode } from "../node/utils";
 import { NetworkUserData, NetworkUserDataMap, NetworkUserDataMapPayload } from "./types";
 
 export function netUserDataPayloadToNetUserData(payload: NetworkUserDataMapPayload): NetworkUserDataMap {
@@ -10,9 +9,9 @@ export function netUserDataPayloadToNetUserData(payload: NetworkUserDataMapPaylo
           newMap[network] = {} as NetworkUserData
           if (payload[network]) {
             if (payload[network].nodes)
-              newMap[network].nodes = payload[network].nodes.map(n => nodePayloadToNode(n))
+              newMap[network].nodes = payload[network].nodes
             if (payload[network].vpns)
-              newMap[network].vpns = payload[network].vpns.map(n => nodePayloadToNode(n))
+              newMap[network].vpns = payload[network].vpns
             if (payload[network].networks)
               newMap[network].networks = payload[network].networks.map(n => networkPayloadToNetwork(n))
             if (payload[network].clients)

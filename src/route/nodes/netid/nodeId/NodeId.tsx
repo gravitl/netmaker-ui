@@ -85,7 +85,7 @@ export const NodeId: React.FC = () => {
   const rowMargin = {
     margin: '1em 0 1em 0',
   }
-  const isIPDynamic = !node.isstatic
+  const isIPDynamic = !hostsMap[node.hostid].isstatic
 
   return (
     <Switch>
@@ -121,9 +121,7 @@ export const NodeId: React.FC = () => {
           <Grid item xs={12}>
             <div style={{ textAlign: 'center', margin: '1em 0 1em 0' }}>
               <Typography variant="h5">
-                {`${t('node.details')} : ${hostsMap[node.hostid].name}${
-                  node.ispending === 'yes' ? ` (${t('common.pending')})` : ''
-                }`}
+                {`${t('node.details')}: ${hostsMap[node.hostid].name}`}
               </Typography>
             </div>
           </Grid>
@@ -157,7 +155,6 @@ export const NodeId: React.FC = () => {
                 {t('pro.metrics')}
               </NmLink>
               <Button
-                disabled={node.isserver}
                 variant="outlined"
                 color="warning"
                 style={{ width: '50%', margin: '4px' }}
@@ -166,7 +163,6 @@ export const NodeId: React.FC = () => {
                 {t('common.delete')}
               </Button>
               {network.allowmanualsignup &&
-              node.ispending === 'yes' &&
               user?.isAdmin ? (
                 <Button
                   variant="outlined"
@@ -184,7 +180,7 @@ export const NodeId: React.FC = () => {
           <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
             <TextField
               disabled
-              value={node.endpoint}
+              value={hostsMap[node.hostid].endpointip}
               label={String(t('node.endpoint'))}
             />
           </Grid>
@@ -198,17 +194,17 @@ export const NodeId: React.FC = () => {
           <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
             <TextField
               disabled
-              value={node.listenport}
+              value={hostsMap[node.hostid].listenport}
               label={String(t('node.listenport'))}
             />
           </Grid>
-          <Grid item xs={10} sm={4} md={3} sx={rowMargin}>
+          {/* <Grid item xs={10} sm={4} md={3} sx={rowMargin}>
             <FormControlLabel
               label={String(t('node.udpholepunch'))}
               control={<SwitchField checked={node.udpholepunch} disabled />}
               disabled
             />
-          </Grid>
+          </Grid> */}
           <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
             <TextField
               disabled
@@ -241,7 +237,7 @@ export const NodeId: React.FC = () => {
           <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
             <TextField
               disabled
-              value={node.publickey}
+              value={hostsMap[node.hostid].publickey}
               label={String(t('node.publickey'))}
             />
           </Grid>
@@ -260,13 +256,13 @@ export const NodeId: React.FC = () => {
               label={String(t('node.postdown'))}
             />
           </Grid>
-          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
+          {/* <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
             <TextField
               disabled
               value={node.allowedips ? node.allowedips.join(',') : ''}
               label={String(t('node.allowedips'))}
             />
-          </Grid>
+          </Grid> */}
           <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
             <TextField
               disabled
@@ -316,17 +312,17 @@ export const NodeId: React.FC = () => {
           <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
             <TextField
               disabled
-              value={node.localrange}
+              value={hostsMap[node.hostid].localrange}
               label={String(t('node.localrange'))}
             />
           </Grid>
           <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-            <TextField disabled value={node.os} label={String(t('node.os'))} />
+            <TextField disabled value={hostsMap[node.hostid].os} label={String(t('node.os'))} />
           </Grid>
           <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
             <TextField
               disabled
-              value={node.mtu}
+              value={hostsMap[node.hostid].mtu}
               label={String(t('node.mtu'))}
             />
           </Grid>
@@ -361,13 +357,13 @@ export const NodeId: React.FC = () => {
                   disabled
                 />
               </Grid>
-              <Grid item xs={10} sm={4} md={2} sx={rowMargin}>
+              {/* <Grid item xs={10} sm={4} md={2} sx={rowMargin}>
                 <FormControlLabel
                   label={String(t('node.ishub'))}
                   control={<SwitchField checked={node.ishub} disabled />}
                   disabled
                 />
-              </Grid>
+              </Grid> */}
               <Grid item xs={10} sm={4} md={2} sx={rowMargin}>
                 <span>
                   <FormControlLabel
