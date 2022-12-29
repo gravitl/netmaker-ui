@@ -13,6 +13,7 @@ interface NodeCommonDetails {
   isstatic: Host['isstatic']
   localrange: Host['localrange']
   mtu: Host['mtu']
+  interfaces: Host['interfaces']
 }
 
 export const reducer = createReducer({
@@ -50,6 +51,7 @@ export const reducer = createReducer({
           isstatic: host.isstatic,
           localrange: host.localrange,
           mtu: host.mtu,
+          interfaces: host.interfaces,
         }
       })
     })
