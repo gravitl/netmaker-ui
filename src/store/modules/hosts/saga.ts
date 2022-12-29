@@ -77,17 +77,17 @@ function* handleUpdateHostNetworksRequest(
       },
     })
 
-    const response: AxiosResponse<string[]> = yield apiRequestWithAuthSaga(
+    const response: AxiosResponse<{ networks: string[] }> = yield apiRequestWithAuthSaga(
       'put',
       `/hosts/${action.payload.id}/networks`,
-      action.payload.networks,
+      { networks: action.payload.networks },
       {}
     )
 
     yield put(
       updateHostNetworks['success']({
         hostid: action.payload.id,
-        networks: response.data,
+        networks: response.data.networks,
       })
     )
   } catch (e: unknown) {

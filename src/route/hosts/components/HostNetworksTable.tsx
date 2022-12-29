@@ -28,7 +28,7 @@ export const HostNetworksTable: FC<HostNetworksTableProps> = ({ hostid: hostId }
   const [searchFilter, setSearchFilter] = useState('')
   const host = useGetHostById(hostId)
   const allNodes = useSelector(nodeSelectors.getNodes)
-  const hostNodes = useMemo(() => host?.nodes ?? [], [host])
+  const hostNodesNames = useMemo(() => host?.nodes ?? [], [host])
   const [
     shouldShowConfirmNetStatusChangeModal,
     setShouldShowConfirmNetStatusChangeModal,
@@ -40,29 +40,23 @@ export const HostNetworksTable: FC<HostNetworksTableProps> = ({ hostid: hostId }
     title: t('breadcrumbs.hosts'),
   })
 
+  // TODO: change implementation to show Network instead of Node
   const filteredNetworks = useMemo(() => {
-    let netsCopy: Node[] = []
+    let nodes: Node[] = []
     if (showOnlyConnectedNets) {
-      netsCopy = JSON.parse(JSON.stringify(hostNodes))
-      netsCopy.forEach((nw) => {
-        nw.connected = true
-      })
-    } else {
-      netsCopy = JSON.parse(JSON.stringify(allNodes))
-      const hostNodesIds = hostNodes.map((node) => nodesMap[`${host?.id}-${node}`].id)
-      netsCopy.forEach((nw) => {
-        if (hostNodesIds.includes(nw.id!)) {
-          nw.connected = true
-        } else {
-          nw.connected = false
+      allNodes.forEach(node => {
+        if (node.hostid === hostId && node.connected) {
+          nodes.push(node)
         }
       })
+    } else {
+      nodes = allNodes
     }
-    netsCopy = netsCopy.filter((nw) =>
+    nodes = nodes.filter((nw) =>
       nw.network?.toLocaleLowerCase().includes(searchFilter.toLocaleLowerCase())
     )
-    return netsCopy
-  }, [showOnlyConnectedNets, hostNodes, allNodes, nodesMap, host?.id, searchFilter])
+    return nodes
+  }, [showOnlyConnectedNets, allNodes, hostId, searchFilter])
 
   const columns: TableColumns<Node> = [
     {
@@ -174,10 +168,9 @@ export const HostNetworksTable: FC<HostNetworksTableProps> = ({ hostid: hostId }
       <CustomizedDialogs
         open={shouldShowConfirmNetStatusChangeModal}
         handleClose={handleCloseConfirmNetStatusChangeModal}
-        // TODO
         handleAccept={toggleNetworkStatus}
         message={t('hosts.confirmconnect')}
-        title={`${t('common.connecttonetwork')}: ${hostsMap[targetNetwork!.hostid!].name ?? ''}`}
+        title={`${t('common.connecttonetwork')}: ${hostsMap[targetNetwork?.hostid ?? '']?.name ?? ''}`}
       />
     </>
   )
