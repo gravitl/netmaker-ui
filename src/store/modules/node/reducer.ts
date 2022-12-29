@@ -78,7 +78,7 @@ export const reducer = createReducer({
 
         // populate nodes map
         draftState.nodes.forEach(node => {
-          draftState.nodesMap[`${node.hostid}-${node.network}`] = node
+          draftState.nodesMap[node.id] = node
         })
       } else {
         draftState.nodes = []

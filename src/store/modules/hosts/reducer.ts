@@ -2,6 +2,7 @@ import { produce } from 'immer'
 import { createReducer } from 'typesafe-actions'
 import { clearHosts, getHosts, updateHost, deleteHost, updateHostNetworks } from './actions'
 import { Host } from '.'
+import { call } from 'redux-saga/effects'
 
 interface NodeCommonDetails {
   name: Host['name']
@@ -96,10 +97,12 @@ export const reducer = createReducer({
   .handleAction(updateHostNetworks['success'], (state, payload) =>
     produce(state, (draftState) => {
       draftState.isProcessing = false
-      const newStateHosts: Host[] = JSON.parse(JSON.stringify(state.hosts))
-      const updatedHostId = payload.payload.hostid
-      newStateHosts.find((host: Host) => host.id === updatedHostId)!.nodes = payload.payload.networks
-      draftState.hosts = newStateHosts
+      // resfresh hosts
+      call(getHosts['request'])
+      // const newStateHosts: Host[] = JSON.parse(JSON.stringify(state.hosts))
+      // const updatedHostId = payload.payload.hostid
+      // newStateHosts.find((host: Host) => host.id === updatedHostId)!.nodes = payload.payload.networks
+      // draftState.hosts = newStateHosts
     })
   )
   .handleAction(updateHostNetworks['failure'], (state, _) =>

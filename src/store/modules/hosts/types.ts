@@ -24,8 +24,7 @@ export interface Host {
   publickey: string
   macaddress: string
   internetgateway: string
-  // nodes: Node[]
-  nodes: string[] // network names
+  nodes: string[] // node ids
   proxy_enabled: boolean
   isdefault: boolean
 

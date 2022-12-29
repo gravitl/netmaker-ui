@@ -28,7 +28,6 @@ export const HostNetworksTable: FC<HostNetworksTableProps> = ({ hostid: hostId }
   const [searchFilter, setSearchFilter] = useState('')
   const host = useGetHostById(hostId)
   const allNodes = useSelector(nodeSelectors.getNodes)
-  const hostNodesNames = useMemo(() => host?.nodes ?? [], [host])
   const [
     shouldShowConfirmNetStatusChangeModal,
     setShouldShowConfirmNetStatusChangeModal,
@@ -114,7 +113,7 @@ export const HostNetworksTable: FC<HostNetworksTableProps> = ({ hostid: hostId }
 
   const toggleNetworkStatus = useCallback(() => {
     if (!targetNetwork || !host) return
-    const connectedNodesNames = new Set(host.nodes.map(n => nodesMap[`${host?.id}-${n}`].network))
+    const connectedNodesNames = new Set(host.nodes.map(nId => nodesMap[nId].network))
     // if connected, disconnect. else connect
     if (targetNetwork.connected) {
       connectedNodesNames.delete(targetNetwork.network)
