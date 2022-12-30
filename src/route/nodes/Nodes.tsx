@@ -40,7 +40,7 @@ export const Nodes: React.FC = () => {
     } else {
       setFilterNodes(
         listOfNodes.filter((node) =>
-          `${hostsMap[node.hostid].name}${node.address}${node.network}`.includes(searchTerm)
+          `${hostsMap[node.hostid]?.name ?? ''}${node.address}${node.network}`.includes(searchTerm)
         )
       )
     }

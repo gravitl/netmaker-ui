@@ -241,7 +241,7 @@ export const en: LanguageResource = {
     overload: 'Too many failed requests, refresh to retry',
     name: 'Invalid name. name can only include alphanumeric and dash characters',
     verbositymustbeinrange: 'Verbosity must be between 1 and 4 inclusive',
-    portmustbeinrange: 'Port number cannot be less than 1',
+    portmustbeinrange: 'Port number cannot be less than 1. 0 means unset',
   },
   extclient: {
     extclients: 'External Clients',
@@ -657,6 +657,7 @@ export const en: LanguageResource = {
     },
   },
   hosts: {
+    name: 'Host Name',
     hosts: 'Hosts',
     details: 'Host details',
     localaddress: 'Local Address',
@@ -668,5 +669,7 @@ export const en: LanguageResource = {
     confirmconnect: 'Are you sure you want to connect to network',
     confirmdisconnect: 'Are you sure you want to disconnect from network',
     canonlyeditendpointofstatichost: 'You can only edit the endpoint of a static host',
+    endpointip: 'Endpoint IP',
+    publickey: 'Public Key',
   },
 }

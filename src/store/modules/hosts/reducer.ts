@@ -39,9 +39,15 @@ export const reducer = createReducer({
   .handleAction(getHosts['success'], (state, payload) =>
     produce(state, (draftState) => {
       draftState.isProcessing = false
-      draftState.hosts = payload.payload
+      
+      const hosts = payload.payload
 
-      payload.payload.forEach((host) => {
+      // sort based on public key to maintain order in UI
+      hosts.sort((a, b) => a.publickey.localeCompare(b.publickey))
+      draftState.hosts = hosts
+
+      // update hosts map
+      hosts.forEach((host) => {
         draftState.hostsMap[host.id] = {
           name: host.name,
           version: host.version,

@@ -15,6 +15,7 @@ import LocalizationProvider from '@mui/lab/LocalizationProvider'
 import Routes from './route/root'
 import { PathBreadcrumbsProvider } from './components/PathBreadcrumbs'
 import { getNodes } from '~store/modules/node/actions'
+import { getHosts } from '~store/modules/hosts/actions'
 
 function App() {
   const dispatch = useDispatch()
@@ -34,6 +35,7 @@ function App() {
         dispatch(logout())
       } else if (isLoggedIn && token && user && user.isAdmin) {
         dispatch(getNodes.request({ token }))
+        dispatch(getHosts.request())
       }
       
     }, 7500)

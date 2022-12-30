@@ -43,14 +43,14 @@ export const HostEditPage: FC<{ onCancel: () => void }> = ({ onCancel }) => {
         },
         listenport: (value, formData) => {
           const message = t('error.portmustbeinrange')
-          if (value < 1) {
+          if (value < 0) {
             return { message, type: 'value' }
           }
           return undefined
         },
         proxy_listen_port: (value, formData) => {
           const message = t('error.portmustbeinrange')
-          if (value < 1) {
+          if (value < 0) {
             return { message, type: 'value' }
           }
           return undefined
