@@ -1,5 +1,3 @@
-import { Node } from '.'
-
 // export const nodeToNodePayload = (node: Node): NodePayload => {
 //   return {
 //     ...node,

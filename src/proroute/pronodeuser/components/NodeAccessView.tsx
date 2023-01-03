@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { NmTable, TableColumns } from '~components/Table'
 import { Node } from '~modules/node'
 import { useTranslation } from 'react-i18next'
@@ -37,6 +37,10 @@ import { NmLink } from '~components/Link'
 import { i18n } from '../../../i18n/i18n'
 import { TableToggleButton } from '../../../route/nodes/netid/components/TableToggleButton'
 
+type NodeAccessTableData = Node & {
+  name: string
+}
+
 export const NodeAccessView: React.FC<{ nodes: Node[]; isNetAdmin?: boolean }> =
   ({ nodes, isNetAdmin }) => {
     const { path, url } = useRouteMatch()
@@ -46,11 +50,20 @@ export const NodeAccessView: React.FC<{ nodes: Node[]; isNetAdmin?: boolean }> =
     const [filterNodes, setFilterNodes] = React.useState(nodes)
     const [selected, setSelected] = React.useState({} as Node)
     const dispatch = useDispatch()
-    const [searchTerm, setSearchTerm] = useState(' ')
+    const [searchTerm, setSearchTerm] = useState('')
     const hostsMap = useSelector(hostsSelectors.getHostsMap)
 
+    const tableData: NodeAccessTableData[] = useMemo(
+      () =>
+        filterNodes.map((node) => ({
+          name: hostsMap[node.hostid]?.name ?? 'N/A',
+          ...node,
+        })),
+      [hostsMap, filterNodes]
+    )
+
     useEffect(() => {
-      if (!!!searchTerm) {
+      if (!searchTerm) {
         setFilterNodes(nodes)
       } else {
         if (nodes) {
@@ -78,9 +91,9 @@ export const NodeAccessView: React.FC<{ nodes: Node[]; isNetAdmin?: boolean }> =
       return <GenericError />
     }
 
-    const columns: TableColumns<Node> = [
+    const columns: TableColumns<NodeAccessTableData> = [
       {
-        id: 'id',
+        id: 'name',
         labelKey: 'node.name',
         minWidth: 100,
         sortable: true,
@@ -311,11 +324,7 @@ export const NodeAccessView: React.FC<{ nodes: Node[]; isNetAdmin?: boolean }> =
           <hr />
           <NmTable
             columns={columns}
-            rows={
-              filterNodes.length && filterNodes.length < nodes.length
-                ? filterNodes
-                : nodes
-            }
+            rows={tableData}
             actions={[
               (row) => ({
                 icon: <Delete />,

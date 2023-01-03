@@ -1,16 +1,11 @@
 import { FC, useState, useCallback, useMemo } from 'react'
 import { NmLink } from '~components/index'
 import { useTranslation } from 'react-i18next'
-import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
-// import { useDispatch } from 'react-redux'
 import { NmTable, TableColumns } from '~components/Table'
-import { CheckCircle, RadioButtonUnchecked } from '@mui/icons-material'
-// import CustomizedDialogs from '~components/dialog/CustomDialog'
 import CopyText from '~components/CopyText'
-// import { useSelector } from 'react-redux'
-// import { serverSelectors } from '~store/selectors'
 import { Host } from '~store/modules/hosts/types'
-import { Grid, TextField } from '@mui/material'
+import { Grid, Switch, TextField } from '@mui/material'
+import CustomizedDialogs from '~components/dialog/CustomDialog'
 
 interface HostsTableProps {
   hosts: Host[]
@@ -20,11 +15,9 @@ interface HostsTableProps {
 export const HostsTable: FC<HostsTableProps> = (props) => {
   const { t } = useTranslation()
   const [searchFilter, setSearchFilter] = useState('')
-
-  useLinkBreadcrumb({
-    title: t('breadcrumbs.hosts'),
-  })
-
+  const [shouldShowConfirmDefaultModal, setShouldShowConfirmDefaultModal] =
+    useState(false)
+  const [targetHost, setTargetHost] = useState<Host | null>(null)
   const columns: TableColumns<Host> = [
     {
       id: 'name',
@@ -81,6 +74,15 @@ export const HostsTable: FC<HostsTableProps> = (props) => {
     [props]
   )
 
+  const openConfirmDefaultModal = useCallback((host: Host) => {
+    setTargetHost(host)
+    setShouldShowConfirmDefaultModal(true)
+  }, [])
+
+  const hideConfirmDefaultModal = useCallback(() => {
+    setShouldShowConfirmDefaultModal(false)
+  }, [])
+
   return (
     <>
       {/* search row */}
@@ -109,18 +111,29 @@ export const HostsTable: FC<HostsTableProps> = (props) => {
                 ? t('hosts.removedefault')
                 : t('hosts.makedefault'),
               disabled: false,
-              icon: host.isdefault ? (
-                <CheckCircle color="success" />
-              ) : (
-                <RadioButtonUnchecked />
-              ),
+              icon: <Switch checked={host.isdefault} />,
               onClick: () => {
-                toggleDefaultness(host)
+                openConfirmDefaultModal(host)
               },
             }),
           ]}
         />
       )}
+
+      {/* modals */}
+      {!!targetHost ? (
+        <CustomizedDialogs
+          open={shouldShowConfirmDefaultModal}
+          handleClose={hideConfirmDefaultModal}
+          handleAccept={() => toggleDefaultness(targetHost)}
+          message={
+            targetHost.isdefault
+              ? t('hosts.removedefaultness')
+              : t('hosts.adddefaultness')
+          }
+          title={t('hosts.confirmdefaultness')}
+        />
+      ) : null}
     </>
   )
 }

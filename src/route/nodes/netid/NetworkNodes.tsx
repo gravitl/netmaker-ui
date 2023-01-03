@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { NmLink } from '~components/index'
 import { NmTable, TableColumns } from '~components/Table'
 import { Node } from '~modules/node'
@@ -31,7 +31,6 @@ import {
   Delete,
   Search,
   Sync,
-  Hub,
 } from '@mui/icons-material'
 import { i18n } from '../../../i18n/i18n'
 import { CreateEgress } from './components/CreateEgress'
@@ -41,12 +40,16 @@ import { NetworkSelect } from '../../../components/NetworkSelect'
 import { useDispatch, useSelector } from 'react-redux'
 import { deleteNode, setNodeSort } from '~store/modules/node/actions'
 import CustomizedDialogs from '~components/dialog/CustomDialog'
-import { HubButton } from './components/HubButton'
 import { MultiCopy } from '~components/CopyText'
 import { hostsSelectors, nodeSelectors, serverSelectors } from '~store/selectors'
 import { Tablefilter } from '~components/filter/Tablefilter'
 import { useEffect, useState } from 'react'
 import { FailoverButton } from '../../../ee/nodes/FailoverButton'
+
+type NetworkNodesTableData = Node & {
+  name: string
+  version: string
+}
 
 export const NetworkNodes: React.FC = () => {
   const { path, url } = useRouteMatch()
@@ -60,12 +63,21 @@ export const NetworkNodes: React.FC = () => {
   const [selected, setSelected] = React.useState({} as Node)
   const dispatch = useDispatch()
   const history = useHistory()
-  const [searchTerm, setSearchTerm] = useState(' ')
+  const [searchTerm, setSearchTerm] = useState('')
   const serverConfig = useSelector(serverSelectors.getServerConfig)
   const hostsMap = useSelector(hostsSelectors.getHostsMap)
+  const tableData: NetworkNodesTableData[] = useMemo(
+    () =>
+      filterNodes.map((node) => ({
+        name: hostsMap[node.hostid]?.name ?? 'N/A',
+        version: hostsMap[node.hostid]?.version ?? 'N/A',
+        ...node,
+      })),
+    [hostsMap, filterNodes]
+  )
 
   useEffect(() => {
-    if (!!!searchTerm) {
+    if (!searchTerm) {
       setFilterNodes(listOfNodes)
     } else {
       setFilterNodes(
@@ -93,13 +105,9 @@ export const NetworkNodes: React.FC = () => {
     }
   }
 
-  if (!listOfNodes || !!!network) {
-    return <h5>Not found, data missing</h5>
-  }
-
-  const columns: TableColumns<Node> = [
+  const columns: TableColumns<NetworkNodesTableData> = useMemo(() => [
     {
-      id: 'id',
+      id: 'name',
       labelKey: 'node.name',
       minWidth: 100,
       sortable: true,
@@ -122,7 +130,7 @@ export const NetworkNodes: React.FC = () => {
       ),
     },
     {
-      id: 'id',
+      id: 'version',
       labelKey: 'node.version',
       minWidth: 50,
       align: 'center',
@@ -221,7 +229,11 @@ export const NetworkNodes: React.FC = () => {
         )
       },
     },
-  ]
+  ], [hostsMap, t])
+
+  if (!listOfNodes || !!!network) {
+    return <h5>Not found, data missing</h5>
+  }
 
   if (network.ispointtosite) {
     // columns.push({
@@ -366,11 +378,7 @@ export const NetworkNodes: React.FC = () => {
         <hr />
         <NmTable
           columns={columns}
-          rows={
-            filterNodes.length && filterNodes.length < listOfNodes.length
-              ? filterNodes
-              : listOfNodes
-          }
+          rows={tableData}
           actions={[
             (row) => ({
               tooltip: t('common.delete'),

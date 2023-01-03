@@ -135,6 +135,7 @@ export const en: LanguageResource = {
     hosts: 'Hosts',
   },
   common: {
+    endpointip: 'Endpoint IP',
     connecttonetwork: 'Connect to network',
     disconnectfromnetwork: 'Disconnect from network',
     confirmdeletequestion: 'Are you sure you want to delete',
@@ -671,5 +672,10 @@ export const en: LanguageResource = {
     canonlyeditendpointofstatichost: 'You can only edit the endpoint of a static host',
     endpointip: 'Endpoint IP',
     publickey: 'Public Key',
+    shownetworks: 'Show Networks',
+    showhostdetails: 'Show Host Details',
+    confirmdefaultness: 'Confirm host defaultness',
+    adddefaultness: 'Make this host default?',
+    removedefaultness: 'Remove default from host?',
   },
 }

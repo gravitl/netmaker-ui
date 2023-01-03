@@ -1,21 +1,24 @@
-import { FC, useCallback, useMemo, useEffect } from 'react'
+import { FC, useCallback, useEffect } from 'react'
 import { Container, Grid, Typography } from '@mui/material'
 import { useRouteMatch, Switch, Route } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 import { HostDetailPage } from './HostDetailPage'
 import { HostsTable } from './components/HostsTable'
-import { getHosts } from '~store/modules/hosts/actions'
+import { getHosts, updateHost } from '~store/modules/hosts/actions'
 import { useDispatch, useSelector } from 'react-redux'
 import { hostsSelectors } from '~store/selectors'
 import { Host } from '~store/types'
-
 
 export const HostsPage: FC = () => {
   const { path } = useRouteMatch()
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const hosts = useSelector(hostsSelectors.getHosts)
+
+  useLinkBreadcrumb({
+    title: t('breadcrumbs.hosts'),
+  })
 
   const titleStyle = {
     textAlign: 'center',
@@ -26,7 +29,9 @@ export const HostsPage: FC = () => {
     dispatch(getHosts.request())
   }, [dispatch])
 
-  const onToggleDefaultness = useCallback((host: Host) => {}, [])
+  const onToggleDefaultness = useCallback((host: Host) => {
+    dispatch(updateHost.request({ ...host, isdefault: !host.isdefault }))
+  }, [dispatch])
 
   // on created
   useEffect(() => {
@@ -49,7 +54,10 @@ export const HostsPage: FC = () => {
                 <Typography variant="h5">{t('hosts.hosts')}</Typography>
               </div>
             </Grid>
-          <HostsTable hosts={hosts} onToggleDefaultness={onToggleDefaultness} />
+            <HostsTable
+              hosts={hosts}
+              onToggleDefaultness={onToggleDefaultness}
+            />
           </Grid>
         </Route>
 

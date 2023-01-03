@@ -1,5 +1,3 @@
-import { Modify } from '../../../types/react-app-env'
-
 export interface Node {
   id: string
   hostid: string

@@ -46,7 +46,13 @@ function* handleUpdateHostRequest(
     const response: AxiosResponse<Host> = yield apiRequestWithAuthSaga(
       'put',
       `/hosts/${action.payload.id}`,
-      action.payload,
+      {
+        ...action.payload,
+        verbosity: Number(action.payload.verbosity),
+        mtu: Number(action.payload.mtu),
+        listenport: Number(action.payload.listenport),
+        proxy_listen_port: Number(action.payload.proxy_listen_port),
+      },
       {}
     )
 
@@ -77,12 +83,13 @@ function* handleUpdateHostNetworksRequest(
       },
     })
 
-    const response: AxiosResponse<{ networks: string[] }> = yield apiRequestWithAuthSaga(
-      'put',
-      `/hosts/${action.payload.id}/networks`,
-      { networks: action.payload.networks },
-      {}
-    )
+    const response: AxiosResponse<{ networks: string[] }> =
+      yield apiRequestWithAuthSaga(
+        'put',
+        `/hosts/${action.payload.id}/networks`,
+        { networks: action.payload.networks },
+        {}
+      )
 
     yield put(
       updateHostNetworks['success']({
@@ -132,7 +139,10 @@ export function* saga() {
   yield all([
     takeEvery(getType(getHosts['request']), handleGetHostsRequest),
     takeEvery(getType(updateHost['request']), handleUpdateHostRequest),
-    takeEvery(getType(updateHostNetworks['request']), handleUpdateHostNetworksRequest),
+    takeEvery(
+      getType(updateHostNetworks['request']),
+      handleUpdateHostNetworksRequest
+    ),
     takeEvery(getType(deleteHost['request']), handleDeleteHostRequest),
   ])
 }

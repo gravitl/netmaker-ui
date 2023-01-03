@@ -1,9 +1,18 @@
 import { FC, useCallback, useMemo } from 'react'
-import { Grid, Typography, Tooltip } from '@mui/material'
+import {
+  Grid,
+  Typography,
+  Tooltip,
+} from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import { useRouteMatch, useParams } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
-import { NmForm, NmFormInputText, validate } from '~components/form'
+import {
+  NmForm,
+  NmFormInputSwitch,
+  NmFormInputText,
+  validate,
+} from '~components/form'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 import { Host } from '~store/types'
 import { useGetHostById } from '~util/hosts'
@@ -91,7 +100,7 @@ export const HostEditPage: FC<{ onCancel: () => void }> = ({ onCancel }) => {
           </div>
         </Grid>
 
-        <Grid item xs={12} md={4} sx={rowMargin}>
+        <Grid item xs={12} md={3} sx={rowMargin}>
           <Tooltip title={String(t('common.name'))}>
             <span>
               <NmFormInputText
@@ -102,7 +111,7 @@ export const HostEditPage: FC<{ onCancel: () => void }> = ({ onCancel }) => {
             </span>
           </Tooltip>
         </Grid>
-        <Grid item xs={12} md={4} sx={rowMargin}>
+        <Grid item xs={12} md={3} sx={rowMargin}>
           <Tooltip title={String(t('common.verbosity'))}>
             <span>
               <NmFormInputText
@@ -114,7 +123,7 @@ export const HostEditPage: FC<{ onCancel: () => void }> = ({ onCancel }) => {
             </span>
           </Tooltip>
         </Grid>
-        <Grid item xs={12} md={4} sx={rowMargin}>
+        <Grid item xs={12} md={3} sx={rowMargin}>
           <Tooltip title={String(t('common.mtu'))}>
             <span>
               <NmFormInputText
@@ -176,6 +185,17 @@ export const HostEditPage: FC<{ onCancel: () => void }> = ({ onCancel }) => {
                 name={'proxy_listen_port'}
                 label={String(t('common.proxylistenport'))}
                 type="number"
+              />
+            </span>
+          </Tooltip>
+        </Grid>
+        <Grid item xs={12} md={3} sx={rowMargin}>
+          <Tooltip title={String(t('common.isdefault'))}>
+            <span>
+              <NmFormInputSwitch
+                label={String(t('common.isdefault'))}
+                name={'isdefault'}
+                defaultValue={host.isdefault}
               />
             </span>
           </Tooltip>

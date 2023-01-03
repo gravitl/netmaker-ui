@@ -2,10 +2,7 @@ import React, { ReactNode } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { IconButton, Tooltip } from '@mui/material'
-// import { Block, Check } from '@mui/icons-material'
-import {
-  updateNode,
-} from '~modules/node/actions'
+import { updateNode } from '~modules/node/actions'
 import { hostsSelectors, Node } from '~store/types'
 import CustomDialog from '~components/dialog/CustomDialog'
 
@@ -22,14 +19,9 @@ export const HubButton: React.FC<{
   SignalIcon: ReactNode
   children?: ReactNode
   extraLogic?: () => void
-}> = ({
-  node,
-  createText,
-  disabledText,
-  SignalIcon,
-  extraLogic,
-}) => {
+}> = ({ node, createText, disabledText, SignalIcon, extraLogic }) => {
   const dispatch = useDispatch()
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [hovering, setHovering] = React.useState(false)
   const [open, setOpen] = React.useState(false)
   const { t } = useTranslation()
@@ -42,13 +34,13 @@ export const HubButton: React.FC<{
 
   const createHub = () => {
     dispatch(
-    updateNode.request({
+      updateNode.request({
         netid: node.network,
         token: '',
         node: {
           ...node,
-        }
-    })
+        },
+      })
     )
     if (!!extraLogic) {
       extraLogic()
