@@ -25,14 +25,12 @@ import {
   Close,
   DeleteForever,
   Edit,
-  Hub,
   ViewList,
 } from '@mui/icons-material'
 import { AltDataNode } from './types'
 import { isNodeHealthy } from '~util/fields'
 import { Link } from 'react-router-dom'
 import { TableToggleButton } from '../../../nodes/netid/components/TableToggleButton'
-import { HubButton } from '../../../nodes/netid/components/HubButton'
 import { deleteNode } from '~store/modules/node/actions'
 import CustomizedDialogs from '~components/dialog/CustomDialog'
 import { authSelectors, serverSelectors } from '~store/selectors'
@@ -192,15 +190,6 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({
           withHistory
           extraLogic={handleClose}
         />
-        {network.ispointtosite ? (
-          <HubButton
-            node={data}
-            createText={`${t('node.createhub')} : ${data.name}`}
-            SignalIcon={<Hub />}
-            disabledText={`${t('node.onehub')}`}
-            extraLogic={handleClose}
-          />
-        ) : null}
         <Tooltip
           title={`${t('acls.nodeview')} ${t('node.node')}`}
           placement="top"

@@ -31,7 +31,6 @@ import {
   Delete,
   Search,
   Sync,
-  Hub,
 } from '@mui/icons-material'
 import { i18n } from '../../../i18n/i18n'
 import { CreateEgress } from './components/CreateEgress'
@@ -41,7 +40,6 @@ import { NetworkSelect } from '../../../components/NetworkSelect'
 import { useDispatch, useSelector } from 'react-redux'
 import { deleteNode, setNodeSort } from '~store/modules/node/actions'
 import CustomizedDialogs from '~components/dialog/CustomDialog'
-import { HubButton } from './components/HubButton'
 import { MultiCopy } from '~components/CopyText'
 import { nodeSelectors, serverSelectors } from '~store/selectors'
 import { Tablefilter } from '~components/filter/Tablefilter'
@@ -224,23 +222,6 @@ export const NetworkNodes: React.FC = () => {
       },
     },
   ]
-
-  if (network.ispointtosite) {
-    columns.push({
-      id: 'ishub',
-      labelKey: 'node.statushub',
-      minWidth: 30,
-      align: 'center',
-      format: (_, row) => (
-        <HubButton
-          node={row}
-          createText={`${i18n.t('node.createhub')} : ${row.name}`}
-          disabledText={`${i18n.t('node.onehub')} : ${row.name}`}
-          SignalIcon={<Hub />}
-        />
-      ),
-    })
-  }
 
   if (serverConfig.IsEE) {
     const oldColumn = columns[columns.length - 1]

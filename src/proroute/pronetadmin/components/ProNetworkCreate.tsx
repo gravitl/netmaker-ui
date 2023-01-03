@@ -25,7 +25,6 @@ interface CreateNetwork {
   isipv6: boolean
   addressrange6: string
   defaultudpholepunch: boolean
-  ispointtosite: boolean
   defaultacl: boolean
   defaultaccesslevel: number
   defaultusernodelimit: number
@@ -41,7 +40,6 @@ const initialState: CreateNetwork = {
   isipv6: false,
   addressrange6: '',
   defaultudpholepunch: false,
-  ispointtosite: false,
   defaultacl: true,
   defaultaccesslevel: 3,
   defaultusernodelimit: 0,
@@ -80,7 +78,6 @@ export const ProNetworkCreate: React.FC = () => {
           addressrange6: data.isipv6 ? data.addressrange6 : '',
           addressrange: data.isipv4 ? data.addressrange : '',
           defaultudpholepunch: data.defaultudpholepunch ? 'yes' : 'no',
-          ispointtosite: data.ispointtosite ? 'yes' : 'no',
           defaultacl: data.defaultacl ? 'yes' : 'no',
           prosettings: {
             defaultaccesslevel: Number(data.defaultaccesslevel),
@@ -330,30 +327,6 @@ export const ProNetworkCreate: React.FC = () => {
                 <NmFormInputSwitch
                   name={'defaultacl'}
                   label={String(t('network.defaultacl'))}
-                />
-              </div>
-            </Tooltip>
-          </Grid>
-          <Grid
-            item
-            xs={12}
-            sm={10}
-            md={10}
-            className={classes.center + ' ' + classes.rowMargin}
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <Tooltip
-              title={t('helper.ispointtosite') as string}
-              placement="top"
-            >
-              <div>
-                <NmFormInputSwitch
-                  name={'ispointtosite'}
-                  label={String(t('network.ispointtosite'))}
                 />
               </div>
             </Tooltip>
