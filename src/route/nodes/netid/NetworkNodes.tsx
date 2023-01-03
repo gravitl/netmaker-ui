@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useCallback } from 'react'
 import { NmLink } from '~components/index'
 import { NmTable, TableColumns } from '~components/Table'
 import { Node } from '~modules/node'
@@ -29,6 +29,7 @@ import {
   CallMerge,
   CallSplit,
   Delete,
+  Edit,
   Search,
   Sync,
 } from '@mui/icons-material'
@@ -105,20 +106,19 @@ export const NetworkNodes: React.FC = () => {
     }
   }
 
+  const handleEditDetails = useCallback(
+    (node: Node) => {
+      history.push(`/nodes/${node.network}/${encodeURIComponent(node.id)}/edit`)
+    },
+    [history]
+  )
+
   const columns: TableColumns<NetworkNodesTableData> = useMemo(() => [
     {
       id: 'name',
       labelKey: 'node.name',
       minWidth: 100,
       sortable: true,
-      format: (value, node) => (
-        <NmLink
-          to={`/nodes/${node.network}/${encodeURIComponent(node.id)}`}
-          sx={{ textTransform: 'none' }}
-        >
-          {hostsMap[node.hostid]?.name ?? ''}
-        </NmLink>
-      ),
     },
     {
       id: 'address',
@@ -380,6 +380,13 @@ export const NetworkNodes: React.FC = () => {
           columns={columns}
           rows={tableData}
           actions={[
+            (row) => ({
+              tooltip: t('common.edit'),
+              icon: <Edit />,
+              onClick: () => {
+                handleEditDetails(row)
+              },
+            }),
             (row) => ({
               tooltip: t('common.delete'),
               icon: <Delete />,
