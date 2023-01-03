@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import CustomDialog from '~components/dialog/CustomDialog'
@@ -36,7 +36,7 @@ export const NetworkGraph: React.FC = () => {
   const tmpNodes = useNodesByNetworkId(netid)
   const listOfNodes = useMemo(() => tmpNodes || [], [tmpNodes])
   const currentNetworkACL = useSelector(aclSelectors.getCurrentACL)
-  const currentNodeACLs = Object.keys(currentNetworkACL)
+  const currentNodeACLs = useMemo(() => Object.keys(currentNetworkACL), [currentNetworkACL])
   const [selectedNode, setSelectedNode] = React.useState({} as Node)
   const [selectedAltData, setSelectedAltData] = React.useState(
     {} as AltDataNode
@@ -46,6 +46,7 @@ export const NetworkGraph: React.FC = () => {
   const inDarkMode = useSelector(authSelectors.isInDarkMode)
   const dispatch = useDispatch()
   const isProcessing = useSelector(aclSelectors.isProcessing)
+  const [hasLoadedAcls, setHasLoadedAcls] = useState(false)
 
   useLinkBreadcrumb({
     link: url,
@@ -53,22 +54,18 @@ export const NetworkGraph: React.FC = () => {
   })
 
   React.useEffect(() => {
-    if (!!!currentNodeACLs.length && !isProcessing) {
+    if (!isProcessing && !hasLoadedAcls) {
       dispatch(getNodeACLContainer.request({ netid }))
-    } else if (
+      setHasLoadedAcls(true)
+    }
+    if (
       !!!listOfNodes.length ||
       !!!currentNodeACLs.filter((acl) => acl === listOfNodes[0].id).length
     ) {
       dispatch(clearCurrentACL(''))
     }
-  }, [
-    dispatch,
-    netid,
-    currentNetworkACL,
-    currentNodeACLs,
-    listOfNodes,
-    isProcessing,
-  ])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [netid, isProcessing])
 
   const handleClose = () => {
     setOpen(false)

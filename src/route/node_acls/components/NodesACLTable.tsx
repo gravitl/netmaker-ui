@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { NmLink } from '../../../components'
 import { useTranslation } from 'react-i18next'
@@ -51,12 +51,15 @@ export const NodesACLTable: React.FC<{}> = () => {
   const [open, setOpen] = React.useState(false)
   const { netid } = useParams<{ netid: string }>()
   const { nodeid } = useParams<{ nodeid: string }>()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const listOfNodes = useNodesByNetworkId(netid) || []
+  const tmpNodes = useNodesByNetworkId(netid)
+  const listOfNodes = useMemo(() => tmpNodes || [], [tmpNodes])
   const network = useNetwork(netid)
   const isProcessing = useSelector(aclSelectors.isProcessing)
   const currentNetworkACL = useSelector(aclSelectors.getCurrentACL)
-  const currentNodeACLs = Object.keys(currentNetworkACL)
+  const currentNodeACLs = useMemo(
+    () => Object.keys(currentNetworkACL),
+    [currentNetworkACL]
+  )
   const [editableNetworkACL, setEditableNetworkACL] =
     React.useState(currentNetworkACL)
   var nodeNameMap: Map<string, string> = new Map()
@@ -72,6 +75,7 @@ export const NodesACLTable: React.FC<{}> = () => {
     nodeID2: '',
   } as HoveredNode)
   const hostsMap = useSelector(hostsSelectors.getHostsMap)
+  const [hasLoadedAcls, setHasLoadedAcls] = useState(false)
 
   const handleFilter = (event: { target: { value: string } }) => {
     const { value } = event.target
@@ -93,31 +97,34 @@ export const NodesACLTable: React.FC<{}> = () => {
   })
 
   React.useEffect(() => {
-    if (
-      (!!!currentNodeACLs.length && !isProcessing) ||
-      listOfNodes.length !== currentNodeACLs.length
-    ) {
+    if (!isProcessing && !hasLoadedAcls) {
       dispatch(getNodeACLContainer.request({ netid }))
-    } else if (
+      setHasLoadedAcls(true)
+    }
+
+    if (
       !!!listOfNodes.length ||
       !!!currentNodeACLs.filter((acl) => acl === listOfNodes[0].id).length
     ) {
       dispatch(clearCurrentACL(''))
     }
-
-    if (Object.keys(editableNetworkACL).length !== currentNodeACLs.length) {
-      setEditableNetworkACL(currentNetworkACL)
-    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     dispatch,
     netid,
-    currentNetworkACL,
-    currentNodeACLs,
-    setEditableNetworkACL,
-    editableNetworkACL,
-    listOfNodes,
     isProcessing,
+    hasLoadedAcls,
   ])
+
+  React.useEffect(() => {
+    setHasLoadedAcls(false)
+  }, [netid])
+
+  React.useEffect(() => {
+    if (Object.keys(editableNetworkACL).length !== currentNodeACLs.length) {
+      setEditableNetworkACL(currentNetworkACL)
+    }
+  }, [currentNetworkACL, currentNodeACLs, editableNetworkACL])
 
   if (!!!network) {
     return (
@@ -140,7 +147,7 @@ export const NodesACLTable: React.FC<{}> = () => {
         </Grid>
       </Grid>
     )
-  } else if (isProcessing || (!isProcessing && !!!currentNodeACLs.length)) {
+  } else if (network && isProcessing) {
     return <Loading />
   }
 
