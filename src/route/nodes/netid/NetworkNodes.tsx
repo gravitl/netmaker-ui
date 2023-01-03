@@ -235,23 +235,6 @@ export const NetworkNodes: React.FC = () => {
     return <h5>Not found, data missing</h5>
   }
 
-  if (network.ispointtosite) {
-    // columns.push({
-    //   id: 'ishub',
-    //   labelKey: 'node.statushub',
-    //   minWidth: 30,
-    //   align: 'center',
-    //   format: (_, row) => (
-    //     <HubButton
-    //       node={row}
-    //       createText={`${i18n.t('node.createhub')} : ${row.name}`}
-    //       disabledText={`${i18n.t('node.onehub')} : ${row.name}`}
-    //       SignalIcon={<Hub />}
-    //     />
-    //   ),
-    // })
-  }
-
   if (serverConfig.IsEE) {
     const oldColumn = columns[columns.length - 1]
     columns[columns.length - 1] = {

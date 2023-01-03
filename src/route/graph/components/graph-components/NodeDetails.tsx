@@ -24,13 +24,12 @@ import {
   Circle,
   Close,
   Edit,
-  Hub,
+  ViewList,
 } from '@mui/icons-material'
 import { AltDataNode } from './types'
 import { isNodeHealthy } from '~util/fields'
 import { Link } from 'react-router-dom'
 import { TableToggleButton } from '../../../nodes/netid/components/TableToggleButton'
-import { HubButton } from '../../../nodes/netid/components/HubButton'
 import { deleteNode } from '~store/modules/node/actions'
 import CustomizedDialogs from '~components/dialog/CustomDialog'
 import { authSelectors, hostsSelectors, serverSelectors } from '~store/selectors'
@@ -190,15 +189,18 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({
           withHistory
           extraLogic={handleClose}
         />
-        {network.ispointtosite ? (
-          <HubButton
-            node={data}
-            createText={`${t('node.createhub')} : ${hostsMap[data.hostid]?.name ?? ''}`}
-            SignalIcon={<Hub />}
-            disabledText={`${t('node.onehub')}`}
-            extraLogic={handleClose}
-          />
-        ) : null}
+        <Tooltip
+          title={`${t('acls.nodeview')} ${t('node.node')}`}
+          placement="top"
+        >
+          <IconButton
+            component={Link}
+            to={`/acls/${data.network}/${data.id}`}
+            aria-label="view-node-acl"
+          >
+            <ViewList />
+          </IconButton>
+        </Tooltip>
         {serverConfig.IsEE && (
           <Tooltip title={`${t('pro.metrics')}`} placement="top">
             <IconButton

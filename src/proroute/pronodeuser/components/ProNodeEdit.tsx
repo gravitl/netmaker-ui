@@ -497,18 +497,6 @@ export const ProNodeEdit: React.FC = () => {
               </span>
             </Tooltip>
           </Grid>
-          {/* <Grid item xs={10} sm={4} md={2} sx={rowMargin}>
-            <Tooltip title={String(t('helper.networkhub'))} placement="top">
-              <span>
-                <NmFormInputSwitch
-                  label={String(t('node.ishub'))}
-                  name={'ishub'}
-                  defaultValue={node.ishub}
-                  disabled={!network?.ispointtosite}
-                />
-              </span>
-            </Tooltip>
-          </Grid> */}
         </Grid>
       </Grid>
     </NmForm>
