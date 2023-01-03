@@ -190,7 +190,7 @@ export const ProNodeEdit: React.FC = () => {
         <Grid item xs={12}>
           <div style={{ textAlign: 'center', margin: '0.5em 0 1em 0' }}>
             <Typography variant="h5">
-              {`${t('node.details')} : ${hostsMap[node.hostid].name}`}
+              {`${t('node.details')} : ${hostsMap[node.hostid]?.name ?? ''}`}
             </Typography>
           </div>
         </Grid>

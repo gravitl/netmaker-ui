@@ -68,7 +68,7 @@ export const DNSView: React.FC = () => {
       align: 'center',
       sortable: true,
       format: (_, node) => (
-        <CopyText value={`${hostsMap[node.hostid].name}.${node.network}`} type="subtitle2" />
+        <CopyText value={`${hostsMap[node.hostid]?.name ?? ''}.${node.network}`} type="subtitle2" />
       ),
     },
     {

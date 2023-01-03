@@ -70,7 +70,7 @@ export const NetworkNodes: React.FC = () => {
     } else {
       setFilterNodes(
         listOfNodes.filter((node) =>
-          `${hostsMap[node.hostid].name}${node.address}${node.network}`.includes(searchTerm)
+          `${hostsMap[node.hostid]?.name ?? ''}${node.address}${node.network}`.includes(searchTerm)
         )
       )
     }
@@ -108,7 +108,7 @@ export const NetworkNodes: React.FC = () => {
           to={`/nodes/${node.network}/${encodeURIComponent(node.id)}`}
           sx={{ textTransform: 'none' }}
         >
-          {hostsMap[node.hostid].name}
+          {hostsMap[node.hostid]?.name ?? ''}
         </NmLink>
       ),
     },
@@ -126,7 +126,7 @@ export const NetworkNodes: React.FC = () => {
       labelKey: 'node.version',
       minWidth: 50,
       align: 'center',
-      format: (value, node) => <>{ hostsMap[node.hostid].version ?? 'N/A'}</>,
+      format: (value, node) => <>{ hostsMap[node.hostid]?.version ?? 'N/A'}</>,
     },
     {
       id: 'network',
@@ -155,8 +155,8 @@ export const NetworkNodes: React.FC = () => {
           which="egress"
           isOn={isegress}
           node={row}
-          createText={`${i18n.t('node.createegress')} : ${hostsMap[row.hostid].name}`}
-          removeText={`${i18n.t('node.removeegress')} : ${hostsMap[row.hostid].name}`}
+          createText={`${i18n.t('node.createegress')} : ${hostsMap[row.hostid]?.name ?? ''}`}
+          removeText={`${i18n.t('node.removeegress')} : ${hostsMap[row.hostid]?.name ?? ''}`}
           SignalIcon={<CallSplit />}
           withHistory
         />
@@ -172,8 +172,8 @@ export const NetworkNodes: React.FC = () => {
           which="ingress"
           isOn={isingress}
           node={row}
-          createText={`${i18n.t('node.createingress')} : ${hostsMap[row.hostid].name}`}
-          removeText={`${i18n.t('node.removeingress')} : ${hostsMap[row.hostid].name}`}
+          createText={`${i18n.t('node.createingress')} : ${hostsMap[row.hostid]?.name ?? ''}`}
+          removeText={`${i18n.t('node.removeingress')} : ${hostsMap[row.hostid]?.name ?? ''}`}
           SignalIcon={<CallMerge />}
         />
       ),
@@ -188,8 +188,8 @@ export const NetworkNodes: React.FC = () => {
           which="relay"
           isOn={isrelay}
           node={row}
-          createText={`${i18n.t('node.createrelay')} : ${hostsMap[row.hostid].name}`}
-          removeText={`${i18n.t('node.removerelay')} : ${hostsMap[row.hostid].name}`}
+          createText={`${i18n.t('node.createrelay')} : ${hostsMap[row.hostid]?.name ?? ''}`}
+          removeText={`${i18n.t('node.removerelay')} : ${hostsMap[row.hostid]?.name ?? ''}`}
           SignalIcon={<AltRoute />}
           withHistory
         />
@@ -387,7 +387,7 @@ export const NetworkNodes: React.FC = () => {
           handleClose={handleClose}
           handleAccept={handleDeleteNode}
           message={t('node.deleteconfirm')}
-          title={`${t('common.delete')} ${hostsMap[selected.hostid].name}`}
+          title={`${t('common.delete')} ${hostsMap[selected.hostid]?.name ?? ''}`}
         />
       </Route>
       <Route

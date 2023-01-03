@@ -56,7 +56,7 @@ export const NodeAccessView: React.FC<{ nodes: Node[]; isNetAdmin?: boolean }> =
         if (nodes) {
           setFilterNodes(
             nodes.filter((node) =>
-              `${hostsMap[node.hostid].name}${node.address}${node.network}`.includes(searchTerm)
+              `${hostsMap[node.hostid]?.name ?? ''}${node.address}${node.network}`.includes(searchTerm)
             )
           )
         }
@@ -97,7 +97,7 @@ export const NodeAccessView: React.FC<{ nodes: Node[]; isNetAdmin?: boolean }> =
             }
             sx={{ textTransform: 'none' }}
           >
-            {hostsMap[node.hostid].name} ({node.server}/{node.network})
+            {hostsMap[node.hostid]?.name ?? ''} ({node.server}/{node.network})
           </NmLink>
         ),
       },
@@ -116,7 +116,7 @@ export const NodeAccessView: React.FC<{ nodes: Node[]; isNetAdmin?: boolean }> =
         minWidth: 50,
         align: 'center',
         format: (value, node) => {
-          const version = hostsMap[value].version
+          const version = hostsMap[value]?.version ?? ''
           return <>{version ? version : 'N/A'}</>
         },
       },
@@ -139,8 +139,8 @@ export const NodeAccessView: React.FC<{ nodes: Node[]; isNetAdmin?: boolean }> =
             which="egress"
             isOn={isegress}
             node={row}
-            createText={`${i18n.t('node.createegress')} : ${hostsMap[row.hostid].name}`}
-            removeText={`${i18n.t('node.removeegress')} : ${hostsMap[row.hostid].name}`}
+            createText={`${i18n.t('node.createegress')} : ${hostsMap[row.hostid]?.name ?? ''}`}
+            removeText={`${i18n.t('node.removeegress')} : ${hostsMap[row.hostid]?.name ?? ''}`}
             SignalIcon={<CallSplit />}
             withHistory
           />
@@ -156,8 +156,8 @@ export const NodeAccessView: React.FC<{ nodes: Node[]; isNetAdmin?: boolean }> =
             which="ingress"
             isOn={isingress}
             node={row}
-            createText={`${i18n.t('node.createingress')} : ${hostsMap[row.hostid].name}`}
-            removeText={`${i18n.t('node.removeingress')} : ${hostsMap[row.hostid].name}`}
+            createText={`${i18n.t('node.createingress')} : ${hostsMap[row.hostid]?.name ?? ''}`}
+            removeText={`${i18n.t('node.removeingress')} : ${hostsMap[row.hostid]?.name ?? ''}`}
             SignalIcon={<CallMerge />}
           />
         ),
@@ -172,8 +172,8 @@ export const NodeAccessView: React.FC<{ nodes: Node[]; isNetAdmin?: boolean }> =
             which="relay"
             isOn={isrelay}
             node={row}
-            createText={`${i18n.t('node.createrelay')} : ${hostsMap[row.hostid].name}`}
-            removeText={`${i18n.t('node.removerelay')} : ${hostsMap[row.hostid].name}`}
+            createText={`${i18n.t('node.createrelay')} : ${hostsMap[row.hostid]?.name ?? ''}`}
+            removeText={`${i18n.t('node.removerelay')} : ${hostsMap[row.hostid]?.name ?? ''}`}
             SignalIcon={<AltRoute />}
             withHistory
           />
@@ -331,7 +331,7 @@ export const NodeAccessView: React.FC<{ nodes: Node[]; isNetAdmin?: boolean }> =
             handleClose={handleClose}
             handleAccept={handleDeleteNode}
             message={t('node.deleteconfirm')}
-            title={`${t('common.delete')} ${hostsMap[selected.hostid].name}`}
+            title={`${t('common.delete')} ${hostsMap[selected.hostid]?.name ?? ''}`}
           />
         </Route>
         <Route

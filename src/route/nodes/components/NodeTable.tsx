@@ -168,12 +168,17 @@ export const NodeTable: React.FC<{ nodes: Node[] }> = ({ nodes }) => {
     },
   ], [hostsMap, t])
   const tableData: NodeTableDataType[] = useMemo(
-    () =>
-      nodes.map((node) => ({
+    () => {
+      const tableData = nodes.map((node) => ({
         name: hostsMap[node.hostid]?.name ?? 'N/A',
         version: hostsMap[node.hostid]?.version ?? 'N/A',
         ...node,
-      })),
+      }))
+
+      console.log(tableData)
+
+      return tableData
+    },
     [hostsMap, nodes]
   )
 

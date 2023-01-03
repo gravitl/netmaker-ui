@@ -21,7 +21,7 @@ export const DNSEntryCreate: React.FC<{}> = () => {
   const hostsMap = useSelector(hostsSelectors.getHostsMap)
   const listOfNodes = useNodesByNetworkId(netid) || []
   const nodeAddresses = listOfNodes.map(
-    (node) => `${node.address} ${hostsMap[node.hostid].name}`
+    (node) => `${node.address} ${hostsMap[node.hostid]?.name ?? ''}`
   )
 
   useLinkBreadcrumb({

@@ -81,7 +81,7 @@ export const NodesACLTable: React.FC<{}> = () => {
     } else {
       setFilterNodes(
         listOfNodes.filter((node) =>
-          `${hostsMap[node.hostid].name}${node.address}${node.id}`.includes(searchTerm)
+          `${hostsMap[node.hostid]?.name ?? ''}${node.address}${node.id}`.includes(searchTerm)
         )
       )
     }
@@ -144,10 +144,10 @@ export const NodesACLTable: React.FC<{}> = () => {
     return <Loading />
   }
 
-  listOfNodes.map((node) => nodeNameMap.set(node.id, hostsMap[node.hostid].name))
+  listOfNodes.forEach((node) => nodeNameMap.set(node.id, hostsMap[node.hostid]?.name ?? ''))
   if (!!filterNodes.length && filterNodes.length !== listOfNodes.length) {
     filteredNameMap = new Map()
-    filterNodes.map((node) => filteredNameMap.set(node.id, hostsMap[node.hostid].name))
+    filterNodes.forEach((node) => filteredNameMap.set(node.id, hostsMap[node.hostid]?.name ?? ''))
   }
 
   if (!!nodeid) {

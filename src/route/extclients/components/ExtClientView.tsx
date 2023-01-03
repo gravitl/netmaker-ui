@@ -58,7 +58,7 @@ export const ExtClientView: React.FC = () => {
       align: 'center',
       sortable: true,
       format(_, node) {
-        return `${hostsMap[node.hostid].name} (${node.server}/${node.network})`
+        return `${hostsMap[node.hostid]?.name ?? ''} (${node.server}/${node.network})`
       }
     },
     {

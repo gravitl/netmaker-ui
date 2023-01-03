@@ -182,7 +182,7 @@ export const ProNodeEdit: React.FC<{
         <Grid item xs={12}>
           <div style={{ textAlign: 'center', margin: '0.5em 0 1em 0' }}>
             <Typography variant="h5">
-              {`${t('node.details')}: ${hostsMap[node.hostid].name}$`}
+              {`${t('node.details')}: ${hostsMap[node.hostid]?.name ?? ''}$`}
             </Typography>
           </div>
         </Grid>
@@ -288,7 +288,7 @@ export const ProNodeEdit: React.FC<{
         <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <Tooltip title={String(t('helper.nodename'))} placement="top">
             <NmFormInputText
-              defaultValue={hostsMap[node.hostid].name}
+              defaultValue={hostsMap[node.hostid]?.name ?? ''}
               name={'name'}
               label={String(t('node.name'))}
             />

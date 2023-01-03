@@ -121,7 +121,7 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({
         handleClose={handleClosePrompt}
         handleAccept={handleDeleteNode}
         message={t('node.deleteconfirm')}
-        title={`${t('common.delete')} ${hostsMap[data.hostid].name}`}
+        title={`${t('common.delete')} ${hostsMap[data.hostid]?.name ?? ''}`}
       />
       <CardHeader
         avatar={
@@ -135,7 +135,7 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({
             }}
             aria-label="node-status"
           >
-            {hostsMap[data.hostid].name.substring(0, 1)}
+            {hostsMap[data.hostid]?.name.substring(0, 1) ?? ''}
           </Avatar>
         }
         action={
@@ -143,10 +143,10 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({
             <Close />
           </IconButton>
         }
-        title={`${hostsMap[data.hostid].name} (${
+        title={`${hostsMap[data.hostid]?.name ?? ''} (${
           nodeHealth === 0 ? 'HEALTHY' : nodeHealth === 1 ? 'WARNING' : 'ERROR'
         })`}
-        subheader={hostsMap[data.hostid].endpointip}
+        subheader={hostsMap[data.hostid]?.endpointip ?? ''}
       />
       <CardActions>
         <Tooltip
@@ -165,8 +165,8 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({
           which="egress"
           isOn={data.isegressgateway}
           node={data}
-          createText={`${t('node.createegress')} : ${hostsMap[data.hostid].name}`}
-          removeText={`${t('node.removeegress')} : ${hostsMap[data.hostid].name}`}
+          createText={`${t('node.createegress')} : ${hostsMap[data.hostid]?.name ?? ''}`}
+          removeText={`${t('node.removeegress')} : ${hostsMap[data.hostid]?.name ?? ''}`}
           SignalIcon={<CallSplit />}
           withHistory
           extraLogic={handleClose}
@@ -175,8 +175,8 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({
           which="ingress"
           isOn={data.isingressgateway}
           node={data}
-          createText={`${t('node.createingress')} : ${hostsMap[data.hostid].name}`}
-          removeText={`${t('node.removeingress')} : ${hostsMap[data.hostid].name}`}
+          createText={`${t('node.createingress')} : ${hostsMap[data.hostid]?.name ?? ''}`}
+          removeText={`${t('node.removeingress')} : ${hostsMap[data.hostid]?.name ?? ''}`}
           SignalIcon={<CallMerge />}
           extraLogic={handleClose}
         />
@@ -184,8 +184,8 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({
           which="relay"
           isOn={data.isrelay}
           node={data}
-          createText={`${t('node.createrelay')} : ${hostsMap[data.hostid].name}`}
-          removeText={`${t('node.removerelay')} : ${hostsMap[data.hostid].name}`}
+          createText={`${t('node.createrelay')} : ${hostsMap[data.hostid]?.name ?? ''}`}
+          removeText={`${t('node.removerelay')} : ${hostsMap[data.hostid]?.name ?? ''}`}
           SignalIcon={<AltRoute />}
           withHistory
           extraLogic={handleClose}
@@ -193,7 +193,7 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({
         {network.ispointtosite ? (
           <HubButton
             node={data}
-            createText={`${t('node.createhub')} : ${hostsMap[data.hostid].name}`}
+            createText={`${t('node.createhub')} : ${hostsMap[data.hostid]?.name ?? ''}`}
             SignalIcon={<Hub />}
             disabledText={`${t('node.onehub')}`}
             extraLogic={handleClose}
@@ -236,7 +236,7 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({
             <ListItemText
               primary={
                 <div style={styles.multiCopy}>
-                  <MultiCopy type="caption" values={[hostsMap[data.hostid].publickey]} />
+                  <MultiCopy type="caption" values={[hostsMap[data.hostid]?.publickey ?? '']} />
                 </div>
               }
               secondary={t('node.publickey')}
@@ -252,14 +252,14 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({
             <ListItemIcon>
               <ArrowRightAlt />
             </ListItemIcon>
-            <ListItemText primary={hostsMap[data.hostid].os || 'N/A'} secondary={t('node.os')} />
+            <ListItemText primary={hostsMap[data.hostid]?.os || 'N/A'} secondary={t('node.os')} />
           </ListItem>
           <ListItem>
             <ListItemIcon>
               <ArrowRightAlt />
             </ListItemIcon>
             <ListItemText
-              primary={hostsMap[data.hostid].version || 'N/A'}
+              primary={hostsMap[data.hostid]?.version || 'N/A'}
               secondary={t('node.version')}
             />
           </ListItem>

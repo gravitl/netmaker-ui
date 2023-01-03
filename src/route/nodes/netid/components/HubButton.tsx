@@ -63,7 +63,7 @@ export const HubButton: React.FC<{
         handleClose={handleClose}
         handleAccept={createHub}
         message={createText}
-        title={`${t('node.updatenode')} ${hostsMap[node.hostid].name}`}
+        title={`${t('node.updatenode')} ${hostsMap[node.hostid]?.name ?? ''}`}
       />
       <Tooltip placement="top" title={String(createText)}>
         <span>

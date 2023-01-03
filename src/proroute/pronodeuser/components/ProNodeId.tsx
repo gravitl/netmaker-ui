@@ -70,7 +70,7 @@ export const ProNodeId: React.FC = () => {
     margin: '1em 0 1em 0',
   }
 
-  const isIPDynamic = !hostsMap[node.hostid].isstatic
+  const isIPDynamic = !hostsMap[node.hostid]?.isstatic
 
   return (
     <Grid container>
@@ -79,12 +79,12 @@ export const ProNodeId: React.FC = () => {
         handleClose={handleClose}
         handleAccept={handleDeleteNode}
         message={t('node.deleteconfirm')}
-        title={`${t('common.delete')} ${hostsMap[node.hostid].name}`}
+        title={`${t('common.delete')} ${hostsMap[node.hostid]?.name ?? ''}`}
       />
       <Grid item xs={12}>
         <div style={{ textAlign: 'center', margin: '1em 0 1em 0' }}>
           <Typography variant="h5">
-            {`${t('node.details')} : ${hostsMap[node.hostid].name}`}
+            {`${t('node.details')} : ${hostsMap[node.hostid]?.name ?? ''}`}
           </Typography>
         </div>
       </Grid>
@@ -111,7 +111,7 @@ export const ProNodeId: React.FC = () => {
       <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
         <TextField
           disabled
-          value={hostsMap[node.hostid].endpointip}
+          value={hostsMap[node.hostid]?.endpointip ?? ''}
           label={String(t('node.endpoint'))}
         />
       </Grid>
@@ -125,7 +125,7 @@ export const ProNodeId: React.FC = () => {
       <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
         <TextField
           disabled
-          value={hostsMap[node.hostid].listenport}
+          value={hostsMap[node.hostid]?.listenport ?? ''}
           label={String(t('node.listenport'))}
         />
       </Grid>
@@ -160,7 +160,7 @@ export const ProNodeId: React.FC = () => {
       <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
         <TextField
           disabled
-          value={hostsMap[node.hostid].name}
+          value={hostsMap[node.hostid]?.name ?? ''}
           label={String(t('node.hostname'))}
         />
       </Grid>
@@ -168,7 +168,7 @@ export const ProNodeId: React.FC = () => {
       <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
         <TextField
           disabled
-          value={hostsMap[node.hostid].publickey}
+          value={hostsMap[node.hostid]?.publickey ?? ''}
           label={String(t('node.publickey'))}
         />
       </Grid>
@@ -243,17 +243,17 @@ export const ProNodeId: React.FC = () => {
       <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
         <TextField
           disabled
-          value={hostsMap[node.hostid].localrange}
+          value={hostsMap[node.hostid]?.localrange ?? ''}
           label={String(t('node.localrange'))}
         />
       </Grid>
       <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-        <TextField disabled value={hostsMap[node.hostid].os} label={String(t('node.os'))} />
+        <TextField disabled value={hostsMap[node.hostid]?.os ?? ''} label={String(t('node.os'))} />
       </Grid>
       <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
         <TextField
           disabled
-          value={hostsMap[node.hostid].mtu}
+          value={hostsMap[node.hostid]?.mtu ?? ''}
           label={String(t('node.mtu'))}
         />
       </Grid>
