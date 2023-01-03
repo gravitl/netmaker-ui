@@ -21,7 +21,6 @@ export const networkToNetworkPayload = (network: Network): NetworkPayload => {
     isipv4: network.isipv4 ? 'yes' : 'no',
     isipv6: network.isipv6 ? 'yes' : 'no',
     defaultudpholepunch: network.defaultudpholepunch ? 'yes' : 'no',
-    ispointtosite: network.ispointtosite ? 'yes' : 'no',
     defaultacl: network.defaultacl ? 'yes' : 'no',
     prosettings: !!network.prosettings ? {
       defaultaccesslevel: Number(network.prosettings.defaultaccesslevel),
@@ -43,7 +42,6 @@ export const networkPayloadToNetwork = (network: NetworkPayload): Network => {
     isipv4: network.isipv4 === 'yes',
     isipv6: network.isipv6 === 'yes',
     defaultudpholepunch: network.defaultudpholepunch === 'yes',
-    ispointtosite: network.ispointtosite === 'yes',
     defaultacl: network.defaultacl === 'yes',
     prosettings: !!network.prosettings ? {
       defaultaccesslevel: Number(network.prosettings.defaultaccesslevel),

@@ -240,14 +240,6 @@ export const NetworkEdit: React.FC<{
             />
           </Grid>
         </Tooltip>
-        <Tooltip title={t('helper.pointtosite') as string}>
-          <Grid item xs={12} sm={4} md={2}>
-            <NmFormInputSwitch
-              name={'ispointtosite'}
-              label={String(t('network.ispointtosite'))}
-            />
-          </Grid>
-        </Tooltip>
         <Tooltip title={t('helper.defaultaccesscontrol') as string}>
           <Grid item xs={12} sm={6} md={3}>
             <NmFormInputSwitch

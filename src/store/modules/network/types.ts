@@ -19,7 +19,6 @@ export interface Network {
   islocal: boolean
   isipv4: boolean
   isipv6: boolean
-  ispointtosite: boolean
   localrange: string
   defaultudpholepunch: boolean
   defaultnatenabled: boolean
@@ -37,7 +36,6 @@ export type NetworkPayload = Modify<
     isipv4: 'no' | 'yes'
     isipv6: 'no' | 'yes'
     defaultudpholepunch: 'no' | 'yes'
-    ispointtosite: 'no' | 'yes'
     defaultacl: 'no' | 'yes'
   }
 >
@@ -78,7 +76,6 @@ export interface CreateNetworkPayload {
     isipv6: 'yes' | 'no'
     addressrange6: string
     defaultudpholepunch: 'yes' | 'no'
-    ispointtosite: 'yes' | 'no'
     defaultacl: 'yes' | 'no'
     prosettings?: ProSettings
   }
