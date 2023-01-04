@@ -677,5 +677,7 @@ export const en: LanguageResource = {
     confirmdefaultness: 'Confirm host defaultness',
     adddefaultness: 'Make this host default?',
     removedefaultness: 'Remove default from host?',
+    connecttonetwork: 'Connect host',
+    disconnectfromnetwork: 'Disconnect host',
   },
 }

@@ -1,13 +1,8 @@
 import { FC, useState, useCallback, useMemo } from 'react'
 import { NmLink } from '~components/index'
 import { useTranslation } from 'react-i18next'
-import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
-// import { useDispatch } from 'react-redux'
 import { NmTable, TableColumns } from '~components/Table'
-// import CustomizedDialogs from '~components/dialog/CustomDialog'
 import CopyText from '~components/CopyText'
-// import { useSelector } from 'react-redux'
-// import { serverSelectors } from '~store/selectors'
 import { Node } from '~store/modules/node/types'
 import { useDispatch, useSelector } from 'react-redux'
 import {
@@ -19,7 +14,7 @@ import { Button, Grid, Switch as SwitchField, TextField } from '@mui/material'
 import { useGetHostById } from '~util/hosts'
 import CustomizedDialogs from '~components/dialog/CustomDialog'
 import { updateHostNetworks } from '~store/modules/hosts/actions'
-import { Host, Network } from '~store/types'
+import { Network } from '~store/types'
 
 interface HostNetworksTableProps {
   hostid: string
@@ -29,7 +24,6 @@ type HostNetworksTableData = Network & {
   localaddress: Node['localaddress']
   nodeId: Node['id']
   connected: Node['connected']
-  hostid: Host['id']
 }
 
 export const HostNetworksTable: FC<HostNetworksTableProps> = ({
@@ -58,45 +52,54 @@ export const HostNetworksTable: FC<HostNetworksTableProps> = ({
     [allNetworks]
   )
 
-  useLinkBreadcrumb({
-    title: t('breadcrumbs.hosts'),
-  })
-
-  // TODO: change implementation to show Network instead of Node
   const filteredNetworks: HostNetworksTableData[] = useMemo(() => {
     let networks: HostNetworksTableData[] = []
-    let nodes: Node[] = []
-    const cache = new Set<Network['netid']>()
+
+    const hostNetworkNodesMap: { [networkName: string]: Node } = allNodes
+      .filter((node) => node.hostid === hostId)
+      .reduce((acc, node) => {
+        acc[node.network] = node
+        return acc
+      }, {} as { [networkName: string]: Node })
 
     if (showOnlyConnectedNets) {
-      allNodes.forEach((node) => {
-        if (node.hostid === hostId && node.connected) {
-          nodes.push(node)
+      Object.values(hostNetworkNodesMap).forEach((node) => {
+        if (node.connected) {
+          networks.push({
+            ...networksMap[node.network],
+            localaddress: node.localaddress,
+            nodeId: node.id,
+            connected: node.connected,
+          })
         }
       })
     } else {
-      nodes = allNodes
-    }
+      allNetworks.forEach((net) => {
+        // if a node exists for the host-network pair, then the host is connected
+        const node = hostNetworkNodesMap[net.netid]
+        const isConnected = !!node
 
-    nodes.forEach((node) => {
-      if (!cache.has(node.network)) {
         networks.push({
-          ...networksMap[node.network],
-          localaddress: node.localaddress,
-          netid: node.network,
-          nodeId: node.id,
-          connected: node.connected,
-          hostid: node.hostid,
+          ...networksMap[net.netid],
+          localaddress: isConnected ? node.localaddress : 'N/A',
+          nodeId: isConnected ? node.id : 'N/A',
+          connected: isConnected,
         })
-        cache.add(node.network)
-      }
-    })
+      })
+    }
 
     networks = networks.filter((nw) =>
       nw.netid.toLocaleLowerCase().includes(searchFilter.toLocaleLowerCase())
     )
     return networks
-  }, [showOnlyConnectedNets, allNodes, hostId, networksMap, searchFilter])
+  }, [
+    allNodes,
+    showOnlyConnectedNets,
+    hostId,
+    networksMap,
+    allNetworks,
+    searchFilter,
+  ])
 
   const columns: TableColumns<HostNetworksTableData> = [
     {
@@ -107,7 +110,9 @@ export const HostNetworksTable: FC<HostNetworksTableProps> = ({
       format: (value, host) => (
         <>
           <NmLink
-            to={`/nodes/${encodeURIComponent(value)}/${encodeURIComponent(host.nodeId!)}`}
+            to={`/nodes/${encodeURIComponent(value)}/${encodeURIComponent(
+              host.nodeId!
+            )}`}
             sx={{ textTransform: 'none' }}
           >
             {value}
@@ -142,10 +147,13 @@ export const HostNetworksTable: FC<HostNetworksTableProps> = ({
     setShouldShowConfirmNetStatusChangeModal(false)
   }, [])
 
-  const handleOpenConfirmNetStatusChangeModal = useCallback((net: HostNetworksTableData) => {
-    setTargetNetwork(net)
-    setShouldShowConfirmNetStatusChangeModal(true)
-  }, [])
+  const handleOpenConfirmNetStatusChangeModal = useCallback(
+    (net: HostNetworksTableData) => {
+      setTargetNetwork(net)
+      setShouldShowConfirmNetStatusChangeModal(true)
+    },
+    []
+  )
 
   const toggleNetworkStatus = useCallback(() => {
     if (!targetNetwork || !host) return
@@ -210,10 +218,16 @@ export const HostNetworksTable: FC<HostNetworksTableProps> = ({
         open={shouldShowConfirmNetStatusChangeModal}
         handleClose={handleCloseConfirmNetStatusChangeModal}
         handleAccept={toggleNetworkStatus}
-        message={t('hosts.confirmconnect')}
-        title={`${t('common.connecttonetwork')}: ${
-          hostsMap[targetNetwork?.hostid ?? '']?.name ?? ''
-        }`}
+        message={
+          (targetNetwork?.connected
+            ? t('hosts.confirmdisconnect')
+            : t('hosts.confirmconnect')) + `: ${targetNetwork?.netid ?? ''}`
+        }
+        title={`${
+          targetNetwork?.connected
+            ? t('hosts.disconnectfromnetwork')
+            : t('hosts.connecttonetwork')
+        }: ${hostsMap[hostId]?.name ?? ''}`}
       />
     </>
   )
