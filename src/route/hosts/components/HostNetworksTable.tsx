@@ -75,9 +75,11 @@ export const HostNetworksTable: FC<HostNetworksTableProps> = ({
       })
     } else {
       allNetworks.forEach((net) => {
-        // if a node exists for the host-network pair, then the host is connected
+        // if a node exists for the host-network pair,
+        // then check the connected field
+        // otherwise, there is no connection
         const node = hostNetworkNodesMap[net.netid]
-        const isConnected = !!node
+        const isConnected = node?.connected ?? false
 
         networks.push({
           ...networksMap[net.netid],
