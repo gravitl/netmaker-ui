@@ -332,7 +332,7 @@ export default function CustomDrawer() {
               </ListItemButton>
               <ListItemButton
                 component={Link}
-                to={`/hosts`}
+                to={'/hosts'}
               >
                 <ListItemIcon aria-label={String(t('hosts.hosts'))}>
                   <ComputerIcon />
