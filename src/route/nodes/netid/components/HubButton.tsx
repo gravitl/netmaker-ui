@@ -1,12 +1,9 @@
 import React, { ReactNode } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { IconButton, Tooltip } from '@mui/material'
-import { Block, Check } from '@mui/icons-material'
-import {
-  updateNode,
-} from '~modules/node/actions'
-import { Node } from '~store/types'
+import { updateNode } from '~modules/node/actions'
+import { hostsSelectors, Node } from '~store/types'
 import CustomDialog from '~components/dialog/CustomDialog'
 
 const hoverBlueStyle = {
@@ -22,18 +19,13 @@ export const HubButton: React.FC<{
   SignalIcon: ReactNode
   children?: ReactNode
   extraLogic?: () => void
-}> = ({
-  node,
-  createText,
-  disabledText,
-  SignalIcon,
-  extraLogic,
-}) => {
+}> = ({ node, createText, disabledText, SignalIcon, extraLogic }) => {
   const dispatch = useDispatch()
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [hovering, setHovering] = React.useState(false)
   const [open, setOpen] = React.useState(false)
   const { t } = useTranslation()
-
+  const hostsMap = useSelector(hostsSelectors.getHostsMap)
   const handleHoverEnter = () => setHovering(true)
   const handleHoverLeave = () => setHovering(false)
 
@@ -42,14 +34,13 @@ export const HubButton: React.FC<{
 
   const createHub = () => {
     dispatch(
-    updateNode.request({
+      updateNode.request({
         netid: node.network,
         token: '',
         node: {
-            ...node,
-            ishub: true
-        }
-    })
+          ...node,
+        },
+      })
     )
     if (!!extraLogic) {
       extraLogic()
@@ -63,20 +54,19 @@ export const HubButton: React.FC<{
         open={open}
         handleClose={handleClose}
         handleAccept={createHub}
-        message={node.ishub ? disabledText : createText}
-        title={`${node.ishub ? t('common.disabled') : t('node.updatenode')} ${node.name}`}
+        message={createText}
+        title={`${t('node.updatenode')} ${hostsMap[node.hostid]?.name ?? ''}`}
       />
-      <Tooltip placement="top" title={String(!node.ishub ? createText : disabledText)}>
+      <Tooltip placement="top" title={String(createText)}>
         <span>
           <IconButton
-            color={node.ishub ? 'success' : 'default'}
+            color={'default'}
             sx={hoverBlueStyle}
             onClick={handleOpen}
-            disabled={node.ishub}
             onMouseEnter={handleHoverEnter}
             onMouseLeave={handleHoverLeave}
           >
-            {!node.ishub ? SignalIcon : hovering ? <Block /> : <Check />}
+            {SignalIcon}
           </IconButton>
         </span>
       </Tooltip>

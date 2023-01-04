@@ -28,7 +28,7 @@ import {
   getNodeACLContainer,
   updateNodeContainerACL,
 } from '~store/modules/acls/actions'
-import { aclSelectors, authSelectors } from '~store/selectors'
+import { aclSelectors, authSelectors, hostsSelectors } from '~store/selectors'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
@@ -74,6 +74,7 @@ export const NodesACLTable: React.FC<{}> = () => {
     nodeID1: '',
     nodeID2: '',
   } as HoveredNode)
+  const hostsMap = useSelector(hostsSelectors.getHostsMap)
   const [hasLoadedAcls, setHasLoadedAcls] = useState(false)
 
   const handleFilter = (event: { target: { value: string } }) => {
@@ -84,7 +85,7 @@ export const NodesACLTable: React.FC<{}> = () => {
     } else {
       setFilterNodes(
         listOfNodes.filter((node) =>
-          `${node.name}${node.address}${node.id}`.includes(searchTerm)
+          `${hostsMap[node.hostid]?.name ?? ''}${node.address}${node.id}`.includes(searchTerm)
         )
       )
     }
@@ -150,10 +151,10 @@ export const NodesACLTable: React.FC<{}> = () => {
     return <Loading />
   }
 
-  listOfNodes.map((node) => nodeNameMap.set(node.id, node.name))
+  listOfNodes.forEach((node) => nodeNameMap.set(node.id, hostsMap[node.hostid]?.name ?? ''))
   if (!!filterNodes.length && filterNodes.length !== listOfNodes.length) {
     filteredNameMap = new Map()
-    filterNodes.map((node) => filteredNameMap.set(node.id, node.name))
+    filterNodes.forEach((node) => filteredNameMap.set(node.id, hostsMap[node.hostid]?.name ?? ''))
   }
 
   if (!!nodeid) {

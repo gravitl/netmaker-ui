@@ -25,3 +25,5 @@ export const getShouldSignOut = createSelector(
 )
 
 export const getNodeSort = createSelector(getNodeState, (node) => node.nodeSort)
+
+export const getNodesMap = createSelector(getNodeState, (node) => node.nodesMap)

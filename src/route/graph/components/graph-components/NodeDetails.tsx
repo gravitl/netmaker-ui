@@ -23,7 +23,6 @@ import {
   CallSplit,
   Circle,
   Close,
-  DeleteForever,
   Edit,
   ViewList,
 } from '@mui/icons-material'
@@ -33,7 +32,7 @@ import { Link } from 'react-router-dom'
 import { TableToggleButton } from '../../../nodes/netid/components/TableToggleButton'
 import { deleteNode } from '~store/modules/node/actions'
 import CustomizedDialogs from '~components/dialog/CustomDialog'
-import { authSelectors, serverSelectors } from '~store/selectors'
+import { authSelectors, hostsSelectors, serverSelectors } from '~store/selectors'
 import { MultiCopy } from '~components/CopyText'
 import MetricsIcon from '@mui/icons-material/Insights'
 
@@ -64,7 +63,7 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({
   const [open, setOpen] = React.useState(false)
   const inDarkMode = useSelector(authSelectors.isInDarkMode)
   const serverConfig = useSelector(serverSelectors.getServerConfig)
-
+  const hostsMap = useSelector(hostsSelectors.getHostsMap)
   const legendData = [
     { label: `${t('node.state.normal')} ${t('node.node')}`, color: '#2b00ff' },
     { label: t('node.isegressgateway'), color: '#6bdbb6' },
@@ -100,9 +99,9 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({
     }
   }
 
-  const handleOpenPrompt = () => {
-    setOpen(true)
-  }
+  // const handleOpenPrompt = () => {
+  //   setOpen(true)
+  // }
 
   const handleClosePrompt = () => {
     setOpen(false)
@@ -121,7 +120,7 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({
         handleClose={handleClosePrompt}
         handleAccept={handleDeleteNode}
         message={t('node.deleteconfirm')}
-        title={`${t('common.delete')} ${data.name}`}
+        title={`${t('common.delete')} ${hostsMap[data.hostid]?.name ?? ''}`}
       />
       <CardHeader
         avatar={
@@ -135,7 +134,7 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({
             }}
             aria-label="node-status"
           >
-            {data.name.substring(0, 1)}
+            {hostsMap[data.hostid]?.name.substring(0, 1) ?? ''}
           </Avatar>
         }
         action={
@@ -143,10 +142,10 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({
             <Close />
           </IconButton>
         }
-        title={`${data.name} (${
+        title={`${hostsMap[data.hostid]?.name ?? ''} (${
           nodeHealth === 0 ? 'HEALTHY' : nodeHealth === 1 ? 'WARNING' : 'ERROR'
         })`}
-        subheader={data.endpoint}
+        subheader={hostsMap[data.hostid]?.endpointip ?? ''}
       />
       <CardActions>
         <Tooltip
@@ -165,8 +164,8 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({
           which="egress"
           isOn={data.isegressgateway}
           node={data}
-          createText={`${t('node.createegress')} : ${data.name}`}
-          removeText={`${t('node.removeegress')} : ${data.name}`}
+          createText={`${t('node.createegress')} : ${hostsMap[data.hostid]?.name ?? ''}`}
+          removeText={`${t('node.removeegress')} : ${hostsMap[data.hostid]?.name ?? ''}`}
           SignalIcon={<CallSplit />}
           withHistory
           extraLogic={handleClose}
@@ -175,8 +174,8 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({
           which="ingress"
           isOn={data.isingressgateway}
           node={data}
-          createText={`${t('node.createingress')} : ${data.name}`}
-          removeText={`${t('node.removeingress')} : ${data.name}`}
+          createText={`${t('node.createingress')} : ${hostsMap[data.hostid]?.name ?? ''}`}
+          removeText={`${t('node.removeingress')} : ${hostsMap[data.hostid]?.name ?? ''}`}
           SignalIcon={<CallMerge />}
           extraLogic={handleClose}
         />
@@ -184,8 +183,8 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({
           which="relay"
           isOn={data.isrelay}
           node={data}
-          createText={`${t('node.createrelay')} : ${data.name}`}
-          removeText={`${t('node.removerelay')} : ${data.name}`}
+          createText={`${t('node.createrelay')} : ${hostsMap[data.hostid]?.name ?? ''}`}
+          removeText={`${t('node.removerelay')} : ${hostsMap[data.hostid]?.name ?? ''}`}
           SignalIcon={<AltRoute />}
           withHistory
           extraLogic={handleClose}
@@ -197,7 +196,6 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({
           <IconButton
             component={Link}
             to={`/acls/${data.network}/${data.id}`}
-            disabled={data.isserver}
             aria-label="view-node-acl"
           >
             <ViewList />
@@ -214,18 +212,6 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({
             </IconButton>
           </Tooltip>
         )}
-        <Tooltip
-          title={`${t('common.delete')} ${t('node.node')}`}
-          placement="top"
-        >
-          <IconButton
-            disabled={data.isserver}
-            aria-label="delete node"
-            onClick={handleOpenPrompt}
-          >
-            <DeleteForever />
-          </IconButton>
-        </Tooltip>
       </CardActions>
       <CardContent>
         <List dense>
@@ -252,7 +238,7 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({
             <ListItemText
               primary={
                 <div style={styles.multiCopy}>
-                  <MultiCopy type="caption" values={[data.publickey]} />
+                  <MultiCopy type="caption" values={[hostsMap[data.hostid]?.publickey ?? '']} />
                 </div>
               }
               secondary={t('node.publickey')}
@@ -268,14 +254,14 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({
             <ListItemIcon>
               <ArrowRightAlt />
             </ListItemIcon>
-            <ListItemText primary={data.os || 'N/A'} secondary={t('node.os')} />
+            <ListItemText primary={hostsMap[data.hostid]?.os || 'N/A'} secondary={t('node.os')} />
           </ListItem>
           <ListItem>
             <ListItemIcon>
               <ArrowRightAlt />
             </ListItemIcon>
             <ListItemText
-              primary={data.version || 'N/A'}
+              primary={hostsMap[data.hostid]?.version || 'N/A'}
               secondary={t('node.version')}
             />
           </ListItem>

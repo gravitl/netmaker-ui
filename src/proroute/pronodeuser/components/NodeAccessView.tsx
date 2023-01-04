@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { NmTable, TableColumns } from '~components/Table'
 import { Node } from '~modules/node'
 import { useTranslation } from 'react-i18next'
@@ -29,13 +29,17 @@ import { useDispatch, useSelector } from 'react-redux'
 import { deleteNode, setNodeSort } from '~store/modules/node/actions'
 import CustomizedDialogs from '~components/dialog/CustomDialog'
 import { MultiCopy } from '~components/CopyText'
-import { nodeSelectors } from '~store/selectors'
+import { hostsSelectors, nodeSelectors } from '~store/selectors'
 import { Tablefilter } from '~components/filter/Tablefilter'
 import { useEffect, useState } from 'react'
 import { GenericError } from '~util/genericerror'
 import { NmLink } from '~components/Link'
 import { i18n } from '../../../i18n/i18n'
 import { TableToggleButton } from '../../../route/nodes/netid/components/TableToggleButton'
+
+type NodeAccessTableData = Node & {
+  name: string
+}
 
 export const NodeAccessView: React.FC<{ nodes: Node[]; isNetAdmin?: boolean }> =
   ({ nodes, isNetAdmin }) => {
@@ -46,21 +50,31 @@ export const NodeAccessView: React.FC<{ nodes: Node[]; isNetAdmin?: boolean }> =
     const [filterNodes, setFilterNodes] = React.useState(nodes)
     const [selected, setSelected] = React.useState({} as Node)
     const dispatch = useDispatch()
-    const [searchTerm, setSearchTerm] = useState(' ')
+    const [searchTerm, setSearchTerm] = useState('')
+    const hostsMap = useSelector(hostsSelectors.getHostsMap)
+
+    const tableData: NodeAccessTableData[] = useMemo(
+      () =>
+        filterNodes.map((node) => ({
+          name: hostsMap[node.hostid]?.name ?? 'N/A',
+          ...node,
+        })),
+      [hostsMap, filterNodes]
+    )
 
     useEffect(() => {
-      if (!!!searchTerm) {
+      if (!searchTerm) {
         setFilterNodes(nodes)
       } else {
         if (nodes) {
           setFilterNodes(
             nodes.filter((node) =>
-              `${node.name}${node.address}${node.network}`.includes(searchTerm)
+              `${hostsMap[node.hostid]?.name ?? ''}${node.address}${node.network}`.includes(searchTerm)
             )
           )
         }
       }
-    }, [nodes, searchTerm])
+    }, [hostsMap, nodes, searchTerm])
 
     const handleFilter = (event: { target: { value: string } }) => {
       const { value } = event.target
@@ -77,7 +91,7 @@ export const NodeAccessView: React.FC<{ nodes: Node[]; isNetAdmin?: boolean }> =
       return <GenericError />
     }
 
-    const columns: TableColumns<Node> = [
+    const columns: TableColumns<NodeAccessTableData> = [
       {
         id: 'name',
         labelKey: 'node.name',
@@ -96,10 +110,7 @@ export const NodeAccessView: React.FC<{ nodes: Node[]; isNetAdmin?: boolean }> =
             }
             sx={{ textTransform: 'none' }}
           >
-            {value}
-            {`${
-              node.ispending === 'yes' ? ` (${i18n.t('common.pending')})` : ''
-            }`}
+            {hostsMap[node.hostid]?.name ?? ''} ({node.server}/{node.network})
           </NmLink>
         ),
       },
@@ -113,11 +124,14 @@ export const NodeAccessView: React.FC<{ nodes: Node[]; isNetAdmin?: boolean }> =
         ),
       },
       {
-        id: 'version',
+        id: 'hostid',
         labelKey: 'node.version',
         minWidth: 50,
         align: 'center',
-        format: (value) => <>{!!value ? value : 'N/A'}</>,
+        format: (value, node) => {
+          const version = hostsMap[value]?.version ?? ''
+          return <>{version ? version : 'N/A'}</>
+        },
       },
       {
         id: 'network',
@@ -138,8 +152,8 @@ export const NodeAccessView: React.FC<{ nodes: Node[]; isNetAdmin?: boolean }> =
             which="egress"
             isOn={isegress}
             node={row}
-            createText={`${i18n.t('node.createegress')} : ${row.name}`}
-            removeText={`${i18n.t('node.removeegress')} : ${row.name}`}
+            createText={`${i18n.t('node.createegress')} : ${hostsMap[row.hostid]?.name ?? ''}`}
+            removeText={`${i18n.t('node.removeegress')} : ${hostsMap[row.hostid]?.name ?? ''}`}
             SignalIcon={<CallSplit />}
             withHistory
           />
@@ -155,8 +169,8 @@ export const NodeAccessView: React.FC<{ nodes: Node[]; isNetAdmin?: boolean }> =
             which="ingress"
             isOn={isingress}
             node={row}
-            createText={`${i18n.t('node.createingress')} : ${row.name}`}
-            removeText={`${i18n.t('node.removeingress')} : ${row.name}`}
+            createText={`${i18n.t('node.createingress')} : ${hostsMap[row.hostid]?.name ?? ''}`}
+            removeText={`${i18n.t('node.removeingress')} : ${hostsMap[row.hostid]?.name ?? ''}`}
             SignalIcon={<CallMerge />}
           />
         ),
@@ -171,8 +185,8 @@ export const NodeAccessView: React.FC<{ nodes: Node[]; isNetAdmin?: boolean }> =
             which="relay"
             isOn={isrelay}
             node={row}
-            createText={`${i18n.t('node.createrelay')} : ${row.name}`}
-            removeText={`${i18n.t('node.removerelay')} : ${row.name}`}
+            createText={`${i18n.t('node.createrelay')} : ${hostsMap[row.hostid]?.name ?? ''}`}
+            removeText={`${i18n.t('node.removerelay')} : ${hostsMap[row.hostid]?.name ?? ''}`}
             SignalIcon={<AltRoute />}
             withHistory
           />
@@ -216,7 +230,7 @@ export const NodeAccessView: React.FC<{ nodes: Node[]; isNetAdmin?: boolean }> =
     }
 
     const handleDeleteNode = () => {
-      if (!!selected.name) {
+      if (!!selected.id) {
         dispatch(
           deleteNode.request({
             netid: selected.network,
@@ -230,7 +244,6 @@ export const NodeAccessView: React.FC<{ nodes: Node[]; isNetAdmin?: boolean }> =
     const handleNodeSortSelect = (selection: string) => {
       if (
         selection === 'address' ||
-        selection === 'name' ||
         selection === 'network'
       ) {
         dispatch(
@@ -311,17 +324,9 @@ export const NodeAccessView: React.FC<{ nodes: Node[]; isNetAdmin?: boolean }> =
           <hr />
           <NmTable
             columns={columns}
-            rows={
-              filterNodes.length && filterNodes.length < nodes.length
-                ? filterNodes
-                : nodes
-            }
+            rows={tableData}
             actions={[
               (row) => ({
-                tooltip: !row.isserver
-                  ? t('common.delete')
-                  : t('common.disabled'),
-                disabled: row.isserver,
                 icon: <Delete />,
                 onClick: () => {
                   handleOpen(row)
@@ -331,11 +336,11 @@ export const NodeAccessView: React.FC<{ nodes: Node[]; isNetAdmin?: boolean }> =
             getRowId={(row) => row.id}
           />
           <CustomizedDialogs
-            open={!!selected.name}
+            open={!!selected.id}
             handleClose={handleClose}
             handleAccept={handleDeleteNode}
             message={t('node.deleteconfirm')}
-            title={`${t('common.delete')} ${selected.name}`}
+            title={`${t('common.delete')} ${hostsMap[selected.hostid]?.name ?? ''}`}
           />
         </Route>
         <Route

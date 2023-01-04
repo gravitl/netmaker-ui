@@ -8,7 +8,7 @@ import { FormRef, NmForm, NmFormInputText } from '~components/form'
 import { useNodesByNetworkId } from '~util/network'
 import { DNSSelect } from './DNSSelect'
 import { createDnsEntry } from '~store/modules/network/actions'
-import { authSelectors } from '~store/selectors'
+import { authSelectors, hostsSelectors } from '~store/selectors'
 
 export const DNSEntryCreate: React.FC<{}> = () => {
   const history = useHistory()
@@ -18,10 +18,10 @@ export const DNSEntryCreate: React.FC<{}> = () => {
   const newPath = `${path.split(':netid')[0]}${netid}`
   const dispatch = useDispatch()
   const inDarkMode = useSelector(authSelectors.isInDarkMode)
-
+  const hostsMap = useSelector(hostsSelectors.getHostsMap)
   const listOfNodes = useNodesByNetworkId(netid) || []
   const nodeAddresses = listOfNodes.map(
-    (node) => `${node.address} ${node.name}`
+    (node) => `${node.address} ${hostsMap[node.hostid]?.name ?? ''}`
   )
 
   useLinkBreadcrumb({

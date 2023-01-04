@@ -8,7 +8,7 @@ import {
 } from '@mui/material'
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { nodeSelectors } from '~store/selectors'
+import { hostsSelectors, nodeSelectors } from '~store/selectors'
 import { useRouteMatch, Switch, Route, useHistory } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { NodeTable } from './components/NodeTable'
@@ -27,7 +27,7 @@ export const Nodes: React.FC = () => {
   const [filterNodes, setFilterNodes] = React.useState(listOfNodes)
   const history = useHistory()
   const dispatch = useDispatch()
-
+  const hostsMap = useSelector(hostsSelectors.getHostsMap)
   const syncNodes = () => {
     history.push('/nodes')
   }
@@ -40,11 +40,11 @@ export const Nodes: React.FC = () => {
     } else {
       setFilterNodes(
         listOfNodes.filter((node) =>
-          `${node.name}${node.address}${node.network}`.includes(searchTerm)
+          `${hostsMap[node.hostid]?.name ?? ''}${node.address}${node.network}`.includes(searchTerm)
         )
       )
     }
-  }, [listOfNodes, searchTerm])
+  }, [hostsMap, listOfNodes, searchTerm])
 
   const handleFilter = (event: { target: { value: string } }) => {
     const { value } = event.target
@@ -55,7 +55,6 @@ export const Nodes: React.FC = () => {
   const handleNodeSortSelect = (selection: string) => {
     if (
       selection === 'address' ||
-      selection === 'name' ||
       selection === 'network'
     ) {
       dispatch(
