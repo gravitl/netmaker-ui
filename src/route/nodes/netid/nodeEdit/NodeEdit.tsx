@@ -292,27 +292,6 @@ export const NodeEdit: React.FC<{
           </Tooltip>
         </Grid>
         <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-          <Tooltip title={String(t('helper.nodename'))} placement="top">
-            <NmFormInputText
-              defaultValue={hostsMap[node.hostid]?.name ?? ''}
-              name={'name'}
-              label={String(t('node.name'))}
-            />
-          </Tooltip>
-        </Grid>
-        <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-          <Tooltip title={String(t('helper.publickey'))} placement="top">
-            <span>
-              <NmFormInputText
-                disabled
-                defaultValue={t('node.publickey')}
-                name={'publickey'}
-                label={String(t('node.publickey'))}
-              />
-            </span>
-          </Tooltip>
-        </Grid>
-        <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <Tooltip title={String(t('helper.nodepostup'))} placement="top">
             <span>
               <NmFormInputText
@@ -405,18 +384,6 @@ export const NodeEdit: React.FC<{
               label={String(t('node.lastcheckin'))}
               name={'lastcheckin'}
             />
-          </Tooltip>
-        </Grid>
-        <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-          <Tooltip title={String(t('helper.macaddress'))} placement="top">
-            <span>
-              <NmFormInputText
-                disabled
-                defaultValue={node.macaddress}
-                label={String(t('node.macaddress'))}
-                name={'macaddress'}
-              />
-            </span>
           </Tooltip>
         </Grid>
         <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
