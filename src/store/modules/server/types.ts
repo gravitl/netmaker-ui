@@ -1,5 +1,5 @@
-import { Network } from "../network"
-import { Node } from "../node"
+import { Network } from '../network'
+import { Node } from '../node'
 
 export interface ServerConfig {
   APIConnString: string //""
@@ -66,11 +66,9 @@ export interface LogsPayload {
   Response: string
 }
 
-export type MetricID = string
+export type NodeMetricsTable = Record<string, NodeMetric> // { nodeId: NodeMetric }
 
-export type NodeMetricsTable = Record<string, NodeMetric>
-
-export type MetricsTable = Record<string, NodeMetricsContainer>
+export type MetricsTable = Record<string, NodeMetricsContainer> // { nodeId: NodeMetricsContainer }
 
 export interface NodeMetricsContainer {
   connectivity: NodeMetricsTable
@@ -91,11 +89,11 @@ export interface MetricsContainer {
   nodes: MetricsTable
 }
 
-export type ExtMetrics = Record<string, NodeMetricsTable>
+export type ExtMetrics = Record<string, NodeMetricsTable> // { networkId: NodeMetricsTable }
 
-export type NodeMetrics = Record<string, NodeMetricsContainer>
+export type NodeMetrics = Record<string, NodeMetricsContainer> // { nodeId: NodeMetricsContainer }
 
-export type NetworkMetrics = Record<string, MetricsContainer>
+export type NetworkMetrics = Record<string, MetricsContainer> // { networkId: MetricsContainer }
 
 export interface NodeMetric {
   node_name: string
