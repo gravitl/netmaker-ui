@@ -14,7 +14,7 @@ import { AxiosResponse } from 'axios'
 import { apiRequestWithAuthSaga } from '../api/saga'
 import { getNetworks } from '../network/selectors'
 import { getNodes } from '../node/selectors'
-import { ExtMetrics, NetworkMetrics, NodeMetrics } from '~store/types'
+import { ExtMetrics, NetworkMetrics, NodeMetrics, NodeMetricsContainer } from '~store/types'
 import { getNetworks as getNets } from '../network/actions'
 import { getServerConfig as getSC } from '../server/selectors'
 
@@ -112,14 +112,20 @@ function* handleGetNodeMetrics(
     if (serverConfig.IsEE && nodes && nodes.length) {
       for (let i = 0; i < nodes.length; i++) {
         try {
-          const response: AxiosResponse = yield apiRequestWithAuthSaga(
+          const response: AxiosResponse<NodeMetricsContainer> = yield apiRequestWithAuthSaga(
             'get',
             `/metrics/${nodes[i].network}/${nodes[i].id}`,
             {}
           )
           responseMetrics[nodes[i].id] = response.data
         } catch (e: unknown) {
-          responseMetrics[nodes[i].id] = { connectivity: {} }
+          responseMetrics[nodes[i].id] = {
+            connectivity: {},
+            needsfailover: {},
+            network: nodes[i].network,
+            node_id: nodes[i].id,
+            proxy_metrics: {},
+          }
         }
       }
     }

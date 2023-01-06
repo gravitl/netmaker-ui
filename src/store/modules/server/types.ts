@@ -1,3 +1,6 @@
+import { Network } from "../network"
+import { Node } from "../node"
+
 export interface ServerConfig {
   APIConnString: string //""
   APIHost: string // "hakeee.duckdns.org"
@@ -71,6 +74,17 @@ export type MetricsTable = Record<string, NodeMetricsContainer>
 
 export interface NodeMetricsContainer {
   connectivity: NodeMetricsTable
+  network: Network['netid']
+  node_id: Node['id']
+  needsfailover: Record<Node['id'], NodeMetric>
+  proxy_metrics: Record<Node['publickey'], ProxyMetric>
+}
+
+export interface ProxyMetric {
+  last_recorded_latency: number
+  connection_status: boolean
+  traffic_sent: number // in megabytes
+  traffic_recieved: number // in megabytes
 }
 
 export interface MetricsContainer {
