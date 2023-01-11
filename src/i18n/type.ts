@@ -523,6 +523,7 @@ export interface LanguageResource {
         usergroups: string
         networkuser: string
         host: string
+        hostalt: string
       }
     }
     login: {

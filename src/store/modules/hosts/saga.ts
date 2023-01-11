@@ -1,4 +1,4 @@
-import { all, fork, put, takeEvery } from 'redux-saga/effects'
+import { all, fork, put, select, takeEvery } from 'redux-saga/effects'
 import { deleteHost, getHosts, updateHost, updateHostNetworks } from './actions'
 import { AxiosResponse } from 'axios'
 import { Host } from './types'
@@ -6,6 +6,8 @@ import { apiRequestWithAuthSaga } from '../api/saga'
 import { generatorToastSaga } from '../toast/saga'
 import { i18n } from '../../../i18n/i18n'
 import { getType } from 'typesafe-actions'
+import { getNodes } from '../node/selectors'
+import { Node } from '../node'
 
 function* handleGetHostsRequest(
   action: ReturnType<typeof getHosts['request']>
@@ -119,9 +121,17 @@ function* handleDeleteHostRequest(
         error: (e) =>
           `${i18n.t('toast.delete.failure.host', {
             hostid: action.payload.hostid,
-          })}: ${e.response.data.Message || ''}`,
+          })}: ${
+            e.response?.data?.Message || i18n.t('toast.delete.failure.hostalt')
+          }`,
       },
     })
+
+    const nodes: Node[] = yield select(getNodes)
+    const hasNodes = nodes.some(node => node.hostid === action.payload.hostid)
+    if (hasNodes) {
+      throw new Error("Host has nodes. Delete all nodes before deleting host")
+    }
 
     const response: AxiosResponse<Host> = yield apiRequestWithAuthSaga(
       'delete',

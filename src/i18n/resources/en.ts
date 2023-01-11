@@ -649,7 +649,8 @@ export const en: LanguageResource = {
         node: 'Failed to remove Node.',
         usergroups: 'Failed to remove User Group.',
         networkuser: 'Failed to remove Network User.',
-        host: 'Failed to remove Host!',
+        host: 'Failed to remove Host.',
+        hostalt: 'Ensure there are no associated nodes. Check internet connection',
       },
     },
     login: {
