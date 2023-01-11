@@ -22,7 +22,6 @@ import {
   correctIPv4CidrRegex,
   correctIpv6Regex,
   ipv4AddressRegex,
-  ipv6AddressRegex,
 } from '~util/regex'
 import { convertStringToArray } from '~util/fields'
 import { NmFormOptionSelect } from '~components/form/FormOptionSelect'
@@ -97,27 +96,6 @@ export const ProNodeEdit: React.FC = () => {
           }
           return undefined
         },
-        relayaddrs: (relayaddrs, formData) => {
-          if (!formData.isrelay) {
-            return undefined
-          }
-
-          if (typeof relayaddrs === 'string') {
-            relayaddrs = convertStringToArray(relayaddrs)
-          }
-
-          for (let i = 0; i < relayaddrs.length; i++) {
-            const correctIPv4 = ipv4AddressRegex.test(relayaddrs[i])
-            const correctIPv6 = ipv6AddressRegex.test(relayaddrs[i])
-            if (!correctIPv4 && !correctIPv6) {
-              return {
-                message: t('node.validation.relayaddress'),
-                type: 'value',
-              }
-            }
-          }
-          return undefined
-        },
       }),
     [t]
   )
@@ -135,12 +113,6 @@ export const ProNodeEdit: React.FC = () => {
 
   const onSubmit = useCallback(
     (data: Node) => {
-      if (typeof data.relayaddrs === 'string') {
-        const newRelayAddrs = getCommaSeparatedArray(String(data.relayaddrs))
-        if (newRelayAddrs.length) {
-          data.relayaddrs = newRelayAddrs
-        }
-      }
       if (typeof data.egressgatewayranges === 'string') {
         const newEgressRanges = getCommaSeparatedArray(
           String(data.egressgatewayranges)
@@ -149,12 +121,6 @@ export const ProNodeEdit: React.FC = () => {
           data.egressgatewayranges = newEgressRanges
         }
       }
-      // if (typeof data.allowedips === 'string') {
-      //   const newAllowedIps = getCommaSeparatedArray(String(data.allowedips))
-      //   if (newAllowedIps.length) {
-      //     data.allowedips = newAllowedIps
-      //   }
-      // }
       if (expTime && expTime !== data.expdatetime) {
         data.expdatetime = expTime
       }
@@ -327,18 +293,6 @@ export const ProNodeEdit: React.FC = () => {
               label={String(t('node.persistentkeepalive'))}
               name={'persistentkeepalive'}
             />
-          </Tooltip>
-        </Grid>
-        <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-          <Tooltip title={String(t('helper.relayaddress'))} placement="top">
-            <span>
-              <NmFormInputText
-                disabled={!node.isrelay}
-                defaultValue={node.relayaddrs ? node.relayaddrs.join(',') : ''}
-                label={String(t('node.relayaddrs'))}
-                name={'relayaddrs'}
-              />
-            </span>
           </Tooltip>
         </Grid>
         <Grid item xs={6} sm={4} md={3} sx={rowMargin}>

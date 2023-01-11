@@ -15,6 +15,9 @@ interface NodeCommonDetails {
   localrange: Host['localrange']
   mtu: Host['mtu']
   interfaces: Host['interfaces']
+  isrelay: Host['isrelay']
+  relay_hosts: Host['relay_hosts']
+  isrelayed: Host['isrelayed']
 }
 
 export const reducer = createReducer({
@@ -59,6 +62,9 @@ export const reducer = createReducer({
           localrange: host.localrange,
           mtu: host.mtu,
           interfaces: host.interfaces,
+          isrelay: host.isrelay,
+          relay_hosts: host.relay_hosts,
+          isrelayed: host.isrelayed,
         }
       })
     })
