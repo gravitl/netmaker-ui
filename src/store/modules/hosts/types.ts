@@ -27,6 +27,10 @@ export interface Host {
   nodes: string[] // node ids
   proxy_enabled: boolean
   isdefault: boolean
+  isrelayed: boolean
+  relayed_by: string // host id
+  isrelay: boolean
+  relay_hosts: string[] // host ids
 
   // localaddress: string
   // listenaddress: number
@@ -58,6 +62,21 @@ export interface UpdateHostNetworksPayload {
 export interface DeleteHostPayload {
   Request: {
     hostid: string
+  }
+  Response: Host
+}
+
+export interface CreateHostRelayPayload {
+  Request: {
+    hostid: Host['id']
+    relayed_hosts: Host['id'][]
+  }
+  Response: Host
+}
+
+export interface DeleteHostRelayPayload {
+  Request: {
+    hostid: Host['id']
   }
   Response: Host
 }

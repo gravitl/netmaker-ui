@@ -17,23 +17,24 @@ export interface Node {
   networkrange: string
   networkrange6: string
   pendingdelete: boolean
-  isrelay: boolean
-  isrelayed: boolean
-  relayaddrs: string[]
   isegressgateway: boolean
   isingressgateway: boolean
   egressgatewayranges: string[]
   egressgatewaynatenabled: boolean
   failovernode: string
   dnson: boolean
-  isdualstack: boolean
   islocal: boolean
   server: string
   internetgateway: string
   defaultacl: string
   connected: boolean
   failover: boolean
-  
+
+  isrelay: boolean
+  isrelayed: boolean
+  relayaddrs: string[]
+  isdualstack: boolean
+
   // name: string
   // allowedips: string[]
   // listenport: number
