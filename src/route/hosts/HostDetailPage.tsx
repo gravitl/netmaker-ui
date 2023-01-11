@@ -343,6 +343,13 @@ export const HostDetailPage: FC = () => {
                     label={String(t('hosts.isrelayed'))}
                   />
                 </Grid>
+                <Grid item xs={12} md={3} sx={rowMargin}>
+                  <TextField
+                    disabled
+                    value={host.relayed_by}
+                    label={String(t('hosts.relayedby'))}
+                  />
+                </Grid>
                 <Grid item xs={12} sx={rowMargin}>
                   <FormControlLabel
                     label={String(t('hosts.isrelay'))}
@@ -361,7 +368,7 @@ export const HostDetailPage: FC = () => {
                 {host.isrelay && (
                   <>
                     <Grid item xs={12}>
-                      <Typography variant='h5'>Relay hosts</Typography>
+                      <Typography variant="h5">Relay hosts</Typography>
                     </Grid>
                     <Grid item xs={12} sx={rowMargin}>
                       <HostRelayTable hostid={hostId} />

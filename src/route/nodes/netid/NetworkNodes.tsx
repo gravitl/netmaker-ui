@@ -29,9 +29,9 @@ import {
   CallMerge,
   CallSplit,
   Delete,
-  Edit,
   Search,
   Sync,
+  Visibility,
 } from '@mui/icons-material'
 import { i18n } from '../../../i18n/i18n'
 import { CreateEgress } from './components/CreateEgress'
@@ -106,9 +106,9 @@ export const NetworkNodes: React.FC = () => {
     }
   }
 
-  const handleEditDetails = useCallback(
+  const handleViewDetails = useCallback(
     (node: Node) => {
-      history.push(`/nodes/${node.network}/${encodeURIComponent(node.id)}/edit`)
+      history.push(`/nodes/${node.network}/${encodeURIComponent(node.id)}`)
     },
     [history]
   )
@@ -364,10 +364,10 @@ export const NetworkNodes: React.FC = () => {
           rows={tableData}
           actions={[
             (row) => ({
-              tooltip: t('common.edit'),
-              icon: <Edit />,
+              tooltip: t('common.view'),
+              icon: <Visibility />,
               onClick: () => {
-                handleEditDetails(row)
+                handleViewDetails(row)
               },
             }),
             (row) => ({

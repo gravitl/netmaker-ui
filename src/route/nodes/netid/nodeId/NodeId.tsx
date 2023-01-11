@@ -154,6 +154,13 @@ export const NodeId: React.FC = () => {
               >
                 {t('pro.metrics')}
               </NmLink>
+              <NmLink
+                to={`/hosts/${node.hostid}`}
+                variant="outlined"
+                style={{ width: '50%', margin: '4px' }}
+              >
+                {t('common.host')}
+              </NmLink>
               <Button
                 variant="outlined"
                 color="warning"

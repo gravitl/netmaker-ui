@@ -135,6 +135,7 @@ export const en: LanguageResource = {
     hosts: 'Hosts',
   },
   common: {
+    host: 'Host',
     endpointip: 'Endpoint IP',
     connecttonetwork: 'Connect to network',
     disconnectfromnetwork: 'Disconnect from network',
@@ -697,5 +698,6 @@ export const en: LanguageResource = {
     relayto: 'Relay to',
     hoststorelay: 'Hosts to relay',
     relayedhost: 'Relayed Host',
+    relayedby: 'Relayed By',
   },
 }

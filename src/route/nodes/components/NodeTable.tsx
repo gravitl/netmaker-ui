@@ -12,7 +12,7 @@ import {
   CallMerge,
   CallSplit,
   Delete,
-  Edit,
+  Visibility,
 } from '@mui/icons-material'
 import { i18n } from '../../../i18n/i18n'
 import { deleteNode } from '~store/modules/node/actions'
@@ -204,9 +204,9 @@ export const NodeTable: React.FC<{ nodes: Node[] }> = ({ nodes }) => {
     setSelected(node)
   }
 
-  const handleEditDetails = useCallback(
+  const handleViewDetails = useCallback(
     (node: Node) => {
-      history.push(`/nodes/${node.network}/${encodeURIComponent(node.id)}/edit`)
+      history.push(`/nodes/${node.network}/${encodeURIComponent(node.id)}`)
     },
     [history]
   )
@@ -232,10 +232,10 @@ export const NodeTable: React.FC<{ nodes: Node[] }> = ({ nodes }) => {
         getRowId={(row, i) => `${row.id}-${i}`}
         actions={[
           (row) => ({
-            tooltip: t('common.edit'),
-            icon: <Edit />,
+            tooltip: t('common.view'),
+            icon: <Visibility />,
             onClick: () => {
-              handleEditDetails(row)
+              handleViewDetails(row)
             },
           }),
           (row) => ({
