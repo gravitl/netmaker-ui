@@ -8,6 +8,7 @@ import {
   Typography,
   ToggleButtonGroup,
   ToggleButton,
+  InputAdornment,
 } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
@@ -28,6 +29,7 @@ import { deleteHost, deleteHostRelay } from '~store/modules/hosts/actions'
 import { useGetHostById } from '~util/hosts'
 import { HostRelayTable } from './components/HostRelayTable'
 import { CreateRelayModal } from './components/CreateRelayModal'
+import { Visibility } from '@mui/icons-material'
 
 export const HostDetailPage: FC = () => {
   const { path, url } = useRouteMatch()
@@ -348,6 +350,15 @@ export const HostDetailPage: FC = () => {
                     disabled
                     value={host.relayed_by}
                     label={String(t('hosts.relayedby'))}
+                    InputProps={{
+                      endAdornment: host.isrelayed ? (
+                        <InputAdornment position="end">
+                          <NmLink to={`/hosts/${host.relayed_by}`}>
+                            <Visibility />
+                          </NmLink>
+                        </InputAdornment>
+                      ) : null,
+                    }}
                   />
                 </Grid>
                 <Grid item xs={12} sx={rowMargin}>

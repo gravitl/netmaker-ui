@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { NmTable, TableColumns } from '~components/Table'
 import { useDispatch, useSelector } from 'react-redux'
 import { hostsSelectors } from '~store/selectors'
-import { Button, Grid, Switch as SwitchField, TextField } from '@mui/material'
+import { Button, Grid, Switch as SwitchField, TextField, Tooltip } from '@mui/material'
 import { useGetHostById } from '~util/hosts'
 import CustomizedDialogs from '~components/dialog/CustomDialog'
 import { deleteHostRelay, updateHost } from '~store/modules/hosts/actions'
@@ -92,10 +92,13 @@ export const HostRelayTable: FC<HostRelayTableProps> = ({ hostid: hostId }) => {
       minWidth: 50,
       align: 'center',
       format: (value, h) => (
-        <SwitchField
-          checked={isRelayingTo(h)}
-          onClick={() => handleOpenConfirmRelayStatusChangeModal(h)}
-        />
+        <Tooltip title={String(t('hosts.canonlyrelaynonrelayedhosts'))}>
+          <SwitchField
+            disabled={h.isrelay && h.relay_hosts.includes(hostId)}
+            checked={isRelayingTo(h)}
+            onClick={() => handleOpenConfirmRelayStatusChangeModal(h)}
+          />
+        </Tooltip>
       ),
     },
   ]

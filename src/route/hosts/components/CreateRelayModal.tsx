@@ -69,7 +69,11 @@ export function CreateRelayModal(props: CreateRelayProps) {
   const [selectedHosts, setSelectedHosts] = useState<Host[]>([])
 
   const filteredHosts = useMemo(
-    () => allHosts.filter((h) => h.id !== props.hostId),
+    () =>
+      allHosts.filter(
+        (h) =>
+          h.id !== props.hostId && !(h.isrelay && h.relay_hosts.includes(props.hostId))
+      ),
     [allHosts, props]
   )
 
@@ -80,14 +84,11 @@ export function CreateRelayModal(props: CreateRelayProps) {
         relayed_hosts: selectedHosts.map((h) => h.id),
       })
     )
-    props.onClose({}, "escapeKeyDown")
+    props.onClose({}, 'escapeKeyDown')
   }, [dispatch, props, selectedHosts])
 
   return (
-    <Modal
-      open={props.open}
-      onClose={props.onClose}
-    >
+    <Modal open={props.open} onClose={props.onClose}>
       <Box
         style={{
           ...styles.modal,
@@ -101,7 +102,7 @@ export function CreateRelayModal(props: CreateRelayProps) {
           sx={{ padding: '2em' }}
         >
           <Grid item xs={12} textAlign="center" sx={{ marginBottom: '2rem' }}>
-            <Typography variant='h5'>Create Relay</Typography>
+            <Typography variant="h5">Create Relay</Typography>
           </Grid>
 
           <Grid item xs={10} sx={{ marginBottom: '2rem' }}>

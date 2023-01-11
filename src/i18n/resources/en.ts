@@ -699,5 +699,6 @@ export const en: LanguageResource = {
     hoststorelay: 'Hosts to relay',
     relayedhost: 'Relayed Host',
     relayedby: 'Relayed By',
+    canonlyrelaynonrelayedhosts: 'Can only relay non-relayed hosts',
   },
 }
