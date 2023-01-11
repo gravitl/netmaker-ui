@@ -7,7 +7,7 @@ import { hostsSelectors } from '~store/selectors'
 import { Button, Grid, Switch as SwitchField, TextField } from '@mui/material'
 import { useGetHostById } from '~util/hosts'
 import CustomizedDialogs from '~components/dialog/CustomDialog'
-import { updateHost } from '~store/modules/hosts/actions'
+import { deleteHostRelay, updateHost } from '~store/modules/hosts/actions'
 import { Host } from '~store/types'
 
 interface HostRelayTableProps {
@@ -116,18 +116,29 @@ export const HostRelayTable: FC<HostRelayTableProps> = ({ hostid: hostId }) => {
   const toggleRelayStatus = useCallback(() => {
     if (!targetHost || !host) return
     const relayedHostsIds = new Set(host.relay_hosts)
+    
     // if relayed, stop. else relay
     if (isRelayingTo(targetHost)) {
       relayedHostsIds.delete(targetHost.id)
     } else {
       relayedHostsIds.add(targetHost.id)
     }
-    dispatch(
-      updateHost.request({
-        ...host,
-        relay_hosts: [...relayedHostsIds],
-      })
-    )
+
+    // if there are no more hosts to relay, delete the relay host
+    if (relayedHostsIds.size > 0) {
+      dispatch(
+        updateHost.request({
+          ...host,
+          relay_hosts: [...relayedHostsIds],
+        })
+      )
+    } else {
+      dispatch(
+        deleteHostRelay.request({
+          hostid: host.id,
+        })
+      )
+    }
   }, [dispatch, host, isRelayingTo, targetHost])
 
   return (
