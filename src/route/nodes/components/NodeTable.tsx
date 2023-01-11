@@ -8,7 +8,7 @@ import { NmTable, TableColumns } from '~components/Table'
 import { Chip, Tooltip } from '@mui/material'
 import { TableToggleButton } from '../netid/components/TableToggleButton'
 import {
-  AltRoute,
+  // AltRoute,
   CallMerge,
   CallSplit,
   Delete,
@@ -116,27 +116,27 @@ export const NodeTable: React.FC<{ nodes: Node[] }> = ({ nodes }) => {
           />
         ),
       },
-      {
-        id: 'isrelay',
-        labelKey: 'node.statusrelay',
-        minWidth: 30,
-        align: 'center',
-        format: (isrelay, row) => (
-          <TableToggleButton
-            which="relay"
-            isOn={isrelay}
-            node={row}
-            createText={`${i18n.t('node.createrelay')} : ${
-              hostsMap[row.hostid]?.name ?? 'N/A'
-            }`}
-            removeText={`${i18n.t('node.removerelay')} : ${
-              hostsMap[row.hostid]?.name ?? 'N/A'
-            }`}
-            SignalIcon={<AltRoute />}
-            withHistory
-          />
-        ),
-      },
+      // {
+      //   id: 'isrelay',
+      //   labelKey: 'node.statusrelay',
+      //   minWidth: 30,
+      //   align: 'center',
+      //   format: (isrelay, row) => (
+      //     <TableToggleButton
+      //       which="relay"
+      //       isOn={isrelay}
+      //       node={row}
+      //       createText={`${i18n.t('node.createrelay')} : ${
+      //         hostsMap[row.hostid]?.name ?? 'N/A'
+      //       }`}
+      //       removeText={`${i18n.t('node.removerelay')} : ${
+      //         hostsMap[row.hostid]?.name ?? 'N/A'
+      //       }`}
+      //       SignalIcon={<AltRoute />}
+      //       withHistory
+      //     />
+      //   ),
+      // },
       {
         id: 'lastcheckin',
         labelKey: 'node.status',

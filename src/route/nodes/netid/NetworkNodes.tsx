@@ -25,7 +25,7 @@ import {
 } from '@mui/material'
 import {
   AccountTree,
-  AltRoute,
+  // AltRoute,
   CallMerge,
   CallSplit,
   Delete,
@@ -186,23 +186,23 @@ export const NetworkNodes: React.FC = () => {
         />
       ),
     },
-    {
-      id: 'isrelay',
-      labelKey: 'node.statusrelay',
-      minWidth: 30,
-      align: 'center',
-      format: (isrelay, row) => (
-        <TableToggleButton
-          which="relay"
-          isOn={isrelay}
-          node={row}
-          createText={`${i18n.t('node.createrelay')} : ${hostsMap[row.hostid]?.name ?? ''}`}
-          removeText={`${i18n.t('node.removerelay')} : ${hostsMap[row.hostid]?.name ?? ''}`}
-          SignalIcon={<AltRoute />}
-          withHistory
-        />
-      ),
-    },
+    // {
+    //   id: 'isrelay',
+    //   labelKey: 'node.statusrelay',
+    //   minWidth: 30,
+    //   align: 'center',
+    //   format: (isrelay, row) => (
+    //     <TableToggleButton
+    //       which="relay"
+    //       isOn={isrelay}
+    //       node={row}
+    //       createText={`${i18n.t('node.createrelay')} : ${hostsMap[row.hostid]?.name ?? ''}`}
+    //       removeText={`${i18n.t('node.removerelay')} : ${hostsMap[row.hostid]?.name ?? ''}`}
+    //       SignalIcon={<AltRoute />}
+    //       withHistory
+    //     />
+    //   ),
+    // },
     {
       id: 'lastcheckin',
       labelKey: 'node.status',
