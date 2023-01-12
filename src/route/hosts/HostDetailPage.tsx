@@ -6,6 +6,9 @@ import {
   Switch as SwitchField,
   FormControlLabel,
   Typography,
+  ToggleButtonGroup,
+  ToggleButton,
+  InputAdornment,
 } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
@@ -22,8 +25,11 @@ import CustomDialog from '~components/dialog/CustomDialog'
 import { NotFound } from '~util/errorpage'
 import { HostNetworksTable } from './components/HostNetworksTable'
 import { HostEditPage } from './HostEditPage'
-import { deleteHost } from '~store/modules/hosts/actions'
+import { deleteHost, deleteHostRelay } from '~store/modules/hosts/actions'
 import { useGetHostById } from '~util/hosts'
+import { HostRelayTable } from './components/HostRelayTable'
+import { CreateRelayModal } from './components/CreateRelayModal'
+import { Visibility } from '@mui/icons-material'
 
 export const HostDetailPage: FC = () => {
   const { path, url } = useRouteMatch()
@@ -33,7 +39,11 @@ export const HostDetailPage: FC = () => {
   const { hostId } = useParams<{ hostId: string }>()
   const host = useGetHostById(decodeURIComponent(hostId))
   const [showDeleteModal, setShowDeleteModal] = useState(false)
-  const [isShowingNetworks, setIsShowingNetworks] = useState(false)
+  const [showDeleteRelayModal, setShowDeleteRelayModal] = useState(false)
+  const [pageView, setPageView] = useState<
+    'details' | 'networks' | 'relay-status'
+  >('details')
+  const [showCreateRelayModal, setShowCreateRelayModal] = useState(false)
 
   useLinkBreadcrumb({
     link: url,
@@ -44,8 +54,16 @@ export const HostDetailPage: FC = () => {
     setShowDeleteModal(false)
   }
 
+  const handleCloseDeleteRelayModal = () => {
+    setShowDeleteRelayModal(false)
+  }
+
   const handleOpenDeleteModal = () => {
     setShowDeleteModal(true)
+  }
+
+  const handleOpenDeleteRelayModal = () => {
+    setShowDeleteRelayModal(true)
   }
 
   const rowMargin = {
@@ -61,6 +79,15 @@ export const HostDetailPage: FC = () => {
     )
     history.push('/hosts')
   }, [dispatch, history, host])
+
+  const handleDeleteRelay = useCallback(() => {
+    if (!host) return
+    dispatch(
+      deleteHostRelay.request({
+        hostid: host.id,
+      })
+    )
+  }, [dispatch, host])
 
   if (!host) {
     return <NotFound />
@@ -78,15 +105,6 @@ export const HostDetailPage: FC = () => {
 
       <Route exact path={path}>
         <Grid container>
-          {/* modals */}
-          <CustomDialog
-            open={showDeleteModal}
-            handleClose={handleCloseDeleteModal}
-            handleAccept={handleDeleteHost}
-            message={`${t('common.confirmdeletequestion')} ${host.name}?`}
-            title={`${t('common.confirmdelete')}`}
-          />
-
           <Grid item xs={12}>
             <div style={{ textAlign: 'center', margin: '1em 0 1em 0' }}>
               <Typography variant="h5">
@@ -95,47 +113,52 @@ export const HostDetailPage: FC = () => {
             </div>
           </Grid>
 
-          {/* actions row */}
-          <Grid container item xs={12} sx={rowMargin} gap={2}>
-            <Grid item xs={12} md={2}>
-              {isShowingNetworks ? (
-                <Button
-                  fullWidth
-                  variant="outlined"
-                  onClick={() => setIsShowingNetworks(false)}
-                >
-                  {t('hosts.showhostdetails')}
-                </Button>
-              ) : (
-                <Button
-                  fullWidth
-                  variant="outlined"
-                  onClick={() => setIsShowingNetworks(true)}
-                >
-                  {t('hosts.shownetworks')}
-                </Button>
-              )}
-            </Grid>
-            <Grid item xs={12} md={2}>
-              <NmLink fullWidth to={`${url}/edit`} variant="outlined">
-                {t('common.edit')}
-              </NmLink>
-            </Grid>
-            <Grid item xs={12} md={2}>
-              <Button
-                fullWidth
-                variant="outlined"
-                color="error"
-                onClick={handleOpenDeleteModal}
+          {/* page view actions */}
+          <Grid container item xs={12} justifyContent="center">
+            <Grid item xs={12} md={6} sx={{ textAlign: 'center' }}>
+              <ToggleButtonGroup
+                size="small"
+                color="primary"
+                value={pageView}
+                exclusive
+                onChange={(ev, value) => setPageView(value)}
+                aria-label="text alignment"
               >
-                {t('common.delete')}
-              </Button>
+                <ToggleButton value="details" aria-label="left aligned">
+                  Host Details
+                </ToggleButton>
+                <ToggleButton value="networks" aria-label="centered">
+                  Networks
+                </ToggleButton>
+                <ToggleButton value="relay-status" aria-label="right aligned">
+                  Relay Status
+                </ToggleButton>
+              </ToggleButtonGroup>
             </Grid>
           </Grid>
 
-          {!isShowingNetworks ? (
-            // host details
+          {/* host details */}
+          {pageView === 'details' && (
             <>
+              {/* actions row */}
+              <Grid container item xs={12} sx={rowMargin} gap={2}>
+                <Grid item xs={12} md={2}>
+                  <NmLink fullWidth to={`${url}/edit`} variant="outlined">
+                    {t('common.edit')}
+                  </NmLink>
+                </Grid>
+                <Grid item xs={12} md={2}>
+                  <Button
+                    fullWidth
+                    variant="outlined"
+                    color="error"
+                    onClick={handleOpenDeleteModal}
+                  >
+                    {t('common.delete')}
+                  </Button>
+                </Grid>
+              </Grid>
+
               <Grid item xs={12} md={3} sx={rowMargin}>
                 <TextField
                   disabled
@@ -292,9 +315,10 @@ export const HostDetailPage: FC = () => {
                 />
               </Grid>
             </>
-          ) : (
+          )}
 
-            // networks
+          {/* networks */}
+          {pageView === 'networks' && (
             <>
               <Grid container item xs={12} sx={rowMargin}>
                 <Grid item xs={12}>
@@ -309,6 +333,85 @@ export const HostDetailPage: FC = () => {
               </Grid>
             </>
           )}
+
+          {/* relay */}
+          {pageView === 'relay-status' && (
+            <>
+              <Grid container item xs={12} sx={rowMargin}>
+                <Grid item xs={12} md={3} sx={rowMargin}>
+                  <TextField
+                    disabled
+                    value={host.isrelayed}
+                    label={String(t('hosts.isrelayed'))}
+                  />
+                </Grid>
+                <Grid item xs={12} md={3} sx={rowMargin}>
+                  <TextField
+                    disabled
+                    value={host.relayed_by}
+                    label={String(t('hosts.relayedby'))}
+                    InputProps={{
+                      endAdornment: host.isrelayed ? (
+                        <InputAdornment position="end">
+                          <NmLink to={`/hosts/${host.relayed_by}`}>
+                            <Visibility />
+                          </NmLink>
+                        </InputAdornment>
+                      ) : null,
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={12} sx={rowMargin}>
+                  <FormControlLabel
+                    label={String(t('hosts.isrelay'))}
+                    control={
+                      <SwitchField
+                        checked={host.isrelay}
+                        onChange={(_, isCreating) => {
+                          if (isCreating) setShowCreateRelayModal(true)
+                          else handleOpenDeleteRelayModal()
+                        }}
+                      />
+                    }
+                  />
+                </Grid>
+
+                {host.isrelay && (
+                  <>
+                    <Grid item xs={12}>
+                      <Typography variant="h5">Relay hosts</Typography>
+                    </Grid>
+                    <Grid item xs={12} sx={rowMargin}>
+                      <HostRelayTable hostid={hostId} />
+                    </Grid>
+                  </>
+                )}
+              </Grid>
+            </>
+          )}
+
+          {/* modals */}
+          <CustomDialog
+            open={showDeleteModal}
+            handleClose={handleCloseDeleteModal}
+            handleAccept={handleDeleteHost}
+            message={`${t('common.confirmdeletequestion')} ${host.name}?`}
+            title={`${t('common.confirmdelete')}`}
+          />
+          <CreateRelayModal
+            hostId={hostId}
+            open={showCreateRelayModal}
+            onClose={() => {
+              setShowCreateRelayModal(false)
+            }}
+          />
+          <CustomDialog
+            open={showDeleteRelayModal}
+            handleClose={handleCloseDeleteRelayModal}
+            handleAccept={handleDeleteRelay}
+            message={`${t('common.confirmdeletequestion')} relay ${host.name}?`}
+            title={`${t('common.confirmdelete')}`}
+          />
         </Grid>
       </Route>
     </Switch>

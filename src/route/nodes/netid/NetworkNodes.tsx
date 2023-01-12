@@ -25,13 +25,13 @@ import {
 } from '@mui/material'
 import {
   AccountTree,
-  AltRoute,
+  // AltRoute,
   CallMerge,
   CallSplit,
   Delete,
-  Edit,
   Search,
   Sync,
+  Visibility,
 } from '@mui/icons-material'
 import { i18n } from '../../../i18n/i18n'
 import { CreateEgress } from './components/CreateEgress'
@@ -106,9 +106,9 @@ export const NetworkNodes: React.FC = () => {
     }
   }
 
-  const handleEditDetails = useCallback(
+  const handleViewDetails = useCallback(
     (node: Node) => {
-      history.push(`/nodes/${node.network}/${encodeURIComponent(node.id)}/edit`)
+      history.push(`/nodes/${node.network}/${encodeURIComponent(node.id)}`)
     },
     [history]
   )
@@ -186,23 +186,23 @@ export const NetworkNodes: React.FC = () => {
         />
       ),
     },
-    {
-      id: 'isrelay',
-      labelKey: 'node.statusrelay',
-      minWidth: 30,
-      align: 'center',
-      format: (isrelay, row) => (
-        <TableToggleButton
-          which="relay"
-          isOn={isrelay}
-          node={row}
-          createText={`${i18n.t('node.createrelay')} : ${hostsMap[row.hostid]?.name ?? ''}`}
-          removeText={`${i18n.t('node.removerelay')} : ${hostsMap[row.hostid]?.name ?? ''}`}
-          SignalIcon={<AltRoute />}
-          withHistory
-        />
-      ),
-    },
+    // {
+    //   id: 'isrelay',
+    //   labelKey: 'node.statusrelay',
+    //   minWidth: 30,
+    //   align: 'center',
+    //   format: (isrelay, row) => (
+    //     <TableToggleButton
+    //       which="relay"
+    //       isOn={isrelay}
+    //       node={row}
+    //       createText={`${i18n.t('node.createrelay')} : ${hostsMap[row.hostid]?.name ?? ''}`}
+    //       removeText={`${i18n.t('node.removerelay')} : ${hostsMap[row.hostid]?.name ?? ''}`}
+    //       SignalIcon={<AltRoute />}
+    //       withHistory
+    //     />
+    //   ),
+    // },
     {
       id: 'lastcheckin',
       labelKey: 'node.status',
@@ -364,10 +364,10 @@ export const NetworkNodes: React.FC = () => {
           rows={tableData}
           actions={[
             (row) => ({
-              tooltip: t('common.edit'),
-              icon: <Edit />,
+              tooltip: t('common.view'),
+              icon: <Visibility />,
               onClick: () => {
-                handleEditDetails(row)
+                handleViewDetails(row)
               },
             }),
             (row) => ({

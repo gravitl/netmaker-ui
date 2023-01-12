@@ -90,11 +90,11 @@ export const NetworkGraph: React.FC = () => {
     ) {
       return false
     } else if (
-      node1.isrelay &&
-      ([...node1.relayaddrs] as string[]).indexOf(node2.address) >= 0
+      hostsMap[node1.hostid]?.isrelay &&
+      (hostsMap[node1.hostid].relay_hosts).includes(node2.hostid)
     ) {
       return false
-    } else if (node1.isrelayed || node2.isrelayed) {
+    } else if (hostsMap[node1.hostid]?.isrelayed || hostsMap[node2.hostid]?.isrelayed) {
       return false
     }
     return true
@@ -181,10 +181,10 @@ export const NetworkGraph: React.FC = () => {
   }
 
   const extractRelayedNodes = (node: Node) => {
-    const relayaddrs = [...node.relayaddrs] as string[]
+    const relayaddrs = hostsMap[node.hostid]?.relay_hosts
     for (let i = 0; i < listOfNodes.length; i++) {
       const currentNode = listOfNodes[i]
-      if (relayaddrs.indexOf(currentNode.address) >= 0) {
+      if (relayaddrs.indexOf(currentNode.hostid) >= 0) {
         data.nodeTypes.push({
           type: 'relayed',
           id: currentNode.id,
@@ -213,7 +213,7 @@ export const NetworkGraph: React.FC = () => {
       if (
         innerNode.isingressgateway &&
         innerNode.isegressgateway &&
-        innerNode.isrelay
+        hostsMap[innerNode.hostid]?.isrelay
       ) {
         data.nodeTypes.push({
           type: 'i&e&r',
@@ -234,7 +234,7 @@ export const NetworkGraph: React.FC = () => {
         })
         extractEgressRanges(innerNode)
         extractIngressRanges(innerNode)
-      } else if (innerNode.isegressgateway && innerNode.isrelay) {
+      } else if (innerNode.isegressgateway && hostsMap[innerNode.hostid]?.isrelay) {
         data.nodeTypes.push({
           type: 'e&r',
           id: innerNode.id,
@@ -243,7 +243,7 @@ export const NetworkGraph: React.FC = () => {
         })
         extractEgressRanges(innerNode)
         extractRelayedNodes(innerNode)
-      } else if (innerNode.isingressgateway && innerNode.isrelay) {
+      } else if (innerNode.isingressgateway && hostsMap[innerNode.hostid]?.isrelay) {
         data.nodeTypes.push({
           type: 'i&r',
           id: innerNode.id,
@@ -271,7 +271,7 @@ export const NetworkGraph: React.FC = () => {
         })
         extractIngressRanges(innerNode)
       }
-    } else if (innerNode.isrelay) {
+    } else if (hostsMap[innerNode.hostid]?.isrelay) {
       data.nodeTypes.push({
         type: 'relay',
         id: innerNode.id,
@@ -279,7 +279,7 @@ export const NetworkGraph: React.FC = () => {
         lastCheckin: innerNode.lastcheckin,
       })
       extractRelayedNodes(innerNode)
-    } else if (innerNode.isrelayed) {
+    } else if (hostsMap[innerNode.hostid]?.isrelayed) {
       // skip edges for relayed nodes
       continue
     } else {

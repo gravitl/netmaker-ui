@@ -135,6 +135,7 @@ export const en: LanguageResource = {
     hosts: 'Hosts',
   },
   common: {
+    host: 'Host',
     endpointip: 'Endpoint IP',
     connecttonetwork: 'Connect to network',
     disconnectfromnetwork: 'Disconnect from network',
@@ -610,6 +611,7 @@ export const en: LanguageResource = {
         admin: 'Successfully created new Admin!',
         usergroup: 'Successfully created new user group!',
         failover: 'Successfully added failover gateway to node!',
+        hostrelay: 'Successfully created host relay',
       },
       failure: {
         accesskey: 'Failed to create Access Key.',
@@ -622,6 +624,7 @@ export const en: LanguageResource = {
         admin: 'Failed to create Admin.',
         usergroup: 'Failed to create new user group.',
         failover: 'Failed to add failover gateway to node.',
+        hostrelay: 'Failed to create host relay',
       },
     },
     delete: {
@@ -637,6 +640,7 @@ export const en: LanguageResource = {
         usergroups: 'Successfully deleted User Group!',
         networkuser: 'Successfully deleted Network User!',
         host: 'Successfully deleted Host!',
+        hostrelay: 'Successfully deleted host relay',
       },
       failure: {
         accesskey: 'Failed to remove Access Key.',
@@ -651,6 +655,7 @@ export const en: LanguageResource = {
         networkuser: 'Failed to remove Network User.',
         host: 'Failed to remove Host.',
         hostalt: 'Ensure there are no associated nodes. Check internet connection',
+        hostrelay: 'Failed to delete host relay',
       },
     },
     login: {
@@ -680,5 +685,20 @@ export const en: LanguageResource = {
     removedefaultness: 'Remove default from host?',
     connecttonetwork: 'Connect host',
     disconnectfromnetwork: 'Disconnect host',
+    relaystatus: 'Relay Status',
+    isrelayed: 'Is Relayed',
+    isrelay: 'Is Relay',
+    relayedhostid: 'Relayed Host ID',
+    relayed: 'Relayed',
+    showonlyrelayedhosts: 'Show only relayed hosts',
+    showallhosts: 'Show all hosts',
+    confirmrelayto: 'Confirm relay to',
+    confirmremoverelayto: 'Confirm remove relay to',
+    removerelayto: 'Remove relay to',
+    relayto: 'Relay to',
+    hoststorelay: 'Hosts to relay',
+    relayedhost: 'Relayed Host',
+    relayedby: 'Relayed By',
+    canonlyrelaynonrelayedhosts: 'Can only relay non-relayed hosts',
   },
 }

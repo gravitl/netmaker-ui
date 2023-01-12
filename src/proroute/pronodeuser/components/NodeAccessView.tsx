@@ -16,7 +16,6 @@ import {
 } from '@mui/material'
 import {
   AccountTree,
-  AltRoute,
   Delete,
   Search,
   CallMerge,
@@ -172,23 +171,6 @@ export const NodeAccessView: React.FC<{ nodes: Node[]; isNetAdmin?: boolean }> =
             createText={`${i18n.t('node.createingress')} : ${hostsMap[row.hostid]?.name ?? ''}`}
             removeText={`${i18n.t('node.removeingress')} : ${hostsMap[row.hostid]?.name ?? ''}`}
             SignalIcon={<CallMerge />}
-          />
-        ),
-      })
-      columns.push({
-        id: 'isrelay',
-        labelKey: 'node.statusrelay',
-        minWidth: 30,
-        align: 'center',
-        format: (isrelay, row) => (
-          <TableToggleButton
-            which="relay"
-            isOn={isrelay}
-            node={row}
-            createText={`${i18n.t('node.createrelay')} : ${hostsMap[row.hostid]?.name ?? ''}`}
-            removeText={`${i18n.t('node.removerelay')} : ${hostsMap[row.hostid]?.name ?? ''}`}
-            SignalIcon={<AltRoute />}
-            withHistory
           />
         ),
       })

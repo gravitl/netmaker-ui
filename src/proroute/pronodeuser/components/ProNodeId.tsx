@@ -20,6 +20,7 @@ import { deleteNode } from '~modules/node/actions'
 import CustomDialog from '~components/dialog/CustomDialog'
 import { hostsSelectors, proSelectors } from '~store/selectors'
 import { Node, nodeACLValues } from '~store/types'
+import { NmLink } from '~components/Link'
 
 export const ProNodeId: React.FC = () => {
   const { url } = useRouteMatch()
@@ -96,6 +97,13 @@ export const ProNodeId: React.FC = () => {
             justifyContent: 'center',
           }}
         > 
+          <NmLink
+            to={`/hosts/${node.hostid}`}
+            variant="outlined"
+            style={{ width: '50%', margin: '4px' }}
+          >
+            {t('common.host')}
+          </NmLink>
           <Button
             variant="outlined"
             color="warning"

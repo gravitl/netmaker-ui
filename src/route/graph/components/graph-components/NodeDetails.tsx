@@ -17,7 +17,6 @@ import {
   Tooltip,
 } from '@mui/material'
 import {
-  AltRoute,
   ArrowRightAlt,
   CallMerge,
   CallSplit,
@@ -177,16 +176,6 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({
           createText={`${t('node.createingress')} : ${hostsMap[data.hostid]?.name ?? ''}`}
           removeText={`${t('node.removeingress')} : ${hostsMap[data.hostid]?.name ?? ''}`}
           SignalIcon={<CallMerge />}
-          extraLogic={handleClose}
-        />
-        <TableToggleButton
-          which="relay"
-          isOn={data.isrelay}
-          node={data}
-          createText={`${t('node.createrelay')} : ${hostsMap[data.hostid]?.name ?? ''}`}
-          removeText={`${t('node.removerelay')} : ${hostsMap[data.hostid]?.name ?? ''}`}
-          SignalIcon={<AltRoute />}
-          withHistory
           extraLogic={handleClose}
         />
         <Tooltip

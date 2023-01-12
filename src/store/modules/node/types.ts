@@ -17,41 +17,18 @@ export interface Node {
   networkrange: string
   networkrange6: string
   pendingdelete: boolean
-  isrelay: boolean
-  isrelayed: boolean
-  relayaddrs: string[]
   isegressgateway: boolean
   isingressgateway: boolean
   egressgatewayranges: string[]
   egressgatewaynatenabled: boolean
   failovernode: string
   dnson: boolean
-  isdualstack: boolean
   islocal: boolean
   server: string
   internetgateway: string
   defaultacl: string
   connected: boolean
   failover: boolean
-  
-  // name: string
-  // allowedips: string[]
-  // listenport: number
-  // publickey: string
-  // endpoint: string
-  // isserver: boolean
-  // isstatic: boolean
-  // udpholepunch: boolean
-  // ispending: string
-  // localrange: string
-  // ipforwarding: boolean
-  // os: string
-  // mtu: number
-  // version: string
-  // isdocker: boolean
-  // isk8s: boolean
-  // ishub: boolean
-  // interfaces?: Interface[]
 }
 
 export interface Interface {
@@ -59,29 +36,6 @@ export interface Interface {
   address: { IP: string; Mask: string }
   addressString: string
 }
-
-// export type NodePayload = Modify<
-//   Node,
-//   {
-//     isegressgateway: 'yes' | 'no'
-//     isingressgateway: 'yes' | 'no'
-//     isstatic: 'yes' | 'no'
-//     udpholepunch: 'yes' | 'no'
-//     dnson: 'yes' | 'no'
-//     isdualstack: 'yes' | 'no'
-//     isserver: 'yes' | 'no'
-//     islocal: 'yes' | 'no'
-//     ipforwarding: 'yes' | 'no'
-//     isrelayed: 'yes' | 'no'
-//     isrelay: 'yes' | 'no'
-//     isdocker: 'yes' | 'no'
-//     isk8s: 'yes' | 'no'
-//     ishub: 'yes' | 'no'
-//     defaultacl: 'yes' | 'no' | 'unset'
-//     connected: 'yes' | 'no'
-//     failover: 'yes' | 'no'
-//   }
-// >
 
 export interface ExternalClient {
   clientid: string

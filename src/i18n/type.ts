@@ -483,6 +483,7 @@ export interface LanguageResource {
         admin: string
         usergroup: string
         failover: string
+        hostrelay: string
       }
       failure: {
         accesskey: string
@@ -495,6 +496,7 @@ export interface LanguageResource {
         admin: string
         usergroup: string
         failover: string
+        hostrelay: string
       }
     }
     delete: {
@@ -510,6 +512,7 @@ export interface LanguageResource {
         usergroups: string
         networkuser: string
         host: string
+        hostrelay: string
       }
       failure: {
         accesskey: string
@@ -524,6 +527,7 @@ export interface LanguageResource {
         networkuser: string
         host: string
         hostalt: string
+        hostrelay: string
       }
     }
     login: {

@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { NmTable, TableColumns } from '~components/Table'
 import CopyText from '~components/CopyText'
 import { Host } from '~store/modules/hosts/types'
-import { Grid, Switch, TextField } from '@mui/material'
+import { Grid, Switch, TextField, Typography } from '@mui/material'
 import CustomizedDialogs from '~components/dialog/CustomDialog'
 
 interface HostsTableProps {
@@ -46,6 +46,24 @@ export const HostsTable: FC<HostsTableProps> = (props) => {
       labelKey: 'hosts.publickey',
       minWidth: 100,
       format: (value) => <CopyText type="subtitle2" value={value} />,
+    },
+    {
+      id: 'isrelay',
+      labelKey: 'hosts.relaystatus',
+      minWidth: 100,
+      format: (value, host) => (
+        <>
+          <Typography variant="overline" color={host.isrelay ? 'green' : ''}>
+            {host.isrelay ? <span>&#10003;</span> : <span>&times;</span>}{' '}
+            Relaying
+          </Typography>
+          <br />
+          <Typography variant="overline" color={host.isrelayed ? 'green' : ''}>
+            {host.isrelayed ? <span>&#10003;</span> : <span>&times;</span>}{' '}
+            Relayed
+          </Typography>
+        </>
+      ),
     },
     {
       id: 'version',
@@ -104,7 +122,7 @@ export const HostsTable: FC<HostsTableProps> = (props) => {
           columns={columns}
           rows={filteredHosts}
           getRowId={(host) => host.id}
-          actionsHeader={{ element: 'Set Default Node', width: 150 }}
+          actionsHeader={{ element: 'Default Node', width: 150 }}
           actions={[
             (host) => ({
               tooltip: host.isdefault

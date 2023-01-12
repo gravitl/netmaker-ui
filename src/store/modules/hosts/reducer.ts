@@ -1,6 +1,6 @@
 import { produce } from 'immer'
 import { createReducer } from 'typesafe-actions'
-import { clearHosts, getHosts, updateHost, deleteHost, updateHostNetworks } from './actions'
+import { clearHosts, getHosts, updateHost, deleteHost, updateHostNetworks, createHostRelay, deleteHostRelay } from './actions'
 import { Host } from '.'
 import { call } from 'redux-saga/effects'
 
@@ -15,6 +15,9 @@ interface NodeCommonDetails {
   localrange: Host['localrange']
   mtu: Host['mtu']
   interfaces: Host['interfaces']
+  isrelay: Host['isrelay']
+  relay_hosts: Host['relay_hosts']
+  isrelayed: Host['isrelayed']
 }
 
 export const reducer = createReducer({
@@ -59,6 +62,9 @@ export const reducer = createReducer({
           localrange: host.localrange,
           mtu: host.mtu,
           interfaces: host.interfaces,
+          isrelay: host.isrelay,
+          relay_hosts: host.relay_hosts,
+          isrelayed: host.isrelayed,
         }
       })
     })
@@ -137,6 +143,56 @@ export const reducer = createReducer({
     })
   )
   .handleAction(deleteHost['failure'], (state, payload) =>
+    produce(state, (draftState) => {
+      draftState.isProcessing = false
+    })
+  )
+
+  // create host relay actions
+  .handleAction(createHostRelay['request'], (state, _) =>
+    produce(state, (draftState) => {
+      draftState.isProcessing = true
+    })
+  )
+  .handleAction(createHostRelay['success'], (state, payload) =>
+    produce(state, (draftState) => {
+      draftState.isProcessing = false
+      const newStateHosts: Host[] = JSON.parse(JSON.stringify(state.hosts))
+      const updatedHostId = payload.payload.id
+      newStateHosts.splice(
+        newStateHosts.findIndex((host: Host) => host.id === updatedHostId),
+        1,
+        payload.payload
+      )
+      draftState.hosts = newStateHosts
+    })
+  )
+  .handleAction(createHostRelay['failure'], (state, _) =>
+    produce(state, (draftState) => {
+      draftState.isProcessing = false
+    })
+  )
+
+  // delete host relay actions
+  .handleAction(deleteHostRelay['request'], (state, _) =>
+    produce(state, (draftState) => {
+      draftState.isProcessing = true
+    })
+  )
+  .handleAction(deleteHostRelay['success'], (state, payload) =>
+    produce(state, (draftState) => {
+      draftState.isProcessing = false
+      const newStateHosts: Host[] = JSON.parse(JSON.stringify(state.hosts))
+      const updatedHostId = payload.payload.id
+      newStateHosts.splice(
+        newStateHosts.findIndex((host: Host) => host.id === updatedHostId),
+        1,
+        payload.payload
+      )
+      draftState.hosts = newStateHosts
+    })
+  )
+  .handleAction(deleteHostRelay['failure'], (state, _) =>
     produce(state, (draftState) => {
       draftState.isProcessing = false
     })
