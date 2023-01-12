@@ -45,7 +45,7 @@ export const HostEditPage: FC<{ onCancel: () => void }> = ({ onCancel }) => {
         },
         verbosity: (value, formData) => {
           const message = t('error.verbositymustbeinrange')
-          if (value > 4 || value < 1) {
+          if (value > 4 || value < 0) {
             return { message, type: 'value' }
           }
           return undefined
@@ -141,7 +141,7 @@ export const HostEditPage: FC<{ onCancel: () => void }> = ({ onCancel }) => {
             title={
               host.isstatic
                 ? String(t('common.endpointip'))
-                : String(t('hosts.canonlyeditendpointofstatichost'))
+                : String(t('hosts.canonlyeditendpointofnonstatichost'))
             }
           >
             <span>
@@ -149,12 +149,12 @@ export const HostEditPage: FC<{ onCancel: () => void }> = ({ onCancel }) => {
                 defaultValue={host.endpointip}
                 name={'endpointip'}
                 label={String(t('common.endpointip'))}
-                disabled={!host.isstatic}
+                disabled={host.isstatic}
               />
             </span>
           </Tooltip>
         </Grid>
-        <Grid item xs={12} md={3} sx={rowMargin}>
+        {/* <Grid item xs={12} md={3} sx={rowMargin}>
           <Tooltip title={String(t('common.localrange'))}>
             <span>
               <NmFormInputText
@@ -164,7 +164,7 @@ export const HostEditPage: FC<{ onCancel: () => void }> = ({ onCancel }) => {
               />
             </span>
           </Tooltip>
-        </Grid>
+        </Grid> */}
         <Grid item xs={12} md={3} sx={rowMargin}>
           <Tooltip title={String(t('common.listenport'))}>
             <span>
@@ -196,6 +196,17 @@ export const HostEditPage: FC<{ onCancel: () => void }> = ({ onCancel }) => {
                 label={String(t('common.isdefault'))}
                 name={'isdefault'}
                 defaultValue={host.isdefault}
+              />
+            </span>
+          </Tooltip>
+        </Grid>
+        <Grid item xs={12} md={3} sx={rowMargin}>
+          <Tooltip title={String(t('hosts.proxyenabled'))}>
+            <span>
+              <NmFormInputSwitch
+                label={String(t('hosts.proxyenabled'))}
+                name={'proxy_enabled'}
+                defaultValue={host.proxy_enabled}
               />
             </span>
           </Tooltip>

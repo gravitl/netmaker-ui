@@ -31,14 +31,6 @@ export interface Host {
   relayed_by: string // host id
   isrelay: boolean
   relay_hosts: string[] // host ids
-
-  // localaddress: string
-  // listenaddress: number
-  // ipforwarding: boolean
-  // daemoninstalled: boolean
-  // hostpass: string
-  // nodepassword: string
-  // traffickeypublic: string
 }
 
 export interface GetHostsPayload {
