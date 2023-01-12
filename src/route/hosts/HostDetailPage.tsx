@@ -293,7 +293,9 @@ export const HostDetailPage: FC = () => {
               </Grid>
               <Grid item xs={12} md={6} sx={rowMargin}>
                 <List>
-                  <ListItem disablePadding>Interfaces</ListItem>
+                  <ListItem disablePadding sx={{ marginBottom: '1rem' }}>
+                    Interfaces
+                  </ListItem>
                   {host.interfaces.map((iface, i) => (
                     <ListItem disablePadding key={`iface-${i}`}>
                       <ListItemButton
@@ -302,7 +304,9 @@ export const HostDetailPage: FC = () => {
                         }}
                         sx={{ borderBottom: '1px solid' }}
                       >
-                        <ListItemText primary={iface.addressString || iface.address.IP} />
+                        <ListItemText
+                          primary={iface.addressString || iface.address.IP}
+                        />
                         <CopyAllOutlined />
                       </ListItemButton>
                     </ListItem>
