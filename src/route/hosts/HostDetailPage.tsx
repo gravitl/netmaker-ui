@@ -9,6 +9,10 @@ import {
   ToggleButtonGroup,
   ToggleButton,
   InputAdornment,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
 } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
@@ -30,6 +34,8 @@ import { useGetHostById } from '~util/hosts'
 import { HostRelayTable } from './components/HostRelayTable'
 import { CreateRelayModal } from './components/CreateRelayModal'
 import { Visibility } from '@mui/icons-material'
+import copy from 'copy-to-clipboard'
+import { CopyAllOutlined } from '@mui/icons-material'
 
 export const HostDetailPage: FC = () => {
   const { path, url } = useRouteMatch()
@@ -195,20 +201,6 @@ export const HostDetailPage: FC = () => {
                   label={String(t('common.publickey'))}
                 />
               </Grid>
-              {/* <Grid item xs={12} md={3} sx={rowMargin}>
-                <TextField
-                  disabled
-                  value={host.traffickeypublic}
-                  label={String(t('common.traffickeypublic'))}
-                />
-              </Grid> */}
-              {/* <Grid item xs={12} md={3} sx={rowMargin}>
-                <TextField
-                  disabled
-                  value={host.localaddress}
-                  label={String(t('common.localaddress'))}
-                />
-              </Grid> */}
               <Grid item xs={12} md={3} sx={rowMargin}>
                 <TextField
                   disabled
@@ -217,13 +209,13 @@ export const HostDetailPage: FC = () => {
                 />
               </Grid>
 
-              <Grid item xs={12} md={3} sx={rowMargin}>
+              {/* <Grid item xs={12} md={3} sx={rowMargin}>
                 <TextField
                   disabled
                   value={host.localrange}
                   label={String(t('common.localrange'))}
                 />
-              </Grid>
+              </Grid> */}
               <Grid item xs={12} md={3} sx={rowMargin}>
                 <TextField
                   disabled
@@ -261,13 +253,13 @@ export const HostDetailPage: FC = () => {
                   label={String(t('common.internetgateway'))}
                 />
               </Grid>
-              <Grid item xs={12} md={3} sx={rowMargin}>
+              {/* <Grid item xs={12} md={3} sx={rowMargin}>
                 <TextField
                   disabled
                   value={host.firewallinuse}
                   label={String(t('common.firewallinuse'))}
                 />
-              </Grid>
+              </Grid> */}
               <Grid item xs={12} md={3} sx={rowMargin}>
                 <TextField
                   disabled
@@ -276,13 +268,6 @@ export const HostDetailPage: FC = () => {
                 />
               </Grid>
 
-              {/* <Grid item xs={12} md={3} sx={rowMargin}>
-                <FormControlLabel
-                  label={String(t('common.ipforwarding'))}
-                  control={<SwitchField checked={host.ipforwarding} disabled />}
-                  disabled
-                />
-              </Grid> */}
               <Grid item xs={12} md={3} sx={rowMargin}>
                 <FormControlLabel
                   label={String(t('common.isdefault'))}
@@ -297,14 +282,6 @@ export const HostDetailPage: FC = () => {
                   disabled
                 />
               </Grid>
-              {/* <Grid item xs={12} md={3} sx={rowMargin}>
-                <FormControlLabel
-                  label={String(t('common.daemoninstalled'))}
-                  control={<SwitchField checked={host.daemoninstalled} disabled />}
-                  disabled
-                />
-              </Grid> */}
-
               <Grid item xs={12} md={3} sx={rowMargin}>
                 <FormControlLabel
                   label={String(t('hosts.proxyenabled'))}
@@ -314,11 +291,43 @@ export const HostDetailPage: FC = () => {
                   disabled
                 />
               </Grid>
+              <Grid item xs={12} md={3} sx={rowMargin}>
+                <FormControlLabel
+                  label={String(t('hosts.isstatic'))}
+                  control={
+                    <SwitchField checked={host.isstatic} disabled />
+                  }
+                  disabled
+                />
+              </Grid>
+              <Grid item xs={12} md={6} sx={rowMargin}>
+                <List>
+                  <ListItem disablePadding sx={{ marginBottom: '1rem' }}>
+                    Interfaces
+                  </ListItem>
+                  {host.interfaces.map((iface, i) => (
+                    <ListItem disablePadding key={`iface-${i}`}>
+                      <ListItemButton
+                        onClick={() => {
+                          copy(iface.addressString || iface.address.IP)
+                        }}
+                        sx={{ borderBottom: '1px solid' }}
+                      >
+                        <ListItemText
+                          primary={iface.addressString || iface.address.IP}
+                        />
+                        <CopyAllOutlined />
+                      </ListItemButton>
+                    </ListItem>
+                  ))}
+                </List>
+              </Grid>
             </>
           )}
 
           {/* networks */}
           {pageView === 'networks' && (
+            // networks
             <>
               <Grid container item xs={12} sx={rowMargin}>
                 <Grid item xs={12}>
