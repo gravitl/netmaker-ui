@@ -700,5 +700,6 @@ export const en: LanguageResource = {
     relayedhost: 'Relayed Host',
     relayedby: 'Relayed By',
     canonlyrelaynonrelayedhosts: 'Can only relay non-relayed hosts',
+    isstatic: 'Is Static',
   },
 }
