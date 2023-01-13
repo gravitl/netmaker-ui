@@ -211,6 +211,17 @@ export const HostEditPage: FC<{ onCancel: () => void }> = ({ onCancel }) => {
             </span>
           </Tooltip>
         </Grid>
+        <Grid item xs={12} md={3} sx={rowMargin}>
+          <Tooltip title={String(t('hosts.isstatic'))}>
+            <span>
+              <NmFormInputSwitch
+                label={String(t('hosts.isstatic'))}
+                name={'isstatic'}
+                defaultValue={host.isstatic}
+              />
+            </span>
+          </Tooltip>
+        </Grid>
       </Grid>
     </NmForm>
   )

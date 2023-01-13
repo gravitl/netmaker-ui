@@ -291,6 +291,15 @@ export const HostDetailPage: FC = () => {
                   disabled
                 />
               </Grid>
+              <Grid item xs={12} md={3} sx={rowMargin}>
+                <FormControlLabel
+                  label={String(t('hosts.isstatic'))}
+                  control={
+                    <SwitchField checked={host.isstatic} disabled />
+                  }
+                  disabled
+                />
+              </Grid>
               <Grid item xs={12} md={6} sx={rowMargin}>
                 <List>
                   <ListItem disablePadding sx={{ marginBottom: '1rem' }}>
