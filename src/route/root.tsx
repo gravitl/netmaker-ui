@@ -1,6 +1,4 @@
-import React from 'react'
 import { Switch, Route, useLocation } from 'react-router-dom'
-
 import { Dashboard } from './dashboard/Dashboard'
 import { Nodes } from './nodes/Nodes'
 import { Login } from './login/Login'
@@ -27,6 +25,7 @@ import WelcomeCard from '../proroute/proaccessleveldashboards/components/Welcome
 import { NotFound } from '~util/errorpage'
 import { UsersCommunity } from './users/UsersCommunity'
 import { HostsPage } from './hosts/HostsPage'
+import { useEffect, useState } from 'react'
 
 function Routes() {
   let location = useLocation()
@@ -41,9 +40,9 @@ function Routes() {
   const from = (location.state as any)?.from
   const user = useSelector(authSelectors.getUser)
   const serverConfig = useSelector(serverSelectors.getServerConfig)
-  const [isEE, setIsEE] = React.useState(false)
+  const [isEE, setIsEE] = useState(false)
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (serverConfig && serverConfig.IsEE) {
       setIsEE(serverConfig.IsEE)
     } else {
