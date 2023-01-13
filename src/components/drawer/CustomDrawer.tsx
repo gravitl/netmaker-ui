@@ -288,27 +288,27 @@ export default function CustomDrawer() {
             {
               text: 'Nodes',
               icon: <DeviceHub />,
-              link: `/nodes${!!netid ? `/${netid}` : ''}`,
+              link: `/nodes`,
             },
             {
               text: 'Graphs',
               icon: <AccountTree />,
-              link: `/graphs${!!netid ? `/${netid}` : ''}`,
+              link: `/graphs`,
             },
             {
               text: 'Access Keys',
               icon: <VpnKey />,
-              link: `/access-keys${!!netid ? `/${netid}` : ''}`,
+              link: `/access-keys`,
             },
             {
               text: 'Ext. Clients',
               icon: <Devices />,
-              link: `/ext-clients${!!netid ? `/${netid}` : ''}`,
+              link: `/ext-clients`,
             },
             {
               text: 'DNS',
               icon: <Language />,
-              link: `/dns${!!netid ? `/${netid}` : ''}`,
+              link: `/dns`,
             },
           ].map((item) => (
             <ListItemButton component={Link} to={item.link} key={item.text}>
