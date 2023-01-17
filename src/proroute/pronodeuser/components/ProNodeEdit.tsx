@@ -160,72 +160,17 @@ export const ProNodeEdit: React.FC = () => {
             </Typography>
           </div>
         </Grid>
-        {/* <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-          <Tooltip
-            title={
-              hostsMap[node.hostid].isstatic
-                ? String(t('node.endpointdisable'))
-                : String(t('node.endpointenable'))
-            }
-          >
+        <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
+          <Tooltip title={String(t('helper.whatisipv4'))} placement="top">
             <span>
               <NmFormInputText
-                defaultValue={hostsMap[data.hostid].endpoint}
-                name={'endpoint'}
-                label={String(t('node.endpoint'))}
-                disabled={isIPDynamic}
+                defaultValue={node.address}
+                name={'address'}
+                label={String(t('node.address'))}
               />
             </span>
           </Tooltip>
-        </Grid> */}
-        {/* <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-          <Tooltip title={String(t('helper.dynamicendpoint'))} placement="top">
-            <span>
-              <NmFormInputSwitch
-                label={String(t('node.isstatic'))}
-                name={'isstatic'}
-                defaultValue={isIPDynamic}
-              />
-            </span>
-          </Tooltip>
-        </Grid> */}
-        {/* <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-          <Tooltip
-            title={String(t('helper.defaultlistenport'))}
-            placement="top"
-          >
-            <span>
-              <NmFormInputText
-                defaultValue={String(node.listenport)}
-                name={'listenport'}
-                label={String(t('node.listenport'))}
-                type="number"
-                disabled={node.isserver || node.udpholepunch}
-              />
-            </span>
-          </Tooltip>
-        </Grid> */}
-
-        {/* <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-          <Tooltip
-            title={
-              !network?.defaultudpholepunch
-                ? String(t('node.udpdisabled'))
-                : String(t('helper.dynamicport'))
-            }
-            placement="top"
-          >
-            <span>
-              <NmFormInputSwitch
-                label={String(t('node.udpholepunch'))}
-                name={'udpholepunch'}
-                defaultValue={node.udpholepunch}
-                disabled={!network?.defaultudpholepunch}
-              />
-            </span>
-          </Tooltip>
-        </Grid> */}
-
+        </Grid>
         <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <Tooltip title={String(t('helper.whatisipv6'))} placement="top">
             <span>
@@ -373,40 +318,6 @@ export const ProNodeEdit: React.FC = () => {
             </span>
           </Tooltip>
         </Grid>
-        {/* <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-          <Tooltip title={String(t('helper.nodelocalrange'))} placement="top">
-            <span>
-              <NmFormInputText
-                defaultValue={node.localrange}
-                label={String(t('node.localrange'))}
-                name={'localrange'}
-                disabled={!node.islocal}
-              />
-            </span>
-          </Tooltip>
-        </Grid> */}
-        {/* <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-          <Tooltip title={String(t('helper.nodeos'))} placement="top">
-            <span>
-              <NmFormInputText
-                disabled
-                defaultValue={node.os}
-                label={String(t('node.os'))}
-                name={'os'}
-              />
-            </span>
-          </Tooltip>
-        </Grid> */}
-        {/* <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-          <Tooltip title={String(t('helper.mtu'))} placement="top">
-            <NmFormInputText
-              type="number"
-              defaultValue={String(node.mtu)}
-              label={String(t('node.mtu'))}
-              name={'mtu'}
-            />
-          </Tooltip>
-        </Grid> */}
         <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <Tooltip title={String(t('helper.defaultacl'))} placement="top">
             <NmFormOptionSelect
