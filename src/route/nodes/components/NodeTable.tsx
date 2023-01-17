@@ -80,71 +80,59 @@ export const NodeTable: React.FC<{ nodes: Node[] }> = ({ nodes }) => {
         labelKey: 'node.statusegress',
         minWidth: 30,
         align: 'center',
-        format: (isegress, row) => (
-          <TableToggleButton
-            which="egress"
-            isOn={isegress}
-            node={row}
-            createText={`${i18n.t('node.createegress')} : ${
-              hostsMap[row.hostid]?.name ?? 'N/A'
-            }`}
-            removeText={`${i18n.t('node.removeegress')} : ${
-              hostsMap[row.hostid]?.name ?? 'N/A'
-            }`}
-            SignalIcon={<CallSplit />}
-            withHistory
-          />
-        ),
+        format: (isegress, row) =>
+          row.pendingdelete ? (
+            <></>
+          ) : (
+            <TableToggleButton
+              which="egress"
+              isOn={isegress}
+              node={row}
+              createText={`${i18n.t('node.createegress')} : ${
+                hostsMap[row.hostid]?.name ?? 'N/A'
+              }`}
+              removeText={`${i18n.t('node.removeegress')} : ${
+                hostsMap[row.hostid]?.name ?? 'N/A'
+              }`}
+              SignalIcon={<CallSplit />}
+              withHistory
+            />
+          ),
       },
       {
         id: 'isingressgateway',
         labelKey: 'node.statusingress',
         minWidth: 30,
         align: 'center',
-        format: (isingress, row) => (
-          <TableToggleButton
-            which="ingress"
-            isOn={isingress}
-            node={row}
-            createText={`${i18n.t('node.createingress')} : ${
-              hostsMap[row.hostid]?.name ?? 'N/A'
-            }`}
-            removeText={`${i18n.t('node.removeingress')} : ${
-              hostsMap[row.hostid]?.name ?? 'N/A'
-            }`}
-            SignalIcon={<CallMerge />}
-          />
-        ),
+        format: (isingress, row) =>
+          row.pendingdelete ? (
+            <></>
+          ) : (
+            <TableToggleButton
+              which="ingress"
+              isOn={isingress}
+              node={row}
+              createText={`${i18n.t('node.createingress')} : ${
+                hostsMap[row.hostid]?.name ?? 'N/A'
+              }`}
+              removeText={`${i18n.t('node.removeingress')} : ${
+                hostsMap[row.hostid]?.name ?? 'N/A'
+              }`}
+              SignalIcon={<CallMerge />}
+            />
+          ),
       },
-      // {
-      //   id: 'isrelay',
-      //   labelKey: 'node.statusrelay',
-      //   minWidth: 30,
-      //   align: 'center',
-      //   format: (isrelay, row) => (
-      //     <TableToggleButton
-      //       which="relay"
-      //       isOn={isrelay}
-      //       node={row}
-      //       createText={`${i18n.t('node.createrelay')} : ${
-      //         hostsMap[row.hostid]?.name ?? 'N/A'
-      //       }`}
-      //       removeText={`${i18n.t('node.removerelay')} : ${
-      //         hostsMap[row.hostid]?.name ?? 'N/A'
-      //       }`}
-      //       SignalIcon={<AltRoute />}
-      //       withHistory
-      //     />
-      //   ),
-      // },
       {
         id: 'lastcheckin',
         labelKey: 'node.status',
         minWidth: 170,
         align: 'center',
-        format: (lastCheckInTime) => {
-          const status = getConnectivityStatus(lastCheckInTime)
+        format: (lastCheckInTime, row) => {
+          if (row.pendingdelete) {
+            return <></>
+          }
 
+          const status = getConnectivityStatus(lastCheckInTime)
           switch (status) {
             case 'error':
               return (
@@ -170,6 +158,7 @@ export const NodeTable: React.FC<{ nodes: Node[] }> = ({ nodes }) => {
     ],
     [hostsMap, t]
   )
+
   const tableData: NodeTableDataType[] = useMemo(
     () =>
       nodes.map((node) => ({
@@ -178,6 +167,17 @@ export const NodeTable: React.FC<{ nodes: Node[] }> = ({ nodes }) => {
         ...node,
       })),
     [hostsMap, nodes]
+  )
+
+  const nodeRowStyles = useMemo(
+    () =>
+      tableData
+        .filter((node) => node.pendingdelete)
+        .reduce((acc, node) => {
+          acc[node.id] = { color: 'grey' }
+          return acc
+        }, {} as { [rowId: React.Key]: Object }),
+    [tableData]
   )
 
   if (serverConfig.IsEE) {
@@ -229,7 +229,7 @@ export const NodeTable: React.FC<{ nodes: Node[] }> = ({ nodes }) => {
       <NmTable
         columns={columns}
         rows={tableData}
-        getRowId={(row, i) => `${row.id}-${i}`}
+        getRowId={(row, i) => row.id}
         actions={[
           (row) => ({
             tooltip: t('common.view'),
@@ -246,6 +246,7 @@ export const NodeTable: React.FC<{ nodes: Node[] }> = ({ nodes }) => {
             },
           }),
         ]}
+        rowCellsStyles={nodeRowStyles}
       />
       <CustomizedDialogs
         open={!!selected.id}

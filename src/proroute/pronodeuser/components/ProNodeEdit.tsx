@@ -27,6 +27,8 @@ import { convertStringToArray } from '~util/fields'
 import { NmFormOptionSelect } from '~components/form/FormOptionSelect'
 import { NotFound } from '~util/errorpage'
 import { Network } from '~store/types'
+import { defaultToastOptions } from '~store/modules/toast/saga'
+import { toast } from 'react-toastify'
 
 export const ProNodeEdit: React.FC = () => {
   const { url } = useRouteMatch()
@@ -113,6 +115,10 @@ export const ProNodeEdit: React.FC = () => {
 
   const onSubmit = useCallback(
     (data: Node) => {
+      if (data.pendingdelete) {
+        toast.warn(t('toast.warnings.cannoteditnodependingdelete'), defaultToastOptions)
+        return
+      }
       if (typeof data.egressgatewayranges === 'string') {
         const newEgressRanges = getCommaSeparatedArray(
           String(data.egressgatewayranges)
@@ -133,7 +139,7 @@ export const ProNodeEdit: React.FC = () => {
         })
       )
     },
-    [expTime, dispatch, netid]
+    [expTime, dispatch, netid, t]
   )
 
   if (!node || !node.id || !network || !network.netid) {

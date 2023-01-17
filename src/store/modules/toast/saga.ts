@@ -13,7 +13,7 @@ const defaultOptions: ToastOptions = {
   position: 'bottom-right',
 }
 
-const defaultPromiseOptions: ToastOptions = {
+export const defaultToastOptions: ToastOptions = {
   rtl: false,
   autoClose: 5000,
   hideProgressBar: false,
@@ -54,10 +54,10 @@ function asyncToastUpdate<T>(
       render,
       type,
       isLoading: false,
-      ...defaultPromiseOptions,
+      ...defaultToastOptions,
     })
   } else {
-    toast.update(id, { ...defaultPromiseOptions, ...render })
+    toast.update(id, { ...defaultToastOptions, ...render })
   }
 }
 
@@ -65,7 +65,7 @@ export async function asyncToastSaga<T = any>(
   action: AsyncToastPayload<T>
 ): Promise<T> {
   const id = toast.loading(action.params.pending, {
-    ...defaultPromiseOptions,
+    ...defaultToastOptions,
     autoClose: false,
   })
 
@@ -81,7 +81,7 @@ export async function asyncToastSaga<T = any>(
 
 export function* generatorToastSaga(action: GeneratorToastPayload) {
   const id = toast.loading(action.params.pending, {
-    ...defaultPromiseOptions,
+    ...defaultToastOptions,
     autoClose: false,
   })
 

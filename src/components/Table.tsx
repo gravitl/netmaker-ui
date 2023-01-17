@@ -52,6 +52,7 @@ export interface Props<Row> {
     element: ReactNode
   }
   tableId?: string
+  rowCellsStyles?: {[rowId: React.Key]: Object}
 }
 
 function renderActionIcon(
@@ -83,6 +84,7 @@ export function NmTable<T>({
   getRowId,
   rowsPerPageOptions,
   tableId = '',
+  rowCellsStyles,
 }: Props<T>) {
   const { url } = useRouteMatch()
   const history = useHistory()
@@ -172,10 +174,7 @@ export function NmTable<T>({
                   </TableCell>
                 ))}
                 {actions?.map((_, i) => (
-                  <TableCell
-                    width={actionsHeader?.width ?? 60}
-                    key={`a${i}`}
-                  >
+                  <TableCell width={actionsHeader?.width ?? 60} key={`a${i}`}>
                     {actionsHeader?.element ?? ''}
                   </TableCell>
                 ))}
@@ -195,7 +194,13 @@ export function NmTable<T>({
                       {columns.map((column) => {
                         const value = row[column.id]
                         return (
-                          <TableCell key={column.id} align={column.align}>
+                          <TableCell
+                            key={column.id}
+                            align={column.align}
+                            style={
+                              rowCellsStyles ? rowCellsStyles[getRowId(row)] : undefined
+                            }
+                          >
                             {column.format !== undefined
                               ? column.format(value, row)
                               : value}

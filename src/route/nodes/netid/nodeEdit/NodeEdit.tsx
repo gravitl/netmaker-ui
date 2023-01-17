@@ -27,6 +27,8 @@ import {
 } from '~util/regex'
 import { convertStringToArray } from '~util/fields'
 import { NmFormOptionSelect } from '~components/form/FormOptionSelect'
+import { toast } from 'react-toastify'
+import { defaultToastOptions } from '~store/modules/toast/saga'
 
 export const NodeEdit: React.FC<{
   onCancel: () => void
@@ -105,6 +107,10 @@ export const NodeEdit: React.FC<{
 
   const onSubmit = useCallback(
     (data: Node) => {
+      if (data.pendingdelete) {
+        toast.warn(t('toast.warnings.cannoteditnodependingdelete'), defaultToastOptions)
+        return
+      }
       if (typeof data.egressgatewayranges === 'string') {
         const newEgressRanges = getCommaSeparatedArray(
           String(data.egressgatewayranges)
@@ -125,7 +131,7 @@ export const NodeEdit: React.FC<{
         })
       )
     },
-    [dispatch, netid, expTime]
+    [expTime, dispatch, netid, t]
   )
 
   if (!!!node) {
@@ -214,15 +220,6 @@ export const NodeEdit: React.FC<{
             </span>
           </Tooltip>
         </Grid>
-        {/* <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-          <Tooltip title={String(t('helper.allowedips'))} placement="top">
-            <NmFormInputText
-              defaultValue={node.allowedips ? node.allowedips.join(',') : ''}
-              label={String(t('node.allowedips'))}
-              name={'allowedips'}
-            />
-          </Tooltip>
-        </Grid> */}
         <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <Tooltip
             title={String(t('helper.persistentkeepalive'))}

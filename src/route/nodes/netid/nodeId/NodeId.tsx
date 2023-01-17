@@ -198,6 +198,7 @@ export const NodeId: FC = () => {
                 to={`${url}/edit`}
                 variant="outlined"
                 style={{ width: '50%', margin: '4px' }}
+                disabled={node.pendingdelete}
               >
                 {t('common.edit')}
               </NmLink>
