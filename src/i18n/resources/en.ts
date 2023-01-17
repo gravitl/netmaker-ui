@@ -577,6 +577,9 @@ export const en: LanguageResource = {
   },
   toast: {
     pending: 'Request pending',
+    warnings: {
+      cannoteditnodependingdelete: 'Cannot edit nodes that are pending delete',
+    },
     update: {
       success: {
         node: 'Node updated successfully!',

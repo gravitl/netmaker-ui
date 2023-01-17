@@ -137,13 +137,6 @@ export const ProNodeId: React.FC = () => {
           label={String(t('node.listenport'))}
         />
       </Grid>
-      {/* <Grid item xs={10} sm={4} md={3} sx={rowMargin}>
-        <FormControlLabel
-          label={String(t('node.udpholepunch'))}
-          control={<SwitchField checked={node.udpholepunch} disabled />}
-          disabled
-        />
-      </Grid> */}
       <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
         <TextField
           disabled
@@ -195,13 +188,6 @@ export const ProNodeId: React.FC = () => {
           label={String(t('node.postdown'))}
         />
       </Grid>
-      {/* <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-        <TextField
-          disabled
-          value={node.allowedips ? node.allowedips.join(',') : ''}
-          label={String(t('node.allowedips'))}
-        />
-      </Grid> */}
       <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
         <TextField
           disabled
@@ -296,13 +282,6 @@ export const ProNodeId: React.FC = () => {
               disabled
             />
           </Grid>
-          {/* <Grid item xs={10} sm={4} md={2} sx={rowMargin}>
-            <FormControlLabel
-              label={String(t('node.ishub'))}
-              control={<SwitchField checked={node.ishub} disabled />}
-              disabled
-            />
-          </Grid> */}
         </Grid>
       </Grid>
     </Grid>

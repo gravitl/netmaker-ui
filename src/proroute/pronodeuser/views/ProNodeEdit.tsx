@@ -27,6 +27,8 @@ import {
 } from '~util/regex'
 import { convertStringToArray } from '~util/fields'
 import { NmFormOptionSelect } from '~components/form/FormOptionSelect'
+import { defaultToastOptions } from '~store/modules/toast/saga'
+import { toast } from 'react-toastify'
 
 export const ProNodeEdit: React.FC<{
   onCancel: () => void
@@ -105,6 +107,10 @@ export const ProNodeEdit: React.FC<{
 
   const onSubmit = useCallback(
     (data: Node) => {
+      if (data.pendingdelete) {
+        toast.warn(t('toast.warnings.cannoteditnodependingdelete'), defaultToastOptions)
+        return
+      }
       if (typeof data.egressgatewayranges === 'string') {
         const newEgressRanges = getCommaSeparatedArray(
           String(data.egressgatewayranges)
@@ -125,7 +131,7 @@ export const ProNodeEdit: React.FC<{
         })
       )
     },
-    [dispatch, netid, expTime]
+    [expTime, dispatch, netid, t]
   )
 
   if (!!!node) {

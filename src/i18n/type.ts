@@ -449,6 +449,7 @@ export interface LanguageResource {
   }
   toast: {
     pending: string
+    warnings: Record<string, string>
     update: {
       success: {
         node: string
