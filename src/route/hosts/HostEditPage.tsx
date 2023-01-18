@@ -1,9 +1,5 @@
 import { FC, useCallback, useMemo } from 'react'
-import {
-  Grid,
-  Typography,
-  Tooltip,
-} from '@mui/material'
+import { Grid, Typography, Tooltip } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import { useRouteMatch, useParams } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
@@ -17,6 +13,7 @@ import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 import { Host } from '~store/types'
 import { useGetHostById } from '~util/hosts'
 import { updateHost } from '~store/modules/hosts/actions'
+import { NmFormOptionSelect } from '~components/form/FormOptionSelect'
 
 export const HostEditPage: FC<{ onCancel: () => void }> = ({ onCancel }) => {
   const { url } = useRouteMatch()
@@ -154,17 +151,6 @@ export const HostEditPage: FC<{ onCancel: () => void }> = ({ onCancel }) => {
             </span>
           </Tooltip>
         </Grid>
-        {/* <Grid item xs={12} md={3} sx={rowMargin}>
-          <Tooltip title={String(t('common.localrange'))}>
-            <span>
-              <NmFormInputText
-                defaultValue={host.localrange}
-                name={'localrange'}
-                label={String(t('common.localrange'))}
-              />
-            </span>
-          </Tooltip>
-        </Grid> */}
         <Grid item xs={12} md={3} sx={rowMargin}>
           <Tooltip title={String(t('common.listenport'))}>
             <span>
@@ -187,6 +173,23 @@ export const HostEditPage: FC<{ onCancel: () => void }> = ({ onCancel }) => {
                 type="number"
               />
             </span>
+          </Tooltip>
+        </Grid>
+        <Grid item xs={12} md={3} sx={rowMargin}>
+          <Tooltip title={String(t('common.defaultinterface'))} placement="top">
+            <NmFormOptionSelect
+              defaultValue={host.defaultinterface}
+              label={String(t('common.defaultinterface'))}
+              name="defaultinterface"
+              selections={
+                [...new Set(host.interfaces.map((iface) => iface.name))].map(
+                  (ifaceName) => ({
+                    key: ifaceName,
+                    option: ifaceName,
+                  })
+                ) ?? []
+              }
+            />
           </Tooltip>
         </Grid>
         <Grid item xs={12} md={3} sx={rowMargin}>
