@@ -1,9 +1,5 @@
 import { FC, useCallback, useMemo } from 'react'
-import {
-  Grid,
-  Typography,
-  Tooltip,
-} from '@mui/material'
+import { Grid, Typography, Tooltip } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import { useRouteMatch, useParams } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
@@ -186,10 +182,12 @@ export const HostEditPage: FC<{ onCancel: () => void }> = ({ onCancel }) => {
               label={String(t('common.defaultinterface'))}
               name="defaultinterface"
               selections={
-                host.interfaces.map((iface) => ({
-                  key: `${iface.name} (${iface.addressString})`,
-                  option: iface.name,
-                })) ?? []
+                [...new Set(host.interfaces.map((iface) => iface.name))].map(
+                  (ifaceName) => ({
+                    key: ifaceName,
+                    option: ifaceName,
+                  })
+                ) ?? []
               }
             />
           </Tooltip>
