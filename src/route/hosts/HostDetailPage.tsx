@@ -253,13 +253,13 @@ export const HostDetailPage: FC = () => {
                   label={String(t('common.internetgateway'))}
                 />
               </Grid>
-              {/* <Grid item xs={12} md={3} sx={rowMargin}>
+              <Grid item xs={12} md={3} sx={rowMargin}>
                 <TextField
                   disabled
-                  value={host.firewallinuse}
-                  label={String(t('common.firewallinuse'))}
+                  value={host.defaultinterface}
+                  label={String(t('common.defaultinterface'))}
                 />
-              </Grid> */}
+              </Grid>
               <Grid item xs={12} md={3} sx={rowMargin}>
                 <TextField
                   disabled

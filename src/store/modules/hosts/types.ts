@@ -20,6 +20,7 @@ export interface Host {
   proxy_listen_port: number
   mtu: number
   interfaces: Interface[]
+  defaultinterface: string // iface name
   endpointip: string
   publickey: string
   macaddress: string

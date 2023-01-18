@@ -17,6 +17,7 @@ import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 import { Host } from '~store/types'
 import { useGetHostById } from '~util/hosts'
 import { updateHost } from '~store/modules/hosts/actions'
+import { NmFormOptionSelect } from '~components/form/FormOptionSelect'
 
 export const HostEditPage: FC<{ onCancel: () => void }> = ({ onCancel }) => {
   const { url } = useRouteMatch()
@@ -154,17 +155,6 @@ export const HostEditPage: FC<{ onCancel: () => void }> = ({ onCancel }) => {
             </span>
           </Tooltip>
         </Grid>
-        {/* <Grid item xs={12} md={3} sx={rowMargin}>
-          <Tooltip title={String(t('common.localrange'))}>
-            <span>
-              <NmFormInputText
-                defaultValue={host.localrange}
-                name={'localrange'}
-                label={String(t('common.localrange'))}
-              />
-            </span>
-          </Tooltip>
-        </Grid> */}
         <Grid item xs={12} md={3} sx={rowMargin}>
           <Tooltip title={String(t('common.listenport'))}>
             <span>
@@ -187,6 +177,21 @@ export const HostEditPage: FC<{ onCancel: () => void }> = ({ onCancel }) => {
                 type="number"
               />
             </span>
+          </Tooltip>
+        </Grid>
+        <Grid item xs={12} md={3} sx={rowMargin}>
+          <Tooltip title={String(t('common.defaultinterface'))} placement="top">
+            <NmFormOptionSelect
+              defaultValue={host.defaultinterface}
+              label={String(t('common.defaultinterface'))}
+              name="defaultinterface"
+              selections={
+                host.interfaces.map((iface) => ({
+                  key: `${iface.name} (${iface.addressString})`,
+                  option: iface.name,
+                })) ?? []
+              }
+            />
           </Tooltip>
         </Grid>
         <Grid item xs={12} md={3} sx={rowMargin}>
