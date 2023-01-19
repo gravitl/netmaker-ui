@@ -314,7 +314,7 @@ export const HostDetailPage: FC = () => {
                         sx={{ borderBottom: '1px solid' }}
                       >
                         <ListItemText
-                          primary={iface.addressString || iface.address.IP}
+                          primary={`${iface.name} (${iface.addressString || iface.address.IP})`}
                         />
                         <CopyAllOutlined />
                       </ListItemButton>

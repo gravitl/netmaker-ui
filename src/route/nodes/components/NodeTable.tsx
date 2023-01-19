@@ -36,7 +36,8 @@ export const NodeTable: React.FC<{ nodes: Node[] }> = ({ nodes }) => {
   const serverConfig = useSelector(serverSelectors.getServerConfig)
   const history = useHistory()
   const hostsMap = useSelector(hostsSelectors.getHostsMap)
-  const columns: TableColumns<NodeTableDataType> = useMemo(
+
+  const commonCols: TableColumns<NodeTableDataType> = useMemo(
     () => [
       {
         id: 'name',
@@ -159,6 +160,24 @@ export const NodeTable: React.FC<{ nodes: Node[] }> = ({ nodes }) => {
     [hostsMap, t]
   )
 
+  const columns: TableColumns<NodeTableDataType> = useMemo(
+    () =>
+      serverConfig.IsEE
+        ? [
+            ...commonCols.slice(0, commonCols.length - 1),
+            {
+              id: 'failover',
+              labelKey: 'node.failover',
+              minWidth: 30,
+              align: 'center',
+              format: (_, row) => <FailoverButton node={row} />,
+            },
+            commonCols[commonCols.length - 1],
+          ]
+        : commonCols,
+    [commonCols, serverConfig.IsEE]
+  )
+
   const tableData: NodeTableDataType[] = useMemo(
     () =>
       nodes.map((node) => ({
@@ -179,18 +198,6 @@ export const NodeTable: React.FC<{ nodes: Node[] }> = ({ nodes }) => {
         }, {} as { [rowId: React.Key]: Object }),
     [tableData]
   )
-
-  if (serverConfig.IsEE) {
-    const oldColumn = columns[columns.length - 1]
-    columns[columns.length - 1] = {
-      id: 'failover',
-      labelKey: 'node.failover',
-      minWidth: 30,
-      align: 'center',
-      format: (_, row) => <FailoverButton node={row} />,
-    }
-    columns.push(oldColumn)
-  }
 
   useLinkBreadcrumb({
     title: t('breadcrumbs.nodes'),

@@ -77,7 +77,14 @@ function* handleUpdateNodeRequest(
     const response: AxiosResponse<Node> = yield apiRequestWithAuthSaga(
       'put',
       `/nodes/${action.payload.netid}/${action.payload.node.id}`,
-      newNode,
+      {
+        ...newNode,
+        persistentkeepalive: Number(newNode.persistentkeepalive),
+        lastmodified: Number(newNode.lastmodified),
+        expdatetime: Number(newNode.expdatetime),
+        lastcheckin: Number(newNode.lastcheckin),
+        lastpeerupdate: Number(newNode.lastpeerupdate),
+      },
       {}
     )
 

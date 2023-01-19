@@ -130,13 +130,29 @@ export const NetworkNodes: React.FC = () => {
     [history]
   )
 
-  const columns: TableColumns<NetworkNodesTableData> = useMemo(
+  const commonCols: TableColumns<NetworkNodesTableData> = useMemo(
     () => [
       {
         id: 'name',
-        labelKey: 'node.name',
+        labelKey: 'hosts.name',
         minWidth: 100,
-        sortable: true,
+      },
+      {
+        id: 'network',
+        labelKey: 'node.network',
+        minWidth: 100,
+        align: 'center',
+        format: (value) => (
+          <Tooltip
+            disableTouchListener
+            title={`${t('node.connected') as string}${value}`}
+            placement="top"
+          >
+            <NmLink sx={{ textTransform: 'none' }} to={`/networks/${value}`}>
+              {value}
+            </NmLink>
+          </Tooltip>
+        ),
       },
       {
         id: 'address',
@@ -149,27 +165,9 @@ export const NetworkNodes: React.FC = () => {
       },
       {
         id: 'version',
-        labelKey: 'node.version',
+        labelKey: 'common.version',
         minWidth: 50,
         align: 'center',
-        format: (value, node) => <>{hostsMap[node.hostid]?.version ?? 'N/A'}</>,
-      },
-      {
-        id: 'network',
-        labelKey: 'node.network',
-        minWidth: 100,
-        align: 'right',
-        format: (value) => (
-          <Tooltip
-            disableTouchListener={true}
-            title={`${t('node.connected') as string}${value}`}
-            placement="top"
-          >
-            <NmLink sx={{ textTransform: 'none' }} to={`/networks/${value}`}>
-              {value}
-            </NmLink>
-          </Tooltip>
-        ),
       },
       {
         id: 'isegressgateway',
@@ -185,10 +183,10 @@ export const NetworkNodes: React.FC = () => {
               isOn={isegress}
               node={row}
               createText={`${i18n.t('node.createegress')} : ${
-                hostsMap[row.hostid]?.name ?? ''
+                hostsMap[row.hostid]?.name ?? 'N/A'
               }`}
               removeText={`${i18n.t('node.removeegress')} : ${
-                hostsMap[row.hostid]?.name ?? ''
+                hostsMap[row.hostid]?.name ?? 'N/A'
               }`}
               SignalIcon={<CallSplit />}
               withHistory
@@ -209,10 +207,10 @@ export const NetworkNodes: React.FC = () => {
               isOn={isingress}
               node={row}
               createText={`${i18n.t('node.createingress')} : ${
-                hostsMap[row.hostid]?.name ?? ''
+                hostsMap[row.hostid]?.name ?? 'N/A'
               }`}
               removeText={`${i18n.t('node.removeingress')} : ${
-                hostsMap[row.hostid]?.name ?? ''
+                hostsMap[row.hostid]?.name ?? 'N/A'
               }`}
               SignalIcon={<CallMerge />}
             />
@@ -255,20 +253,26 @@ export const NetworkNodes: React.FC = () => {
     [hostsMap, t]
   )
 
+  const columns: TableColumns<NetworkNodesTableData> = useMemo(
+    () =>
+      serverConfig.IsEE
+        ? [
+            ...commonCols.slice(0, commonCols.length - 1),
+            {
+              id: 'failover',
+              labelKey: 'node.failover',
+              minWidth: 30,
+              align: 'center',
+              format: (_, row) => <FailoverButton node={row} />,
+            },
+            commonCols[commonCols.length - 1],
+          ]
+        : commonCols,
+    [commonCols, serverConfig.IsEE]
+  )
+
   if (!listOfNodes || !!!network) {
     return <h5>Not found, data missing</h5>
-  }
-
-  if (serverConfig.IsEE) {
-    const oldColumn = columns[columns.length - 1]
-    columns[columns.length - 1] = {
-      id: 'failover',
-      labelKey: 'node.failover',
-      minWidth: 30,
-      align: 'center',
-      format: (_, row) => <FailoverButton node={row} />,
-    }
-    columns.push(oldColumn)
   }
 
   const handleClose = () => {
