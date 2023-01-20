@@ -92,11 +92,20 @@ function* handleUpdateHostNetworksRequest(
       },
     })
 
-    yield apiRequestWithAuthSaga(
-      action.payload.action === 'join' ? 'post' : 'delete',
-      `/hosts/${action.payload.id}/networks/${action.payload.network}`,
-      {}
-    )
+    if (action.payload.action === 'join') {
+      yield apiRequestWithAuthSaga(
+        'post',
+        `/hosts/${action.payload.id}/networks/${action.payload.network}`,
+        {},
+        {},
+      )
+    } else if (action.payload.action === 'leave') {
+      yield apiRequestWithAuthSaga(
+        'delete',
+        `/hosts/${action.payload.id}/networks/${action.payload.network}`,
+        {},
+      )
+    }
 
     yield put(updateHostNetworks['success']())
     yield fork(getHosts['request'])
