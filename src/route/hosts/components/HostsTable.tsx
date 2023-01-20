@@ -50,7 +50,7 @@ export const HostsTable: FC<HostsTableProps> = (props) => {
     {
       id: 'isrelay',
       labelKey: 'hosts.relaystatus',
-      minWidth: 100,
+      minWidth: 150,
       format: (value, host) => (
         <>
           <Typography variant="overline" color={host.isrelay ? 'green' : ''}>
