@@ -108,7 +108,6 @@ export function CreateRelay() {
         name: hostsMap[nodes[i].hostid]?.name ?? '',
         address: nodes[i].address,
         address6: nodes[i].address6,
-        // isserver: nodes[i].isserver,
       }
       if (nodes[i].id !== node.id) {
         nodeNames.push(data)

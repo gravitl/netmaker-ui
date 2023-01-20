@@ -71,8 +71,7 @@ export function CreateRelayModal(props: CreateRelayProps) {
   const filteredHosts = useMemo(
     () =>
       allHosts.filter(
-        (h) =>
-          h.id !== props.hostId && !(h.isrelay && h.relay_hosts.includes(props.hostId))
+        (h) => h.id !== props.hostId && !(h.isrelay || h.isrelayed)
       ),
     [allHosts, props]
   )
@@ -85,6 +84,7 @@ export function CreateRelayModal(props: CreateRelayProps) {
       })
     )
     props.onClose({}, 'escapeKeyDown')
+    setSelectedHosts([])
   }, [dispatch, props, selectedHosts])
 
   return (
