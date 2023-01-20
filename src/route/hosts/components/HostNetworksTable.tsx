@@ -41,7 +41,6 @@ export const HostNetworksTable: FC<HostNetworksTableProps> = ({
     setShouldShowConfirmNetStatusChangeModal,
   ] = useState(false)
   const hostsMap = useSelector(hostsSelectors.getHostsMap)
-  const nodesMap = useSelector(nodeSelectors.getNodesMap)
   const allNetworks = useSelector(networkSelectors.getNetworks)
   const networksMap = useMemo(
     () =>
@@ -159,22 +158,14 @@ export const HostNetworksTable: FC<HostNetworksTableProps> = ({
 
   const toggleNetworkStatus = useCallback(() => {
     if (!targetNetwork || !host) return
-    const connectedNodesNames = new Set(
-      host.nodes.map((nId) => nodesMap[nId].network)
-    )
-    // if connected, disconnect. else connect
-    if (targetNetwork.connected) {
-      connectedNodesNames.delete(targetNetwork.netid)
-    } else {
-      connectedNodesNames.add(targetNetwork.netid)
-    }
     dispatch(
       updateHostNetworks.request({
         id: host.id,
-        networks: [...connectedNodesNames],
+        network: targetNetwork.netid,
+        action: targetNetwork.connected ? 'leave' : 'join',
       })
     )
-  }, [dispatch, host, nodesMap, targetNetwork])
+  }, [dispatch, host, targetNetwork])
 
   return (
     <>

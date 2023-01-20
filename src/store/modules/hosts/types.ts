@@ -47,9 +47,10 @@ export interface UpdateHostPayload {
 export interface UpdateHostNetworksPayload {
   Request: {
     id: Host['id']
-    networks: Node['network'][]
+    network: Node['network']
+    action: 'join' | 'leave'
   }
-  Response: Node['network'][]
+  Response: void
 }
 
 export interface DeleteHostPayload {
