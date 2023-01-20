@@ -118,7 +118,7 @@ export function CreateRelayModal(props: CreateRelayProps) {
                   name="hostIds"
                   label={String(t('hosts.hoststorelay'))}
                   variant="standard"
-                  placeholder="Favorites"
+                  placeholder="Hosts"
                 />
               )}
             />
