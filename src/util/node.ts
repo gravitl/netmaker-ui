@@ -45,7 +45,7 @@ export const filterCustomDNSByNetwork = (
   )
   // get rid of all node named entries
   return networkDnsEntries.filter(
-    (entry) => !nodes.find((node) => hostsMap[node.hostid].name === entry.name)
+    (entry) => !nodes.find((node) => hostsMap[node.hostid]?.name === entry.name)
   )
 }
 

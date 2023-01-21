@@ -89,8 +89,9 @@ export const DNSEntryCreate: React.FC<{}> = () => {
   const formRef = React.createRef<FormRef<CreateDNS>>()
 
   const handleSelection = (newAddress: string) => {
+    const nonCidrIp = newAddress.split('/')[0]
     formRef.current?.reset(
-      { ...formRef.current?.values, address: newAddress },
+      { ...formRef.current?.values, address: nonCidrIp },
       { keepDefaultValues: false }
     )
   }
