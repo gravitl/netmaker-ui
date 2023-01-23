@@ -695,7 +695,7 @@ export const en: LanguageResource = {
     relayedhostid: 'Relayed Host ID',
     relayed: 'Relayed',
     showonlyrelayedhosts: 'Show only relayed hosts',
-    showallhosts: 'Show all hosts',
+    showallrelayablehosts: 'Show all relayable hosts',
     confirmrelayto: 'Confirm relay to',
     confirmremoverelayto: 'Confirm remove relay to',
     removerelayto: 'Remove relay to',

@@ -4,7 +4,13 @@ import { useTranslation } from 'react-i18next'
 import { NmTable, TableColumns } from '~components/Table'
 import { useDispatch, useSelector } from 'react-redux'
 import { hostsSelectors } from '~store/selectors'
-import { Button, Grid, Switch as SwitchField, TextField, Tooltip } from '@mui/material'
+import {
+  Button,
+  Grid,
+  Switch as SwitchField,
+  TextField,
+  Tooltip,
+} from '@mui/material'
 import { useGetHostById } from '~util/hosts'
 import CustomizedDialogs from '~components/dialog/CustomDialog'
 import { deleteHostRelay, updateHost } from '~store/modules/hosts/actions'
@@ -42,23 +48,24 @@ export const HostRelayTable: FC<HostRelayTableProps> = ({ hostid: hostId }) => {
 
   const filteredHosts: HostRelayTableData[] = useMemo(() => {
     let hosts: HostRelayTableData[] = []
+    const relayedHosts = allHosts
+      .filter((h) => isRelayingTo(h))
+      .map(h => ({
+        ...h,
+        isRelayed: true,
+      }))
 
-    if (showOnlyRelayedHosts) {
-      allHosts.forEach((h) => {
-        if (isRelayingTo(h)) {
+    hosts = relayedHosts
+
+    if (!showOnlyRelayedHosts) {
+      allHosts
+        .filter((h) => !(h.isrelay || h.isrelayed))
+        .forEach((h) => {
           hosts.push({
             ...h,
-            isRelayed: true,
+            isRelayed: isRelayingTo(h),
           })
-        }
-      })
-    } else {
-      allHosts.forEach((h) => {
-        hosts.push({
-          ...h,
-          isRelayed: isRelayingTo(h),
         })
-      })
     }
 
     hosts = hosts.filter(
@@ -119,7 +126,7 @@ export const HostRelayTable: FC<HostRelayTableProps> = ({ hostid: hostId }) => {
   const toggleRelayStatus = useCallback(() => {
     if (!targetHost || !host) return
     const relayedHostsIds = new Set(host.relay_hosts)
-    
+
     // if relayed, stop. else relay
     if (isRelayingTo(targetHost)) {
       relayedHostsIds.delete(targetHost.id)
@@ -158,7 +165,7 @@ export const HostRelayTable: FC<HostRelayTableProps> = ({ hostid: hostId }) => {
             }}
           >
             {showOnlyRelayedHosts
-              ? t('hosts.showallhosts')
+              ? t('hosts.showallrelayablehosts')
               : t('hosts.showonlyrelayedhosts')}
           </Button>
         </Grid>
