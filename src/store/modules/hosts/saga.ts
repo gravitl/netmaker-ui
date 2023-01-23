@@ -1,5 +1,12 @@
 import { all, fork, put, select, takeEvery } from 'redux-saga/effects'
-import { createHostRelay, deleteHost, deleteHostRelay, getHosts, updateHost, updateHostNetworks } from './actions'
+import {
+  createHostRelay,
+  deleteHost,
+  deleteHostRelay,
+  getHosts,
+  updateHost,
+  updateHostNetworks,
+} from './actions'
 import { AxiosResponse } from 'axios'
 import { Host } from './types'
 import { apiRequestWithAuthSaga } from '../api/saga'
@@ -85,20 +92,23 @@ function* handleUpdateHostNetworksRequest(
       },
     })
 
-    const response: AxiosResponse<{ networks: string[] }> =
+    if (action.payload.action === 'join') {
       yield apiRequestWithAuthSaga(
-        'put',
-        `/hosts/${action.payload.id}/networks`,
-        { networks: action.payload.networks },
-        {}
+        'post',
+        `/hosts/${action.payload.id}/networks/${action.payload.network}`,
+        {},
+        {},
       )
+    } else if (action.payload.action === 'leave') {
+      yield apiRequestWithAuthSaga(
+        'delete',
+        `/hosts/${action.payload.id}/networks/${action.payload.network}`,
+        {},
+      )
+    }
 
-    yield put(
-      updateHostNetworks['success']({
-        hostid: action.payload.id,
-        networks: response.data.networks,
-      })
-    )
+    yield put(updateHostNetworks['success']())
+    yield fork(getHosts['request'])
   } catch (e: unknown) {
     yield put(updateHostNetworks['failure'](e as Error))
   }
@@ -128,9 +138,9 @@ function* handleDeleteHostRequest(
     })
 
     const nodes: Node[] = yield select(getNodes)
-    const hasNodes = nodes.some(node => node.hostid === action.payload.hostid)
+    const hasNodes = nodes.some((node) => node.hostid === action.payload.hostid)
     if (hasNodes) {
-      throw new Error("Host has nodes. Delete all nodes before deleting host")
+      throw new Error('Host has nodes. Delete all nodes before deleting host')
     }
 
     const response: AxiosResponse<Host> = yield apiRequestWithAuthSaga(
@@ -156,9 +166,11 @@ function* handleCreateHostRelayRequest(
         pending: i18n.t('common.pending', {
           hostid: action.payload.hostid,
         }),
-        success: i18n.t('toast.create.success.hostrelay', ),
+        success: i18n.t('toast.create.success.hostrelay'),
         error: (e) =>
-          `${i18n.t('toast.create.failure.hostrelay')}: ${e.response.data.Message || ''}`,
+          `${i18n.t('toast.create.failure.hostrelay')}: ${
+            e.response.data.Message || ''
+          }`,
       },
     })
 
@@ -188,7 +200,9 @@ function* handleDeleteHostRelayRequest(
         }),
         success: i18n.t('toast.delete.success.hostrelay'),
         error: (e) =>
-          `${i18n.t('toast.delete.failure.hostrelay')}: ${e.response.data.Message || ''}`,
+          `${i18n.t('toast.delete.failure.hostrelay')}: ${
+            e.response.data.Message || ''
+          }`,
       },
     })
 
@@ -213,7 +227,13 @@ export function* saga() {
       handleUpdateHostNetworksRequest
     ),
     takeEvery(getType(deleteHost['request']), handleDeleteHostRequest),
-    takeEvery(getType(createHostRelay['request']), handleCreateHostRelayRequest),
-    takeEvery(getType(deleteHostRelay['request']), handleDeleteHostRelayRequest),
+    takeEvery(
+      getType(createHostRelay['request']),
+      handleCreateHostRelayRequest
+    ),
+    takeEvery(
+      getType(deleteHostRelay['request']),
+      handleDeleteHostRelayRequest
+    ),
   ])
 }

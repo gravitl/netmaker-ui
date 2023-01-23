@@ -4,7 +4,6 @@ import {
   UpdateHostPayload,
   DeleteHostPayload,
   UpdateHostNetworksPayload,
-  Host,
   DeleteHostRelayPayload,
   CreateHostRelayPayload,
 } from '.'
@@ -27,7 +26,7 @@ export const updateHostNetworks = createAsyncAction(
   'Hosts_updateHostNetworks_Failure'
 )<
   UpdateHostNetworksPayload['Request'],
-  { networks: UpdateHostNetworksPayload['Response']; hostid: Host['id'] },
+  UpdateHostNetworksPayload['Response'],
   Error
 >()
 

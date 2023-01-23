@@ -39,7 +39,7 @@ export const HostsPage: FC = () => {
   }, [refreshHosts])
 
   return (
-    <Container maxWidth="xl">
+    <Container>
       <Switch>
         {/* all hosts page */}
         <Route exact path={path}>
