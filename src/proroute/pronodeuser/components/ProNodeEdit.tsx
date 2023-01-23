@@ -20,7 +20,7 @@ import LocalizationProvider from '@mui/lab/LocalizationProvider'
 import DateTimePicker from '@mui/lab/DateTimePicker'
 import {
   correctIPv4CidrRegex,
-  correctIpv6Regex,
+  correctIpv6CidrRegex,
   ipv4AddressRegex,
 } from '~util/regex'
 import { convertStringToArray } from '~util/fields'
@@ -68,7 +68,7 @@ export const ProNodeEdit: React.FC = () => {
           if (!formData.address6) {
             return undefined
           }
-          return !correctIpv6Regex.test(address6)
+          return !correctIpv6CidrRegex.test(address6)
             ? {
                 message: t('network.validation.ipv6'),
                 type: 'value',
@@ -88,7 +88,7 @@ export const ProNodeEdit: React.FC = () => {
             const correctIPv4 = correctIPv4CidrRegex.test(
               egressgatewayranges[i]
             )
-            const correctIPv6 = correctIpv6Regex.test(egressgatewayranges[i])
+            const correctIPv6 = correctIpv6CidrRegex.test(egressgatewayranges[i])
             if (!correctIPv4 && !correctIPv6) {
               return {
                 message: t('node.validation.egressgatewayrange'),

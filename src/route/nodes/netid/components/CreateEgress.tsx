@@ -23,7 +23,7 @@ import {
   validate,
   NmFormInputSwitch,
 } from '~components/form'
-import { correctIPv4CidrRegex, correctIpv6Regex } from '~util/regex'
+import { correctIPv4CidrRegex, correctIpv6CidrRegex } from '~util/regex'
 import { convertStringToArray } from '~util/fields'
 import { makeStyles, createStyles } from '@mui/styles'
 import { NotFound } from '~util/errorpage'
@@ -156,7 +156,7 @@ export function CreateEgress() {
 
           for (let i = 0; i < ranges.length; i++) {
             const correctIPv4 = correctIPv4CidrRegex.test(ranges[i])
-            const correctIPv6 = correctIpv6Regex.test(ranges[i])
+            const correctIPv6 = correctIpv6CidrRegex.test(ranges[i])
             if (!correctIPv4 && !correctIPv6) {
               return {
                 message: t('node.validation.egressgatewayrange'),

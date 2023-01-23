@@ -17,7 +17,7 @@ import {
 } from '../../../store/modules/network/actions'
 import { randomNetworkName, randomCIDR, randomCIDR6 } from '~util/fields'
 import { useHistory } from 'react-router'
-import { correctIPv4CidrRegex, correctIpv6Regex } from '~util/regex'
+import { correctIPv4CidrRegex, correctIpv6CidrRegex } from '~util/regex'
 import { serverSelectors } from '~store/selectors'
 
 interface CreateNetwork {
@@ -119,7 +119,7 @@ export const NetworkCreate: React.FC = () => {
           if (!formData.isipv6) {
             return undefined
           }
-          return !correctIpv6Regex.test(addressrange6)
+          return !correctIpv6CidrRegex.test(addressrange6)
             ? {
                 message: t('network.validation.ipv6'),
                 type: 'value',
