@@ -9,17 +9,13 @@ import {
 } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-  useRouteMatch,
-  useHistory,
-  useParams,
-} from 'react-router-dom'
+import { useRouteMatch, useHistory, useParams } from 'react-router-dom'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 import { datePickerConverter } from '~util/unixTime'
 import { deleteNode } from '~modules/node/actions'
 import CustomDialog from '~components/dialog/CustomDialog'
 import { hostsSelectors, proSelectors } from '~store/selectors'
-import { Node, nodeACLValues } from '~store/types'
+import { Node } from '~store/types'
 import { NmLink } from '~components/Link'
 
 export const ProNodeId: React.FC = () => {
@@ -30,9 +26,9 @@ export const ProNodeId: React.FC = () => {
   const hostsMap = useSelector(hostsSelectors.getHostsMap)
   const { netid, nodeid } = useParams<{ nodeid: string; netid: string }>()
   const userData = useSelector(proSelectors.networkUserData)[netid]
-  let node : Node
+  let node: Node
   if (!!userData) {
-    node = userData.nodes.filter(n => n.id === nodeid)[0]
+    node = userData.nodes.filter((n) => n.id === nodeid)[0]
   } else {
     node = {} as Node
   }
@@ -62,9 +58,7 @@ export const ProNodeId: React.FC = () => {
         nodeid: node.id,
       })
     )
-    history.push(
-      `/prouser/${netid}/nodeview`
-    )
+    history.push(`/prouser/${netid}/nodeview`)
   }
 
   const rowMargin = {
@@ -96,7 +90,7 @@ export const ProNodeId: React.FC = () => {
             alignItems: 'space-between',
             justifyContent: 'center',
           }}
-        > 
+        >
           <NmLink
             to={`/hosts/${node.hostid}`}
             variant="outlined"
@@ -227,9 +221,7 @@ export const ProNodeId: React.FC = () => {
         <TextField
           disabled
           value={
-            node.egressgatewayranges
-              ? node.egressgatewayranges.join(',')
-              : ''
+            node.egressgatewayranges ? node.egressgatewayranges.join(',') : ''
           }
           label={String(t('node.egressgatewayranges'))}
         />
@@ -242,7 +234,11 @@ export const ProNodeId: React.FC = () => {
         />
       </Grid>
       <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-        <TextField disabled value={hostsMap[node.hostid]?.os ?? ''} label={String(t('node.os'))} />
+        <TextField
+          disabled
+          value={hostsMap[node.hostid]?.os ?? ''}
+          label={String(t('node.os'))}
+        />
       </Grid>
       <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
         <TextField
@@ -261,8 +257,7 @@ export const ProNodeId: React.FC = () => {
       <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
         <TextField
           disabled
-          value={node.defaultacl === undefined ? nodeACLValues.unset : 
-            node.defaultacl ? nodeACLValues.allow : nodeACLValues.deny}
+          value={node.defaultacl}
           label={String(t('node.defaultacl'))}
         />
       </Grid>
