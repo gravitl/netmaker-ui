@@ -23,6 +23,7 @@ import { hostsSelectors, serverSelectors } from '~store/selectors'
 import { FailoverButton } from '../../../ee/nodes/FailoverButton'
 import { getConnectivityStatus } from '~util/node'
 import { useHistory } from 'react-router-dom'
+import LoadingText from '~components/LoadingText'
 
 type NodeTableDataType = Node & {
   version: string
@@ -43,6 +44,9 @@ export const NodeTable: React.FC<{ nodes: Node[] }> = ({ nodes }) => {
         id: 'name',
         labelKey: 'hosts.name',
         minWidth: 100,
+        format(value) {
+          return <LoadingText text={value} />
+        },
       },
       {
         id: 'network',
@@ -75,6 +79,9 @@ export const NodeTable: React.FC<{ nodes: Node[] }> = ({ nodes }) => {
         labelKey: 'common.version',
         minWidth: 50,
         align: 'center',
+        format(value) {
+          return <LoadingText text={value} />
+        },
       },
       {
         id: 'isegressgateway',
@@ -181,8 +188,8 @@ export const NodeTable: React.FC<{ nodes: Node[] }> = ({ nodes }) => {
   const tableData: NodeTableDataType[] = useMemo(
     () =>
       nodes.map((node) => ({
-        name: hostsMap[node.hostid]?.name ?? 'N/A',
-        version: hostsMap[node.hostid]?.version ?? 'N/A',
+        name: hostsMap[node.hostid]?.name ?? '',
+        version: hostsMap[node.hostid]?.version ?? '',
         ...node,
       })),
     [hostsMap, nodes]

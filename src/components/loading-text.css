@@ -1,0 +1,39 @@
+@keyframes pulsate-fwd {
+  0% {
+    width: 2px;
+    height: 2px;
+  }
+  50% {
+    width: 4px;
+    height: 4px;
+  }
+  100% {
+    width: 2px;
+    height: 2px;
+  }
+}
+
+.loading-text {
+  display: flex;
+  align-items: center;
+  height: 2rem;
+}
+
+.loading-text .dot-1,
+.loading-text .dot-2,
+.loading-text .dot-3 {
+  width: 2px;
+  height: 2px;
+  background-color: teal;
+  border-radius: 50%;
+  margin-right: 4px;
+  animation: pulsate-fwd 0.7s ease-in-out infinite both;
+}
+
+.loading-text .dot-2 {
+  animation-delay: 100ms;
+}
+
+.loading-text .dot-3 {
+  animation-delay: 200ms;
+}
