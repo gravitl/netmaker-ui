@@ -32,7 +32,6 @@ import {
   hostsSelectors,
   serverSelectors,
 } from '~store/selectors'
-import { nodeACLValues } from '~store/types'
 import { NotFound } from '~util/errorpage'
 
 const styles = {
@@ -394,13 +393,7 @@ export const NodeId: FC = () => {
           <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
             <TextField
               disabled
-              value={
-                node.defaultacl === undefined
-                  ? nodeACLValues.unset
-                  : node.defaultacl
-                  ? nodeACLValues.allow
-                  : nodeACLValues.deny
-              }
+              value={node.defaultacl}
               label={String(t('node.defaultacl'))}
             />
           </Grid>
@@ -450,11 +443,7 @@ export const NodeId: FC = () => {
               alignItems="center"
               sx={{ padding: '2em' }}
             >
-              <Grid
-                item
-                xs={12}
-                textAlign="center"
-              >
+              <Grid item xs={12} textAlign="center">
                 <Typography variant="h6">
                   Great! You have found a PRO feature. <br />
                 </Typography>

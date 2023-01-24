@@ -108,7 +108,10 @@ export const NodeEdit: React.FC<{
   const onSubmit = useCallback(
     (data: Node) => {
       if (data.pendingdelete) {
-        toast.warn(t('toast.warnings.cannoteditnodependingdelete'), defaultToastOptions)
+        toast.warn(
+          t('toast.warnings.cannoteditnodependingdelete'),
+          defaultToastOptions
+        )
         return
       }
       if (typeof data.egressgatewayranges === 'string') {
@@ -311,9 +314,9 @@ export const NodeEdit: React.FC<{
               label={String(t('node.defaultacl'))}
               name={'defaultacl'}
               selections={[
-                { key: nodeACLValues.unset, option: undefined },
-                { key: nodeACLValues.allow, option: true },
-                { key: nodeACLValues.deny, option: false },
+                { key: nodeACLValues.unset, option: 'unset' },
+                { key: nodeACLValues.allow, option: 'yes' },
+                { key: nodeACLValues.deny, option: 'no' },
               ]}
             />
           </Tooltip>
