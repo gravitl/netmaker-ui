@@ -55,13 +55,6 @@ function Routes() {
       <Grid item xs={12}>
         <CustomDrawer />
       </Grid>
-      {!user?.isAdmin && (
-        <>
-          <Grid item xs={12}>
-            <ProDrawerNotAdmin />
-          </Grid>
-        </>
-      )}
       <Grid item xs={12}>
         {isEE ? (
           <Switch location={from || location}>
