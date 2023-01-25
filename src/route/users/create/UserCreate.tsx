@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react'
+import { useCallback, useMemo, useEffect, FC, createRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { CircularProgress, Grid, List, ListSubheader } from '@mui/material'
@@ -39,7 +39,7 @@ const useStyles = makeStyles(() =>
   })
 )
 
-export const UserCreate: React.FC = () => {
+export const UserCreate: FC = () => {
   const dispatch = useDispatch()
   const styles = useStyles()
   const listOfNetworks = useSelector(networkSelectors.getNetworks)
@@ -47,7 +47,7 @@ export const UserCreate: React.FC = () => {
   const location = useLocation<{ from?: Location }>()
   const history = useHistory()
   const isCreating = useSelector(authSelectors.isCreating)
-  const formRef = React.createRef<FormRef<CreateUser>>()
+  const formRef = createRef<FormRef<CreateUser>>()
   const { Component: Dialog, setProps: setDialog } = useDialog()
   const initialState: CreateUser = {
     username: '',
@@ -60,7 +60,7 @@ export const UserCreate: React.FC = () => {
     })),
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     formRef.current?.reset({
       username: '',
       password: '',
@@ -75,6 +75,11 @@ export const UserCreate: React.FC = () => {
 
   const onSubmit = useCallback(
     (data: CreateUser) => {
+      // clear selection if admin. admins have access to all nets
+      if (data.isadmin) {
+        data.networks = []
+      }
+
       const create = () =>
         dispatch(
           createUser.request({
