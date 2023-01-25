@@ -50,6 +50,7 @@ import { Tablefilter } from '~components/filter/Tablefilter'
 import { useEffect, useState } from 'react'
 import { FailoverButton } from '../../../ee/nodes/FailoverButton'
 import { getConnectivityStatus } from '~util/node'
+import LoadingText from '~components/LoadingText'
 
 type NetworkNodesTableData = Node & {
   name: string
@@ -74,8 +75,8 @@ export const NetworkNodes: React.FC = () => {
   const tableData: NetworkNodesTableData[] = useMemo(
     () =>
       filterNodes.map((node) => ({
-        name: hostsMap[node.hostid]?.name ?? 'N/A',
-        version: hostsMap[node.hostid]?.version ?? 'N/A',
+        name: hostsMap[node.hostid]?.name ?? '',
+        version: hostsMap[node.hostid]?.version ?? '',
         ...node,
       })),
     [hostsMap, filterNodes]
@@ -136,6 +137,9 @@ export const NetworkNodes: React.FC = () => {
         id: 'name',
         labelKey: 'hosts.name',
         minWidth: 100,
+        format(value) {
+          return <LoadingText text={value} />
+        },
       },
       {
         id: 'network',
@@ -168,6 +172,9 @@ export const NetworkNodes: React.FC = () => {
         labelKey: 'common.version',
         minWidth: 50,
         align: 'center',
+        format(value) {
+          return <LoadingText text={value} />
+        },
       },
       {
         id: 'isegressgateway',
