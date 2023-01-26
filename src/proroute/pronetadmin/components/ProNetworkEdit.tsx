@@ -16,7 +16,7 @@ import { networkToNetworkPayload } from '~modules/network/utils'
 import { useRouteMatch } from 'react-router'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 import { serverSelectors } from '~store/selectors'
-import { correctIPv4CidrRegex, correctIpv6Regex } from '~util/regex'
+import { correctIPv4CidrRegex, correctIpv6CidrRegex } from '~util/regex'
 import { NotFound } from '~util/errorpage'
 import { NmLink } from '~components/Link'
 
@@ -49,7 +49,7 @@ export const ProNetworkEdit: React.FC<{
           if (!formData.isipv6) {
             return undefined
           }
-          return !correctIpv6Regex.test(addressrange6)
+          return !correctIpv6CidrRegex.test(addressrange6)
             ? {
                 message: t('network.validation.ipv6'),
                 type: 'value',
