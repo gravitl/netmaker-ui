@@ -199,7 +199,7 @@ export const NodeEdit: React.FC<{
             />
           </Tooltip>
         </Grid>
-        <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
+        {/* <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <Tooltip title={String(t('helper.nodepostup'))} placement="top">
             <span>
               <NmFormInputText
@@ -210,8 +210,8 @@ export const NodeEdit: React.FC<{
               />
             </span>
           </Tooltip>
-        </Grid>
-        <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
+        </Grid> */}
+        {/* <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <Tooltip title={String(t('helper.nodepostdown'))} placement="top">
             <span>
               <NmFormInputText
@@ -222,7 +222,7 @@ export const NodeEdit: React.FC<{
               />
             </span>
           </Tooltip>
-        </Grid>
+        </Grid> */}
         <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <Tooltip
             title={String(t('helper.persistentkeepalive'))}
