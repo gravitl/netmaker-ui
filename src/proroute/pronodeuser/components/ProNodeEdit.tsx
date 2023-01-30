@@ -12,7 +12,7 @@ import {
 } from '~components/form'
 import { useLinkBreadcrumb } from '../../../components/PathBreadcrumbs'
 import { getCommaSeparatedArray } from '~util/fields'
-import { hostsSelectors, proSelectors, serverSelectors } from '~store/selectors'
+import { hostsSelectors, proSelectors } from '~store/selectors'
 import { Node, nodeACLValues } from '~store/modules/node/types'
 import { datePickerConverter } from '~util/unixTime'
 import AdapterDateFns from '@mui/lab/AdapterDateFns'
@@ -35,7 +35,7 @@ export const ProNodeEdit: React.FC = () => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const history = useHistory()
-  const serverConfig = useSelector(serverSelectors.getServerConfig)
+  // const serverConfig = useSelector(serverSelectors.getServerConfig)
   const { netid, nodeid } = useParams<{ nodeid: string; netid: string }>()
   const userData = useSelector(proSelectors.networkUserData)[netid]
   let node: Node
