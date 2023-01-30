@@ -126,7 +126,7 @@ export const HostNetworksTable: FC<HostNetworksTableProps> = ({
       labelKey: 'common.addresses',
       minWidth: 100,
       format: (value) => (
-        <MultiCopy type="subtitle2" values={value} />
+        <MultiCopy type="subtitle2" values={value} fullWidth={false} />
       ),
     },
     {

@@ -35,16 +35,26 @@ export interface MulitCopyProps {
   color?: string
   type: TypographyVariant
   values: Array<string>
+  fullWidth?: boolean
 }
 
-export function MultiCopy({ color, type, values }: MulitCopyProps) {
+export function MultiCopy({ color, type, values, fullWidth }: MulitCopyProps) {
+  const isFullWidth = fullWidth === undefined ? true : fullWidth
+
   return (
     <Grid container>
       {values.map((value) =>
         !!value ? (
-          <Grid item xs={12} key={value}>
-            <CopyText type={type} value={value} color={color} />
-          </Grid>
+          <>
+            {isFullWidth && (
+              <Grid item xs={12} key={value}>
+                <CopyText type={type} value={value} color={color} />
+              </Grid>
+            )}
+            {!isFullWidth && (
+              <CopyText type={type} value={value} color={color} />
+            )}
+          </>
         ) : null
       )}
     </Grid>
