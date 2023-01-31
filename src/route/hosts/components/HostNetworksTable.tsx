@@ -2,7 +2,7 @@ import { FC, useState, useCallback, useMemo } from 'react'
 import { NmLink } from '~components/index'
 import { useTranslation } from 'react-i18next'
 import { NmTable, TableColumns } from '~components/Table'
-import CopyText from '~components/CopyText'
+import { MultiCopy } from '~components/CopyText'
 import { Node } from '~store/modules/node/types'
 import { useDispatch, useSelector } from 'react-redux'
 import {
@@ -21,7 +21,7 @@ interface HostNetworksTableProps {
 }
 
 type HostNetworksTableData = Network & {
-  localaddress: Node['localaddress']
+  addresses: Node['address'][]
   nodeId: Node['id']
   connected: Node['connected']
 }
@@ -66,7 +66,7 @@ export const HostNetworksTable: FC<HostNetworksTableProps> = ({
         if (node.connected) {
           networks.push({
             ...networksMap[node.network],
-            localaddress: node.localaddress,
+            addresses: [node.address, node.address6],
             nodeId: node.id,
             connected: node.connected,
           })
@@ -82,7 +82,7 @@ export const HostNetworksTable: FC<HostNetworksTableProps> = ({
 
         networks.push({
           ...networksMap[net.netid],
-          localaddress: isConnected ? node.localaddress : 'N/A',
+          addresses: isConnected ? [node.address, node.address6] : [],
           nodeId: isConnected ? node.id : 'N/A',
           connected: isConnected,
         })
@@ -122,11 +122,11 @@ export const HostNetworksTable: FC<HostNetworksTableProps> = ({
       ),
     },
     {
-      id: 'localaddress',
-      labelKey: 'hosts.localaddress',
+      id: 'addresses',
+      labelKey: 'common.addresses',
       minWidth: 100,
-      format: (value, nw) => (
-        <CopyText type="subtitle2" value={nw.localaddress!} />
+      format: (value) => (
+        <MultiCopy type="subtitle2" values={value} fullWidth={false} />
       ),
     },
     {

@@ -302,20 +302,20 @@ export const NodeId: FC = () => {
             />
           </Grid>
 
-          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
+          {/* <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
             <TextField
               disabled
               value={node.postup}
               label={String(t('node.postup'))}
             />
-          </Grid>
-          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
+          </Grid> */}
+          {/* <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
             <TextField
               disabled
               value={node.postdown}
               label={String(t('node.postdown'))}
             />
-          </Grid>
+          </Grid> */}
           <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
             <TextField
               disabled

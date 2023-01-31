@@ -135,6 +135,7 @@ export const en: LanguageResource = {
     hosts: 'Hosts',
   },
   common: {
+    addresses: 'Addresses',
     defaultinterface: 'Default Interface',
     host: 'Host',
     endpointip: 'Endpoint IP',
@@ -243,7 +244,7 @@ export const en: LanguageResource = {
     unauthorized: 'Unauthorized access attempted',
     overload: 'Too many failed requests, refresh to retry',
     name: 'Invalid name. name can only include alphanumeric and dash characters',
-    verbositymustbeinrange: 'Verbosity must be between 1 and 4 inclusive',
+    verbositymustbeinrange: 'Verbosity must be between 0 and 4 inclusive',
     portmustbeinrange: 'Port number cannot be less than 1. 0 means unset',
   },
   extclient: {

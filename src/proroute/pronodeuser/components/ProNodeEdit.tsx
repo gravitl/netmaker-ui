@@ -12,7 +12,7 @@ import {
 } from '~components/form'
 import { useLinkBreadcrumb } from '../../../components/PathBreadcrumbs'
 import { getCommaSeparatedArray } from '~util/fields'
-import { hostsSelectors, proSelectors, serverSelectors } from '~store/selectors'
+import { hostsSelectors, proSelectors } from '~store/selectors'
 import { Node, nodeACLValues } from '~store/modules/node/types'
 import { datePickerConverter } from '~util/unixTime'
 import AdapterDateFns from '@mui/lab/AdapterDateFns'
@@ -35,7 +35,7 @@ export const ProNodeEdit: React.FC = () => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const history = useHistory()
-  const serverConfig = useSelector(serverSelectors.getServerConfig)
+  // const serverConfig = useSelector(serverSelectors.getServerConfig)
   const { netid, nodeid } = useParams<{ nodeid: string; netid: string }>()
   const userData = useSelector(proSelectors.networkUserData)[netid]
   let node: Node
@@ -213,7 +213,7 @@ export const ProNodeEdit: React.FC = () => {
             </span>
           </Tooltip>
         </Grid>
-        <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
+        {/* <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <Tooltip title={String(t('helper.nodepostup'))} placement="top">
             <span>
               <NmFormInputText
@@ -224,8 +224,8 @@ export const ProNodeEdit: React.FC = () => {
               />
             </span>
           </Tooltip>
-        </Grid>
-        <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
+        </Grid> */}
+        {/* <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <Tooltip title={String(t('helper.nodepostdown'))} placement="top">
             <span>
               <NmFormInputText
@@ -236,7 +236,7 @@ export const ProNodeEdit: React.FC = () => {
               />
             </span>
           </Tooltip>
-        </Grid>
+        </Grid> */}
         <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <Tooltip
             title={String(t('helper.persistentkeepalive'))}

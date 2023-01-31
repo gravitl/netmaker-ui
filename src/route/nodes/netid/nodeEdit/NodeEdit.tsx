@@ -14,7 +14,7 @@ import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 import { getCommaSeparatedArray } from '~util/fields'
 import { useNodeById } from '~util/node'
 import { useNetwork } from '~util/network'
-import { hostsSelectors, serverSelectors } from '~store/selectors'
+import { hostsSelectors } from '~store/selectors'
 import { Node, nodeACLValues } from '~store/modules/node/types'
 import { datePickerConverter } from '~util/unixTime'
 import AdapterDateFns from '@mui/lab/AdapterDateFns'
@@ -36,7 +36,7 @@ export const NodeEdit: React.FC<{
   const { url } = useRouteMatch()
   const { t } = useTranslation()
   const dispatch = useDispatch()
-  const serverConfig = useSelector(serverSelectors.getServerConfig)
+  // const serverConfig = useSelector(serverSelectors.getServerConfig)
   const { netid, nodeId } = useParams<{ nodeId: string; netid: string }>()
   const node = useNodeById(decodeURIComponent(nodeId))
   const network = useNetwork(netid)
@@ -199,7 +199,7 @@ export const NodeEdit: React.FC<{
             />
           </Tooltip>
         </Grid>
-        <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
+        {/* <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <Tooltip title={String(t('helper.nodepostup'))} placement="top">
             <span>
               <NmFormInputText
@@ -210,8 +210,8 @@ export const NodeEdit: React.FC<{
               />
             </span>
           </Tooltip>
-        </Grid>
-        <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
+        </Grid> */}
+        {/* <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <Tooltip title={String(t('helper.nodepostdown'))} placement="top">
             <span>
               <NmFormInputText
@@ -222,7 +222,7 @@ export const NodeEdit: React.FC<{
               />
             </span>
           </Tooltip>
-        </Grid>
+        </Grid> */}
         <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <Tooltip
             title={String(t('helper.persistentkeepalive'))}
