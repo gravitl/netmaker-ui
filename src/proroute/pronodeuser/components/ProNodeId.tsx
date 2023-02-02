@@ -213,7 +213,7 @@ export const ProNodeId: React.FC = () => {
       <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
         <TextField
           disabled
-          value={node.macaddress}
+          value={hostsMap[node.hostid]?.macaddress ?? ''}
           label={String(t('node.macaddress'))}
         />
       </Grid>

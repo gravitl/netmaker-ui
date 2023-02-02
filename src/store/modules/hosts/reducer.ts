@@ -18,6 +18,7 @@ interface NodeCommonDetails {
   isrelay: Host['isrelay']
   relay_hosts: Host['relay_hosts']
   isrelayed: Host['isrelayed']
+  macaddress: Host['macaddress']
 }
 
 export const reducer = createReducer({
@@ -65,6 +66,7 @@ export const reducer = createReducer({
           isrelay: host.isrelay,
           relay_hosts: host.relay_hosts,
           isrelayed: host.isrelayed,
+          macaddress: host.macaddress,
         }
       })
     })
