@@ -301,21 +301,6 @@ export const NodeId: FC = () => {
               label={String(t('node.publickey'))}
             />
           </Grid>
-
-          {/* <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-            <TextField
-              disabled
-              value={node.postup}
-              label={String(t('node.postup'))}
-            />
-          </Grid> */}
-          {/* <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-            <TextField
-              disabled
-              value={node.postdown}
-              label={String(t('node.postdown'))}
-            />
-          </Grid> */}
           <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
             <TextField
               disabled
