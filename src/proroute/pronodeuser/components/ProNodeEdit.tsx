@@ -213,30 +213,6 @@ export const ProNodeEdit: React.FC = () => {
             </span>
           </Tooltip>
         </Grid>
-        {/* <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-          <Tooltip title={String(t('helper.nodepostup'))} placement="top">
-            <span>
-              <NmFormInputText
-                defaultValue={node.postup}
-                name={'postup'}
-                label={String(t('node.postup'))}
-                disabled={!serverConfig.RCE}
-              />
-            </span>
-          </Tooltip>
-        </Grid> */}
-        {/* <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-          <Tooltip title={String(t('helper.nodepostdown'))} placement="top">
-            <span>
-              <NmFormInputText
-                defaultValue={node.postdown}
-                label={String(t('node.postdown'))}
-                name={'postdown'}
-                disabled={!serverConfig.RCE}
-              />
-            </span>
-          </Tooltip>
-        </Grid> */}
         <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
           <Tooltip
             title={String(t('helper.persistentkeepalive'))}

@@ -4,8 +4,6 @@ export interface Node {
   address: string
   address6: string
   localaddress: string
-  postup: string
-  postdown: string
   persistentkeepalive: number
   interface: string
   macaddress: string
