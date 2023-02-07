@@ -127,13 +127,15 @@ export function CreateEgress() {
       validate<EgressData>({
         ranges: (ranges, formData) => {
           if (!formData.ranges) {
-            return undefined
+            return {
+              message: t('node.validation.egressgatewayrange'),
+              type: 'value',
+            }
           }
 
           if (typeof ranges === 'string') {
             ranges = convertStringToArray(ranges)
           }
-
           for (let i = 0; i < ranges.length; i++) {
             const correctIPv4 = correctIPv4CidrRegex.test(ranges[i])
             const correctIPv6 = correctIpv6CidrRegex.test(ranges[i])
