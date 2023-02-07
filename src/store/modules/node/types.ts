@@ -139,7 +139,6 @@ export interface CreateEgressNodePayload {
     nodeid: string
     payload: {
       ranges: Array<string>
-      interface: string
       natEnabled: string
     }
   }
