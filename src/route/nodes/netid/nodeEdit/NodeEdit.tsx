@@ -11,7 +11,6 @@ import {
   validate,
 } from '~components/form'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
-import { getCommaSeparatedArray } from '~util/fields'
 import { useNodeById } from '~util/node'
 import { useNetwork } from '~util/network'
 import { hostsSelectors } from '~store/selectors'
@@ -21,11 +20,9 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns'
 import LocalizationProvider from '@mui/lab/LocalizationProvider'
 import DateTimePicker from '@mui/lab/DateTimePicker'
 import {
-  correctIPv4CidrRegex,
   correctIpv6CidrRegex,
   ipv4AddressRegex,
 } from '~util/regex'
-import { convertStringToArray } from '~util/fields'
 import { NmFormOptionSelect } from '~components/form/FormOptionSelect'
 import { toast } from 'react-toastify'
 import { defaultToastOptions } from '~store/modules/toast/saga'
@@ -67,29 +64,6 @@ export const NodeEdit: React.FC<{
               }
             : undefined
         },
-        egressgatewayranges: (egressgatewayranges, formData) => {
-          if (!formData.isegressgateway) {
-            return undefined
-          }
-
-          if (typeof egressgatewayranges === 'string') {
-            egressgatewayranges = convertStringToArray(egressgatewayranges)
-          }
-
-          for (let i = 0; i < egressgatewayranges.length; i++) {
-            const correctIPv4 = correctIPv4CidrRegex.test(
-              egressgatewayranges[i]
-            )
-            const correctIPv6 = correctIpv6CidrRegex.test(egressgatewayranges[i])
-            if (!correctIPv4 && !correctIPv6) {
-              return {
-                message: t('node.validation.egressgatewayrange'),
-                type: 'value',
-              }
-            }
-          }
-          return undefined
-        },
       }),
     [t]
   )
@@ -113,14 +87,6 @@ export const NodeEdit: React.FC<{
           defaultToastOptions
         )
         return
-      }
-      if (typeof data.egressgatewayranges === 'string') {
-        const newEgressRanges = getCommaSeparatedArray(
-          String(data.egressgatewayranges)
-        )
-        if (newEgressRanges.length) {
-          data.egressgatewayranges = newEgressRanges
-        }
       }
       if (expTime && expTime !== data.expdatetime) {
         data.expdatetime = expTime
@@ -281,22 +247,6 @@ export const NodeEdit: React.FC<{
                 defaultValue={node.network}
                 label={String(t('node.network'))}
                 name={'network'}
-              />
-            </span>
-          </Tooltip>
-        </Grid>
-        <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-          <Tooltip title={String(t('helper.egressrange'))} placement="top">
-            <span>
-              <NmFormInputText
-                disabled={!node.isegressgateway}
-                defaultValue={
-                  node.egressgatewayranges
-                    ? node.egressgatewayranges.join(',')
-                    : ''
-                }
-                label={String(t('node.egressgatewayranges'))}
-                name={'egressgatewayranges'}
               />
             </span>
           </Tooltip>

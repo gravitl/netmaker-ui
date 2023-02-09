@@ -11,7 +11,6 @@ import {
   validate,
 } from '~components/form'
 import { useLinkBreadcrumb } from '../../../components/PathBreadcrumbs'
-import { getCommaSeparatedArray } from '~util/fields'
 import { hostsSelectors, proSelectors } from '~store/selectors'
 import { Node, nodeACLValues } from '~store/modules/node/types'
 import { datePickerConverter } from '~util/unixTime'
@@ -121,14 +120,6 @@ export const ProNodeEdit: React.FC = () => {
           defaultToastOptions
         )
         return
-      }
-      if (typeof data.egressgatewayranges === 'string') {
-        const newEgressRanges = getCommaSeparatedArray(
-          String(data.egressgatewayranges)
-        )
-        if (newEgressRanges.length) {
-          data.egressgatewayranges = newEgressRanges
-        }
       }
       if (expTime && expTime !== data.expdatetime) {
         data.expdatetime = expTime
@@ -283,22 +274,6 @@ export const ProNodeEdit: React.FC = () => {
                 defaultValue={node.network}
                 label={String(t('node.network'))}
                 name={'network'}
-              />
-            </span>
-          </Tooltip>
-        </Grid>
-        <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-          <Tooltip title={String(t('helper.egressrange'))} placement="top">
-            <span>
-              <NmFormInputText
-                disabled={!node.isegressgateway}
-                defaultValue={
-                  node.egressgatewayranges
-                    ? node.egressgatewayranges.join(',')
-                    : ''
-                }
-                label={String(t('node.egressgatewayranges'))}
-                name={'egressgatewayranges'}
               />
             </span>
           </Tooltip>
