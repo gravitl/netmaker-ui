@@ -138,7 +138,7 @@ export const HostEditPage: FC<{ onCancel: () => void }> = ({ onCancel }) => {
             title={
               host.isstatic
                 ? String(t('common.endpointip'))
-                : String(t('hosts.canonlyeditendpointofnonstatichost'))
+                : String(t('hosts.canonlyeditendpointofstatichost'))
             }
           >
             <span>
@@ -146,7 +146,7 @@ export const HostEditPage: FC<{ onCancel: () => void }> = ({ onCancel }) => {
                 defaultValue={host.endpointip}
                 name={'endpointip'}
                 label={String(t('common.endpointip'))}
-                disabled={host.isstatic}
+                disabled={!host.isstatic}
               />
             </span>
           </Tooltip>
