@@ -1,3 +1,5 @@
+import { NodeCommonDetails } from "../hosts"
+
 export interface Node {
   id: string
   hostid: string
@@ -194,8 +196,9 @@ export interface DeleteIngressNodePayload {
 export type shouldSignOut = '' | 'network' | 'auth'
 
 export interface NodeSort {
-  value: 'address' | 'network'
+  value: 'address' | 'network' | 'name'
   ascending: boolean
+  hostsMap: Record<string, NodeCommonDetails>
 }
 
 export const nodeACLValues = {

@@ -54,6 +54,7 @@ export const Nodes: React.FC = () => {
 
   const handleNodeSortSelect = (selection: string) => {
     if (
+      selection === 'name' ||
       selection === 'address' ||
       selection === 'network'
     ) {
@@ -61,6 +62,7 @@ export const Nodes: React.FC = () => {
         setNodeSort({
           ...nodeSort,
           value: selection,
+          hostsMap,
         })
       )
     }
@@ -109,6 +111,7 @@ export const Nodes: React.FC = () => {
                         setNodeSort({
                           ...nodeSort,
                           ascending: !nodeSort.ascending,
+                          hostsMap,
                         })
                       )
                     }}

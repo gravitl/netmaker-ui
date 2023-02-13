@@ -226,12 +226,14 @@ export const NodeAccessView: React.FC<{ nodes: Node[]; isNetAdmin?: boolean }> =
     const handleNodeSortSelect = (selection: string) => {
       if (
         selection === 'address' ||
-        selection === 'network'
+        selection === 'network' ||
+        selection === 'name'
       ) {
         dispatch(
           setNodeSort({
             ...nodeSort,
             value: selection,
+            hostsMap,
           })
         )
       }
@@ -276,6 +278,7 @@ export const NodeAccessView: React.FC<{ nodes: Node[]; isNetAdmin?: boolean }> =
                             setNodeSort({
                               ...nodeSort,
                               ascending: !nodeSort.ascending,
+                              hostsMap,
                             })
                           )
                         }}

@@ -34,6 +34,23 @@ export interface Host {
   relay_hosts: string[] // host ids
 }
 
+export interface NodeCommonDetails {
+  name: Host['name']
+  version: Host['version']
+  endpointip: Host['endpointip']
+  publickey: Host['publickey']
+  os: Host['os']
+  listenport: Host['listenport']
+  isstatic: Host['isstatic']
+  localrange: Host['localrange']
+  mtu: Host['mtu']
+  interfaces: Host['interfaces']
+  isrelay: Host['isrelay']
+  relay_hosts: Host['relay_hosts']
+  isrelayed: Host['isrelayed']
+  macaddress: Host['macaddress']
+}
+
 export interface GetHostsPayload {
   Request: void
   Response: Host[]
