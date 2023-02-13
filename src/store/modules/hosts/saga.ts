@@ -15,6 +15,8 @@ import { i18n } from '../../../i18n/i18n'
 import { getType } from 'typesafe-actions'
 import { getNodes } from '../node/selectors'
 import { Node } from '../node'
+import { getToken } from '../auth/selectors'
+import { login } from '../auth/actions'
 
 function* handleGetHostsRequest(
   action: ReturnType<typeof getHosts['request']>
@@ -97,13 +99,13 @@ function* handleUpdateHostNetworksRequest(
         'post',
         `/hosts/${action.payload.id}/networks/${action.payload.network}`,
         {},
-        {},
+        {}
       )
     } else if (action.payload.action === 'leave') {
       yield apiRequestWithAuthSaga(
         'delete',
         `/hosts/${action.payload.id}/networks/${action.payload.network}`,
-        {},
+        {}
       )
     }
 
@@ -218,8 +220,14 @@ function* handleDeleteHostRelayRequest(
   }
 }
 
+function* handleLoginSuccess() {
+  const token: ReturnType<typeof getToken> = yield select(getToken)
+  if (token) yield put(getHosts.request())
+}
+
 export function* saga() {
   yield all([
+    takeEvery(login['success'], handleLoginSuccess),
     takeEvery(getType(getHosts['request']), handleGetHostsRequest),
     takeEvery(getType(updateHost['request']), handleUpdateHostRequest),
     takeEvery(
