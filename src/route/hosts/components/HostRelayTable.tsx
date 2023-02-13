@@ -60,6 +60,8 @@ export const HostRelayTable: FC<HostRelayTableProps> = ({ hostid: hostId }) => {
     if (!showOnlyRelayedHosts) {
       allHosts
         .filter((h) => !(h.isrelay || h.isrelayed))
+        // check that host is not already selected to prevent glitch in ui
+        .filter(h => hosts.find(filteredHost => filteredHost.id === h.id) === undefined)
         .forEach((h) => {
           hosts.push({
             ...h,
