@@ -11,7 +11,10 @@ import {
   validate,
 } from '../../../components/form'
 import { useLinkBreadcrumb } from '../../../components/PathBreadcrumbs'
-import { createNetwork } from '../../../store/modules/network/actions'
+import {
+  createNetwork,
+  getNetworks,
+} from '../../../store/modules/network/actions'
 import { randomNetworkName, randomCIDR, randomCIDR6 } from '~util/fields'
 import { useHistory } from 'react-router'
 import { correctIPv4CidrRegex, correctIpv6CidrRegex } from '~util/regex'
@@ -92,6 +95,7 @@ export const NetworkCreate: React.FC = () => {
           },
         })
       )
+      dispatch(getNetworks.request())
       history.push('/networks')
     },
     [dispatch, history, serverConfig]
