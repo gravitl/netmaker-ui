@@ -30,7 +30,7 @@ export function Tablefilter(props: TablefilterProps) {
           <InputLabel>{t('common.sortby')}</InputLabel>
           <Select
             label={t('common.sortby')}
-            defaultValue={currentValue}
+            value={currentValue}
             onChange={(event: SelectChangeEvent) => {
               onSelect(event.target.value)
             }}

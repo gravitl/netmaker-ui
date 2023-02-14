@@ -52,32 +52,17 @@ export const reducer = createReducer({
   .handleAction(setNodeSort, (state, action) =>
     produce(state, (draftState) => {
       draftState.nodeSort = action.payload
-      const { value, ascending } = action.payload
-      draftState.nodes = draftState.nodes.sort((a, b) =>
-        a[value].localeCompare(b[value])
-      )
-      if (!ascending) {
-        draftState.nodes = draftState.nodes.reverse()
-      }
+      sortNodes(draftState.nodes, action.payload)
     })
   )
   .handleAction(getNodes['success'], (state, action) =>
     produce(state, (draftState) => {
       if (!!action.payload && action.payload.length) {
         draftState.nodes = action.payload
-        const { value, ascending } = state.nodeSort
-
-        draftState.nodes = draftState.nodes.sort((a, b) =>
-          a[value] === b[value]
-            ? `${a[value]}${a.id}`.localeCompare(`${b[value]}${b.id}`)
-            : a[value].localeCompare(b[value])
-        )
-        if (!ascending) {
-          draftState.nodes = draftState.nodes.reverse()
-        }
+        sortNodes(draftState.nodes, state.nodeSort)
 
         // populate nodes map
-        draftState.nodes.forEach(node => {
+        draftState.nodes.forEach((node) => {
           draftState.nodesMap[node.id] = node
         })
       } else {
@@ -251,3 +236,22 @@ export const reducer = createReducer({
       }
     })
   )
+
+function sortNodes(nodes: Node[], sortParams: NodeSort): void {
+  const { value, ascending, hostsMap } = sortParams
+
+  switch (value) {
+    case 'name':
+      nodes = nodes.sort((a, b) =>
+        (hostsMap[a.hostid]?.name ?? '').localeCompare(
+          hostsMap[b.hostid]?.name ?? ''
+        )
+      )
+      break
+    default:
+      nodes = nodes.sort((a, b) => a[value].localeCompare(b[value]))
+  }
+  if (!ascending) {
+    nodes = nodes.reverse()
+  }
+}

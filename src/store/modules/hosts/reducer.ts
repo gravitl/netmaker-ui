@@ -1,30 +1,21 @@
 import { produce } from 'immer'
 import { createReducer } from 'typesafe-actions'
-import { clearHosts, getHosts, updateHost, deleteHost, updateHostNetworks, createHostRelay, deleteHostRelay } from './actions'
-import { Host } from '.'
+import {
+  clearHosts,
+  getHosts,
+  updateHost,
+  deleteHost,
+  updateHostNetworks,
+  createHostRelay,
+  deleteHostRelay,
+} from './actions'
+import { Host, NodeCommonDetails } from '.'
 import { call } from 'redux-saga/effects'
-
-interface NodeCommonDetails {
-  name: Host['name']
-  version: Host['version']
-  endpointip: Host['endpointip']
-  publickey: Host['publickey']
-  os: Host['os']
-  listenport: Host['listenport']
-  isstatic: Host['isstatic']
-  localrange: Host['localrange']
-  mtu: Host['mtu']
-  interfaces: Host['interfaces']
-  isrelay: Host['isrelay']
-  relay_hosts: Host['relay_hosts']
-  isrelayed: Host['isrelayed']
-  macaddress: Host['macaddress']
-}
 
 export const reducer = createReducer({
   isProcessing: false,
   hosts: [] as Host[],
-  hostsMap: {} as Record<string, NodeCommonDetails>,
+  hostsMap: {} as Record<string, NodeCommonDetails>, // hostid => select host details
 })
   // reset store actions
   .handleAction(clearHosts, (state, _) =>
@@ -43,7 +34,7 @@ export const reducer = createReducer({
   .handleAction(getHosts['success'], (state, payload) =>
     produce(state, (draftState) => {
       draftState.isProcessing = false
-      
+
       const hosts = payload.payload
 
       // sort based on public key to maintain order in UI
