@@ -39,16 +39,19 @@ export const UserEditEE: React.FC = () => {
   )
   const networks = useSelector(networkSelectors.getNetworks)
 
-  const initialState = {
-    username: user?.name || '',
-    isadmin: !!user?.isAdmin,
+  const initialState = useMemo(
+    () => ({
+      username: user?.name || '',
+      isadmin: !!user?.isAdmin,
 
-    networks: networks.map((network) => ({
-      checked: !!user?.networks?.includes(network.netid),
-      netid: network.netid,
-    })),
-    groups: user?.groups,
-  }
+      networks: networks.map((network) => ({
+        checked: !!user?.networks?.includes(network.netid),
+        netid: network.netid,
+      })),
+      groups: user?.groups,
+    }),
+    [networks, user]
+  )
 
   const formRef = React.createRef<FormRef<typeof initialState>>()
 
@@ -66,7 +69,7 @@ export const UserEditEE: React.FC = () => {
           })
         )
 
-        setTimeout(() => dispatch(getNetworkUsers.request()), 100)        
+        setTimeout(() => dispatch(getNetworkUsers.request()), 100)
       }
 
       if (data.isadmin) {
@@ -113,98 +116,102 @@ export const UserEditEE: React.FC = () => {
         <h3>{t('users.update.header')}</h3>
       </Grid>
       <Grid item xs={12}>
-        <NmForm
-          ref={formRef}
-          initialState={initialState}
-          resolver={validation}
-          onSubmit={onSubmit}
-          submitText={t(
-            user?.isAdmin ? 'users.update.adminSubmit' : 'users.update.submit'
-          )}
-          submitProps={{
-            type: 'submit',
-            fullWidth: true,
-            variant: 'contained',
-            color: 'primary',
-          }}
-          disabled={user?.isAdmin}
-        >
-          <Grid container justifyContent="space-around" alignItems="center">
-            <Grid item sm={12} md={5}>
-              <NmFormInputText
-                name={'username'}
-                label={String(t('users.label.username'))}
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                autoComplete="false"
-                autoFocus
-                disabled
-              />
-            </Grid>
-            <Grid item sm={12} md={5}>
-              <NmFormInputCheckbox
-                name="isadmin"
-                label={String(t('users.update.isAdmin'))}
-              />
-            </Grid>
-            <Grid item sm={12} md={5}>
-              <NmFormList<typeof initialState['networks'][0]> name="networks">
-                {(fields, disabled) => (
-                  <List
-                    dense
-                    sx={{
-                      width: '100%',
-                      bgcolor: 'background.paper',
-                      overflowY: 'scroll',
-                      maxHeight: '22em',
-                    }}
-                  >
-                    <ListSubheader>{t('users.update.networks')}</ListSubheader>
-                    {fields.map((field) => (
-                      <ListItem key={field.id}>
-                        <NmFormInputCheckbox
-                          name={field.getFieldName('checked')}
-                          label={field.netid}
-                          disabled={disabled}
-                        />
-                      </ListItem>
-                    ))}
-                  </List>
-                )}
-              </NmFormList>
-            </Grid>
-          </Grid>
-          <Grid
-            container
-            justifyContent={'space-evenly'}
-            alignItems="center"
-            sx={{ marginTop: '1rem' }}
+        {initialState?.username && (
+          <NmForm
+            ref={formRef}
+            initialState={initialState}
+            resolver={validation}
+            onSubmit={onSubmit}
+            submitText={t(
+              user?.isAdmin ? 'users.update.adminSubmit' : 'users.update.submit'
+            )}
+            submitProps={{
+              type: 'submit',
+              fullWidth: true,
+              variant: 'contained',
+              color: 'primary',
+            }}
+            disabled={user?.isAdmin}
           >
-            <Grid item xs={12} md={8} style={{ textAlign: 'center' }}>
-              <NmFormInputText
-                fullWidth
-                name="groups"
-                label={String(t('pro.networkusers.groups'))}
-                disabled
-              />
+            <Grid container justifyContent="space-around" alignItems="center">
+              <Grid item sm={12} md={5}>
+                <NmFormInputText
+                  name={'username'}
+                  label={String(t('users.label.username'))}
+                  variant="outlined"
+                  margin="normal"
+                  required
+                  fullWidth
+                  autoComplete="false"
+                  autoFocus
+                  disabled
+                />
+              </Grid>
+              <Grid item sm={12} md={5}>
+                <NmFormInputCheckbox
+                  name="isadmin"
+                  label={String(t('users.update.isAdmin'))}
+                />
+              </Grid>
+              <Grid item sm={12} md={5}>
+                <NmFormList<typeof initialState['networks'][0]> name="networks">
+                  {(fields, disabled) => (
+                    <List
+                      dense
+                      sx={{
+                        width: '100%',
+                        bgcolor: 'background.paper',
+                        overflowY: 'scroll',
+                        maxHeight: '22em',
+                      }}
+                    >
+                      <ListSubheader>
+                        {t('users.update.networks')}
+                      </ListSubheader>
+                      {fields.map((field) => (
+                        <ListItem key={field.id}>
+                          <NmFormInputCheckbox
+                            name={field.getFieldName('checked')}
+                            label={field.netid}
+                            disabled={disabled}
+                          />
+                        </ListItem>
+                      ))}
+                    </List>
+                  )}
+                </NmFormList>
+              </Grid>
             </Grid>
-            <Grid item xs={8} md={3.75} style={{ textAlign: 'center' }}>
-              <NmLink
-                variant="outlined"
-                fullWidth
-                sx={{ textTransform: 'none' }}
-                to={`/users/${username}/groups`}
-                disabled={user?.isAdmin}
-              >
-                {`${t('common.edit')} ${t('pro.networkusers.groups')}`}
-              </NmLink>
+            <Grid
+              container
+              justifyContent={'space-evenly'}
+              alignItems="center"
+              sx={{ marginTop: '1rem' }}
+            >
+              <Grid item xs={12} md={8} style={{ textAlign: 'center' }}>
+                <NmFormInputText
+                  fullWidth
+                  name="groups"
+                  label={String(t('pro.networkusers.groups'))}
+                  disabled
+                />
+              </Grid>
+              <Grid item xs={8} md={3.75} style={{ textAlign: 'center' }}>
+                <NmLink
+                  variant="outlined"
+                  fullWidth
+                  sx={{ textTransform: 'none' }}
+                  to={`/users/${username}/groups`}
+                  disabled={user?.isAdmin}
+                >
+                  {`${t('common.edit')} ${t('pro.networkusers.groups')}`}
+                </NmLink>
+              </Grid>
             </Grid>
-          </Grid>
-        </NmForm>
+          </NmForm>
+        )}
       </Grid>
-      
+
       <Dialog />
     </Grid>
   )
