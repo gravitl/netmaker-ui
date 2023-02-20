@@ -15,7 +15,7 @@ export interface Network {
   defaultkeepalive: number
   accesskeys: Array<AccessKey>
   externalclients: Array<ExternalClient>
-  allowmanualsignup: boolean
+  // allowmanualsignup: boolean
   islocal: boolean
   isipv4: boolean
   isipv6: boolean
@@ -31,7 +31,7 @@ export interface Network {
 export type NetworkPayload = Modify<
   Network,
   {
-    allowmanualsignup: 'no' | 'yes'
+    // allowmanualsignup: 'no' | 'yes'
     islocal: 'no' | 'yes'
     isipv4: 'no' | 'yes'
     isipv6: 'no' | 'yes'
