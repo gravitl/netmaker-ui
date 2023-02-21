@@ -20,8 +20,6 @@ import { serverSelectors } from '~store/selectors'
 interface CreateNetwork {
   addressrange: string
   netid: string
-  localrange: string
-  islocal: boolean
   isipv4: boolean
   isipv6: boolean
   addressrange6: string
@@ -35,8 +33,6 @@ interface CreateNetwork {
 const initialState: CreateNetwork = {
   addressrange: '',
   netid: '',
-  localrange: '',
-  islocal: false,
   isipv4: true,
   isipv6: false,
   addressrange6: '',
@@ -65,7 +61,6 @@ export const NetworkCreate: React.FC = () => {
   const serverConfig = useSelector(serverSelectors.getServerConfig)
   const history = useHistory()
   const classes = useStyles()
-  const [viewLocal, setViewLocal] = React.useState(false)
   const [useIpv4, setUseIpv4] = React.useState(true)
   const [useIpv6, setUseIpv6] = React.useState(false)
 
@@ -74,7 +69,6 @@ export const NetworkCreate: React.FC = () => {
       dispatch(
         createNetwork.request({
           ...data,
-          islocal: data.islocal ? 'yes' : 'no',
           isipv4: data.isipv4 ? 'yes' : 'no',
           isipv6: data.isipv6 ? 'yes' : 'no',
           addressrange6: data.isipv6 ? data.addressrange6 : '',
@@ -175,10 +169,6 @@ export const NetworkCreate: React.FC = () => {
 
   const handleViewIpv4 = () => {
     setUseIpv4(!useIpv4)
-  }
-
-  const handleViewLocal = () => {
-    setViewLocal(!viewLocal)
   }
 
   return (
@@ -343,34 +333,6 @@ export const NetworkCreate: React.FC = () => {
                 />
               </div>
             </Tooltip>
-          </Grid>
-          <Grid
-            item
-            xs={12}
-            sm={12}
-            md={10}
-            className={classes.center + ' ' + classes.rowMargin}
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <Tooltip title={t('helper.islocal') as string} placement="top">
-              <div onClick={handleViewLocal}>
-                <NmFormInputSwitch
-                  name={'islocal'}
-                  label={String(t('network.islocal'))}
-                />
-              </div>
-            </Tooltip>
-            {viewLocal && (
-              <NmFormInputText
-                style={{ width: '60%' }}
-                name={'localrange'}
-                label={String(t('network.localrange'))}
-              />
-            )}
           </Grid>
           {serverConfig.IsEE && (
             <>

@@ -216,13 +216,6 @@ export const NetworkId: React.FC = () => {
             <Grid item xs={12} sm={6} md={3}>
               <TextField
                 disabled
-                value={network.localrange}
-                label={String(t('network.localrange'))}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
-              <TextField
-                disabled
                 value={network.defaultinterface}
                 label={String(t('network.defaultinterface'))}
               />

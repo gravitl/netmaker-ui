@@ -15,11 +15,8 @@ export interface Network {
   defaultkeepalive: number
   accesskeys: Array<AccessKey>
   externalclients: Array<ExternalClient>
-  // allowmanualsignup: boolean
-  islocal: boolean
   isipv4: boolean
   isipv6: boolean
-  localrange: string
   defaultudpholepunch: boolean
   defaultnatenabled: boolean
   defaultextclientdns: string
@@ -31,8 +28,6 @@ export interface Network {
 export type NetworkPayload = Modify<
   Network,
   {
-    // allowmanualsignup: 'no' | 'yes'
-    islocal: 'no' | 'yes'
     isipv4: 'no' | 'yes'
     isipv6: 'no' | 'yes'
     defaultudpholepunch: 'no' | 'yes'
@@ -70,8 +65,6 @@ export interface CreateNetworkPayload {
   Request: {
     addressrange: string
     netid: string
-    localrange: string
-    islocal: 'yes' | 'no'
     isipv4: 'yes' | 'no'
     isipv6: 'yes' | 'no'
     addressrange6: string
