@@ -135,6 +135,7 @@ export const en: LanguageResource = {
     hosts: 'Hosts',
   },
   common: {
+    enrollmentkeys: 'Enrollment Keys',
     addresses: 'Addresses',
     defaultinterface: 'Default Interface',
     host: 'Host',

@@ -25,6 +25,7 @@ import { NotFound } from '~util/errorpage'
 import { UsersCommunity } from './users/UsersCommunity'
 import { HostsPage } from './hosts/HostsPage'
 import { useEffect, useState } from 'react'
+import { EnrollmentKeysPage } from './enrollmentkeys/EnrollmentKeysPage'
 
 function Routes() {
   let location = useLocation()
@@ -143,6 +144,9 @@ function Routes() {
             </PrivateRoute>
             <PrivateRoute path="/acls">
               <NodeAcls />
+            </PrivateRoute>
+            <PrivateRoute path="/enrollment-keys">
+              <EnrollmentKeysPage />
             </PrivateRoute>
             <PrivateRoute path="/hosts">
               <HostsPage />
