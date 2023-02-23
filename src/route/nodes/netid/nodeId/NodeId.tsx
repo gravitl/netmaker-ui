@@ -28,7 +28,7 @@ import { approveNode, deleteNode } from '~modules/node/actions'
 import CustomDialog from '~components/dialog/CustomDialog'
 import { useNetwork } from '~util/network'
 import {
-  authSelectors,
+  // authSelectors,
   hostsSelectors,
   serverSelectors,
 } from '~store/selectors'
@@ -82,7 +82,7 @@ export const NodeId: FC = () => {
   const { netid, nodeId } = useParams<{ nodeId: string; netid: string }>()
   const node = useNodeById(decodeURIComponent(nodeId))
   const network = useNetwork(netid)
-  const user = useSelector(authSelectors.getUser)
+  // const user = useSelector(authSelectors.getUser)
   const [open, setOpen] = useState(false)
   const [approveOpen, setApproveOpen] = useState(false)
   const serverConfig = useSelector(serverSelectors.getServerConfig)
@@ -102,7 +102,7 @@ export const NodeId: FC = () => {
     setOpen(true)
   }
 
-  const handleApproveOpen = () => setApproveOpen(true)
+  // const handleApproveOpen = () => setApproveOpen(true)
   const handleApproveClose = () => setApproveOpen(false)
 
   const handleDeleteNode = useCallback(() => {
@@ -230,7 +230,7 @@ export const NodeId: FC = () => {
               >
                 {t('common.delete')}
               </Button>
-              {network.allowmanualsignup && user?.isAdmin ? (
+              {/* {network.allowmanualsignup && user?.isAdmin ? (
                 <Button
                   variant="outlined"
                   color="secondary"
@@ -239,7 +239,7 @@ export const NodeId: FC = () => {
                 >
                   {t('node.approve')}
                 </Button>
-              ) : null}
+              ) : null} */}
             </div>
           </Grid>
           <Grid item xs={6} sm={3} sx={rowMargin}></Grid>

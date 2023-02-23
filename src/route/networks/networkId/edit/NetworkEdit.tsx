@@ -224,14 +224,14 @@ export const NetworkEdit: React.FC<{
             </div>
           </Grid>
         </Tooltip>
-        <Tooltip title={t('helper.nokeysignup') as string}>
+        {/* <Tooltip title={t('helper.nokeysignup') as string}>
           <Grid item xs={12} sm={4} md={3}>
             <NmFormInputSwitch
               name={'allowmanualsignup'}
               label={'Allow Node Signup Without Keys'}
             />
           </Grid>
-        </Tooltip>
+        </Tooltip> */}
         <Tooltip title={t('helper.udpholepunching') as string}>
           <Grid item xs={12} sm={4} md={2}>
             <NmFormInputSwitch

@@ -289,7 +289,7 @@ export const NetworkId: React.FC = () => {
                 />
               </div>
             </Grid>
-            <Grid item xs={12} sm={6} md={2}>
+            {/* <Grid item xs={12} sm={6} md={2}>
               <FormControlLabel
                 label={String(t('network.allowmanualsignup'))}
                 control={
@@ -297,7 +297,7 @@ export const NetworkId: React.FC = () => {
                 }
                 disabled
               />
-            </Grid>
+            </Grid> */}
             <Grid item xs={12} sm={6} md={2}>
               <FormControlLabel
                 label={String(t('network.defaultudpholepunch'))}
