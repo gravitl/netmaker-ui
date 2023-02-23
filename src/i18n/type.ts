@@ -514,6 +514,7 @@ export interface LanguageResource {
         networkuser: string
         host: string
         hostrelay: string
+        enrollmentkey: string
       }
       failure: {
         accesskey: string
@@ -529,6 +530,7 @@ export interface LanguageResource {
         host: string
         hostalt: string
         hostrelay: string
+        enrollmentkey: string
       }
     }
     login: {
@@ -537,4 +539,5 @@ export interface LanguageResource {
     }
   }
   hosts: Record<string, string>
+  enrollmentkeys: Record<string, string>
 }

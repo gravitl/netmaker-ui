@@ -135,7 +135,18 @@ export const en: LanguageResource = {
     hosts: 'Hosts',
   },
   common: {
+    expireat: 'Expire At',
+    timebound: 'Time bound',
+    limitednumofuses: 'Limited number of uses',
+    unlimited: 'Unlimited',
+    searchbytag: 'Search by tag',
+    token: 'Token',
+    valid: 'Valid',
+    invalid: 'Invalid',
+    status: 'Status',
+    tags: 'Tags',
     enrollmentkeys: 'Enrollment Keys',
+    enrollmentkey: 'Enrollment Key',
     addresses: 'Addresses',
     defaultinterface: 'Default Interface',
     host: 'Host',
@@ -647,6 +658,7 @@ export const en: LanguageResource = {
         networkuser: 'Successfully deleted Network User!',
         host: 'Successfully deleted Host!',
         hostrelay: 'Successfully deleted host relay',
+        enrollmentkey: 'Successfully deleted enrollment key',
       },
       failure: {
         accesskey: 'Failed to remove Access Key.',
@@ -660,8 +672,10 @@ export const en: LanguageResource = {
         usergroups: 'Failed to remove User Group.',
         networkuser: 'Failed to remove Network User.',
         host: 'Failed to remove Host.',
-        hostalt: 'Ensure there are no associated nodes. Check internet connection',
+        hostalt:
+          'Ensure there are no associated nodes. Check internet connection',
         hostrelay: 'Failed to delete host relay',
+        enrollmentkey: 'Failed to delete enrollment key',
       },
     },
     login: {
@@ -681,7 +695,8 @@ export const en: LanguageResource = {
     nohostconnected: 'No hosts connected to this server',
     confirmconnect: 'Are you sure you want to connect to network',
     confirmdisconnect: 'Are you sure you want to disconnect from network',
-    canonlyeditendpointofstatichost: 'You can only edit the endpoint of a static host',
+    canonlyeditendpointofstatichost:
+      'You can only edit the endpoint of a static host',
     endpointip: 'Endpoint IP',
     publickey: 'Public Key',
     shownetworks: 'Show Networks',
@@ -707,5 +722,13 @@ export const en: LanguageResource = {
     relayedby: 'Relayed By',
     canonlyrelaynonrelayedhosts: 'Can only relay non-relayed hosts',
     isstatic: 'Is Static',
+  },
+  enrollmentkeys: {
+    nokeysavailable: 'No keys available',
+    token: 'Token',
+    isunlimited: 'Is Unlimited',
+    usesRemaining: 'Uses Remaining',
+    expiration: 'Expiration',
+    createenrollmentkey: 'Create Enrollment Key',
   },
 }

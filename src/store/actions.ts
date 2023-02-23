@@ -9,6 +9,7 @@ import { actions as router } from './modules/router'
 import { actions as acls } from './modules/acls'
 import { actions as pro } from './modules/pro'
 import { actions as hosts } from './modules/hosts'
+import { actions as enrollmentKeys } from './modules/enrollmentkeys'
 
 export const actions = {
   auth,
@@ -20,6 +21,7 @@ export const actions = {
   acls,
   pro,
   hosts,
+  enrollmentKeys,
 }
 
 export type RootAction = ActionType<typeof actions>
