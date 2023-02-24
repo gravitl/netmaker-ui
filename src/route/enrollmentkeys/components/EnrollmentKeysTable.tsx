@@ -8,6 +8,8 @@ import { EnrollmentKey } from '~store/modules/enrollmentkeys'
 import { DeleteOutline } from '@mui/icons-material'
 import { isEnrollmentKeyValid } from '~util/enrollmentkeys'
 import { EnrollmentKeyDetailsModal } from './EnrollmentKeyDetailsModal'
+import { useDispatch } from 'react-redux'
+import { deleteEnrollmentKey } from '~store/modules/enrollmentkeys/actions'
 
 interface EnrollmentKeysTableProps {
   keys: EnrollmentKey[]
@@ -17,6 +19,8 @@ type EnrollmentKeyTableData = EnrollmentKey & { status?: boolean }
 
 export const EnrollmentKeysTable: FC<EnrollmentKeysTableProps> = (props) => {
   const { t } = useTranslation()
+  const dispatch = useDispatch()
+
   const [searchFilter, setSearchFilter] = useState('')
   const [shouldShowConfirmDeleteModal, setShouldShowConfirmDeleteModal] =
     useState(false)
@@ -59,15 +63,7 @@ export const EnrollmentKeysTable: FC<EnrollmentKeysTableProps> = (props) => {
         return (
           <Chip
             label={
-              isValid ? (
-                <>
-                  {t('common.valid')}
-                </>
-              ) : (
-                <>
-                  {t('common.invalid')}
-                </>
-              )
+              isValid ? <>{t('common.valid')}</> : <>{t('common.invalid')}</>
             }
             size="small"
             color={isValid ? 'success' : 'error'}
@@ -95,7 +91,9 @@ export const EnrollmentKeysTable: FC<EnrollmentKeysTableProps> = (props) => {
     setShouldShowConfirmDeleteModal(false)
   }, [])
 
-  const deleteKey = (key: EnrollmentKey) => {}
+  const deleteKey = (key: EnrollmentKey) => {
+    dispatch(deleteEnrollmentKey.request({ id: key.value }))
+  }
 
   const openKeyDetailsModal = useCallback((key: EnrollmentKey) => {
     setTargetKey(key)
@@ -105,7 +103,6 @@ export const EnrollmentKeysTable: FC<EnrollmentKeysTableProps> = (props) => {
   const hideKeyDetailsModal = useCallback(() => {
     setShouldShowKeyDetailsModal(false)
   }, [])
-
 
   return (
     <>
