@@ -2,13 +2,12 @@ import { FC, useState, useCallback, useMemo, Fragment } from 'react'
 import { useTranslation } from 'react-i18next'
 import { NmTable, TableColumns } from '~components/Table'
 import CopyText from '~components/CopyText'
-import { Chip, Grid, TextField } from '@mui/material'
+import { Button, Chip, Grid, TextField } from '@mui/material'
 import CustomizedDialogs from '~components/dialog/CustomDialog'
 import { EnrollmentKey } from '~store/modules/enrollmentkeys'
-import { DeleteOutline, RemoveRedEyeOutlined } from '@mui/icons-material'
+import { DeleteOutline } from '@mui/icons-material'
 import { isEnrollmentKeyValid } from '~util/enrollmentkeys'
 import { EnrollmentKeyDetailsModal } from './EnrollmentKeyDetailsModal'
-import { CreateEnrollmentKeyModal } from './CreateEnrollmentKeyModal'
 
 interface EnrollmentKeysTableProps {
   keys: EnrollmentKey[]
@@ -21,7 +20,6 @@ export const EnrollmentKeysTable: FC<EnrollmentKeysTableProps> = (props) => {
   const [searchFilter, setSearchFilter] = useState('')
   const [shouldShowConfirmDeleteModal, setShouldShowConfirmDeleteModal] =
     useState(false)
-  const [shouldShowCreateModal, setShouldShowCreateModal] = useState(false)
   const [shouldShowKeyDetailsModal, setShouldShowKeyDetailsModal] =
     useState(false)
   const [targetKey, setTargetKey] = useState<EnrollmentKey | null>(null)
@@ -36,20 +34,21 @@ export const EnrollmentKeysTable: FC<EnrollmentKeysTableProps> = (props) => {
     {
       id: 'tags',
       labelKey: 'common.tags',
-      minWidth: 100,
+      minWidth: 150,
       sortable: true,
-      format: (value) => (
-        <>
+      format: (value, key) => (
+        <Button variant="text" onClick={() => openKeyDetailsModal(key)}>
           {value.map((tag, i) => (
-            <Fragment key={`tag-${i}`}>{tag}</Fragment>
+            <Fragment key={`tag-${i}`}>{tag} </Fragment>
           ))}
-        </>
+        </Button>
       ),
     },
     {
       id: 'token',
       labelKey: 'common.token',
       minWidth: 100,
+      maxWidth: 200,
       format: (value) => <CopyText type="subtitle2" value={value} />,
     },
     {
@@ -62,31 +61,16 @@ export const EnrollmentKeysTable: FC<EnrollmentKeysTableProps> = (props) => {
             label={
               isValid ? (
                 <>
-                  <div
-                    style={{
-                      width: '.3rem',
-                      height: '.3rem',
-                      backgroundColor: 'green',
-                      borderRadius: '50%',
-                    }}
-                  ></div>{' '}
                   {t('common.valid')}
                 </>
               ) : (
                 <>
-                  <div
-                    style={{
-                      width: '.3rem',
-                      height: '.3rem',
-                      backgroundColor: 'green',
-                      borderRadius: '50%',
-                    }}
-                  ></div>{' '}
                   {t('common.invalid')}
                 </>
               )
             }
             size="small"
+            color={isValid ? 'success' : 'error'}
           />
         )
       },
@@ -122,9 +106,6 @@ export const EnrollmentKeysTable: FC<EnrollmentKeysTableProps> = (props) => {
     setShouldShowKeyDetailsModal(false)
   }, [])
 
-  const hideCreateModal = useCallback(() => {
-    setShouldShowCreateModal(false)
-  }, [])
 
   return (
     <>
@@ -147,16 +128,7 @@ export const EnrollmentKeysTable: FC<EnrollmentKeysTableProps> = (props) => {
           columns={columns}
           rows={filteredKeys}
           getRowId={(host) => host.value}
-          actionsHeader={{ element: 'Actions', width: 150 }}
           actions={[
-            (key) => ({
-              tooltip: String(t('common.view')),
-              disabled: false,
-              icon: <RemoveRedEyeOutlined />,
-              onClick: () => {
-                openKeyDetailsModal(key)
-              },
-            }),
             (key) => ({
               tooltip: String(t('common.delete')),
               disabled: false,
@@ -187,11 +159,6 @@ export const EnrollmentKeysTable: FC<EnrollmentKeysTableProps> = (props) => {
           onClose={hideKeyDetailsModal}
         />
       ) : null}
-
-      <CreateEnrollmentKeyModal
-        open={shouldShowCreateModal}
-        onClose={hideCreateModal}
-      />
     </>
   )
 }

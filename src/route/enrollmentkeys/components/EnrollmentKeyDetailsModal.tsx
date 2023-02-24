@@ -45,6 +45,8 @@ const styles = {
     backgroundColor: 'white',
     border: '1px solid #000',
     minWidth: '33%',
+    maxHeight: '90vh',
+    overflowY: 'auto',
     // boxShadow: 24,
     pt: 2,
     px: 4,
@@ -77,7 +79,7 @@ export function EnrollmentKeyDetailsModal(
       >
         <Grid
           container
-          justifyContent="space-around"
+          justifyContent="space-between"
           alignItems="center"
           sx={{ padding: '2em' }}
         >
@@ -106,7 +108,7 @@ export function EnrollmentKeyDetailsModal(
               label={String(t('enrollmentkeys.token'))}
             />
           </Grid>
-          <Grid item xs={12} sx={{ marginBottom: '2rem' }}>
+          <Grid item xs={3} sx={{ marginBottom: '2rem' }}>
             <TextField
               style={{ width: '100%' }}
               disabled
@@ -114,7 +116,7 @@ export function EnrollmentKeyDetailsModal(
               label={String(t('enrollmentkeys.isunlimited'))}
             />
           </Grid>
-          <Grid item xs={12} sx={{ marginBottom: '2rem' }}>
+          <Grid item xs={3} sx={{ marginBottom: '2rem' }}>
             <TextField
               style={{ width: '100%' }}
               disabled
@@ -122,7 +124,7 @@ export function EnrollmentKeyDetailsModal(
               label={String(t('enrollmentkeys.usesRemaining'))}
             />
           </Grid>
-          <Grid item xs={12} sx={{ marginBottom: '2rem' }}>
+          <Grid item xs={3} sx={{ marginBottom: '2rem' }}>
             <TextField
               style={{ width: '100%' }}
               disabled

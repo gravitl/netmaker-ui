@@ -1,9 +1,13 @@
-import { Grid, Typography, Container } from '@mui/material'
-import { FC } from 'react'
+import { Grid, Typography, Container, Button } from '@mui/material'
+import { FC, useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useDispatch, useSelector } from 'react-redux'
 import { Switch, Route, useRouteMatch } from 'react-router-dom'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 import { EnrollmentKey } from '~store/modules/enrollmentkeys'
+import { getEnrollmentKeys } from '~store/modules/enrollmentkeys/actions'
+import { enrollmentKeysSelectors } from '~store/selectors'
+import { CreateEnrollmentKeyModal } from './components/CreateEnrollmentKeyModal'
 import { EnrollmentKeysTable } from './components/EnrollmentKeysTable'
 
 const titleStyle = {
@@ -14,21 +18,27 @@ const titleStyle = {
 export const EnrollmentKeysPage: FC = () => {
   const { path } = useRouteMatch()
   const { t } = useTranslation()
-  const keys: EnrollmentKey[] = [
-    {
-      value: '1',
-      expiration: 0,
-      unlimited: true,
-      networks: [],
-      tags: ['test-key'],
-      token: 'abc',
-      uses_remaining: 0,
-    },
-  ]
+  const dispatch = useDispatch()
+
+  const [shouldShowCreateModal, setShouldShowCreateModal] = useState(false)
+
+  const hideCreateModal = useCallback(() => {
+    setShouldShowCreateModal(false)
+  }, [])
+
+  const loadKeys = useCallback(() => {
+    dispatch(getEnrollmentKeys.request())
+  }, [dispatch])
+
+  const keys: EnrollmentKey[] = useSelector(enrollmentKeysSelectors.getEnrollmentKeys)
 
   useLinkBreadcrumb({
     title: t('common.enrollmentkeys'),
   })
+
+  useEffect(() => {
+    loadKeys()
+  }, [loadKeys])
 
   return (
     <Container>
@@ -48,10 +58,24 @@ export const EnrollmentKeysPage: FC = () => {
                 </Typography>
               </div>
             </Grid>
+            <Grid item xs={12} justifyContent="end" textAlign="right" style={{ marginBottom: '2rem' }}>
+              <Button
+                onClick={() => setShouldShowCreateModal(true)}
+                variant="contained"
+              >
+                {t('common.create')}
+              </Button>
+            </Grid>
             <EnrollmentKeysTable keys={keys} />
           </Grid>
         </Route>
       </Switch>
+
+      {/* modal */}
+      <CreateEnrollmentKeyModal
+        open={shouldShowCreateModal}
+        onClose={hideCreateModal}
+      />
     </Container>
   )
 }

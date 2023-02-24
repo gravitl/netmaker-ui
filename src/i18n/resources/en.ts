@@ -135,6 +135,8 @@ export const en: LanguageResource = {
     hosts: 'Hosts',
   },
   common: {
+    tagshitentertoaadd: 'Tags (hit enter to add)',
+    networks: 'Networks',
     expireat: 'Expire At',
     timebound: 'Time bound',
     limitednumofuses: 'Limited number of uses',
@@ -618,6 +620,7 @@ export const en: LanguageResource = {
     },
     create: {
       success: {
+        enrollmentkey: 'Successfully created Enrollment key',
         accesskey: 'Succesfully created Access Key!',
         egress: 'Succesfully created Egress Gateway!',
         ingress: 'Successfully created Ingress Gateway!',
@@ -631,6 +634,7 @@ export const en: LanguageResource = {
         hostrelay: 'Successfully created host relay',
       },
       failure: {
+        enrollmentkey: 'Failed to create Enrollment key',
         accesskey: 'Failed to create Access Key.',
         egress: 'Failed to create Egress Gateway.',
         ingress: 'Failed to create Ingress Gateway.',

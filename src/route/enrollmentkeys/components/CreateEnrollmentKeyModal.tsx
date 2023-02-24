@@ -63,7 +63,7 @@ const styles = {
   },
 } as any
 
-const UNIX_30_DYS = 2592000
+const UNIX_30_DYS = 2592000000
 
 interface CreateEnrollmentKeyModalProps {
   open: boolean
@@ -89,7 +89,7 @@ export function CreateEnrollmentKeyModal(props: CreateEnrollmentKeyModalProps) {
       createEnrollmentKey.request({
         tags: tags,
         networks: selectedNetworks,
-        expiration: type === 'time-bound' ? expireAt : 0,
+        expiration: type === 'time-bound' ? Math.round(expireAt) : 0,
         unlimited: type === 'unlimited' ? true : false,
         uses_remaining: type === 'uses' ? numOfUses : 0,
       })
@@ -137,13 +137,13 @@ export function CreateEnrollmentKeyModal(props: CreateEnrollmentKeyModalProps) {
                   name="tags"
                   label={String(t('common.tags'))}
                   variant="standard"
-                  placeholder={String(t('common.tags'))}
+                  placeholder={String(t('common.tagshitentertoaadd'))}
                 />
               )}
             />
           </Grid>
 
-          <Grid item xs={12} sx={{ marginBottom: '2rem' }}>
+          <Grid item xs={10} sx={{ marginBottom: '.5rem' }}>
             <FormControl>
               <FormLabel id="demo-row-radio-buttons-group-label">
                 {t('common.type')}
@@ -151,6 +151,7 @@ export function CreateEnrollmentKeyModal(props: CreateEnrollmentKeyModalProps) {
               <RadioGroup
                 row
                 name="type"
+                value={type}
                 onChange={(_, val) =>
                   setType(val as 'unlimited' | 'uses' | 'time-bound')
                 }
@@ -173,9 +174,10 @@ export function CreateEnrollmentKeyModal(props: CreateEnrollmentKeyModalProps) {
               </RadioGroup>
             </FormControl>
           </Grid>
-          <Grid item xs={12} sx={{ marginBottom: '2rem' }}>
+          <Grid item xs={10} sx={{ marginBottom: '2rem' }}>
             {type === 'uses' && (
               <TextField
+                size='small'
                 type="number"
                 inputProps={{ min: '1' }}
                 value={numOfUses}
@@ -187,6 +189,7 @@ export function CreateEnrollmentKeyModal(props: CreateEnrollmentKeyModalProps) {
                 <DateTimePicker
                   renderInput={(props) => (
                     <TextField
+                    size='small'
                       fullWidth={false}
                       sx={{ maxWidth: '15rem' }}
                       {...props}
@@ -204,7 +207,7 @@ export function CreateEnrollmentKeyModal(props: CreateEnrollmentKeyModalProps) {
             )}
           </Grid>
 
-          <Grid item xs={10} sx={{ marginBottom: '2rem' }}>
+          <Grid item xs={6} sx={{ marginBottom: '2rem' }}>
             <Autocomplete
               multiple
               options={networks.map(net => net.netid)}
@@ -220,6 +223,8 @@ export function CreateEnrollmentKeyModal(props: CreateEnrollmentKeyModalProps) {
                 />
               )}
             />
+          </Grid>
+          <Grid item xs={2} sx={{ marginBottom: '2rem' }}>
             <Button variant='outlined' onClick={selectAllNetworks}>{t('common.selectall')}</Button>
           </Grid>
 

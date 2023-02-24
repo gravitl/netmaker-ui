@@ -8,7 +8,7 @@ export const isProcessingEnrollmentKeys = createSelector(
   (hostsState) => hostsState.isProcessing
 )
 
-export const getHosts = createSelector(
+export const getEnrollmentKeys = createSelector(
   getEnrollmentKeysState,
   (hostsState) => hostsState.enrollmentKeys
 )

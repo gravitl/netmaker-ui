@@ -25,6 +25,7 @@ type Column<Row> = {
     id: Key extends React.Key | null | undefined ? Key : never
     format?: (value: Row[Key], row: Row) => React.ReactChild
     minWidth: number
+    maxWidth?: number
     align?: TableCellProps['align']
     labelKey?: string
     label?: string
@@ -52,7 +53,7 @@ export interface Props<Row> {
     element: ReactNode
   }
   tableId?: string
-  rowCellsStyles?: {[rowId: React.Key]: Object}
+  rowCellsStyles?: { [rowId: React.Key]: Object }
 }
 
 function renderActionIcon(
@@ -164,7 +165,11 @@ export function NmTable<T>({
                   <TableCell
                     key={column.id}
                     align={column.align}
-                    style={{ minWidth: column.minWidth }}
+                    style={{
+                      minWidth: column.minWidth,
+                      maxWidth: column.maxWidth,
+                      overflow: 'hidden',
+                    }}
                   >
                     {column.label
                       ? column.label
@@ -198,7 +203,9 @@ export function NmTable<T>({
                             key={column.id}
                             align={column.align}
                             style={
-                              rowCellsStyles ? rowCellsStyles[getRowId(row)] : undefined
+                              rowCellsStyles
+                                ? {...rowCellsStyles[getRowId(row)], maxWidth: 800, overflow: 'hidden'}
+                                : { maxWidth: 800, overflow: 'hidden' }
                             }
                           >
                             {column.format !== undefined
