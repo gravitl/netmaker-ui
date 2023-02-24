@@ -23,7 +23,6 @@ export interface Node {
   egressgatewaynatenabled: boolean
   failovernode: string
   dnson: boolean
-  islocal: boolean
   server: string
   internetgateway: string
   defaultacl: string

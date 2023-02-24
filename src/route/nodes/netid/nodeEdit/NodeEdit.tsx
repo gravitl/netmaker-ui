@@ -285,17 +285,6 @@ export const NodeEdit: React.FC<{
             </Tooltip>
           </Grid>
           <Grid item xs={10} sm={4} md={2} sx={rowMargin}>
-            <Tooltip title={String(t('helper.nodeislocal'))} placement="top">
-              <span>
-                <NmFormInputSwitch
-                  label={String(t('node.islocal'))}
-                  name={'islocal'}
-                  defaultValue={node.islocal}
-                />
-              </span>
-            </Tooltip>
-          </Grid>
-          <Grid item xs={10} sm={4} md={2} sx={rowMargin}>
             <Tooltip
               title={String(t('helper.isnodeconnected'))}
               placement="top"

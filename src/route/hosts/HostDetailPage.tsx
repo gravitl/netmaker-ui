@@ -209,13 +209,6 @@ export const HostDetailPage: FC = () => {
                 />
               </Grid>
 
-              {/* <Grid item xs={12} md={3} sx={rowMargin}>
-                <TextField
-                  disabled
-                  value={host.localrange}
-                  label={String(t('common.localrange'))}
-                />
-              </Grid> */}
               <Grid item xs={12} md={3} sx={rowMargin}>
                 <TextField
                   disabled

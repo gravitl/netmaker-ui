@@ -350,13 +350,6 @@ export const NodeId: FC = () => {
           <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
             <TextField
               disabled
-              value={hostsMap[node.hostid]?.localrange ?? ''}
-              label={String(t('node.localrange'))}
-            />
-          </Grid>
-          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-            <TextField
-              disabled
               value={hostsMap[node.hostid]?.os ?? ''}
               label={String(t('node.os'))}
             />
@@ -388,13 +381,6 @@ export const NodeId: FC = () => {
                 <FormControlLabel
                   label={String(t('node.dnson'))}
                   control={<SwitchField checked={node.dnson} disabled />}
-                  disabled
-                />
-              </Grid>
-              <Grid item xs={10} sm={4} md={2} sx={rowMargin}>
-                <FormControlLabel
-                  label={String(t('node.islocal'))}
-                  control={<SwitchField checked={node.islocal} disabled />}
                   disabled
                 />
               </Grid>

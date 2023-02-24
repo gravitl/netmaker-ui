@@ -130,14 +130,6 @@ export const ProNetworkEdit: React.FC<{
             />
           </Grid>
         </Tooltip>
-        <Tooltip title={t('helper.localrange') as string} placement="top">
-          <Grid item xs={12} sm={4} md={3}>
-            <NmFormInputText
-              name={'localrange'}
-              label={String(t('network.localrange'))}
-            />
-          </Grid>
-        </Tooltip>
         <Tooltip title={t('helper.defaultinterface') as string} placement="top">
           <Grid item xs={12} sm={4} md={3}>
             <NmFormInputText
