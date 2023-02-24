@@ -734,5 +734,6 @@ export const en: LanguageResource = {
     usesRemaining: 'Uses Remaining',
     expiration: 'Expiration',
     createenrollmentkey: 'Create Enrollment Key',
+    registercommand: 'Register Command',
   },
 }

@@ -1,10 +1,20 @@
-import { Modal, Box, Grid, Typography, TextField } from '@mui/material'
+import {
+  Modal,
+  Box,
+  Grid,
+  Typography,
+  TextField,
+  IconButton,
+  Tooltip,
+} from '@mui/material'
 import { useTheme } from '@mui/styles'
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { NetworkTable } from '../../networks/components/NetworkTable'
 import { EnrollmentKey, networkSelectors } from '~store/types'
+import { CopyAllOutlined } from '@mui/icons-material'
+import copy from 'copy-to-clipboard'
 
 interface EnrollmentKeyDetailsModalProps {
   enrollmentKey: EnrollmentKey
@@ -54,6 +64,8 @@ const styles = {
   },
 } as any
 
+const NETCLIENT_REGISTER_CMD = 'netclient register -t '
+
 export function EnrollmentKeyDetailsModal(
   props: EnrollmentKeyDetailsModalProps
 ) {
@@ -100,7 +112,8 @@ export function EnrollmentKeyDetailsModal(
               label={String(t('common.tags'))}
             />
           </Grid>
-          <Grid item xs={12} sx={{ marginBottom: '2rem' }}>
+          
+          <Grid item xs={11} sx={{ marginBottom: '2rem' }}>
             <TextField
               style={{ width: '100%' }}
               disabled
@@ -108,6 +121,30 @@ export function EnrollmentKeyDetailsModal(
               label={String(t('enrollmentkeys.token'))}
             />
           </Grid>
+          <Grid item xs={1} sx={{ marginBottom: '2rem', textAlign: 'right' }}>
+            <Tooltip title={String(t('common.copy'))}>
+              <IconButton onClick={() => copy(props.enrollmentKey.token)}>
+                <CopyAllOutlined />
+              </IconButton>
+            </Tooltip>
+          </Grid>
+
+          <Grid item xs={11} sx={{ marginBottom: '2rem' }}>
+            <TextField
+              style={{ width: '100%' }}
+              disabled
+              value={NETCLIENT_REGISTER_CMD + props.enrollmentKey.token}
+              label={String(t('enrollmentkeys.registercommand'))}
+            />
+          </Grid>
+          <Grid item xs={1} sx={{ marginBottom: '2rem', textAlign: 'right' }}>
+            <Tooltip title={String(t('common.copy'))}>
+              <IconButton onClick={() => copy(NETCLIENT_REGISTER_CMD + props.enrollmentKey.token)}>
+                <CopyAllOutlined />
+              </IconButton>
+            </Tooltip>
+          </Grid>
+
           <Grid item xs={3} sx={{ marginBottom: '2rem' }}>
             <TextField
               style={{ width: '100%' }}

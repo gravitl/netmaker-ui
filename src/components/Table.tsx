@@ -204,8 +204,17 @@ export function NmTable<T>({
                             align={column.align}
                             style={
                               rowCellsStyles
-                                ? {...rowCellsStyles[getRowId(row)], maxWidth: 800, overflow: 'hidden'}
-                                : { maxWidth: 800, overflow: 'hidden' }
+                                ? {
+                                    ...rowCellsStyles[getRowId(row)],
+                                    maxWidth: 800,
+                                    overflow: 'hidden',
+                                    textOverflow: 'ellipses',
+                                  }
+                                : {
+                                    maxWidth: 800,
+                                    overflow: 'hidden',
+                                    textOverflow: 'ellipses',
+                                  }
                             }
                           >
                             {column.format !== undefined
