@@ -145,9 +145,11 @@ function Routes() {
             <PrivateRoute path="/acls">
               <NodeAcls />
             </PrivateRoute>
-            <PrivateRoute path="/enrollment-keys">
-              <EnrollmentKeysPage />
-            </PrivateRoute>
+            {user?.isAdmin && (
+              <PrivateRoute path="/enrollment-keys">
+                <EnrollmentKeysPage />
+              </PrivateRoute>
+            )}
             <PrivateRoute path="/hosts">
               <HostsPage />
             </PrivateRoute>
