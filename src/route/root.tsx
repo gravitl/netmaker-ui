@@ -25,6 +25,7 @@ import { NotFound } from '~util/errorpage'
 import { UsersCommunity } from './users/UsersCommunity'
 import { HostsPage } from './hosts/HostsPage'
 import { useEffect, useState } from 'react'
+import { EnrollmentKeysPage } from './enrollmentkeys/EnrollmentKeysPage'
 
 function Routes() {
   let location = useLocation()
@@ -99,6 +100,14 @@ function Routes() {
             <PrivateRoute path="/usergroups">
               <UserGroups />
             </PrivateRoute>
+            <PrivateRoute
+              path="/enrollment-keys"
+              condition={(user) => {
+                return !!user?.isAdmin
+              }}
+            >
+              <EnrollmentKeysPage />
+            </PrivateRoute>
             <PrivateRoute path="/user-permissions">
               <NetworkUsers />
             </PrivateRoute>
@@ -143,6 +152,14 @@ function Routes() {
             </PrivateRoute>
             <PrivateRoute path="/acls">
               <NodeAcls />
+            </PrivateRoute>
+            <PrivateRoute
+              path="/enrollment-keys"
+              condition={(user) => {
+                return !!user?.isAdmin
+              }}
+            >
+              <EnrollmentKeysPage />
             </PrivateRoute>
             <PrivateRoute path="/hosts">
               <HostsPage />
