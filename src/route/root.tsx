@@ -100,6 +100,14 @@ function Routes() {
             <PrivateRoute path="/usergroups">
               <UserGroups />
             </PrivateRoute>
+            <PrivateRoute
+              path="/enrollment-keys"
+              condition={(user) => {
+                return !!user?.isAdmin
+              }}
+            >
+              <EnrollmentKeysPage />
+            </PrivateRoute>
             <PrivateRoute path="/user-permissions">
               <NetworkUsers />
             </PrivateRoute>
@@ -148,8 +156,6 @@ function Routes() {
             <PrivateRoute
               path="/enrollment-keys"
               condition={(user) => {
-                if (user && `/users/${user?.name}` === location.pathname)
-                  return true
                 return !!user?.isAdmin
               }}
             >
