@@ -145,11 +145,16 @@ function Routes() {
             <PrivateRoute path="/acls">
               <NodeAcls />
             </PrivateRoute>
-            {user?.isAdmin && (
-              <PrivateRoute path="/enrollment-keys">
-                <EnrollmentKeysPage />
-              </PrivateRoute>
-            )}
+            <PrivateRoute
+              path="/enrollment-keys"
+              condition={(user) => {
+                if (user && `/users/${user?.name}` === location.pathname)
+                  return true
+                return !!user?.isAdmin
+              }}
+            >
+              <EnrollmentKeysPage />
+            </PrivateRoute>
             <PrivateRoute path="/hosts">
               <HostsPage />
             </PrivateRoute>
