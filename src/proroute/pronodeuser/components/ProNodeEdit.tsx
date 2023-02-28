@@ -311,17 +311,6 @@ export const ProNodeEdit: React.FC = () => {
               </span>
             </Tooltip>
           </Grid>
-          <Grid item xs={10} sm={4} md={2} sx={rowMargin}>
-            <Tooltip title={String(t('helper.nodeislocal'))} placement="top">
-              <span>
-                <NmFormInputSwitch
-                  label={String(t('node.islocal'))}
-                  name={'islocal'}
-                  defaultValue={node.islocal}
-                />
-              </span>
-            </Tooltip>
-          </Grid>
         </Grid>
       </Grid>
     </NmForm>

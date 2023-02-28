@@ -15,7 +15,6 @@ export interface Host {
   debug: boolean
   isstatic: boolean
   listenport: number
-  localrange: string
   locallistenport: number
   proxy_listen_port: number
   mtu: number
@@ -42,7 +41,6 @@ export interface NodeCommonDetails {
   os: Host['os']
   listenport: Host['listenport']
   isstatic: Host['isstatic']
-  localrange: Host['localrange']
   mtu: Host['mtu']
   interfaces: Host['interfaces']
   isrelay: Host['isrelay']

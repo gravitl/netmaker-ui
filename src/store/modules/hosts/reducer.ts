@@ -51,7 +51,6 @@ export const reducer = createReducer({
           publickey: host.publickey,
           listenport: host.listenport,
           isstatic: host.isstatic,
-          localrange: host.localrange,
           mtu: host.mtu,
           interfaces: host.interfaces,
           isrelay: host.isrelay,
