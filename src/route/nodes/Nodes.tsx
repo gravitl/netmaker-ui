@@ -6,7 +6,7 @@ import {
   TextField,
   Tooltip,
 } from '@mui/material'
-import React from 'react'
+import React, { useCallback } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { hostsSelectors, nodeSelectors } from '~store/selectors'
 import { useRouteMatch, Switch, Route, useHistory } from 'react-router-dom'
@@ -52,7 +52,7 @@ export const Nodes: React.FC = () => {
     setSearchTerm(searchTerm)
   }
 
-  const handleNodeSortSelect = (selection: string) => {
+  const handleNodeSortSelect = useCallback((selection: string) => {
     if (
       selection === 'name' ||
       selection === 'address' ||
@@ -66,7 +66,12 @@ export const Nodes: React.FC = () => {
         })
       )
     }
-  }
+  }, [dispatch, hostsMap, nodeSort])
+
+  useEffect(() => {
+    handleNodeSortSelect(nodeSort.value)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hostsMap])
 
   return (
     <Container>

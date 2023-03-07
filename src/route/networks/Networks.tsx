@@ -15,31 +15,17 @@ export const Networks: React.FC = () => {
   const { path } = useRouteMatch()
   const { t } = useTranslation()
   const listOfNetworks = useSelector(networkSelectors.getNetworks)
-  const [filterNetworks, setFilterNetworks] = React.useState(listOfNetworks)
+  const [searchTerm, setSearchTerm] = React.useState('')
 
   useLinkBreadcrumb({
     title: t('breadcrumbs.networks'),
   })
 
-  // by updating the filterNetworks, the table will update
-  //useeffect tells says that setfilternetworks needs to do something, it sets list of networks to it then recalls it after the list of networks has been updated causing the table to update
-  React.useEffect(() => {
-    setFilterNetworks(listOfNetworks)
-  }, [listOfNetworks])
-
-  const handleFilter = (event: { target: { value: string } }) => {
-    const { value } = event.target
-    const searchTerm = value.trim()
-    if (!!!searchTerm) {
-      setFilterNetworks(listOfNetworks)
-    } else {
-      setFilterNetworks(
-        listOfNetworks.filter((network) =>
-          `${network.netid}${network.addressrange}`.includes(searchTerm)
-        )
-      )
-    }
-  }
+  const filteredNetworks = React.useMemo(() => {
+    return listOfNetworks.filter((network) =>
+      `${network.netid}${network.addressrange}`.includes(searchTerm)
+    )
+  }, [listOfNetworks, searchTerm])
 
   return (
     <Container>
@@ -68,7 +54,7 @@ export const Networks: React.FC = () => {
                       ),
                     }}
                     label={`${t('common.search')} ${t('network.networks')}`}
-                    onChange={handleFilter}
+                    onChange={(ev) => setSearchTerm(ev.target.value)}
                   />
                 </Grid>
                 <Grid item xs={5.5} md={5}>
@@ -82,14 +68,7 @@ export const Networks: React.FC = () => {
               </Grid>
             </Grid>
           </Grid>
-          <NetworkTable
-            networks={
-              filterNetworks.length &&
-              filterNetworks.length < listOfNetworks.length
-                ? filterNetworks
-                : listOfNetworks
-            }
-          />
+          <NetworkTable networks={filteredNetworks} />
         </Route>
         <Route path={`${path}/create`}>
           <NetworkCreate />
