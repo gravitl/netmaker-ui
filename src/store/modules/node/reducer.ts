@@ -31,7 +31,7 @@ export const reducer = createReducer({
   isFetchingClients: false as boolean,
   qrData: '' as string,
   shouldSignOut: '' as shouldSignOut,
-  nodeSort: { value: 'network', ascending: true } as NodeSort,
+  nodeSort: { value: 'network', ascending: true, hostsMap: {} } as NodeSort,
   nodesMap: {} as Record<string, Node>,
 })
   .handleAction(setShouldLogout, (state, action) =>
@@ -242,16 +242,29 @@ function sortNodes(nodes: Node[], sortParams: NodeSort): void {
 
   switch (value) {
     case 'name':
-      nodes = nodes.sort((a, b) =>
+      nodes.sort((a, b) =>
         (hostsMap[a.hostid]?.name ?? '').localeCompare(
           hostsMap[b.hostid]?.name ?? ''
         )
       )
       break
+    case 'network':
+      // sort by network, then by name
+      nodes.sort((a, b) => {
+        const aNetwork = a.network
+        const bNetwork = b.network
+        if (aNetwork === bNetwork) {
+          return (hostsMap[a.hostid]?.name ?? '').localeCompare(
+            hostsMap[b.hostid]?.name ?? ''
+          )
+        }
+        return aNetwork.localeCompare(bNetwork)
+      })
+      break
     default:
-      nodes = nodes.sort((a, b) => a[value].localeCompare(b[value]))
+      nodes.sort((a, b) => a[value].localeCompare(b[value]))
   }
   if (!ascending) {
-    nodes = nodes.reverse()
+    nodes.reverse()
   }
 }
