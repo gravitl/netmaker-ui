@@ -1,12 +1,15 @@
 import { EnrollmentKey } from '~store/modules/enrollmentkeys'
 
 export function isEnrollmentKeyValid(key: EnrollmentKey): boolean {
-  if (
-    key.uses_remaining > 0 &&
-    key.expiration < Date.now() &&
-    !key.unlimited
-  ) {
-    return false
-  }
-  return true
+  if (key === undefined || key === null) {
+		return false
+	}
+	if (key.uses_remaining > 0) {
+		return true
+	}
+	if (new Date(key.expiration).getTime() > Date.now()) {
+		return true
+	}
+
+	return key.unlimited
 }

@@ -82,9 +82,15 @@ export function CreateEnrollmentKeyModal(props: CreateEnrollmentKeyModalProps) {
   const [tags, setTags] = useState<EnrollmentKey['tags']>([])
   const [numOfUses, setNumOfUses] = useState(10)
   const [expireAt, setExpireAt] = useState((Date.now() + UNIX_30_DYS) / 1000)
-  const [selectedNetworks, setSelectedNetworks] = useState<Network['netid'][]>([])
+  const [selectedNetworks, setSelectedNetworks] = useState<Network['netid'][]>(
+    []
+  )
 
   const createEnrollmentKeyFunc = useCallback(() => {
+    if (tags.length === 0) {
+      const tagsInput = document.querySelector('input[name=tags]') as HTMLInputElement
+      if (!!tagsInput?.value) tags.push(tagsInput.value)
+    }
     dispatch(
       createEnrollmentKey.request({
         tags: tags,
@@ -99,7 +105,7 @@ export function CreateEnrollmentKeyModal(props: CreateEnrollmentKeyModalProps) {
   }, [dispatch, expireAt, numOfUses, props, selectedNetworks, tags, type])
 
   const selectAllNetworks = useCallback(() => {
-    setSelectedNetworks(networks.map(net => net.netid))
+    setSelectedNetworks(networks.map((net) => net.netid))
   }, [networks])
 
   return (
@@ -177,7 +183,7 @@ export function CreateEnrollmentKeyModal(props: CreateEnrollmentKeyModalProps) {
           <Grid item xs={10} sx={{ marginBottom: '2rem' }}>
             {type === 'uses' && (
               <TextField
-                size='small'
+                size="small"
                 type="number"
                 inputProps={{ min: '1' }}
                 value={numOfUses}
@@ -189,7 +195,7 @@ export function CreateEnrollmentKeyModal(props: CreateEnrollmentKeyModalProps) {
                 <DateTimePicker
                   renderInput={(props) => (
                     <TextField
-                    size='small'
+                      size="small"
                       fullWidth={false}
                       sx={{ maxWidth: '15rem' }}
                       {...props}
@@ -210,7 +216,7 @@ export function CreateEnrollmentKeyModal(props: CreateEnrollmentKeyModalProps) {
           <Grid item xs={6} sx={{ marginBottom: '2rem' }}>
             <Autocomplete
               multiple
-              options={networks.map(net => net.netid)}
+              options={networks.map((net) => net.netid)}
               value={selectedNetworks}
               onChange={(e, selectedNets) => setSelectedNetworks(selectedNets)}
               renderInput={(params) => (
@@ -225,7 +231,9 @@ export function CreateEnrollmentKeyModal(props: CreateEnrollmentKeyModalProps) {
             />
           </Grid>
           <Grid item xs={2} sx={{ marginBottom: '2rem' }}>
-            <Button variant='outlined' onClick={selectAllNetworks}>{t('common.selectall')}</Button>
+            <Button variant="outlined" onClick={selectAllNetworks}>
+              {t('common.selectall')}
+            </Button>
           </Grid>
 
           <Grid item xs={12} textAlign="center">
@@ -233,7 +241,6 @@ export function CreateEnrollmentKeyModal(props: CreateEnrollmentKeyModalProps) {
               {t('common.create')}
             </Button>
           </Grid>
-
         </Grid>
       </Box>
     </Modal>
