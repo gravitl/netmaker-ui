@@ -206,12 +206,12 @@ export function NmTable<T>({
                               rowCellsStyles
                                 ? {
                                     ...rowCellsStyles[getRowId(row)],
-                                    maxWidth: 800,
+                                    maxWidth: column.maxWidth,
                                     overflow: 'hidden',
                                     textOverflow: 'ellipses',
                                   }
                                 : {
-                                    maxWidth: 800,
+                                    maxWidth: column.maxWidth,
                                     overflow: 'hidden',
                                     textOverflow: 'ellipses',
                                   }

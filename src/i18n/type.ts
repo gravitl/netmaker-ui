@@ -475,6 +475,7 @@ export interface LanguageResource {
     create: {
       success: {
         enrollmentkey: string
+        enrollmentkeys: string
         accesskey: string
         egress: string
         ingress: string
@@ -489,6 +490,7 @@ export interface LanguageResource {
       }
       failure: {
         enrollmentkey: string
+        enrollmentkeys: string
         accesskey: string
         egress: string
         ingress: string

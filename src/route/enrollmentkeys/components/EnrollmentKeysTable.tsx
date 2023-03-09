@@ -49,10 +49,16 @@ export const EnrollmentKeysTable: FC<EnrollmentKeysTableProps> = (props) => {
       ),
     },
     {
+      id: 'networks',
+      labelKey: 'common.networks',
+      minWidth: 200,
+      format: (value) => `${value.join(', ')}`,
+    },
+    {
       id: 'token',
       labelKey: 'common.token',
-      minWidth: 100,
-      maxWidth: 200,
+      minWidth: 50,
+      maxWidth: 100,
       format: (value) => <CopyText type="subtitle2" value={value} />,
     },
     {
@@ -76,6 +82,7 @@ export const EnrollmentKeysTable: FC<EnrollmentKeysTableProps> = (props) => {
   const filteredKeys = useMemo(() => {
     return tableData.filter((key) =>
       key.tags
+        .concat(key.networks)
         .join('')
         .toLocaleLowerCase()
         .includes(searchFilter.toLocaleLowerCase())

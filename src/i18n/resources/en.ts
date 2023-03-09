@@ -621,6 +621,7 @@ export const en: LanguageResource = {
     create: {
       success: {
         enrollmentkey: 'Successfully created Enrollment key',
+        enrollmentkeys: 'Successfully created Enrollment key',
         accesskey: 'Succesfully created Access Key!',
         egress: 'Succesfully created Egress Gateway!',
         ingress: 'Successfully created Ingress Gateway!',
@@ -635,6 +636,7 @@ export const en: LanguageResource = {
       },
       failure: {
         enrollmentkey: 'Failed to create Enrollment key',
+        enrollmentkeys: 'Failed to create Enrollment key',
         accesskey: 'Failed to create Access Key.',
         egress: 'Failed to create Egress Gateway.',
         ingress: 'Failed to create Ingress Gateway.',
