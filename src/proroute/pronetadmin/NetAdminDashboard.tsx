@@ -11,7 +11,6 @@ import { useParams } from 'react-router-dom'
 import { ExternalClient } from '~store/types'
 import NodeAccessCard from '../proaccessleveldashboards/components/NodeAccessCard'
 import ExtAccessCard from '../proaccessleveldashboards/components/ExtAccessCard'
-import { ProDashboardAccessKeys } from '../proaccesskeys/ProDashboardAccessKeys'
 import { ProNetworkEdit } from './components/ProNetworkEdit'
 import { RemoteAccessView } from '../pronodeuser/views/RemoteAccessView'
 import { ProNodesView } from '../pronodeuser/components/ProNodesView'
@@ -69,11 +68,6 @@ export const NetAdminDashboard: React.FC = () => {
         <Route path={`${path}/nodeview`}>
           <Grid>
             <ProNodesView />
-          </Grid>
-        </Route>
-        <Route path={`${path}/accesskeys`}>
-          <Grid>
-            <ProDashboardAccessKeys />
           </Grid>
         </Route>
         <Route path={`${path}/vpnview`}>

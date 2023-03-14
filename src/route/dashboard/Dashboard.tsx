@@ -6,7 +6,6 @@ import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 import NetworkCard from '~components/dashboard/NetworkCard'
 import NodeCard from '~components/dashboard/NodeCard'
 import ExtClientsCard from '~components/dashboard/ExtClientsCard'
-import AccessKeysCard from '~components/dashboard/AccessKeyCard'
 import DNSCard from '~components/dashboard/DNSCard'
 import UserCard from '~components/dashboard/UserCard'
 import AdminCard from '~components/dashboard/AdminCard'
@@ -15,6 +14,7 @@ import { authSelectors } from '~store/types'
 import ACLCard from '~components/dashboard/ACLCard'
 import GraphCard from '~components/dashboard/GraphCard'
 import './dashboard-styles.css'
+import EnrollmentKeyCard from '~components/dashboard/EnrollmentKeyCard'
 
 export const Dashboard: React.FC = () => {
   const { path } = useRouteMatch()
@@ -45,7 +45,7 @@ export const Dashboard: React.FC = () => {
                 <GraphCard />
               </Grid>
               <Grid item xs={12} sm={6} md={3.75}>
-                <AccessKeysCard />
+                <EnrollmentKeyCard />
               </Grid>
               <Grid item xs={12} sm={6} md={3.75}>
                 <ExtClientsCard />
