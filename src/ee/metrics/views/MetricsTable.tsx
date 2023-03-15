@@ -26,7 +26,12 @@ import {
 import { useParams, Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { serverSelectors, nodeSelectors, authSelectors, hostsSelectors } from '~store/selectors'
+import {
+  serverSelectors,
+  nodeSelectors,
+  authSelectors,
+  hostsSelectors,
+} from '~store/selectors'
 import { NodeMetric, MetricsContainer } from '~store/types'
 import { MAX_ATTEMPTS } from '~components/utils'
 import { getTimeMinHrs } from '../util'
@@ -59,9 +64,7 @@ export const MetricsTable: FC = () => {
   const extClients = useSelector(nodeSelectors.getExtClients)
   const inDarkMode = useSelector(authSelectors.isInDarkMode)
   const attempts = useSelector(serverSelectors.getAttempts)
-  const [currentMetrics, setCurrentMetrics] = useState(
-    {} as MetricsContainer
-  )
+  const [currentMetrics, setCurrentMetrics] = useState({} as MetricsContainer)
   const [hoveredCell, setHoveredCell] = useState({
     nodeID1: '',
     nodeID2: '',
@@ -86,9 +89,9 @@ export const MetricsTable: FC = () => {
     } else {
       setFilterNodes(
         allNodes.filter((node) =>
-          `${hostsMap[node.hostid]?.name ?? ''}${node.address}${node.id}${node.network}`.includes(
-            searchTerm
-          )
+          `${hostsMap[node.hostid]?.name ?? ''}${node.address}${node.id}${
+            node.network
+          }`.includes(searchTerm)
         )
       )
     }
@@ -105,21 +108,15 @@ export const MetricsTable: FC = () => {
     if (!metrics) {
       syncMetrics()
     }
-  }, [
-    dispatch,
-    syncMetrics,
-    currentMetrics,
-    metrics,
-    netid,
-    allNodes,
-    isProcessing,
-    attempts,
-  ])
+  }, [syncMetrics, currentMetrics, metrics, allNodes])
 
   useEffect(() => {
     if (!!allNodes) {
       allNodes.forEach((node) =>
-        nodeNameMap.set(node.id, { name: hostsMap[node?.hostid]?.name, network: node.network })
+        nodeNameMap.set(node.id, {
+          name: hostsMap[node?.hostid]?.name,
+          network: node.network,
+        })
       )
     }
   }, [allNodes, hostsMap, nodeNameMap])
