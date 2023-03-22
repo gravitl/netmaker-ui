@@ -21,7 +21,6 @@ import { useDialog } from '~components/ConfirmDialog'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 import { deleteNetwork } from '~modules/network/actions'
 import { NetworkEdit } from './edit/NetworkEdit'
-import { AccessKeys } from './accesskeys/AccessKeys'
 import { useNetwork } from '~util/network'
 import { NotFound } from '~util/errorpage'
 import { NetworkListEdit } from './edit/NetworkListEdit'
@@ -87,9 +86,6 @@ export const NetworkId: React.FC = () => {
   return (
     <>
       <Switch>
-        <Route path={`${path}/accesskeys`}>
-          <AccessKeys />
-        </Route>
         <Route path={`${path}/edit/networkusers`}>
           <NetworkListEdit netid={netid} field='users' />
         </Route>
@@ -143,14 +139,6 @@ export const NetworkId: React.FC = () => {
                   style={buttonStyle}
                 >
                   {`${t('node.nodes')}`}
-                </NmLink>
-                <NmLink
-                  to={`/access-keys/${netid}`}
-                  variant="outlined"
-                  fullWidth
-                  style={buttonStyle}
-                >
-                  {t('header.accessKeys')}
                 </NmLink>
                 <NmLink
                   to={`/graphs/${netid}`}

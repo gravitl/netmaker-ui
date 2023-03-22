@@ -6,7 +6,6 @@ import { Networks } from './networks/Networks'
 import { PrivateRoute } from './PrivateRoute'
 import CustomDrawer from '~components/drawer/CustomDrawer'
 import { Grid } from '@mui/material'
-import { AccessKeys } from './accesskeys/AccessKeys'
 import { ExtClients } from './extclients/ExtClients'
 import { RouterState } from '~store/modules/router/Component'
 import { UsersEE } from '../ee/users/UsersEE'
@@ -69,9 +68,6 @@ function Routes() {
             </PrivateRoute>
             <PrivateRoute path="/nodes">
               <Nodes />
-            </PrivateRoute>
-            <PrivateRoute path="/access-keys">
-              <AccessKeys />
             </PrivateRoute>
             <PrivateRoute path="/ext-clients">
               <ExtClients />
@@ -137,9 +133,6 @@ function Routes() {
             </PrivateRoute>
             <PrivateRoute path="/nodes">
               <Nodes />
-            </PrivateRoute>
-            <PrivateRoute path="/access-keys">
-              <AccessKeys />
             </PrivateRoute>
             <PrivateRoute path="/ext-clients">
               <ExtClients />

@@ -27,7 +27,6 @@ import LogsIcon from '@mui/icons-material/Terminal'
 import MetricsIcon from '@mui/icons-material/Insights'
 import LibraryBooks from '@mui/icons-material/LibraryBooks'
 import Person from '@mui/icons-material/Person'
-import VpnKey from '@mui/icons-material/VpnKey'
 import ComputerIcon from '@mui/icons-material/Computer'
 import KeyIcon from '@mui/icons-material/Key'
 import { PathBreadcrumbs } from '~components/PathBreadcrumbs'
@@ -295,11 +294,6 @@ export default function CustomDrawer() {
               text: 'Graphs',
               icon: <AccountTree />,
               link: `/graphs`,
-            },
-            {
-              text: 'Access Keys',
-              icon: <VpnKey />,
-              link: `/access-keys`,
             },
             {
               text: 'Ext. Clients',
