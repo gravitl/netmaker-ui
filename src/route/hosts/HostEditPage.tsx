@@ -34,7 +34,7 @@ export const HostEditPage: FC<{ onCancel: () => void }> = ({ onCancel }) => {
     () =>
       validate<Host>({
         name: (value, formData) => {
-          const nameRegex = /^[a-zA-Z0-9-]+$/
+          const nameRegex = /^[a-zA-Z0-9-.]+$/
           const message = t('error.name')
 
           if (!nameRegex.test(value)) return { message, type: 'value' }
