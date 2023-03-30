@@ -9,7 +9,7 @@ import { Grid, Typography } from '@mui/material'
 import { i18n } from '../../../i18n/i18n'
 import { useSelector } from 'react-redux'
 import { ExtClientCreateButtonVpn } from './ExtClientCreateButtonVpn'
-import { proSelectors } from '~store/types'
+import { hostsSelectors, proSelectors } from '~store/types'
 import { DownloadExtClientButtonVpn } from './DownloadExtClientButtonVpn'
 import { DeleteExtClientButtonVpn } from './DeleteExtClientButtonVpn'
 import { EditExtClientButtonVpn } from './EditExtClientButtonVpn'
@@ -26,36 +26,11 @@ import { IconButton, Tooltip } from '@mui/material'
 import { updateExternalClient } from '~store/modules/node/actions'
 import CustomizedDialogs from '~components/dialog/CustomDialog'
 import { MultiCopy } from '~components/CopyText'
-// import { tempClients, tempNodes } from './testdata'
 import { grey } from '@mui/material/colors'
 import { GenericError } from '~util/genericerror'
 import { useHistory } from 'react-router-dom'
 
-const columns: TableColumns<Node> = [
-  {
-    id: 'name',
-    labelKey: 'ingress.name',
-    minWidth: 125,
-    align: 'center',
-    sortable: true,
-  },
-  {
-    id: 'address',
-    labelKey: 'node.addresses',
-    minWidth: 90,
-    align: 'center',
-    format: (_, node) => (
-      <MultiCopy type="subtitle2" values={[node.address, node.address6]} />
-    ),
-  },
-  {
-    id: 'id',
-    label: i18n.t('ingress.add'),
-    minWidth: 45,
-    align: 'center',
-    format: (_, node) => <ExtClientCreateButtonVpn node={node} />,
-  },
-]
+
 
 const centerText = {
   textAlign: 'center',
@@ -78,6 +53,36 @@ export const ExtClientViewVpn: React.FC<{
   const dispatch = useDispatch()
   const userData = useSelector(proSelectors.networkUserData)
   const data = userData[netid]
+  const hostsMap = useSelector(hostsSelectors.getHostsMap)
+
+  const columns: TableColumns<Node> = [
+    {
+      id: 'id',
+      labelKey: 'ingress.name',
+      minWidth: 125,
+      align: 'center',
+      sortable: true,
+      format(_, node) {
+        return `${hostsMap[node.hostid]?.name ?? ''} (${node.server}/${node.network})`
+      }
+    },
+    {
+      id: 'address',
+      labelKey: 'node.addresses',
+      minWidth: 90,
+      align: 'center',
+      format: (_, node) => (
+        <MultiCopy type="subtitle2" values={[node.address, node.address6]} />
+      ),
+    },
+    {
+      id: 'id',
+      label: i18n.t('ingress.add'),
+      minWidth: 45,
+      align: 'center',
+      format: (_, node) => <ExtClientCreateButtonVpn node={node} />,
+    },
+  ]
 
   useLinkBreadcrumb({
     link: url,

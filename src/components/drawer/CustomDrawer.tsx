@@ -27,7 +27,8 @@ import LogsIcon from '@mui/icons-material/Terminal'
 import MetricsIcon from '@mui/icons-material/Insights'
 import LibraryBooks from '@mui/icons-material/LibraryBooks'
 import Person from '@mui/icons-material/Person'
-import VpnKey from '@mui/icons-material/VpnKey'
+import ComputerIcon from '@mui/icons-material/Computer'
+import KeyIcon from '@mui/icons-material/Key'
 import { PathBreadcrumbs } from '~components/PathBreadcrumbs'
 import { useTranslation } from 'react-i18next'
 import { ListItemButton, Switch } from '@mui/material'
@@ -287,27 +288,22 @@ export default function CustomDrawer() {
             {
               text: 'Nodes',
               icon: <DeviceHub />,
-              link: `/nodes${!!netid ? `/${netid}` : ''}`,
+              link: `/nodes`,
             },
             {
               text: 'Graphs',
               icon: <AccountTree />,
-              link: `/graphs${!!netid ? `/${netid}` : ''}`,
-            },
-            {
-              text: 'Access Keys',
-              icon: <VpnKey />,
-              link: `/access-keys${!!netid ? `/${netid}` : ''}`,
+              link: `/graphs`,
             },
             {
               text: 'Ext. Clients',
               icon: <Devices />,
-              link: `/ext-clients${!!netid ? `/${netid}` : ''}`,
+              link: `/ext-clients`,
             },
             {
               text: 'DNS',
               icon: <Language />,
-              link: `/dns${!!netid ? `/${netid}` : ''}`,
+              link: `/dns`,
             },
           ].map((item) => (
             <ListItemButton component={Link} to={item.link} key={item.text}>
@@ -320,6 +316,12 @@ export default function CustomDrawer() {
           <>
             <Divider />
             <List>
+              <ListItemButton component={Link} to={'/enrollment-keys'}>
+                <ListItemIcon aria-label={String(t('common.enrollmentkeys'))}>
+                  <KeyIcon />
+                </ListItemIcon>
+                <ListItemText primary={t('common.enrollmentkeys')} />
+              </ListItemButton>
               <ListItemButton
                 component={Link}
                 to={`/acls${!!netid ? `/${netid}` : ''}`}
@@ -328,6 +330,12 @@ export default function CustomDrawer() {
                   <ViewList />
                 </ListItemIcon>
                 <ListItemText primary={t('header.acls')} />
+              </ListItemButton>
+              <ListItemButton component={Link} to={'/hosts'}>
+                <ListItemIcon aria-label={String(t('hosts.hosts'))}>
+                  <ComputerIcon />
+                </ListItemIcon>
+                <ListItemText primary={t('hosts.hosts')} />
               </ListItemButton>
               <ListItemButton component={Link} to="/users">
                 <ListItemIcon aria-label={String(t('users.header'))}>
@@ -341,14 +349,14 @@ export default function CustomDrawer() {
                 </ListItemIcon>
                 <ListItemText primary={t('pro.logs')} />
               </ListItemButton>
-              {serverConfig.IsEE &&
+              {serverConfig.IsEE && (
                 <ListItemButton component={Link} to="/metrics">
                   <ListItemIcon aria-label={String(t('pro.metrics'))}>
                     <MetricsIcon />
                   </ListItemIcon>
                   <ListItemText primary={t('pro.metrics')} />
                 </ListItemButton>
-              }
+              )}
             </List>
             <Divider />
           </>

@@ -127,53 +127,9 @@ export interface LanguageResource {
     userdashboard: string
     netadmindashboard: string
     nodeuserdashboard: string
+    hosts: string
   }
-  common: {
-    disabled: string
-    notFound: string
-    version: string
-    server: string
-    delete: string
-    cancel: string
-    save: string
-    submit: string
-    reset: string
-    edit: string
-    create: string
-    accept: string
-    view: string
-    autofill: string
-    manage: string
-    select: string
-    name: string
-    copy: string
-    selectall: string
-    count: string
-    search: string
-    pending: string
-    cidr: string
-    type: string
-    max: string
-    min: string
-    chars: string
-    optional: string
-    submitchanges: string
-    loading: string
-    confirmsubmit: string
-    disable: string
-    enable: string
-    togglelite: string
-    toggledark: string
-    copytext: string
-    ascend: string
-    descend: string
-    sortby: string
-    lowercase: string
-    disconnected: string
-    clientsused: string
-    clientsavailable: string
-    connected: string
-  }
+  common: Record<string, string>
   dashboard: {
     title: string
   }
@@ -199,15 +155,7 @@ export interface LanguageResource {
     name: string
     nodeaddress: string
   }
-  error: {
-    notfound: string
-    network: string
-    noresults: string
-    tokenexpire: string
-    unauthorized: string
-    overload: string
-    name: string
-  }
+  error: Record<string, string>
   extclient: {
     extclients: string
     extclient: string
@@ -327,6 +275,7 @@ export interface LanguageResource {
     }
   }
   node: {
+    hostname: string
     nodes: string
     node: string
     id: string
@@ -500,6 +449,7 @@ export interface LanguageResource {
   }
   toast: {
     pending: string
+    warnings: Record<string, string>
     update: {
       success: {
         node: string
@@ -509,6 +459,7 @@ export interface LanguageResource {
         approve: string
         nodeacl: string
         networkuser: string
+        host: string
       }
       failure: {
         node: string
@@ -518,10 +469,13 @@ export interface LanguageResource {
         approve: string
         nodeacl: string
         networkuser: string
+        host: string
       }
     }
     create: {
       success: {
+        enrollmentkey: string
+        enrollmentkeys: string
         accesskey: string
         egress: string
         ingress: string
@@ -532,8 +486,11 @@ export interface LanguageResource {
         admin: string
         usergroup: string
         failover: string
+        hostrelay: string
       }
       failure: {
+        enrollmentkey: string
+        enrollmentkeys: string
         accesskey: string
         egress: string
         ingress: string
@@ -544,6 +501,7 @@ export interface LanguageResource {
         admin: string
         usergroup: string
         failover: string
+        hostrelay: string
       }
     }
     delete: {
@@ -558,6 +516,9 @@ export interface LanguageResource {
         node: string
         usergroups: string
         networkuser: string
+        host: string
+        hostrelay: string
+        enrollmentkey: string
       }
       failure: {
         accesskey: string
@@ -570,6 +531,10 @@ export interface LanguageResource {
         node: string
         usergroups: string
         networkuser: string
+        host: string
+        hostalt: string
+        hostrelay: string
+        enrollmentkey: string
       }
     }
     login: {
@@ -577,4 +542,6 @@ export interface LanguageResource {
       failure: string
     }
   }
+  hosts: Record<string, string>
+  enrollmentkeys: Record<string, string>
 }

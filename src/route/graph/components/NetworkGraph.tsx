@@ -2,7 +2,6 @@ import React, { useMemo, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import CustomDialog from '~components/dialog/CustomDialog'
-// import { Node } from '~store/types'
 import { useParams, useRouteMatch } from 'react-router-dom'
 import { Grid, Typography } from '@mui/material'
 import { useNetwork, useNodesByNetworkId } from '~util/network'
@@ -17,7 +16,12 @@ import {
   FullScreenControl,
 } from 'react-sigma-v2'
 import { filterExtClientsByNetwork, getEdgeConnectivity } from '~util/node'
-import { nodeSelectors, aclSelectors, authSelectors } from '~store/selectors'
+import {
+  nodeSelectors,
+  aclSelectors,
+  authSelectors,
+  hostsSelectors,
+} from '~store/selectors'
 import { AltDataNode, DataNode, Edge } from './graph-components/types'
 import { NetworkSelect } from '~components/NetworkSelect'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
@@ -27,7 +31,7 @@ import {
 } from '~store/modules/acls/actions'
 
 export const NetworkGraph: React.FC = () => {
-  // const networks = useSelector(networkSelectors.getNetworks)
+  const hostsMap = useSelector(hostsSelectors.getHostsMap)
   const { t } = useTranslation()
   const [open, setOpen] = React.useState(false)
   const { url } = useRouteMatch()
@@ -36,7 +40,10 @@ export const NetworkGraph: React.FC = () => {
   const tmpNodes = useNodesByNetworkId(netid)
   const listOfNodes = useMemo(() => tmpNodes || [], [tmpNodes])
   const currentNetworkACL = useSelector(aclSelectors.getCurrentACL)
-  const currentNodeACLs = useMemo(() => Object.keys(currentNetworkACL), [currentNetworkACL])
+  const currentNodeACLs = useMemo(
+    () => Object.keys(currentNetworkACL),
+    [currentNetworkACL]
+  )
   const [selectedNode, setSelectedNode] = React.useState({} as Node)
   const [selectedAltData, setSelectedAltData] = React.useState(
     {} as AltDataNode
@@ -64,7 +71,7 @@ export const NetworkGraph: React.FC = () => {
     ) {
       dispatch(clearCurrentACL(''))
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [netid, isProcessing])
 
   const handleClose = () => {
@@ -83,11 +90,11 @@ export const NetworkGraph: React.FC = () => {
     ) {
       return false
     } else if (
-      node1.isrelay &&
-      ([...node1.relayaddrs] as string[]).indexOf(node2.address) >= 0
+      hostsMap[node1.hostid]?.isrelay &&
+      (hostsMap[node1.hostid].relay_hosts).includes(node2.hostid)
     ) {
       return false
-    } else if (node1.isrelayed || node2.isrelayed) {
+    } else if (hostsMap[node1.hostid]?.isrelayed || hostsMap[node2.hostid]?.isrelayed) {
       return false
     }
     return true
@@ -148,7 +155,7 @@ export const NetworkGraph: React.FC = () => {
       data.edges.push({
         from: node.id,
         to: node.egressgatewayranges[i],
-        status: 'unknown',  // TODO: cross-check whether this can be determined
+        status: 'unknown', // TODO: cross-check whether this can be determined
       })
     }
   }
@@ -174,14 +181,14 @@ export const NetworkGraph: React.FC = () => {
   }
 
   const extractRelayedNodes = (node: Node) => {
-    const relayaddrs = [...node.relayaddrs] as string[]
+    const relayaddrs = hostsMap[node.hostid]?.relay_hosts
     for (let i = 0; i < listOfNodes.length; i++) {
       const currentNode = listOfNodes[i]
-      if (relayaddrs.indexOf(currentNode.address) >= 0) {
+      if (relayaddrs.indexOf(currentNode.hostid) >= 0) {
         data.nodeTypes.push({
           type: 'relayed',
           id: currentNode.id,
-          name: currentNode.name,
+          name: hostsMap[currentNode.hostid]?.name ?? '',
           lastCheckin: currentNode.lastcheckin,
         })
         if (
@@ -199,200 +206,102 @@ export const NetworkGraph: React.FC = () => {
     }
   }
 
-  if (currentNetwork.ispointtosite) {
-    const hubNode = listOfNodes.filter((currNode) => currNode.ishub)[0]
-    if (!!hubNode) {
-      for (let i = 0; i < listOfNodes.length; i++) {
-        const innerNode = listOfNodes[i]
-        if (innerNode.isingressgateway || innerNode.isegressgateway) {
-          // handle adding external cidr(s)
-          if (
-            innerNode.isingressgateway &&
-            innerNode.isegressgateway &&
-            innerNode.isrelay
-          ) {
-            data.nodeTypes.push({
-              type: 'i&e&r',
-              id: innerNode.id,
-              name: innerNode.name,
-              lastCheckin: innerNode.lastcheckin,
-            })
-            extractEgressRanges(innerNode)
-            extractIngressRanges(innerNode)
-            extractRelayedNodes(innerNode)
-          } else if (innerNode.isegressgateway && innerNode.isrelay) {
-            data.nodeTypes.push({
-              type: 'e&r',
-              id: innerNode.id,
-              name: innerNode.name,
-              lastCheckin: innerNode.lastcheckin,
-            })
-            extractEgressRanges(innerNode)
-            extractRelayedNodes(innerNode)
-          } else if (innerNode.isingressgateway && innerNode.isrelay) {
-            data.nodeTypes.push({
-              type: 'i&r',
-              id: innerNode.id,
-              name: innerNode.name,
-              lastCheckin: innerNode.lastcheckin,
-            })
-            extractIngressRanges(innerNode)
-            extractRelayedNodes(innerNode)
-          } else if (innerNode.isegressgateway) {
-            // handle adding external cidr(s)
-            data.nodeTypes.push({
-              type: 'egress',
-              id: innerNode.id,
-              name: innerNode.name,
-              lastCheckin: innerNode.lastcheckin,
-            })
-            extractEgressRanges(innerNode)
-          } else {
-            // handle adding ext client nodes
-            data.nodeTypes.push({
-              type: 'ingress',
-              id: innerNode.id,
-              name: innerNode.name,
-              lastCheckin: innerNode.lastcheckin,
-            })
-            extractIngressRanges(innerNode)
-          }
-        } else if (innerNode.isrelay) {
-          data.nodeTypes.push({
-            type: 'relay',
-            id: innerNode.id,
-            name: innerNode.name,
-            lastCheckin: innerNode.lastcheckin,
-          })
-          extractRelayedNodes(innerNode)
-        } else if (innerNode.isrelayed) {
-          // skip edges for relayed nodes
-          continue
-        } else {
-          data.nodeTypes.push({
-            type: 'normal',
-            id: innerNode.id,
-            name: innerNode.name,
-            lastCheckin: innerNode.lastcheckin,
-          })
-        }
-        if (innerNode.id === hubNode.id) {
-          // skip the hub node
-          continue
-        }
-
-        if (isConnected(innerNode, hubNode)) {
-          data.edges.push({
-            from: innerNode.id,
-            to: hubNode.id,
-            status: getEdgeConnectivity(innerNode, hubNode),
-          })
-          data.edges.push({
-            from: hubNode.id,
-            to: innerNode.id,
-            status: getEdgeConnectivity(innerNode, hubNode),
-          })
-        }
-      }
-    }
-  } else {
-    for (let i = 0; i < listOfNodes.length; i++) {
-      const innerNode = listOfNodes[i]
-      if (innerNode.isingressgateway || innerNode.isegressgateway) {
-        // handle adding external cidr(s)
-        if (
-          innerNode.isingressgateway &&
-          innerNode.isegressgateway &&
-          innerNode.isrelay
-        ) {
-          data.nodeTypes.push({
-            type: 'i&e&r',
-            id: innerNode.id,
-            name: innerNode.name,
-            lastCheckin: innerNode.lastcheckin,
-          })
-          extractEgressRanges(innerNode)
-          extractIngressRanges(innerNode)
-          extractRelayedNodes(innerNode)
-        } else if (innerNode.isingressgateway && innerNode.isegressgateway) {
-          // and ext clients
-          data.nodeTypes.push({
-            type: '1&e',
-            id: innerNode.id,
-            name: innerNode.name,
-            lastCheckin: innerNode.lastcheckin,
-          })
-          extractEgressRanges(innerNode)
-          extractIngressRanges(innerNode)
-        } else if (innerNode.isegressgateway && innerNode.isrelay) {
-          data.nodeTypes.push({
-            type: 'e&r',
-            id: innerNode.id,
-            name: innerNode.name,
-            lastCheckin: innerNode.lastcheckin,
-          })
-          extractEgressRanges(innerNode)
-          extractRelayedNodes(innerNode)
-        } else if (innerNode.isingressgateway && innerNode.isrelay) {
-          data.nodeTypes.push({
-            type: 'i&r',
-            id: innerNode.id,
-            name: innerNode.name,
-            lastCheckin: innerNode.lastcheckin,
-          })
-          extractIngressRanges(innerNode)
-          extractRelayedNodes(innerNode)
-        } else if (innerNode.isegressgateway) {
-          // handle adding external cidr(s)
-          data.nodeTypes.push({
-            type: 'egress',
-            id: innerNode.id,
-            name: innerNode.name,
-            lastCheckin: innerNode.lastcheckin,
-          })
-          extractEgressRanges(innerNode)
-        } else {
-          // handle adding ext client nodes
-          data.nodeTypes.push({
-            type: 'ingress',
-            id: innerNode.id,
-            name: innerNode.name,
-            lastCheckin: innerNode.lastcheckin,
-          })
-          extractIngressRanges(innerNode)
-        }
-      } else if (innerNode.isrelay) {
+  for (let i = 0; i < listOfNodes.length; i++) {
+    const innerNode = listOfNodes[i]
+    if (innerNode.isingressgateway || innerNode.isegressgateway) {
+      // handle adding external cidr(s)
+      if (
+        innerNode.isingressgateway &&
+        innerNode.isegressgateway &&
+        hostsMap[innerNode.hostid]?.isrelay
+      ) {
         data.nodeTypes.push({
-          type: 'relay',
+          type: 'i&e&r',
           id: innerNode.id,
-          name: innerNode.name,
+          name: hostsMap[innerNode.hostid]?.name ?? '',
           lastCheckin: innerNode.lastcheckin,
         })
+        extractEgressRanges(innerNode)
+        extractIngressRanges(innerNode)
         extractRelayedNodes(innerNode)
-      } else if (innerNode.isrelayed) {
-        // skip edges for relayed nodes
-        continue
-      } else {
+      } else if (innerNode.isingressgateway && innerNode.isegressgateway) {
+        // and ext clients
         data.nodeTypes.push({
-          type: 'normal',
+          type: '1&e',
           id: innerNode.id,
-          name: innerNode.name,
+          name: hostsMap[innerNode.hostid]?.name ?? '',
           lastCheckin: innerNode.lastcheckin,
         })
+        extractEgressRanges(innerNode)
+        extractIngressRanges(innerNode)
+      } else if (innerNode.isegressgateway && hostsMap[innerNode.hostid]?.isrelay) {
+        data.nodeTypes.push({
+          type: 'e&r',
+          id: innerNode.id,
+          name: hostsMap[innerNode.hostid]?.name ?? '',
+          lastCheckin: innerNode.lastcheckin,
+        })
+        extractEgressRanges(innerNode)
+        extractRelayedNodes(innerNode)
+      } else if (innerNode.isingressgateway && hostsMap[innerNode.hostid]?.isrelay) {
+        data.nodeTypes.push({
+          type: 'i&r',
+          id: innerNode.id,
+          name: hostsMap[innerNode.hostid]?.name ?? '',
+          lastCheckin: innerNode.lastcheckin,
+        })
+        extractIngressRanges(innerNode)
+        extractRelayedNodes(innerNode)
+      } else if (innerNode.isegressgateway) {
+        // handle adding external cidr(s)
+        data.nodeTypes.push({
+          type: 'egress',
+          id: innerNode.id,
+          name: hostsMap[innerNode.hostid]?.name ?? '',
+          lastCheckin: innerNode.lastcheckin,
+        })
+        extractEgressRanges(innerNode)
+      } else {
+        // handle adding ext client nodes
+        data.nodeTypes.push({
+          type: 'ingress',
+          id: innerNode.id,
+          name: hostsMap[innerNode.hostid]?.name ?? '',
+          lastCheckin: innerNode.lastcheckin,
+        })
+        extractIngressRanges(innerNode)
       }
+    } else if (hostsMap[innerNode.hostid]?.isrelay) {
+      data.nodeTypes.push({
+        type: 'relay',
+        id: innerNode.id,
+        name: hostsMap[innerNode.hostid]?.name ?? '',
+        lastCheckin: innerNode.lastcheckin,
+      })
+      extractRelayedNodes(innerNode)
+    } else if (hostsMap[innerNode.hostid]?.isrelayed) {
+      // skip edges for relayed nodes
+      continue
+    } else {
+      data.nodeTypes.push({
+        type: 'normal',
+        id: innerNode.id,
+        name: hostsMap[innerNode.hostid]?.name ?? '',
+        lastCheckin: innerNode.lastcheckin,
+      })
+    }
 
-      for (let j = 0; j < listOfNodes.length; j++) {
-        const outerNode = listOfNodes[j]
-        if (outerNode.id === innerNode.id) {
-          continue
-        }
-        if (isConnected(innerNode, outerNode)) {
-          data.edges.push({
-            from: innerNode.id,
-            to: outerNode.id,
-            status: getEdgeConnectivity(innerNode, outerNode),
-          })
-        }
+    for (let j = 0; j < listOfNodes.length; j++) {
+      const outerNode = listOfNodes[j]
+      if (outerNode.id === innerNode.id) {
+        continue
+      }
+      if (isConnected(innerNode, outerNode)) {
+        data.edges.push({
+          from: innerNode.id,
+          to: outerNode.id,
+          status: getEdgeConnectivity(innerNode, outerNode),
+        })
       }
     }
   }

@@ -1,58 +1,33 @@
-import { Modify } from '../../../types/react-app-env'
+import { NodeCommonDetails } from "../hosts"
 
 export interface Node {
   id: string
+  hostid: string
   address: string
   address6: string
   localaddress: string
-  name: string
-  listenport: number
-  publickey: string
-  endpoint: string
-  postup: string
-  postdown: string
-  allowedips: []
   persistentkeepalive: number
-  accesskey: string
   interface: string
-  lastmodified: number
-  keyupdatetimestamp: number
-  expdatetime: number
-  lastpeerupdate: number
-  lastcheckin: number
   macaddress: string
-  checkininterval: number
-  password: string
+  lastmodified: number
+  expdatetime: number
+  lastcheckin: number
+  lastpeerupdate: number
   network: string
-  ispending: string
-  isrelay: boolean
-  isrelayed: boolean
-  relayaddrs: []
+  networkrange: string
+  networkrange6: string
+  pendingdelete: boolean
   isegressgateway: boolean
   isingressgateway: boolean
-  egressgatewayranges: []
-  ingressgatewayrange: string
-  isstatic: boolean
-  udpholepunch: boolean
+  egressgatewayranges: string[]
+  egressgatewaynatenabled: boolean
+  failovernode: string
   dnson: boolean
-  isdualstack: boolean
-  isserver: boolean
-  action: string
-  islocal: boolean
-  localrange: string
-  ipforwarding: boolean
-  os: string
-  mtu: number
-  version: string
-  commid: string
-  isdocker: boolean
-  isk8s: boolean
-  ishub: boolean
-  defaultacl: boolean | undefined
-  ownerid: string
+  server: string
+  internetgateway: string
+  defaultacl: string
   connected: boolean
   failover: boolean
-  interfaces?: Interface[]
 }
 
 export interface Interface {
@@ -60,30 +35,6 @@ export interface Interface {
   address: { IP: string; Mask: string }
   addressString: string
 }
-
-export type NodePayload = Modify<
-  Node,
-  {
-    isegressgateway: 'yes' | 'no'
-    isingressgateway: 'yes' | 'no'
-    isstatic: 'yes' | 'no'
-    udpholepunch: 'yes' | 'no'
-    dnson: 'yes' | 'no'
-    isdualstack: 'yes' | 'no'
-    isserver: 'yes' | 'no'
-    islocal: 'yes' | 'no'
-    ipforwarding: 'yes' | 'no'
-    isrelayed: 'yes' | 'no'
-    isrelay: 'yes' | 'no'
-    isdocker: 'yes' | 'no'
-    isk8s: 'yes' | 'no'
-    ishub: 'yes' | 'no'
-    defaultacl: 'yes' | 'no' | 'unset'
-    ownerid: string
-    connected: 'yes' | 'no'
-    failover: 'yes' | 'no'
-  }
->
 
 export interface ExternalClient {
   clientid: string
@@ -98,13 +49,15 @@ export interface ExternalClient {
   lastmodified: number
   enabled: boolean
   ownerid: string
+  internal_ip_addr: string
+  internal_ip_addr6: string
 }
 
 export interface GetNodesPayload {
   Request: {
     token: string
   }
-  Response: Array<NodePayload>
+  Response: Array<Node>
 }
 
 export interface UpdateNodePayload {
@@ -113,7 +66,7 @@ export interface UpdateNodePayload {
     netid: string
     node: Node
   }
-  Response: NodePayload
+  Response: Node
 }
 
 export interface GetExternalClientsPayload {
@@ -178,7 +131,7 @@ export interface DeleteEgressNodePayload {
     netid: string
     nodeid: string
   }
-  Response: NodePayload
+  Response: Node
 }
 
 export interface CreateEgressNodePayload {
@@ -187,11 +140,10 @@ export interface CreateEgressNodePayload {
     nodeid: string
     payload: {
       ranges: Array<string>
-      interface: string
       natEnabled: string
     }
   }
-  Response: NodePayload
+  Response: Node
 }
 
 export interface CreateRelayNodePayload {
@@ -202,7 +154,7 @@ export interface CreateRelayNodePayload {
       ranges: Array<string>
     }
   }
-  Response: NodePayload
+  Response: Node
 }
 
 export interface DeleteRelayNodePayload {
@@ -210,7 +162,7 @@ export interface DeleteRelayNodePayload {
     netid: string
     nodeid: string
   }
-  Response: NodePayload
+  Response: Node
 }
 
 export interface DeleteNodePayload {
@@ -229,7 +181,7 @@ export interface CreatIngressNodePayload {
     nodeid: string
     failover?: boolean
   }
-  Response: NodePayload
+  Response: Node
 }
 
 export interface DeleteIngressNodePayload {
@@ -237,14 +189,15 @@ export interface DeleteIngressNodePayload {
     netid: string
     nodeid: string
   }
-  Response: NodePayload
+  Response: Node
 }
 
 export type shouldSignOut = '' | 'network' | 'auth'
 
 export interface NodeSort {
-  value: 'name' | 'address' | 'network'
+  value: 'address' | 'network' | 'name'
   ascending: boolean
+  hostsMap: Record<string, NodeCommonDetails>
 }
 
 export const nodeACLValues = {

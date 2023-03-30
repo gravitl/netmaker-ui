@@ -3,13 +3,11 @@ import { useSelector } from 'react-redux'
 import { createSelector } from 'reselect'
 import { RootState } from 'typesafe-actions'
 import { ExternalClient, Node, NodeConnectivityStatus } from '~modules/node'
+import { getHosts, getHostsMap } from '~store/modules/hosts/selectors'
 import { nodeSelectors } from '~store/selectors'
-import { DNS } from '~store/types'
+import { DNS, Host } from '~store/types'
 
 const nodeByIdPredicate = (id: Node['id']) => (node: Node) => node.id === id
-
-const nodeByNamePredicate = (name: Node['name']) => (node: Node) =>
-  node.name === name
 
 const makeSelectNodeByID = () =>
   createSelector(
@@ -22,20 +20,6 @@ export const useNodeById = (id: Node['id']) => {
   const selectNode = useMemo(makeSelectNodeByID, [])
   return useSelector<RootState, Node | undefined>((state) =>
     selectNode(state, id)
-  )
-}
-
-const makeSelectNode = () =>
-  createSelector(
-    nodeSelectors.getNodes,
-    (_: RootState, name: Node['name']) => name,
-    (nodes, name) => nodes.find(nodeByNamePredicate(name))
-  )
-
-export const useNode = (name: Node['name']) => {
-  const selectNode = useMemo(makeSelectNode, [])
-  return useSelector<RootState, Node | undefined>((state) =>
-    selectNode(state, name)
   )
 }
 
@@ -53,14 +37,15 @@ export const filterExtClientsByNetwork = (
 export const filterCustomDNSByNetwork = (
   nodes: Node[],
   dnsEntries: DNS[],
-  netid: string
+  netid: string,
+  hostsMap: ReturnType<typeof getHostsMap>
 ) => {
   const networkDnsEntries = dnsEntries.filter(
     (entry) => entry.network === netid
   )
   // get rid of all node named entries
   return networkDnsEntries.filter(
-    (entry) => !nodes.find((node) => node.name === entry.name)
+    (entry) => !nodes.find((node) => hostsMap[node.hostid]?.name === entry.name)
   )
 }
 
@@ -141,4 +126,23 @@ export const getEdgeConnectivity = (
   if (edgeStatus === null) edgeStatus = 'unknown'
 
   return edgeStatus as NodeConnectivityStatus
+}
+
+/**
+ * Returns the associated host for a node otherwise undefined
+ * 
+ * @param node node
+ */
+export const useGetAssociatedHost = (node: Node): Host | undefined => {
+  const hosts = useSelector(getHosts)
+  return hosts.find(host => host.id === node.hostid)
+}
+
+/**
+ * Derives the node name from the associated host
+ * 
+ * @param node node
+ */
+export const useDeriveNodeName = (node: Node): string => {
+  return useGetAssociatedHost(node)?.name ?? ''
 }

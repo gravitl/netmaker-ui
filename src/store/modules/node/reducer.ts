@@ -22,7 +22,7 @@ import {
   updateNode,
 } from './actions'
 import { Node, NodeSort } from './types'
-import { download, nodePayloadToNode } from './utils'
+import { download } from './utils'
 
 export const reducer = createReducer({
   nodes: [] as Array<Node>,
@@ -31,7 +31,8 @@ export const reducer = createReducer({
   isFetchingClients: false as boolean,
   qrData: '' as string,
   shouldSignOut: '' as shouldSignOut,
-  nodeSort: { value: 'name', ascending: true } as NodeSort,
+  nodeSort: { value: 'network', ascending: true, hostsMap: {} } as NodeSort,
+  nodesMap: {} as Record<string, Node>,
 })
   .handleAction(setShouldLogout, (state, action) =>
     produce(state, (draftState) => {
@@ -51,29 +52,19 @@ export const reducer = createReducer({
   .handleAction(setNodeSort, (state, action) =>
     produce(state, (draftState) => {
       draftState.nodeSort = action.payload
-      const { value, ascending } = action.payload
-      draftState.nodes = draftState.nodes.sort((a, b) =>
-        a[value].localeCompare(b[value])
-      )
-      if (!ascending) {
-        draftState.nodes = draftState.nodes.reverse()
-      }
+      sortNodes(draftState.nodes, action.payload)
     })
   )
   .handleAction(getNodes['success'], (state, action) =>
     produce(state, (draftState) => {
       if (!!action.payload && action.payload.length) {
-        draftState.nodes = action.payload.map(nodePayloadToNode)
-        const { value, ascending } = state.nodeSort
+        draftState.nodes = action.payload
+        sortNodes(draftState.nodes, state.nodeSort)
 
-        draftState.nodes = draftState.nodes.sort((a, b) =>
-          a[value] === b[value]
-            ? `${a[value]}${a.id}`.localeCompare(`${b[value]}${b.id}`)
-            : a[value].localeCompare(b[value])
-        )
-        if (!ascending) {
-          draftState.nodes = draftState.nodes.reverse()
-        }
+        // populate nodes map
+        draftState.nodes.forEach((node) => {
+          draftState.nodesMap[node.id] = node
+        })
       } else {
         draftState.nodes = []
       }
@@ -107,18 +98,7 @@ export const reducer = createReducer({
         (node) => node.id === action.payload.id
       )
       if (~index) {
-        const newNode = nodePayloadToNode(action.payload)
-        if (newNode.ishub && draftState.nodes[index].ishub !== newNode.ishub) {
-          // set all other nodes on same network as not hub
-          for (let i = 0; i < draftState.nodes.length; i++) {
-            if (
-              i !== index &&
-              draftState.nodes[i].network === newNode.network
-            ) {
-              draftState.nodes[i].ishub = false
-            }
-          }
-        }
+        const newNode = action.payload
         draftState.nodes[index] = newNode
       }
     })
@@ -137,12 +117,12 @@ export const reducer = createReducer({
   )
   .handleAction(approveNode['success'], (state, action) =>
     produce(state, (draftState) => {
-      const index = draftState.nodes.findIndex(
-        (node) => node.id === action.payload.nodeid
-      )
-      if (~index) {
-        draftState.nodes[index].ispending = 'no'
-      }
+      // const index = draftState.nodes.findIndex(
+      //   (node) => node.id === action.payload.nodeid
+      // )
+      // if (~index) {
+      //   draftState.nodes[index].ispending = 'no'
+      // }
     })
   )
   .handleAction(createEgressNode['success'], (state, action) =>
@@ -151,7 +131,7 @@ export const reducer = createReducer({
         (node) => node.id === action.payload.id
       )
       if (~index) {
-        draftState.nodes[index] = nodePayloadToNode(action.payload)
+        draftState.nodes[index] = action.payload
       }
     })
   )
@@ -161,7 +141,7 @@ export const reducer = createReducer({
         (node) => node.id === action.payload.id
       )
       if (~index) {
-        draftState.nodes[index] = nodePayloadToNode(action.payload)
+        draftState.nodes[index] = action.payload
       }
     })
   )
@@ -171,7 +151,7 @@ export const reducer = createReducer({
         (node) => node.id === action.payload.id
       )
       if (~index) {
-        draftState.nodes[index] = nodePayloadToNode(action.payload)
+        draftState.nodes[index] = action.payload
       }
     })
   )
@@ -181,7 +161,7 @@ export const reducer = createReducer({
         (node) => node.id === action.payload.id
       )
       if (~index) {
-        draftState.nodes[index] = nodePayloadToNode(action.payload)
+        draftState.nodes[index] = action.payload
         draftState.externalClients = draftState.externalClients.filter(
           (client) =>
             !(
@@ -198,7 +178,7 @@ export const reducer = createReducer({
         (node) => node.id === action.payload.id
       )
       if (~index) {
-        draftState.nodes[index] = nodePayloadToNode(action.payload)
+        draftState.nodes[index] = action.payload
       }
     })
   )
@@ -208,7 +188,7 @@ export const reducer = createReducer({
         (node) => node.id === action.payload.id
       )
       if (~index) {
-        draftState.nodes[index] = nodePayloadToNode(action.payload)
+        draftState.nodes[index] = action.payload
       }
     })
   )
@@ -256,3 +236,35 @@ export const reducer = createReducer({
       }
     })
   )
+
+function sortNodes(nodes: Node[], sortParams: NodeSort): void {
+  const { value, ascending, hostsMap } = sortParams
+
+  switch (value) {
+    case 'name':
+      nodes.sort((a, b) =>
+        (hostsMap[a.hostid]?.name ?? '').localeCompare(
+          hostsMap[b.hostid]?.name ?? ''
+        )
+      )
+      break
+    case 'network':
+      // sort by network, then by name
+      nodes.sort((a, b) => {
+        const aNetwork = a.network
+        const bNetwork = b.network
+        if (aNetwork === bNetwork) {
+          return (hostsMap[a.hostid]?.name ?? '').localeCompare(
+            hostsMap[b.hostid]?.name ?? ''
+          )
+        }
+        return aNetwork.localeCompare(bNetwork)
+      })
+      break
+    default:
+      nodes.sort((a, b) => a[value].localeCompare(b[value]))
+  }
+  if (!ascending) {
+    nodes.reverse()
+  }
+}

@@ -1,10 +1,10 @@
-import React from 'react'
+import { FC } from 'react'
 import CheckboxField from '@mui/material/Checkbox'
 import { Controller } from 'react-hook-form'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import { useFormControl } from './internal/formContext'
 
-export const NmFormInputCheckbox: React.FC<{
+export const NmFormInputCheckbox: FC<{
   name: string
   label: string
   disabled?: boolean

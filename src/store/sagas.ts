@@ -9,10 +9,24 @@ import { saga as toast } from './modules/toast'
 import { saga as router } from './modules/router'
 import { saga as acls } from './modules/acls'
 import { saga as pro } from './modules/pro'
+import { saga as hosts } from './modules/hosts'
+import { saga as enrollmentKeys } from './modules/enrollmentkeys'
 
 export const createRootSaga = () => {
   function* rootSaga() {
-    yield all([auth(), api(), network(), node(), server(), toast(), router(), acls(), pro(),])
+    yield all([
+      auth(),
+      api(),
+      network(),
+      node(),
+      server(),
+      toast(),
+      router(),
+      acls(),
+      pro(),
+      hosts(),
+      enrollmentKeys(),
+    ])
   }
   return rootSaga
 }

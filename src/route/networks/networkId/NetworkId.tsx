@@ -21,7 +21,6 @@ import { useDialog } from '~components/ConfirmDialog'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 import { deleteNetwork } from '~modules/network/actions'
 import { NetworkEdit } from './edit/NetworkEdit'
-import { AccessKeys } from './accesskeys/AccessKeys'
 import { useNetwork } from '~util/network'
 import { NotFound } from '~util/errorpage'
 import { NetworkListEdit } from './edit/NetworkListEdit'
@@ -87,9 +86,6 @@ export const NetworkId: React.FC = () => {
   return (
     <>
       <Switch>
-        <Route path={`${path}/accesskeys`}>
-          <AccessKeys />
-        </Route>
         <Route path={`${path}/edit/networkusers`}>
           <NetworkListEdit netid={netid} field='users' />
         </Route>
@@ -143,14 +139,6 @@ export const NetworkId: React.FC = () => {
                   style={buttonStyle}
                 >
                   {`${t('node.nodes')}`}
-                </NmLink>
-                <NmLink
-                  to={`/access-keys/${netid}`}
-                  variant="outlined"
-                  fullWidth
-                  style={buttonStyle}
-                >
-                  {t('header.accessKeys')}
                 </NmLink>
                 <NmLink
                   to={`/graphs/${netid}`}
@@ -211,13 +199,6 @@ export const NetworkId: React.FC = () => {
                 disabled
                 value={network.addressrange6}
                 label={String(t('network.addressrange6'))}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
-              <TextField
-                disabled
-                value={network.localrange}
-                label={String(t('network.localrange'))}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
@@ -289,7 +270,7 @@ export const NetworkId: React.FC = () => {
                 />
               </div>
             </Grid>
-            <Grid item xs={12} sm={6} md={2}>
+            {/* <Grid item xs={12} sm={6} md={2}>
               <FormControlLabel
                 label={String(t('network.allowmanualsignup'))}
                 control={
@@ -297,21 +278,12 @@ export const NetworkId: React.FC = () => {
                 }
                 disabled
               />
-            </Grid>
+            </Grid> */}
             <Grid item xs={12} sm={6} md={2}>
               <FormControlLabel
                 label={String(t('network.defaultudpholepunch'))}
                 control={
                   <SwitchField checked={network.defaultudpholepunch} disabled />
-                }
-                disabled
-              />
-            </Grid>
-            <Grid item xs={12} sm={6} md={2}>
-              <FormControlLabel
-                label={String(t('network.ispointtosite'))}
-                control={
-                  <SwitchField checked={network.ispointtosite} disabled />
                 }
                 disabled
               />

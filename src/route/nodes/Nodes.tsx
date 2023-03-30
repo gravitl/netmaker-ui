@@ -6,9 +6,9 @@ import {
   TextField,
   Tooltip,
 } from '@mui/material'
-import React from 'react'
+import React, { useCallback } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { nodeSelectors } from '~store/selectors'
+import { hostsSelectors, nodeSelectors } from '~store/selectors'
 import { useRouteMatch, Switch, Route, useHistory } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { NodeTable } from './components/NodeTable'
@@ -27,7 +27,7 @@ export const Nodes: React.FC = () => {
   const [filterNodes, setFilterNodes] = React.useState(listOfNodes)
   const history = useHistory()
   const dispatch = useDispatch()
-
+  const hostsMap = useSelector(hostsSelectors.getHostsMap)
   const syncNodes = () => {
     history.push('/nodes')
   }
@@ -40,11 +40,11 @@ export const Nodes: React.FC = () => {
     } else {
       setFilterNodes(
         listOfNodes.filter((node) =>
-          `${node.name}${node.address}${node.network}`.includes(searchTerm)
+          `${hostsMap[node.hostid]?.name ?? ''}${node.address}${node.network}`.includes(searchTerm)
         )
       )
     }
-  }, [listOfNodes, searchTerm])
+  }, [hostsMap, listOfNodes, searchTerm])
 
   const handleFilter = (event: { target: { value: string } }) => {
     const { value } = event.target
@@ -52,20 +52,26 @@ export const Nodes: React.FC = () => {
     setSearchTerm(searchTerm)
   }
 
-  const handleNodeSortSelect = (selection: string) => {
+  const handleNodeSortSelect = useCallback((selection: string) => {
     if (
-      selection === 'address' ||
       selection === 'name' ||
+      selection === 'address' ||
       selection === 'network'
     ) {
       dispatch(
         setNodeSort({
           ...nodeSort,
           value: selection,
+          hostsMap,
         })
       )
     }
-  }
+  }, [dispatch, hostsMap, nodeSort])
+
+  useEffect(() => {
+    handleNodeSortSelect(nodeSort.value)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hostsMap])
 
   return (
     <Container>
@@ -110,6 +116,7 @@ export const Nodes: React.FC = () => {
                         setNodeSort({
                           ...nodeSort,
                           ascending: !nodeSort.ascending,
+                          hostsMap,
                         })
                       )
                     }}

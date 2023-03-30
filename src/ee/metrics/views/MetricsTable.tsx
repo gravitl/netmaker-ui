@@ -15,7 +15,7 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material'
-import React, { useCallback } from 'react'
+import { FC, useCallback, useEffect, useMemo, useState } from 'react'
 import {
   CheckCircle,
   NotInterested as NotAllowedIcon,
@@ -26,7 +26,12 @@ import {
 import { useParams, Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { serverSelectors, nodeSelectors, authSelectors } from '~store/selectors'
+import {
+  serverSelectors,
+  nodeSelectors,
+  authSelectors,
+  hostsSelectors,
+} from '~store/selectors'
 import { NodeMetric, MetricsContainer } from '~store/types'
 import { MAX_ATTEMPTS } from '~components/utils'
 import { getTimeMinHrs } from '../util'
@@ -48,10 +53,10 @@ const titleStyle = {
   textAlign: 'center',
 } as any
 
-export const MetricsTable: React.FC = () => {
+export const MetricsTable: FC = () => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
-
+  const hostsMap = useSelector(hostsSelectors.getHostsMap)
   const isProcessing = useSelector(serverSelectors.isFetchingServerConfig)
   const { netid } = useParams<{ netid: string }>()
   const allNodes = useSelector(nodeSelectors.getNodes)
@@ -59,16 +64,14 @@ export const MetricsTable: React.FC = () => {
   const extClients = useSelector(nodeSelectors.getExtClients)
   const inDarkMode = useSelector(authSelectors.isInDarkMode)
   const attempts = useSelector(serverSelectors.getAttempts)
-  const [currentMetrics, setCurrentMetrics] = React.useState(
-    {} as MetricsContainer
-  )
-  const [hoveredCell, setHoveredCell] = React.useState({
+  const [currentMetrics, setCurrentMetrics] = useState({} as MetricsContainer)
+  const [hoveredCell, setHoveredCell] = useState({
     nodeID1: '',
     nodeID2: '',
   } as HoveredNode)
-  const [filterNodes, setFilterNodes] = React.useState(allNodes)
+  const [filterNodes, setFilterNodes] = useState(allNodes)
 
-  var nodeNameMap: Map<string, NameAndNetwork> = new Map()
+  var nodeNameMap: Map<string, NameAndNetwork> = useMemo(() => new Map(), [])
 
   const isNodeFiltered = (id: string) => {
     return !!~filterNodes.findIndex((node) => node.id === id)
@@ -86,15 +89,15 @@ export const MetricsTable: React.FC = () => {
     } else {
       setFilterNodes(
         allNodes.filter((node) =>
-          `${node.name}${node.address}${node.id}${node.network}`.includes(
-            searchTerm
-          )
+          `${hostsMap[node.hostid]?.name ?? ''}${node.address}${node.id}${
+            node.network
+          }`.includes(searchTerm)
         )
       )
     }
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (
       !!metrics &&
       Object.keys(currentMetrics).length !== Object.keys(metrics).length
@@ -105,30 +108,29 @@ export const MetricsTable: React.FC = () => {
     if (!metrics) {
       syncMetrics()
     }
-  }, [
-    dispatch,
-    syncMetrics,
-    currentMetrics,
-    metrics,
-    netid,
-    allNodes,
-    isProcessing,
-    attempts,
-  ])
+  }, [syncMetrics, currentMetrics, metrics, allNodes])
 
-  if (!!allNodes) {
-    allNodes.map((node) =>
-      nodeNameMap.set(node.id, { name: node.name, network: node.network })
-    )
-  }
-  if (!!extClients) {
-    extClients.map((client) =>
-      nodeNameMap.set(client.clientid, {
-        name: client.clientid,
-        network: client.network,
-      })
-    )
-  }
+  useEffect(() => {
+    if (!!allNodes) {
+      allNodes.forEach((node) =>
+        nodeNameMap.set(node.id, {
+          name: hostsMap[node?.hostid]?.name,
+          network: node.network,
+        })
+      )
+    }
+  }, [allNodes, hostsMap, nodeNameMap])
+
+  useEffect(() => {
+    if (!!extClients) {
+      extClients.forEach((client) =>
+        nodeNameMap.set(client.clientid, {
+          name: client.clientid,
+          network: client.network,
+        })
+      )
+    }
+  }, [extClients, nodeNameMap])
 
   const stickyColStyle = {
     position: 'sticky',

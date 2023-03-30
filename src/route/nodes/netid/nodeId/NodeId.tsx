@@ -1,4 +1,4 @@
-import React from 'react'
+import { FC, useState, useCallback, useMemo } from 'react'
 import {
   Button,
   Grid,
@@ -6,6 +6,9 @@ import {
   Switch as SwitchField,
   FormControlLabel,
   Typography,
+  Modal,
+  Box,
+  useTheme,
 } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
@@ -24,22 +27,67 @@ import { NodeEdit } from '../nodeEdit/NodeEdit'
 import { approveNode, deleteNode } from '~modules/node/actions'
 import CustomDialog from '~components/dialog/CustomDialog'
 import { useNetwork } from '~util/network'
-import { authSelectors } from '~store/selectors'
-import { nodeACLValues } from '~store/types'
+import {
+  // authSelectors,
+  hostsSelectors,
+  serverSelectors,
+} from '~store/selectors'
 import { NotFound } from '~util/errorpage'
 
-export const NodeId: React.FC = () => {
+const styles = {
+  centerText: {
+    textAlign: 'center',
+  },
+  vertTabs: {
+    flex: 1,
+    display: 'flex',
+    flexDirection: 'column',
+    position: 'relative',
+  },
+  mainContainer: {
+    marginTop: '2em',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  center: {
+    flex: 1,
+    display: 'flex',
+    textAlign: 'center',
+  },
+  modal: {
+    position: 'absolute',
+    display: 'flex',
+    flexDirection: 'column',
+    flex: 1,
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: '50%',
+    backgroundColor: 'white',
+    border: '1px solid #000',
+    minWidth: '33%',
+    pt: 2,
+    px: 4,
+    pb: 3,
+  },
+} as any
+
+export const NodeId: FC = () => {
   const { path, url } = useRouteMatch()
   const history = useHistory()
   const { t } = useTranslation()
   const dispatch = useDispatch()
-
+  const hostsMap = useSelector(hostsSelectors.getHostsMap)
   const { netid, nodeId } = useParams<{ nodeId: string; netid: string }>()
   const node = useNodeById(decodeURIComponent(nodeId))
   const network = useNetwork(netid)
-  const user = useSelector(authSelectors.getUser)
-  const [open, setOpen] = React.useState(false)
-  const [approveOpen, setApproveOpen] = React.useState(false)
+  // const user = useSelector(authSelectors.getUser)
+  const [open, setOpen] = useState(false)
+  const [approveOpen, setApproveOpen] = useState(false)
+  const serverConfig = useSelector(serverSelectors.getServerConfig)
+  const [shouldShowProModal, setShouldShowProModal] = useState(false)
+  const theme = useTheme()
 
   useLinkBreadcrumb({
     link: url,
@@ -54,14 +102,11 @@ export const NodeId: React.FC = () => {
     setOpen(true)
   }
 
-  const handleApproveOpen = () => setApproveOpen(true)
+  // const handleApproveOpen = () => setApproveOpen(true)
   const handleApproveClose = () => setApproveOpen(false)
 
-  if (!node || !network) {
-    return <NotFound />
-  }
-
-  const handleDeleteNode = () => {
+  const handleDeleteNode = useCallback(() => {
+    if (!node) return
     dispatch(
       deleteNode.request({
         netid: node.network,
@@ -71,26 +116,41 @@ export const NodeId: React.FC = () => {
     history.push(
       `/${t('breadcrumbs.networks')}/${netid}/${t('breadcrumbs.nodes')}`
     )
-  }
+  }, [dispatch, history, netid, node, t])
 
-  const handleApproveNode = () => {
+  const handleApproveNode = useCallback(() => {
+    if (!node) return
     dispatch(
       approveNode.request({
         netid: node.network,
         nodeid: node.id,
       })
     )
-  }
+  }, [dispatch, node])
 
   const rowMargin = {
     margin: '1em 0 1em 0',
   }
-  const isIPDynamic = !node.isstatic
+
+  const isEE = useMemo(() => serverConfig.IsEE, [serverConfig])
+
+  const onMetricsClick = useCallback(() => {
+    if (isEE) {
+      history.push(`/metrics/${netid}/${nodeId}`)
+      return
+    }
+    setShouldShowProModal(true)
+  }, [history, isEE, netid, nodeId])
+
+  const isIPDynamic = !hostsMap[node?.hostid ?? '']?.isstatic
+
+  if (!node || !network) {
+    return <NotFound />
+  }
 
   return (
     <Switch>
       <Route path={`${path}/edit`}>
-        {/* <NodeEdit node={node} /> */}
         <NodeEdit
           onCancel={() => {
             history.push(
@@ -109,21 +169,19 @@ export const NodeId: React.FC = () => {
             handleClose={handleClose}
             handleAccept={handleDeleteNode}
             message={t('node.deleteconfirm')}
-            title={`${t('common.delete')} ${node.name}`}
+            title={`${t('common.delete')} ${hostsMap[node.hostid]?.name ?? ''}`}
           />
           <CustomDialog
             open={approveOpen}
             handleClose={handleApproveClose}
             handleAccept={handleApproveNode}
             message={t('node.approveconfirm')}
-            title={`${t('node.approve')} ${node.name}`}
+            title={`${t('node.approve')} ${hostsMap[node.hostid]?.name ?? ''}`}
           />
           <Grid item xs={12}>
             <div style={{ textAlign: 'center', margin: '1em 0 1em 0' }}>
               <Typography variant="h5">
-                {`${t('node.details')} : ${node.name}${
-                  node.ispending === 'yes' ? ` (${t('common.pending')})` : ''
-                }`}
+                {`${t('node.details')}: ${hostsMap[node.hostid]?.name ?? ''}`}
               </Typography>
             </div>
           </Grid>
@@ -139,6 +197,7 @@ export const NodeId: React.FC = () => {
                 to={`${url}/edit`}
                 variant="outlined"
                 style={{ width: '50%', margin: '4px' }}
+                disabled={node.pendingdelete}
               >
                 {t('common.edit')}
               </NmLink>
@@ -149,15 +208,21 @@ export const NodeId: React.FC = () => {
               >
                 {t('header.acls')}
               </NmLink>
+              <Button
+                variant="outlined"
+                style={{ width: '50%', margin: '4px' }}
+                onClick={onMetricsClick}
+              >
+                {t('pro.metrics')}
+              </Button>
               <NmLink
-                to={`/metrics/${netid}/${nodeId}`}
+                to={`/hosts/${node.hostid}`}
                 variant="outlined"
                 style={{ width: '50%', margin: '4px' }}
               >
-                {t('pro.metrics')}
+                {t('common.host')}
               </NmLink>
               <Button
-                disabled={node.isserver}
                 variant="outlined"
                 color="warning"
                 style={{ width: '50%', margin: '4px' }}
@@ -165,9 +230,7 @@ export const NodeId: React.FC = () => {
               >
                 {t('common.delete')}
               </Button>
-              {network.allowmanualsignup &&
-              node.ispending === 'yes' &&
-              user?.isAdmin ? (
+              {/* {network.allowmanualsignup && user?.isAdmin ? (
                 <Button
                   variant="outlined"
                   color="secondary"
@@ -176,7 +239,7 @@ export const NodeId: React.FC = () => {
                 >
                   {t('node.approve')}
                 </Button>
-              ) : null}
+              ) : null} */}
             </div>
           </Grid>
           <Grid item xs={6} sm={3} sx={rowMargin}></Grid>
@@ -184,7 +247,7 @@ export const NodeId: React.FC = () => {
           <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
             <TextField
               disabled
-              value={node.endpoint}
+              value={hostsMap[node.hostid]?.endpointip ?? ''}
               label={String(t('node.endpoint'))}
             />
           </Grid>
@@ -198,15 +261,8 @@ export const NodeId: React.FC = () => {
           <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
             <TextField
               disabled
-              value={node.listenport}
+              value={hostsMap[node.hostid]?.listenport ?? ''}
               label={String(t('node.listenport'))}
-            />
-          </Grid>
-          <Grid item xs={10} sm={4} md={3} sx={rowMargin}>
-            <FormControlLabel
-              label={String(t('node.udpholepunch'))}
-              control={<SwitchField checked={node.udpholepunch} disabled />}
-              disabled
             />
           </Grid>
           <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
@@ -233,7 +289,7 @@ export const NodeId: React.FC = () => {
           <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
             <TextField
               disabled
-              value={node.name}
+              value={hostsMap[node.hostid]?.name ?? ''}
               label={String(t('node.name'))}
             />
           </Grid>
@@ -241,30 +297,8 @@ export const NodeId: React.FC = () => {
           <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
             <TextField
               disabled
-              value={node.publickey}
+              value={hostsMap[node.hostid]?.publickey ?? ''}
               label={String(t('node.publickey'))}
-            />
-          </Grid>
-
-          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-            <TextField
-              disabled
-              value={node.postup}
-              label={String(t('node.postup'))}
-            />
-          </Grid>
-          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-            <TextField
-              disabled
-              value={node.postdown}
-              label={String(t('node.postdown'))}
-            />
-          </Grid>
-          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-            <TextField
-              disabled
-              value={node.allowedips ? node.allowedips.join(',') : ''}
-              label={String(t('node.allowedips'))}
             />
           </Grid>
           <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
@@ -298,7 +332,7 @@ export const NodeId: React.FC = () => {
           <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
             <TextField
               disabled
-              value={node.macaddress}
+              value={hostsMap[node.hostid]?.macaddress ?? ''}
               label={String(t('node.macaddress'))}
             />
           </Grid>
@@ -316,17 +350,14 @@ export const NodeId: React.FC = () => {
           <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
             <TextField
               disabled
-              value={node.localrange}
-              label={String(t('node.localrange'))}
+              value={hostsMap[node.hostid]?.os ?? ''}
+              label={String(t('node.os'))}
             />
-          </Grid>
-          <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
-            <TextField disabled value={node.os} label={String(t('node.os'))} />
           </Grid>
           <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
             <TextField
               disabled
-              value={node.mtu}
+              value={hostsMap[node.hostid]?.mtu ?? ''}
               label={String(t('node.mtu'))}
             />
           </Grid>
@@ -340,8 +371,7 @@ export const NodeId: React.FC = () => {
           <Grid item xs={6} sm={4} md={3} sx={rowMargin}>
             <TextField
               disabled
-              value={node.defaultacl === undefined ? nodeACLValues.unset : 
-                node.defaultacl ? nodeACLValues.allow : nodeACLValues.deny}
+              value={node.defaultacl}
               label={String(t('node.defaultacl'))}
             />
           </Grid>
@@ -351,20 +381,6 @@ export const NodeId: React.FC = () => {
                 <FormControlLabel
                   label={String(t('node.dnson'))}
                   control={<SwitchField checked={node.dnson} disabled />}
-                  disabled
-                />
-              </Grid>
-              <Grid item xs={10} sm={4} md={2} sx={rowMargin}>
-                <FormControlLabel
-                  label={String(t('node.islocal'))}
-                  control={<SwitchField checked={node.islocal} disabled />}
-                  disabled
-                />
-              </Grid>
-              <Grid item xs={10} sm={4} md={2} sx={rowMargin}>
-                <FormControlLabel
-                  label={String(t('node.ishub'))}
-                  control={<SwitchField checked={node.ishub} disabled />}
                   disabled
                 />
               </Grid>
@@ -380,6 +396,43 @@ export const NodeId: React.FC = () => {
             </Grid>
           </Grid>
         </Grid>
+
+        {/* modals */}
+        <Modal
+          open={shouldShowProModal}
+          onClose={() => setShouldShowProModal(false)}
+        >
+          <Box
+            style={{
+              ...styles.modal,
+              backgroundColor: theme.palette.background.paper,
+            }}
+          >
+            <Grid
+              container
+              justifyContent="space-around"
+              alignItems="center"
+              sx={{ padding: '2em' }}
+            >
+              <Grid item xs={12} textAlign="center">
+                <Typography variant="h6">
+                  Great! You have found a PRO feature. <br />
+                </Typography>
+                <Typography variant="h5" sx={{ marginTop: '2rem' }}>
+                  Click{' '}
+                  <a
+                    target="_blank"
+                    href="https://netmaker.io/enterprise"
+                    rel="noreferrer"
+                  >
+                    here
+                  </a>{' '}
+                  to get a pro license
+                </Typography>
+              </Grid>
+            </Grid>
+          </Box>
+        </Modal>
       </Route>
     </Switch>
   )

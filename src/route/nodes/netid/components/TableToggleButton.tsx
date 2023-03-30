@@ -26,7 +26,7 @@ const hoverBlueStyle = {
 }
 
 export const TableToggleButton: React.FC<{
-  which: 'egress' | 'ingress' | 'relay'
+  which: 'egress' | 'ingress'
   isOn: boolean
   node: Node
   createText: string
@@ -121,7 +121,6 @@ export const TableToggleButton: React.FC<{
             to={`/nodes/${node.network}/${node.id}/create-${which}`}
             onMouseEnter={handleHoverEnter}
             onMouseLeave={handleHoverLeave}
-            disabled={which === 'relay' && node.isrelayed}
           >
             {!isOn ? SignalIcon : hovering ? <Block /> : <Check />}
           </IconButton>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo, useCallback } from 'react'
 import { NmLink } from '~components/index'
 import { NmTable, TableColumns } from '~components/Table'
 import { Node } from '~modules/node'
@@ -25,13 +25,12 @@ import {
 } from '@mui/material'
 import {
   AccountTree,
-  AltRoute,
   CallMerge,
   CallSplit,
   Delete,
   Search,
   Sync,
-  Hub,
+  Visibility,
 } from '@mui/icons-material'
 import { i18n } from '../../../i18n/i18n'
 import { CreateEgress } from './components/CreateEgress'
@@ -41,12 +40,22 @@ import { NetworkSelect } from '../../../components/NetworkSelect'
 import { useDispatch, useSelector } from 'react-redux'
 import { deleteNode, setNodeSort } from '~store/modules/node/actions'
 import CustomizedDialogs from '~components/dialog/CustomDialog'
-import { HubButton } from './components/HubButton'
 import { MultiCopy } from '~components/CopyText'
-import { nodeSelectors, serverSelectors } from '~store/selectors'
+import {
+  hostsSelectors,
+  nodeSelectors,
+  serverSelectors,
+} from '~store/selectors'
 import { Tablefilter } from '~components/filter/Tablefilter'
 import { useEffect, useState } from 'react'
 import { FailoverButton } from '../../../ee/nodes/FailoverButton'
+import { getConnectivityStatus } from '~util/node'
+import LoadingText from '~components/LoadingText'
+
+type NetworkNodesTableData = Node & {
+  name: string
+  version: string
+}
 
 export const NetworkNodes: React.FC = () => {
   const { path, url } = useRouteMatch()
@@ -60,20 +69,43 @@ export const NetworkNodes: React.FC = () => {
   const [selected, setSelected] = React.useState({} as Node)
   const dispatch = useDispatch()
   const history = useHistory()
-  const [searchTerm, setSearchTerm] = useState(' ')
+  const [searchTerm, setSearchTerm] = useState('')
   const serverConfig = useSelector(serverSelectors.getServerConfig)
+  const hostsMap = useSelector(hostsSelectors.getHostsMap)
+  const tableData: NetworkNodesTableData[] = useMemo(
+    () =>
+      filterNodes.map((node) => ({
+        name: hostsMap[node.hostid]?.name ?? '',
+        version: hostsMap[node.hostid]?.version ?? '',
+        ...node,
+      })),
+    [hostsMap, filterNodes]
+  )
+
+  const nodeRowStyles = useMemo(
+    () =>
+      tableData
+        .filter((node) => node.pendingdelete)
+        .reduce((acc, node) => {
+          acc[node.id] = { color: 'grey' }
+          return acc
+        }, {} as { [rowId: React.Key]: Object }),
+    [tableData]
+  )
 
   useEffect(() => {
-    if (!!!searchTerm) {
+    if (!searchTerm) {
       setFilterNodes(listOfNodes)
     } else {
       setFilterNodes(
         listOfNodes.filter((node) =>
-          `${node.name}${node.address}${node.network}`.includes(searchTerm)
+          `${hostsMap[node.hostid]?.name ?? ''}${node.address}${
+            node.network
+          }`.includes(searchTerm)
         )
       )
     }
-  }, [listOfNodes, searchTerm])
+  }, [hostsMap, listOfNodes, searchTerm])
 
   const handleFilter = (event: { target: { value: string } }) => {
     const { value } = event.target
@@ -92,170 +124,162 @@ export const NetworkNodes: React.FC = () => {
     }
   }
 
+  const handleViewDetails = useCallback(
+    (node: Node) => {
+      history.push(`/nodes/${node.network}/${encodeURIComponent(node.id)}`)
+    },
+    [history]
+  )
+
+  const commonCols: TableColumns<NetworkNodesTableData> = useMemo(
+    () => [
+      {
+        id: 'name',
+        labelKey: 'hosts.name',
+        minWidth: 100,
+        format(value) {
+          return <LoadingText text={value} />
+        },
+      },
+      {
+        id: 'network',
+        labelKey: 'node.network',
+        minWidth: 100,
+        align: 'center',
+        format: (value) => (
+          <Tooltip
+            disableTouchListener
+            title={`${t('node.connected') as string}${value}`}
+            placement="top"
+          >
+            <NmLink sx={{ textTransform: 'none' }} to={`/networks/${value}`}>
+              {value}
+            </NmLink>
+          </Tooltip>
+        ),
+      },
+      {
+        id: 'address',
+        labelKey: 'node.addresses',
+        minWidth: 130,
+        align: 'right',
+        format: (_, node) => (
+          <MultiCopy type="subtitle2" values={[node.address, node.address6]} />
+        ),
+      },
+      {
+        id: 'version',
+        labelKey: 'common.version',
+        minWidth: 50,
+        align: 'center',
+        format(value) {
+          return <LoadingText text={value} />
+        },
+      },
+      {
+        id: 'isegressgateway',
+        labelKey: 'node.statusegress',
+        minWidth: 30,
+        align: 'center',
+        format: (isegress, row) =>
+          row.pendingdelete ? (
+            <></>
+          ) : (
+            <TableToggleButton
+              which="egress"
+              isOn={isegress}
+              node={row}
+              createText={`${i18n.t('node.createegress')} : ${
+                hostsMap[row.hostid]?.name ?? 'N/A'
+              }`}
+              removeText={`${i18n.t('node.removeegress')} : ${
+                hostsMap[row.hostid]?.name ?? 'N/A'
+              }`}
+              SignalIcon={<CallSplit />}
+              withHistory
+            />
+          ),
+      },
+      {
+        id: 'isingressgateway',
+        labelKey: 'node.statusingress',
+        minWidth: 30,
+        align: 'center',
+        format: (isingress, row) =>
+          row.pendingdelete ? (
+            <></>
+          ) : (
+            <TableToggleButton
+              which="ingress"
+              isOn={isingress}
+              node={row}
+              createText={`${i18n.t('node.createingress')} : ${
+                hostsMap[row.hostid]?.name ?? 'N/A'
+              }`}
+              removeText={`${i18n.t('node.removeingress')} : ${
+                hostsMap[row.hostid]?.name ?? 'N/A'
+              }`}
+              SignalIcon={<CallMerge />}
+            />
+          ),
+      },
+      {
+        id: 'lastcheckin',
+        labelKey: 'node.status',
+        minWidth: 170,
+        align: 'center',
+        format: (lastCheckInTime, row) => {
+          if (row.pendingdelete) {
+            return <></>
+          }
+
+          const status = getConnectivityStatus(lastCheckInTime)
+          switch (status) {
+            case 'error':
+              return (
+                <Tooltip title={t('node.error') as string} placement="top">
+                  <Chip color="error" label="ERROR" />
+                </Tooltip>
+              )
+            case 'warning':
+              return (
+                <Tooltip title={t('node.warning') as string} placement="top">
+                  <Chip color="warning" label="WARNING" />
+                </Tooltip>
+              )
+            default:
+              return (
+                <Tooltip title={t('node.healthy') as string} placement="top">
+                  <Chip color="success" label="HEALTHY" />
+                </Tooltip>
+              )
+          }
+        },
+      },
+    ],
+    [hostsMap, t]
+  )
+
+  const columns: TableColumns<NetworkNodesTableData> = useMemo(
+    () =>
+      serverConfig.IsEE
+        ? [
+            ...commonCols.slice(0, commonCols.length - 1),
+            {
+              id: 'failover',
+              labelKey: 'node.failover',
+              minWidth: 30,
+              align: 'center',
+              format: (_, row) => <FailoverButton node={row} />,
+            },
+            commonCols[commonCols.length - 1],
+          ]
+        : commonCols,
+    [commonCols, serverConfig.IsEE]
+  )
+
   if (!listOfNodes || !!!network) {
     return <h5>Not found, data missing</h5>
-  }
-
-  const columns: TableColumns<Node> = [
-    {
-      id: 'name',
-      labelKey: 'node.name',
-      minWidth: 100,
-      sortable: true,
-      format: (value, node) => (
-        <NmLink
-          to={`/nodes/${node.network}/${encodeURIComponent(node.id)}`}
-          sx={{ textTransform: 'none' }}
-        >
-          {value}
-          {`${
-            node.ispending === 'yes' ? ` (${i18n.t('common.pending')})` : ''
-          }`}
-        </NmLink>
-      ),
-    },
-    {
-      id: 'address',
-      labelKey: 'node.addresses',
-      minWidth: 130,
-      align: 'right',
-      format: (_, node) => (
-        <MultiCopy type="subtitle2" values={[node.address, node.address6]} />
-      ),
-    },
-    {
-      id: 'version',
-      labelKey: 'node.version',
-      minWidth: 50,
-      align: 'center',
-      format: (value) => <>{!!value ? value : 'N/A'}</>,
-    },
-    {
-      id: 'network',
-      labelKey: 'node.network',
-      minWidth: 100,
-      align: 'right',
-      format: (value) => (
-        <Tooltip
-          disableTouchListener={true}
-          title={`${t('node.connected') as string}${value}`}
-          placement="top"
-        >
-          <NmLink sx={{ textTransform: 'none' }} to={`/networks/${value}`}>
-            {value}
-          </NmLink>
-        </Tooltip>
-      ),
-    },
-    {
-      id: 'isegressgateway',
-      labelKey: 'node.statusegress',
-      minWidth: 30,
-      align: 'center',
-      format: (isegress, row) => (
-        <TableToggleButton
-          which="egress"
-          isOn={isegress}
-          node={row}
-          createText={`${i18n.t('node.createegress')} : ${row.name}`}
-          removeText={`${i18n.t('node.removeegress')} : ${row.name}`}
-          SignalIcon={<CallSplit />}
-          withHistory
-        />
-      ),
-    },
-    {
-      id: 'isingressgateway',
-      labelKey: 'node.statusingress',
-      minWidth: 30,
-      align: 'center',
-      format: (isingress, row) => (
-        <TableToggleButton
-          which="ingress"
-          isOn={isingress}
-          node={row}
-          createText={`${i18n.t('node.createingress')} : ${row.name}`}
-          removeText={`${i18n.t('node.removeingress')} : ${row.name}`}
-          SignalIcon={<CallMerge />}
-        />
-      ),
-    },
-    {
-      id: 'isrelay',
-      labelKey: 'node.statusrelay',
-      minWidth: 30,
-      align: 'center',
-      format: (isrelay, row) => (
-        <TableToggleButton
-          which="relay"
-          isOn={isrelay}
-          node={row}
-          createText={`${i18n.t('node.createrelay')} : ${row.name}`}
-          removeText={`${i18n.t('node.removerelay')} : ${row.name}`}
-          SignalIcon={<AltRoute />}
-          withHistory
-        />
-      ),
-    },
-    {
-      id: 'lastcheckin',
-      labelKey: 'node.status',
-      minWidth: 170,
-      align: 'center',
-      format: (lastcheckin) => {
-        const time = Date.now() / 1000
-        if (time - lastcheckin >= 1800)
-          return (
-            <Tooltip title={t('node.error') as string} placement="top">
-              <Chip color="error" label="ERROR" />
-            </Tooltip>
-          )
-        if (time - lastcheckin >= 300)
-          return (
-            <Tooltip title={t('node.warning') as string} placement="top">
-              <Chip color="warning" label="WARNING" />
-            </Tooltip>
-          )
-        return (
-          <Tooltip title={t('node.healthy') as string} placement="top">
-            <Chip color="success" label="HEALTHY" />
-          </Tooltip>
-        )
-      },
-    },
-  ]
-
-  if (network.ispointtosite) {
-    columns.push({
-      id: 'ishub',
-      labelKey: 'node.statushub',
-      minWidth: 30,
-      align: 'center',
-      format: (_, row) => (
-        <HubButton
-          node={row}
-          createText={`${i18n.t('node.createhub')} : ${row.name}`}
-          disabledText={`${i18n.t('node.onehub')} : ${row.name}`}
-          SignalIcon={<Hub />}
-        />
-      ),
-    })
-  }
-
-  if (serverConfig.IsEE) {
-    const oldColumn = columns[columns.length - 1]
-    columns[columns.length - 1] = {
-      id: 'failover',
-      labelKey: 'node.failover',
-      minWidth: 30,
-      align: 'center',
-      format: (_, row) => (
-        <FailoverButton
-          node={row}
-        />
-      ),
-    }
-    columns.push(oldColumn)
   }
 
   const handleClose = () => {
@@ -267,7 +291,7 @@ export const NetworkNodes: React.FC = () => {
   }
 
   const handleDeleteNode = () => {
-    if (!!selected.name) {
+    if (!!selected.id) {
       dispatch(
         deleteNode.request({
           netid: selected.network,
@@ -281,13 +305,14 @@ export const NetworkNodes: React.FC = () => {
   const handleNodeSortSelect = (selection: string) => {
     if (
       selection === 'address' ||
-      selection === 'name' ||
-      selection === 'network'
+      selection === 'network' ||
+      selection === 'name'
     ) {
       dispatch(
         setNodeSort({
           ...nodeSort,
           value: selection,
+          hostsMap,
         })
       )
     }
@@ -332,6 +357,7 @@ export const NetworkNodes: React.FC = () => {
                           setNodeSort({
                             ...nodeSort,
                             ascending: !nodeSort.ascending,
+                            hostsMap,
                           })
                         )
                       }}
@@ -369,31 +395,34 @@ export const NetworkNodes: React.FC = () => {
         <hr />
         <NmTable
           columns={columns}
-          rows={
-            filterNodes.length && filterNodes.length < listOfNodes.length
-              ? filterNodes
-              : listOfNodes
-          }
+          rows={tableData}
           actions={[
             (row) => ({
-              tooltip: !row.isserver
-                ? t('common.delete')
-                : t('common.disabled'),
-              disabled: row.isserver,
+              tooltip: t('common.view'),
+              icon: <Visibility />,
+              onClick: () => {
+                handleViewDetails(row)
+              },
+            }),
+            (row) => ({
+              tooltip: t('common.delete'),
               icon: <Delete />,
               onClick: () => {
                 handleOpen(row)
               },
             }),
           ]}
+          rowCellsStyles={nodeRowStyles}
           getRowId={(row) => row.id}
         />
         <CustomizedDialogs
-          open={!!selected.name}
+          open={!!selected.id}
           handleClose={handleClose}
           handleAccept={handleDeleteNode}
           message={t('node.deleteconfirm')}
-          title={`${t('common.delete')} ${selected.name}`}
+          title={`${t('common.delete')} ${
+            hostsMap[selected.hostid]?.name ?? ''
+          }`}
         />
       </Route>
       <Route

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   Paper,
@@ -25,6 +25,7 @@ type Column<Row> = {
     id: Key extends React.Key | null | undefined ? Key : never
     format?: (value: Row[Key], row: Row) => React.ReactChild
     minWidth: number
+    maxWidth?: number
     align?: TableCellProps['align']
     labelKey?: string
     label?: string
@@ -47,7 +48,12 @@ export interface Props<Row> {
   getRowId: (row: Row, index?: number) => React.Key
   rowsPerPageOptions?: Array<number>
   actions?: Array<(row: Row) => ActionIconProps>
+  actionsHeader?: {
+    width: number
+    element: ReactNode
+  }
   tableId?: string
+  rowCellsStyles?: { [rowId: React.Key]: Object }
 }
 
 function renderActionIcon(
@@ -73,11 +79,13 @@ function renderActionIcon(
  */
 export function NmTable<T>({
   actions,
+  actionsHeader,
   columns,
   rows,
   getRowId,
   rowsPerPageOptions,
   tableId = '',
+  rowCellsStyles,
 }: Props<T>) {
   const { url } = useRouteMatch()
   const history = useHistory()
@@ -157,7 +165,11 @@ export function NmTable<T>({
                   <TableCell
                     key={column.id}
                     align={column.align}
-                    style={{ minWidth: column.minWidth }}
+                    style={{
+                      minWidth: column.minWidth,
+                      maxWidth: column.maxWidth,
+                      overflow: 'hidden',
+                    }}
                   >
                     {column.label
                       ? column.label
@@ -167,7 +179,9 @@ export function NmTable<T>({
                   </TableCell>
                 ))}
                 {actions?.map((_, i) => (
-                  <TableCell width={40} key={`a${i}`} />
+                  <TableCell width={actionsHeader?.width ?? 60} key={`a${i}`}>
+                    {actionsHeader?.element ?? ''}
+                  </TableCell>
                 ))}
               </TableRow>
             </TableHead>
@@ -185,7 +199,24 @@ export function NmTable<T>({
                       {columns.map((column) => {
                         const value = row[column.id]
                         return (
-                          <TableCell key={column.id} align={column.align}>
+                          <TableCell
+                            key={column.id}
+                            align={column.align}
+                            style={
+                              rowCellsStyles
+                                ? {
+                                    ...rowCellsStyles[getRowId(row)],
+                                    maxWidth: column.maxWidth,
+                                    overflow: 'hidden',
+                                    textOverflow: 'ellipses',
+                                  }
+                                : {
+                                    maxWidth: column.maxWidth,
+                                    overflow: 'hidden',
+                                    textOverflow: 'ellipses',
+                                  }
+                            }
+                          >
                             {column.format !== undefined
                               ? column.format(value, row)
                               : value}

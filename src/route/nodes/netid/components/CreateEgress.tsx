@@ -3,9 +3,6 @@ import {
   Modal,
   Box,
   Grid,
-  FormHelperText,
-  useFormControl,
-  FormControl,
   Typography,
   useTheme,
   Tooltip,
@@ -23,7 +20,7 @@ import {
   validate,
   NmFormInputSwitch,
 } from '~components/form'
-import { correctIPv4CidrRegex, correctIpv6Regex } from '~util/regex'
+import { correctIPv4CidrRegex, correctIpv6CidrRegex } from '~util/regex'
 import { convertStringToArray } from '~util/fields'
 import { makeStyles, createStyles } from '@mui/styles'
 import { NotFound } from '~util/errorpage'
@@ -68,20 +65,6 @@ const styles = {
   },
 } as any
 
-function HelperText(props: { text: string; focusText: string }) {
-  const { focused } = useFormControl() || {}
-
-  const helperText = React.useMemo(() => {
-    if (focused) {
-      return props.focusText
-    }
-
-    return props.text
-  }, [focused, props.text, props.focusText])
-
-  return <FormHelperText>{helperText}</FormHelperText>
-}
-
 const useStyles = makeStyles(() =>
   createStyles({
     center: {
@@ -111,13 +94,11 @@ export function CreateEgress() {
 
   interface EgressData {
     ranges: string
-    iface: string
     natEnabled: boolean
   }
 
   const initialState: EgressData = {
     ranges: '',
-    iface: '',
     natEnabled: true,
   }
 
@@ -133,7 +114,6 @@ export function CreateEgress() {
           nodeid: nodeId,
           payload: {
             ranges: newRanges,
-            interface: data.iface,
             natEnabled: data.natEnabled ? 'yes' : 'no',
           },
         })
@@ -147,16 +127,18 @@ export function CreateEgress() {
       validate<EgressData>({
         ranges: (ranges, formData) => {
           if (!formData.ranges) {
-            return undefined
+            return {
+              message: t('node.validation.egressgatewayrange'),
+              type: 'value',
+            }
           }
 
           if (typeof ranges === 'string') {
             ranges = convertStringToArray(ranges)
           }
-
           for (let i = 0; i < ranges.length; i++) {
             const correctIPv4 = correctIPv4CidrRegex.test(ranges[i])
-            const correctIPv6 = correctIpv6Regex.test(ranges[i])
+            const correctIPv6 = correctIpv6CidrRegex.test(ranges[i])
             if (!correctIPv4 && !correctIPv6) {
               return {
                 message: t('node.validation.egressgatewayrange'),
@@ -222,19 +204,6 @@ export function CreateEgress() {
                 label={String(t('node.egressgatewayranges'))}
                 sx={{ height: '100%', margin: '1em 0 1em 0' }}
               />
-            </Grid>
-            <Grid item xs={12} sm={5}>
-              <FormControl fullWidth>
-                <NmFormInputText
-                  fullWidth
-                  name={'iface'}
-                  label={String(t('node.interface'))}
-                />
-                <HelperText
-                  text={t('helper.egress')}
-                  focusText={t('helper.egressiface')}
-                />
-              </FormControl>
             </Grid>
             <Grid
               item

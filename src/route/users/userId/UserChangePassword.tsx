@@ -19,11 +19,14 @@ export const UserChangePassword: React.FC = () => {
 
   const user = useSelector(authSelectors.getUser)
 
-  const initialState = {
-    username: user?.name || '',
-    password: '',
-    confirmation: '',
-  }
+  const initialState = useMemo(
+    () => ({
+      username: user?.name || '',
+      password: '',
+      confirmation: '',
+    }),
+    [user?.name]
+  )
 
   const formRef = React.createRef<FormRef<typeof initialState>>()
 
@@ -83,50 +86,52 @@ export const UserChangePassword: React.FC = () => {
         <h3>{t('users.update.password')}</h3>
       </Grid>
       <Grid item xs={12}>
-        <NmForm
-          ref={formRef}
-          initialState={initialState}
-          resolver={validation}
-          onSubmit={onSubmit}
-          submitText={t('users.update.passwordSubmit')}
-          submitProps={{
-            type: 'submit',
-            fullWidth: true,
-            variant: 'contained',
-            color: 'primary',
-          }}
-        >
-          <Grid container justifyContent="space-around" alignItems="center">
-            <Grid item sm={12} md={5}>
-              <NmFormInputText
-                name={'password'}
-                label={String(t('users.label.password'))}
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                placeholder=""
-                type="password"
-                id="password"
-                autoComplete="false"
-              />
+        {initialState?.username && (
+          <NmForm
+            ref={formRef}
+            initialState={initialState}
+            resolver={validation}
+            onSubmit={onSubmit}
+            submitText={t('users.update.passwordSubmit')}
+            submitProps={{
+              type: 'submit',
+              fullWidth: true,
+              variant: 'contained',
+              color: 'primary',
+            }}
+          >
+            <Grid container justifyContent="space-around" alignItems="center">
+              <Grid item sm={12} md={5}>
+                <NmFormInputText
+                  name={'password'}
+                  label={String(t('users.label.password'))}
+                  variant="outlined"
+                  margin="normal"
+                  required
+                  fullWidth
+                  placeholder=""
+                  type="password"
+                  id="password"
+                  autoComplete="false"
+                />
+              </Grid>
+              <Grid item sm={12} md={5}>
+                <NmFormInputText
+                  name={'confirmation'}
+                  label={String(t('users.label.confirmation'))}
+                  variant="outlined"
+                  margin="normal"
+                  required
+                  fullWidth
+                  placeholder=""
+                  type="password"
+                  id="confirmation"
+                  autoComplete="false"
+                />
+              </Grid>
             </Grid>
-            <Grid item sm={12} md={5}>
-              <NmFormInputText
-                name={'confirmation'}
-                label={String(t('users.label.confirmation'))}
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                placeholder=""
-                type="password"
-                id="confirmation"
-                autoComplete="false"
-              />
-            </Grid>
-          </Grid>
-        </NmForm>
+          </NmForm>
+        )}
       </Grid>
       <Dialog />
     </Grid>

@@ -20,17 +20,16 @@ import { login } from '../auth/actions'
 import { getToken } from '../auth/selectors'
 import { AxiosResponse } from 'axios'
 import { getType } from 'typesafe-actions'
-import { ExternalClient, NodePayload } from './types'
+import { ExternalClient, Node } from './types'
 import { generatorToastSaga } from '../toast/saga'
 import { i18n } from '../../../i18n/i18n'
-import { nodeToNodePayload } from './utils'
 import { apiRequestWithAuthSaga } from '../api/saga'
 
 function* handleGetNodesRequest(
   action: ReturnType<typeof getNodes['request']>
 ) {
   try {
-    const response: AxiosResponse<Array<NodePayload>> =
+    const response: AxiosResponse<Array<Node>> =
       yield apiRequestWithAuthSaga('get', '/nodes', {})
     yield put(getNodes['success'](response.data))
   } catch (e: unknown) {
@@ -73,12 +72,19 @@ function* handleUpdateNodeRequest(
       },
     })
 
-    const newNode = nodeToNodePayload(action.payload.node)
+    const newNode = action.payload.node
 
-    const response: AxiosResponse<NodePayload> = yield apiRequestWithAuthSaga(
+    const response: AxiosResponse<Node> = yield apiRequestWithAuthSaga(
       'put',
       `/nodes/${action.payload.netid}/${action.payload.node.id}`,
-      newNode,
+      {
+        ...newNode,
+        persistentkeepalive: Number(newNode.persistentkeepalive),
+        lastmodified: Number(newNode.lastmodified),
+        expdatetime: Number(newNode.expdatetime),
+        lastcheckin: Number(newNode.lastcheckin),
+        lastpeerupdate: Number(newNode.lastpeerupdate),
+      },
       {}
     )
 
@@ -173,7 +179,7 @@ function* handleCreateRelayNodeRequest(
       },
     })
 
-    const response: AxiosResponse<NodePayload> = yield apiRequestWithAuthSaga(
+    const response: AxiosResponse<Node> = yield apiRequestWithAuthSaga(
       'post',
       `/nodes/${action.payload.netid}/${action.payload.nodeid}/createrelay`,
       { relayaddrs: action.payload.payload.ranges },
@@ -206,7 +212,7 @@ function* handleDeleteRelayNodeRequest(
       },
     })
 
-    const response: AxiosResponse<NodePayload> = yield apiRequestWithAuthSaga(
+    const response: AxiosResponse<Node> = yield apiRequestWithAuthSaga(
       'delete',
       `/nodes/${action.payload.netid}/${action.payload.nodeid}/deleterelay`,
       {}
@@ -238,7 +244,7 @@ function* handleCreateIngressNodeRequest(
       },
     })
 
-    const response: AxiosResponse<NodePayload> = yield apiRequestWithAuthSaga(
+    const response: AxiosResponse<Node> = yield apiRequestWithAuthSaga(
       'post',
       `/nodes/${action.payload.netid}/${action.payload.nodeid}/createingress`,
       {failover: action.payload.failover ? true : false},
@@ -271,7 +277,7 @@ function* handleDeleteIngressNodeRequest(
       },
     })
 
-    const response: AxiosResponse<NodePayload> = yield apiRequestWithAuthSaga(
+    const response: AxiosResponse<Node> = yield apiRequestWithAuthSaga(
       'delete',
       `/nodes/${action.payload.netid}/${action.payload.nodeid}/deleteingress`,
       {}
@@ -468,7 +474,7 @@ function* handleCreateEgressNodeRequest(
       },
     })
 
-    const response: AxiosResponse<NodePayload> = yield apiRequestWithAuthSaga(
+    const response: AxiosResponse<Node> = yield apiRequestWithAuthSaga(
       'post',
       `/nodes/${action.payload.netid}/${action.payload.nodeid}/creategateway`,
       action.payload.payload,
@@ -501,7 +507,7 @@ function* handleDeleteEgressNodeRequest(
       },
     })
 
-    const response: AxiosResponse<NodePayload> = yield apiRequestWithAuthSaga(
+    const response: AxiosResponse<Node> = yield apiRequestWithAuthSaga(
       'delete',
       `/nodes/${action.payload.netid}/${action.payload.nodeid}/deletegateway`,
       {}

@@ -16,7 +16,7 @@ import { networkToNetworkPayload } from '~modules/network/utils'
 import { useRouteMatch } from 'react-router'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 import { serverSelectors } from '~store/selectors'
-import { correctIPv4CidrRegex, correctIpv6Regex } from '~util/regex'
+import { correctIPv4CidrRegex, correctIpv6CidrRegex } from '~util/regex'
 import { NotFound } from '~util/errorpage'
 import { NmLink } from '~components/Link'
 
@@ -49,7 +49,7 @@ export const ProNetworkEdit: React.FC<{
           if (!formData.isipv6) {
             return undefined
           }
-          return !correctIpv6Regex.test(addressrange6)
+          return !correctIpv6CidrRegex.test(addressrange6)
             ? {
                 message: t('network.validation.ipv6'),
                 type: 'value',
@@ -127,14 +127,6 @@ export const ProNetworkEdit: React.FC<{
               name={'addressrange6'}
               label={String(t('network.addressrange6'))}
               disabled={!network.isipv6}
-            />
-          </Grid>
-        </Tooltip>
-        <Tooltip title={t('helper.localrange') as string} placement="top">
-          <Grid item xs={12} sm={4} md={3}>
-            <NmFormInputText
-              name={'localrange'}
-              label={String(t('network.localrange'))}
             />
           </Grid>
         </Tooltip>
@@ -237,14 +229,6 @@ export const ProNetworkEdit: React.FC<{
             <NmFormInputSwitch
               name={'defaultudpholepunch'}
               label={String(t('network.defaultudpholepunch'))}
-            />
-          </Grid>
-        </Tooltip>
-        <Tooltip title={t('helper.pointtosite') as string}>
-          <Grid item xs={12} sm={4} md={2}>
-            <NmFormInputSwitch
-              name={'ispointtosite'}
-              label={String(t('network.ispointtosite'))}
             />
           </Grid>
         </Tooltip>

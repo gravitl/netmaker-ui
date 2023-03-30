@@ -9,6 +9,8 @@ import { reducer as server } from './modules/server'
 import { reducer as router } from './modules/router'
 import { reducer as acls } from './modules/acls'
 import { reducer as pro } from './modules/pro'
+import { reducer as hosts } from './modules/hosts'
+import { reducer as enrollmentKeys } from './modules/enrollmentkeys'
 
 export const createRootReducer = () =>
   combineReducers({
@@ -20,6 +22,8 @@ export const createRootReducer = () =>
     router,
     acls,
     pro,
+    hosts,
+    enrollmentKeys,
   })
 
 export type RootState = StateType<ReturnType<typeof createRootReducer>>

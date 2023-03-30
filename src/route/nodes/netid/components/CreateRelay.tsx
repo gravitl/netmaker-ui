@@ -4,13 +4,14 @@ import { useHistory } from 'react-router-dom'
 import { useRouteMatch, useParams } from 'react-router-dom'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 import { useTranslation } from 'react-i18next'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { createRelayNode } from '~modules/node/actions'
 import { useNodeById } from '~util/node'
 import { useNodesByNetworkId } from '~util/network'
 import { FormRef, NmForm, NmFormInputText } from '~components/form'
 import RelaySelect from './RelaySelect'
 import { NotFound } from '~util/errorpage'
+import { hostsSelectors } from '~store/selectors'
 
 const styles = {
   centerText: {
@@ -62,6 +63,7 @@ export function CreateRelay() {
   const dispatch = useDispatch()
   const nodes = useNodesByNetworkId(netid)
   const nodeNames = []
+  const hostsMap = useSelector(hostsSelectors.getHostsMap)
 
   useLinkBreadcrumb({
     link: url,
@@ -103,9 +105,8 @@ export function CreateRelay() {
   for (let i = 0; i < nodes.length; i++) {
     if (!!nodes && !!nodes.length) {
       const data = {
-        name: nodes[i].name,
+        name: hostsMap[nodes[i].hostid]?.name ?? '',
         address: nodes[i].address,
-        isserver: nodes[i].isserver,
         address6: nodes[i].address6,
       }
       if (nodes[i].id !== node.id) {
@@ -161,7 +162,7 @@ export function CreateRelay() {
               sx={{ textAlign: 'center', margin: '1em 0 1em 0' }}
             >
               <Typography variant="h4">
-                {`${t('node.createrelay')} : ${node.name}`}
+                {`${t('node.createrelay')}: ${hostsMap[node.hostid]?.name ?? ''}`}
               </Typography>
             </Grid>
             <Grid item xs={12} sm={5}>

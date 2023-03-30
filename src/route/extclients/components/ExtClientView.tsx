@@ -11,7 +11,7 @@ import { i18n } from '../../../i18n/i18n'
 import { filterExtClientsByNetwork, filterIngressGateways } from '~util/node'
 import { useSelector } from 'react-redux'
 import { ExtClientCreateButton } from './ExtClientCreateButton'
-import { nodeSelectors } from '~store/types'
+import { hostsSelectors, nodeSelectors } from '~store/types'
 import { DownloadExtClientButton } from './DownloadExtClientButton'
 import { DeleteExtClientButton } from './DeleteExtClientButton'
 import { EditExtClientButton } from './EditExtClientButton'
@@ -28,32 +28,6 @@ import CustomizedDialogs from '~components/dialog/CustomDialog'
 import { MultiCopy } from '~components/CopyText'
 import { NotFound } from '~util/errorpage'
 import { serverSelectors } from '~store/types'
-
-const columns: TableColumns<Node> = [
-  {
-    id: 'name',
-    labelKey: 'ingress.name',
-    minWidth: 125,
-    align: 'center',
-    sortable: true,
-  },
-  {
-    id: 'address',
-    labelKey: 'node.addresses',
-    minWidth: 90,
-    align: 'center',
-    format: (_, node) => (
-      <MultiCopy type="subtitle2" values={[node.address, node.address6]} />
-    ),
-  },
-  {
-    id: 'id',
-    label: i18n.t('ingress.add'),
-    minWidth: 45,
-    align: 'center',
-    format: (_, node) => <ExtClientCreateButton node={node} />,
-  },
-]
 
 const centerText = {
   textAlign: 'center',
@@ -74,6 +48,36 @@ export const ExtClientView: React.FC = () => {
   )
   const dispatch = useDispatch()
   const serverConfig = useSelector(serverSelectors.getServerConfig)
+  const hostsMap = useSelector(hostsSelectors.getHostsMap)
+
+  const columns: TableColumns<Node> = [
+    {
+      id: 'id',
+      labelKey: 'ingress.name',
+      minWidth: 125,
+      align: 'center',
+      sortable: true,
+      format(_, node) {
+        return `${hostsMap[node.hostid]?.name ?? ''} (${node.server}/${node.network})`
+      }
+    },
+    {
+      id: 'address',
+      labelKey: 'node.addresses',
+      minWidth: 90,
+      align: 'center',
+      format: (_, node) => (
+        <MultiCopy type="subtitle2" values={[node.address, node.address6]} />
+      ),
+    },
+    {
+      id: 'id',
+      label: i18n.t('ingress.add'),
+      minWidth: 45,
+      align: 'center',
+      format: (_, node) => <ExtClientCreateButton node={node} />,
+    },
+  ]
 
   useLinkBreadcrumb({
     link: url,
@@ -116,13 +120,13 @@ export const ExtClientView: React.FC = () => {
       format: (_, client) => <EditExtClientButton client={client} />,
     },
     {
-      id: 'address',
+      id: 'internal_ip_addr',
       labelKey: 'node.addresses',
       minWidth: 80,
       align: 'center',
       sortable: true,
       format: (_, node) => (
-        <MultiCopy type="subtitle2" values={[node.address, node.address6]} />
+        <MultiCopy type="subtitle2" values={[node.internal_ip_addr, node.internal_ip_addr6]} />
       ),
     },
     {

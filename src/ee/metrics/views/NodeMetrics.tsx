@@ -58,7 +58,6 @@ export const NodeMetrics: React.FC = () => {
   const metrics = useSelector(serverSelectors.getNodeMetric(nodeid))
   const isFetching = useSelector(serverSelectors.isFetchingServerConfig)
   const hasFetched = useSelector(serverSelectors.hasFetchedNodeMetrics)
-  const [nodeMetrics, setNodeMetrics] = React.useState(metrics)
 
   const attempts = useSelector(serverSelectors.getAttempts)
   const [currentPeerMetrics, setCurrentPeerMetrics] = React.useState(
@@ -221,21 +220,13 @@ export const NodeMetrics: React.FC = () => {
         return null
       })
       setCurrentPeerMetrics(newPeerMetrics)
-      setNodeMetrics(metrics)
     }
 
     if (currentNodeID !== nodeid) {
       syncMetrics()
       setCurrentNodeID(nodeid)
     }
-  }, [
-    metrics,
-    nodeMetrics,
-    currentPeerMetrics,
-    syncMetrics,
-    currentNodeID,
-    nodeid,
-  ])
+  }, [metrics, syncMetrics, currentNodeID, nodeid])
 
   if (
     isFetching ||

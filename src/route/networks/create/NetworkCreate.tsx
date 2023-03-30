@@ -11,25 +11,19 @@ import {
   validate,
 } from '../../../components/form'
 import { useLinkBreadcrumb } from '../../../components/PathBreadcrumbs'
-import {
-  createNetwork,
-  getNetworks,
-} from '../../../store/modules/network/actions'
+import { createNetwork } from '../../../store/modules/network/actions'
 import { randomNetworkName, randomCIDR, randomCIDR6 } from '~util/fields'
 import { useHistory } from 'react-router'
-import { correctIPv4CidrRegex, correctIpv6Regex } from '~util/regex'
+import { correctIPv4CidrRegex, correctIpv6CidrRegex } from '~util/regex'
 import { serverSelectors } from '~store/selectors'
 
 interface CreateNetwork {
   addressrange: string
   netid: string
-  localrange: string
-  islocal: boolean
   isipv4: boolean
   isipv6: boolean
   addressrange6: string
   defaultudpholepunch: boolean
-  ispointtosite: boolean
   defaultacl: boolean
   defaultaccesslevel: number
   defaultusernodelimit: number
@@ -39,13 +33,10 @@ interface CreateNetwork {
 const initialState: CreateNetwork = {
   addressrange: '',
   netid: '',
-  localrange: '',
-  islocal: false,
   isipv4: true,
   isipv6: false,
   addressrange6: '',
   defaultudpholepunch: false,
-  ispointtosite: false,
   defaultacl: true,
   defaultaccesslevel: 3,
   defaultusernodelimit: 0,
@@ -70,7 +61,6 @@ export const NetworkCreate: React.FC = () => {
   const serverConfig = useSelector(serverSelectors.getServerConfig)
   const history = useHistory()
   const classes = useStyles()
-  const [viewLocal, setViewLocal] = React.useState(false)
   const [useIpv4, setUseIpv4] = React.useState(true)
   const [useIpv6, setUseIpv6] = React.useState(false)
 
@@ -79,13 +69,11 @@ export const NetworkCreate: React.FC = () => {
       dispatch(
         createNetwork.request({
           ...data,
-          islocal: data.islocal ? 'yes' : 'no',
           isipv4: data.isipv4 ? 'yes' : 'no',
           isipv6: data.isipv6 ? 'yes' : 'no',
           addressrange6: data.isipv6 ? data.addressrange6 : '',
           addressrange: data.isipv4 ? data.addressrange : '',
           defaultudpholepunch: data.defaultudpholepunch ? 'yes' : 'no',
-          ispointtosite: data.ispointtosite ? 'yes' : 'no',
           defaultacl: data.defaultacl ? 'yes' : 'no',
           prosettings: {
             defaultaccesslevel: serverConfig.IsEE
@@ -98,7 +86,6 @@ export const NetworkCreate: React.FC = () => {
           },
         })
       )
-      dispatch(getNetworks.request())
       history.push('/networks')
     },
     [dispatch, history, serverConfig]
@@ -122,7 +109,7 @@ export const NetworkCreate: React.FC = () => {
           if (!formData.isipv6) {
             return undefined
           }
-          return !correctIpv6Regex.test(addressrange6)
+          return !correctIpv6CidrRegex.test(addressrange6)
             ? {
                 message: t('network.validation.ipv6'),
                 type: 'value',
@@ -182,10 +169,6 @@ export const NetworkCreate: React.FC = () => {
 
   const handleViewIpv4 = () => {
     setUseIpv4(!useIpv4)
-  }
-
-  const handleViewLocal = () => {
-    setViewLocal(!viewLocal)
   }
 
   return (
@@ -350,58 +333,6 @@ export const NetworkCreate: React.FC = () => {
                 />
               </div>
             </Tooltip>
-          </Grid>
-          <Grid
-            item
-            xs={12}
-            sm={10}
-            md={10}
-            className={classes.center + ' ' + classes.rowMargin}
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <Tooltip
-              title={t('helper.ispointtosite') as string}
-              placement="top"
-            >
-              <div>
-                <NmFormInputSwitch
-                  name={'ispointtosite'}
-                  label={String(t('network.ispointtosite'))}
-                />
-              </div>
-            </Tooltip>
-          </Grid>
-          <Grid
-            item
-            xs={12}
-            sm={12}
-            md={10}
-            className={classes.center + ' ' + classes.rowMargin}
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <Tooltip title={t('helper.islocal') as string} placement="top">
-              <div onClick={handleViewLocal}>
-                <NmFormInputSwitch
-                  name={'islocal'}
-                  label={String(t('network.islocal'))}
-                />
-              </div>
-            </Tooltip>
-            {viewLocal && (
-              <NmFormInputText
-                style={{ width: '60%' }}
-                name={'localrange'}
-                label={String(t('network.localrange'))}
-              />
-            )}
           </Grid>
           {serverConfig.IsEE && (
             <>
