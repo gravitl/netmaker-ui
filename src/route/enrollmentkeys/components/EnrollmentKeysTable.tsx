@@ -85,7 +85,7 @@ export const EnrollmentKeysTable: FC<EnrollmentKeysTableProps> = (props) => {
         .concat(key.networks)
         .join('')
         .toLocaleLowerCase()
-        .includes(searchFilter.toLocaleLowerCase())
+        .includes(searchFilter.toLocaleLowerCase().trim())
     )
   }, [searchFilter, tableData])
 
@@ -121,7 +121,7 @@ export const EnrollmentKeysTable: FC<EnrollmentKeysTableProps> = (props) => {
           label={t('common.search')}
           placeholder={t('common.searchbytag')}
           value={searchFilter}
-          onInput={(ev: any) => setSearchFilter(String(ev.target.value).trim())}
+          onInput={(ev: any) => setSearchFilter(String(ev.target.value))}
         />
       </Grid>
 
