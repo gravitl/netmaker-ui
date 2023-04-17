@@ -6,6 +6,7 @@ import {
   UpdateHostNetworksPayload,
   DeleteHostRelayPayload,
   CreateHostRelayPayload,
+  RefreshHostKeysPayload,
 } from '.'
 
 export const getHosts = createAsyncAction(
@@ -30,6 +31,16 @@ export const updateHostNetworks = createAsyncAction(
   Error
 >()
 
+export const refreshHostKeys = createAsyncAction(
+  'Hosts_refreshHostKeys_Request',
+  'Hosts_refreshHostKeys_Success',
+  'Hosts_refreshHostKeys_Failure'
+)<
+  RefreshHostKeysPayload['Request'],
+  RefreshHostKeysPayload['Response'],
+  Error
+>()
+
 export const deleteHost = createAsyncAction(
   'Hosts_deleteHosts_Request',
   'Hosts_deleteHosts_Success',
@@ -40,12 +51,20 @@ export const createHostRelay = createAsyncAction(
   'Hosts_createHostRelay_Request',
   'Hosts_createHostRelay_Success',
   'Hosts_createHostRelay_Failure'
-)<CreateHostRelayPayload['Request'], CreateHostRelayPayload['Response'], Error>()
+)<
+  CreateHostRelayPayload['Request'],
+  CreateHostRelayPayload['Response'],
+  Error
+>()
 
 export const deleteHostRelay = createAsyncAction(
   'Hosts_deleteHostRelay_Request',
   'Hosts_deleteHostRelay_Success',
   'Hosts_deleteHostRelay_Failure'
-)<DeleteHostRelayPayload['Request'], DeleteHostRelayPayload['Response'], Error>()
+)<
+  DeleteHostRelayPayload['Request'],
+  DeleteHostRelayPayload['Response'],
+  Error
+>()
 
 export const clearHosts = createAction('Hosts_clearHosts')<string>()
