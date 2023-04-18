@@ -2,7 +2,7 @@
   <img style="width:50%;" src="src/netmaker-logo.png"><break/>
 </p>
 
-## v0.18.6
+## v0.18.7
 
 ## For more information, visit one of the official documentation sites:
 
