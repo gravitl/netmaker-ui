@@ -59,6 +59,11 @@ export interface UpdateHostPayload {
   Response: Host
 }
 
+export interface RefreshHostKeysPayload {
+  Request: { id: Host['id'] }
+  Response: void
+}
+
 export interface UpdateHostNetworksPayload {
   Request: {
     id: Host['id']
