@@ -16,7 +16,7 @@
     "chart.js": "^3.8.0",
     "copy-to-clipboard": "^3.3.1",
     "cytoscape": "^3.20.0",
-    "date-fns": "^2.24.0",
+    "date-fns": "^2.29.3",
     "graphology": "^0.23.2",
     "graphology-layout": "^0.5.0",
     "graphology-layout-forceatlas2": "^0.8.1",
