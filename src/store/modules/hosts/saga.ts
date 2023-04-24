@@ -4,6 +4,7 @@ import {
   deleteHost,
   deleteHostRelay,
   getHosts,
+  refreshHostKeys,
   updateHost,
   updateHostNetworks,
 } from './actions'
@@ -70,6 +71,41 @@ function* handleUpdateHostRequest(
     yield put(updateHost['success'](response.data))
   } catch (e: unknown) {
     yield put(updateHost['failure'](e as Error))
+  }
+}
+
+function* handleRefreshHostKeysRequest(
+  action: ReturnType<typeof refreshHostKeys['request']>
+) {
+  try {
+    yield fork(generatorToastSaga, {
+      success: refreshHostKeys['success'],
+      error: refreshHostKeys['failure'],
+      params: {
+        pending: i18n.t('common.pending', {
+          hostid: action.payload.id,
+        }),
+        success: i18n.t('toast.update.success.host', {
+          hostid: action.payload.id,
+        }),
+        error: (e) =>
+          `${i18n.t('toast.update.failure.host', {
+            hostid: action.payload.id,
+          })}: ${e.response.data.Message || ''}`,
+      },
+    })
+
+    yield apiRequestWithAuthSaga(
+      'put',
+      `/hosts/${action.payload.id}/keys`,
+      {},
+      {}
+    )
+
+    yield put(refreshHostKeys['success']())
+    yield put(getHosts['request']())
+  } catch (e: unknown) {
+    yield put(refreshHostKeys['failure'](e as Error))
   }
 }
 
@@ -242,6 +278,10 @@ export function* saga() {
     takeEvery(
       getType(deleteHostRelay['request']),
       handleDeleteHostRelayRequest
+    ),
+    takeEvery(
+      getType(refreshHostKeys['request']),
+      handleRefreshHostKeysRequest
     ),
   ])
 }

@@ -120,13 +120,13 @@ export const ExtClientView: React.FC = () => {
       format: (_, client) => <EditExtClientButton client={client} />,
     },
     {
-      id: 'internal_ip_addr',
+      id: 'address',
       labelKey: 'node.addresses',
       minWidth: 80,
       align: 'center',
       sortable: true,
       format: (_, node) => (
-        <MultiCopy type="subtitle2" values={[node.internal_ip_addr, node.internal_ip_addr6]} />
+        <MultiCopy type="subtitle2" values={[node.address, node.address6]} />
       ),
     },
     {
