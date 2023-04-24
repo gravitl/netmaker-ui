@@ -23,7 +23,7 @@ COPY . /usr/src/app
 ENV NODE_OPTIONS "--openssl-legacy-provider"
 RUN npm run build
 
-FROM nginx:1.21-alpine
+FROM nginx:1.23-alpine
 # RUN rm -rf /etc/nginx/conf.d
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=builder /usr/src/app/build /usr/share/nginx/html
