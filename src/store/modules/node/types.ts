@@ -49,8 +49,6 @@ export interface ExternalClient {
   lastmodified: number
   enabled: boolean
   ownerid: string
-  internal_ip_addr: string
-  internal_ip_addr6: string
 }
 
 export interface GetNodesPayload {

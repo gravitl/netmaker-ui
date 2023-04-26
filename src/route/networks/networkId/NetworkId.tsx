@@ -11,7 +11,6 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   useRouteMatch,
-  useHistory,
   useParams,
   Switch,
   Route,
@@ -20,7 +19,6 @@ import { NmLink } from '~components/index'
 import { useDialog } from '~components/ConfirmDialog'
 import { useLinkBreadcrumb } from '~components/PathBreadcrumbs'
 import { deleteNetwork } from '~modules/network/actions'
-import { NetworkEdit } from './edit/NetworkEdit'
 import { useNetwork } from '~util/network'
 import { NotFound } from '~util/errorpage'
 import { NetworkListEdit } from './edit/NetworkListEdit'
@@ -28,7 +26,6 @@ import { serverSelectors } from '~store/selectors'
 
 export const NetworkId: React.FC = () => {
   const { path, url } = useRouteMatch()
-  const history = useHistory()
   const { t } = useTranslation()
   const { netid } = useParams<{ netid: string }>()
   const network = useNetwork(netid)
@@ -92,17 +89,6 @@ export const NetworkId: React.FC = () => {
         <Route path={`${path}/edit/groups`}>
           <NetworkListEdit netid={netid} field='groups' />
         </Route>
-        <Route path={`${path}/edit`}>
-          {/* <NetworkModifiedStats netid={netid} /> */}
-          <NetworkEdit
-            network={network}
-            onCancel={() => {
-              history.push(
-                url.replace(':netid', network.netid).replace('/edit', '')
-              )
-            }}
-          />
-        </Route>
         <Route exact path={path}>
           <div style={{ textAlign: 'center', margin: '1em 0 1em 0' }}>
             <Typography variant="h5" style={{ overflowWrap: 'break-word' }}>
@@ -124,14 +110,6 @@ export const NetworkId: React.FC = () => {
                   margin: '0.5em 0 0.5em 0',
                 }}
               >
-                <NmLink
-                  to={`${url}/edit`}
-                  variant="outlined"
-                  fullWidth
-                  style={buttonStyle}
-                >
-                  {t('common.edit')}
-                </NmLink>
                 <NmLink
                   to={`/nodes/${netid}`}
                   variant="outlined"

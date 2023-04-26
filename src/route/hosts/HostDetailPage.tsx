@@ -29,19 +29,25 @@ import CustomDialog from '~components/dialog/CustomDialog'
 import { NotFound } from '~util/errorpage'
 import { HostNetworksTable } from './components/HostNetworksTable'
 import { HostEditPage } from './HostEditPage'
-import { deleteHost, deleteHostRelay } from '~store/modules/hosts/actions'
+import {
+  deleteHost,
+  deleteHostRelay,
+  refreshHostKeys,
+} from '~store/modules/hosts/actions'
 import { useGetHostById } from '~util/hosts'
 import { HostRelayTable } from './components/HostRelayTable'
 import { CreateRelayModal } from './components/CreateRelayModal'
 import { Visibility } from '@mui/icons-material'
 import copy from 'copy-to-clipboard'
 import { CopyAllOutlined } from '@mui/icons-material'
+import CustomizedDialogs from '~components/dialog/CustomDialog'
 
 export const HostDetailPage: FC = () => {
   const { path, url } = useRouteMatch()
   const history = useHistory()
   const { t } = useTranslation()
   const dispatch = useDispatch()
+
   const { hostId } = useParams<{ hostId: string }>()
   const host = useGetHostById(decodeURIComponent(hostId))
   const [showDeleteModal, setShowDeleteModal] = useState(false)
@@ -50,6 +56,10 @@ export const HostDetailPage: FC = () => {
     'details' | 'networks' | 'relay-status'
   >('details')
   const [showCreateRelayModal, setShowCreateRelayModal] = useState(false)
+  const [
+    shouldShowConfirmRefreshKeysModal,
+    setShouldShowConfirmRefreshKeysModal,
+  ] = useState(false)
 
   useLinkBreadcrumb({
     link: url,
@@ -93,6 +103,11 @@ export const HostDetailPage: FC = () => {
         hostid: host.id,
       })
     )
+  }, [dispatch, host])
+
+  const refreshKeys = useCallback(() => {
+    if (!host) return
+    dispatch(refreshHostKeys['request']({ id: host.id }))
   }, [dispatch, host])
 
   if (!host) {
@@ -152,6 +167,15 @@ export const HostDetailPage: FC = () => {
                   <NmLink fullWidth to={`${url}/edit`} variant="outlined">
                     {t('common.edit')}
                   </NmLink>
+                </Grid>
+                <Grid item xs={12} md={2}>
+                  <Button
+                    fullWidth
+                    onClick={() => setShouldShowConfirmRefreshKeysModal(true)}
+                    variant="outlined"
+                  >
+                    {t('common.refreshkeys')}
+                  </Button>
                 </Grid>
                 <Grid item xs={12} md={2}>
                   <Button
@@ -287,9 +311,7 @@ export const HostDetailPage: FC = () => {
               <Grid item xs={12} md={3} sx={rowMargin}>
                 <FormControlLabel
                   label={String(t('hosts.isstatic'))}
-                  control={
-                    <SwitchField checked={host.isstatic} disabled />
-                  }
+                  control={<SwitchField checked={host.isstatic} disabled />}
                   disabled
                 />
               </Grid>
@@ -307,7 +329,9 @@ export const HostDetailPage: FC = () => {
                         sx={{ borderBottom: '1px solid' }}
                       >
                         <ListItemText
-                          primary={`${iface.name} (${iface.addressString || iface.address.IP})`}
+                          primary={`${iface.name} (${
+                            iface.addressString || iface.address.IP
+                          })`}
                         />
                         <CopyAllOutlined />
                       </ListItemButton>
@@ -415,6 +439,15 @@ export const HostDetailPage: FC = () => {
             title={`${t('common.confirmdelete')}`}
           />
         </Grid>
+
+        {/* modals */}
+        <CustomizedDialogs
+          open={shouldShowConfirmRefreshKeysModal}
+          handleClose={() => setShouldShowConfirmRefreshKeysModal(false)}
+          handleAccept={() => refreshKeys()}
+          message={t('hosts.refreshconfirm')}
+          title={`${t('hosts.refreshkeysfor')} ${host?.name}`}
+        />
       </Route>
     </Switch>
   )

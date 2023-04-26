@@ -135,6 +135,7 @@ export const en: LanguageResource = {
     hosts: 'Hosts',
   },
   common: {
+    refreshkeys: 'Refresh Keys',
     tagshitentertoaadd: 'Tags (hit enter to add)',
     networks: 'Networks',
     expireat: 'Expire At',
@@ -728,6 +729,9 @@ export const en: LanguageResource = {
     relayedby: 'Relayed By',
     canonlyrelaynonrelayedhosts: 'Can only relay non-relayed hosts',
     isstatic: 'Is Static',
+    refreshconfirm:
+      'Are you sure you want to reset the public & private key pairs of this host?',
+    refreshkeysfor: 'Refresh keys for',
   },
   enrollmentkeys: {
     nokeysavailable: 'No keys available',

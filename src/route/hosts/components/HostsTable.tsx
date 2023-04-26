@@ -4,8 +4,11 @@ import { useTranslation } from 'react-i18next'
 import { NmTable, TableColumns } from '~components/Table'
 import CopyText from '~components/CopyText'
 import { Host } from '~store/modules/hosts/types'
-import { Grid, Switch, TextField, Typography } from '@mui/material'
+import { Grid, IconButton, Switch, TextField, Typography } from '@mui/material'
 import CustomizedDialogs from '~components/dialog/CustomDialog'
+import { Autorenew } from '@mui/icons-material'
+import { useDispatch } from 'react-redux'
+import { refreshHostKeys } from '~store/modules/hosts/actions'
 
 interface HostsTableProps {
   hosts: Host[]
@@ -14,9 +17,15 @@ interface HostsTableProps {
 
 export const HostsTable: FC<HostsTableProps> = (props) => {
   const { t } = useTranslation()
+  const dispatch = useDispatch()
+
   const [searchFilter, setSearchFilter] = useState('')
   const [shouldShowConfirmDefaultModal, setShouldShowConfirmDefaultModal] =
     useState(false)
+  const [
+    shouldShowConfirmRefreshKeysModal,
+    setShouldShowConfirmRefreshKeysModal,
+  ] = useState(false)
   const [targetHost, setTargetHost] = useState<Host | null>(null)
   const columns: TableColumns<Host> = [
     {
@@ -77,6 +86,16 @@ export const HostsTable: FC<HostsTableProps> = (props) => {
         </>
       ),
     },
+    {
+      id: 'id',
+      labelKey: 'common.refreshkeys',
+      minWidth: 50,
+      format: (value, host) => (
+        <IconButton onClick={() => openConfirmRefreshKeysModal(host)}>
+          <Autorenew />
+        </IconButton>
+      ),
+    },
   ]
 
   const filteredHosts = useMemo(() => {
@@ -100,6 +119,22 @@ export const HostsTable: FC<HostsTableProps> = (props) => {
   const hideConfirmDefaultModal = useCallback(() => {
     setShouldShowConfirmDefaultModal(false)
   }, [])
+
+  const openConfirmRefreshKeysModal = useCallback((host: Host) => {
+    setTargetHost(host)
+    setShouldShowConfirmRefreshKeysModal(true)
+  }, [])
+
+  const hideConfirmRefreshKeysModal = useCallback(() => {
+    setShouldShowConfirmRefreshKeysModal(false)
+  }, [])
+
+  const refreshKeys = useCallback(
+    (targetHost: Host) => {
+      dispatch(refreshHostKeys['request']({ id: targetHost.id }))
+    },
+    [dispatch]
+  )
 
   return (
     <>
@@ -152,6 +187,15 @@ export const HostsTable: FC<HostsTableProps> = (props) => {
           title={t('hosts.confirmdefaultness')}
         />
       ) : null}
+      {!!targetHost && (
+        <CustomizedDialogs
+          open={shouldShowConfirmRefreshKeysModal}
+          handleClose={hideConfirmRefreshKeysModal}
+          handleAccept={() => refreshKeys(targetHost)}
+          message={t('hosts.refreshconfirm')}
+          title={`${t('hosts.refreshkeysfor')} ${targetHost.name}`}
+        />
+      )}
     </>
   )
 }
