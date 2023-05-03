@@ -1,0 +1,50 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "new version number"
+        required: true
+
+jobs:
+
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+    - name: checkout
+      uses: actions/checkout@v3
+      with:
+        ref: develop
+    - name: setup git
+      run: |
+        git config user.name "Github Actions"
+        git config user.email "info@netmaker.io"
+    - name: create branch
+        git switch -c release_${{ inputs.version }}
+        git tag -f ${{ inputs.version }}
+        #push branch
+        git push origin release_${{ inputs.version }}
+        #push tag
+        git push origin ${{ inputs.version }}
+
+    - name: release assets
+       uses: ncipollo/release-action@v1
+      with:
+        bodyFile: "release.md"
+        name: ${{ inputs.version }}
+        tag: ${{ inputs.version }}
+        commit: develop
+    - name: pull request
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        gh api --method POST \
+        -H 'Accept: application/vnd.github+json' -H 'X-GitHub-Api-Version: 2022-11-28'  \
+          /repos/${{ github.repository }}/pulls \
+          -f title='${{ inputs.version }}' \
+          -f head='release_${{ inputs.version }}' \
+          -f base="master" 
+    
