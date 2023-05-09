@@ -1,4 +1,4 @@
-FROM node:17.1.0 as builder
+FROM node:17.1.0 
 
 LABEL \
   org.opencontainers.image.authors="Dillon Carns & Alex Feiszli, Gravitl, inc." \
@@ -19,14 +19,3 @@ ENV PATH /usr/src/app/node_modules/.bin:$PATH
 COPY package*.json ./
 RUN npm install --silent
 RUN npm install react-scripts@4.0.3 -g --silent
-COPY . /usr/src/app
-ENV NODE_OPTIONS "--openssl-legacy-provider"
-RUN npm run build
-
-FROM nginx:1.23-alpine
-# RUN rm -rf /etc/nginx/conf.d
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-COPY --from=builder /usr/src/app/build /usr/share/nginx/html
-COPY docker-entrypoint.sh generate_config_js.sh /
-RUN chmod +x docker-entrypoint.sh generate_config_js.sh
-ENTRYPOINT ["/docker-entrypoint.sh"]
