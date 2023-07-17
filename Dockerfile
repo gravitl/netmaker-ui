@@ -1,4 +1,4 @@
-FROM node:20.1.0 as builder
+FROM node:20.4.0 as builder
 
 LABEL \
   org.opencontainers.image.authors="Dillon Carns & Alex Feiszli, Gravitl, inc." \
